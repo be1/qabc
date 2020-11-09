@@ -17,7 +17,10 @@ $ make
 ```
 
 ## Starting
-launch `qabc`, type some ABC music in the editor, press `Play` button: you're done!
+Launch `qabc`, type some ABC music in the editor, press `Play` button: you're done!
+
+## Bugs
+Lots of!
 
 ## Colophon
 This project is (was), as of version 0.1, a one-night project because I wanted to be more comfortable with ABC notation and I could not find a GUI software that could run on my laptop.

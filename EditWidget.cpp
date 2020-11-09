@@ -1,7 +1,7 @@
 #include "EditWidget.h"
 #include <QTabWidget>
 
-EditWidget::EditWidget(const QString& fileName, QTabWidget* parent)
+EditWidget::EditWidget(const QString& fileName, QWidget *parent)
     : QWidget(parent),
       editvboxlayout(fileName, this),
       filename(fileName)

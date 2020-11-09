@@ -10,7 +10,7 @@ class EditWidget: public QWidget
 	Q_OBJECT
 
 public:
-    explicit EditWidget(const QString& fileName, QTabWidget* parent = nullptr);
+    explicit EditWidget(const QString& fileName, QWidget* parent = nullptr);
     ~EditWidget();
 
     EditVBoxLayout *editVBoxLayout();

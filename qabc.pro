@@ -35,4 +35,6 @@ desktop.path = $$DATADIR/applications
 desktop.files = $${TARGET}.desktop
 icon.path = $$DATADIR/pixmaps
 icon.files = $${TARGET}.png
-INSTALLS += target translations desktop icon
+mime.path = $$DATADIR/mime/packages
+mime.files = application-vnd-abc.xml
+INSTALLS += target translations desktop icon mime

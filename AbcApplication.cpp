@@ -1,6 +1,7 @@
 #include "AbcApplication.h"
 #include <QSettings>
 #include <QDebug>
+#include "config.h"
 
 AbcApplication::AbcApplication(int& argc, char **argv)
 	: QApplication(argc, argv)
@@ -8,7 +9,7 @@ AbcApplication::AbcApplication(int& argc, char **argv)
 	setOrganizationName("Herewe");
 	setOrganizationDomain("herewe");
     setApplicationName("QAbc");
-    setApplicationVersion("0.1");
+    setApplicationVersion(VERSION " (" REVISION ")");
 
     QSettings settings("Herewe", "QAbc");
 

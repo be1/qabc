@@ -6,7 +6,7 @@
     <message>
         <location filename="AbcMainWindow.cpp" line="6"/>
         <source>QAbc</source>
-        <translation type="unfinished"></translation>
+        <translation>QAbc</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="AboutAction.cpp" line="6"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>À propos</translation>
     </message>
 </context>
 <context>
@@ -22,7 +22,7 @@
     <message>
         <location filename="AboutqtAction.cpp" line="6"/>
         <source>About Qt</source>
-        <translation type="unfinished"></translation>
+        <translation>À propos de Qt</translation>
     </message>
 </context>
 <context>
@@ -30,7 +30,7 @@
     <message>
         <location filename="CloseAction.cpp" line="6"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -38,7 +38,7 @@
     <message>
         <location filename="CompilerAction.cpp" line="6"/>
         <source>Compiler</source>
-        <translation type="unfinished"></translation>
+        <translation>Compilateur</translation>
     </message>
 </context>
 <context>
@@ -46,7 +46,7 @@
     <message>
         <location filename="EditVBoxLayout.cpp" line="15"/>
         <source>X:</source>
-        <translation type="unfinished"></translation>
+        <translation>X:</translation>
     </message>
 </context>
 <context>
@@ -54,13 +54,13 @@
     <message>
         <location filename="HelpMenu.cpp" line="7"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Aide</translation>
     </message>
     <message>
         <location filename="HelpMenu.cpp" line="20"/>
         <location filename="HelpMenu.cpp" line="25"/>
         <source>Abc score editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Éditeur de partition ABC</translation>
     </message>
     <message>
         <location filename="HelpMenu.cpp" line="20"/>
@@ -73,7 +73,7 @@
     <message>
         <location filename="NewAction.cpp" line="6"/>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvelle</translation>
     </message>
 </context>
 <context>
@@ -81,7 +81,7 @@
     <message>
         <location filename="OpenAction.cpp" line="6"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir</translation>
     </message>
 </context>
 <context>
@@ -89,7 +89,7 @@
     <message>
         <location filename="PlayPushButton.cpp" line="6"/>
         <source>Play</source>
-        <translation type="unfinished"></translation>
+        <translation>Jouer</translation>
     </message>
 </context>
 <context>
@@ -97,7 +97,7 @@
     <message>
         <location filename="PlayerAction.cpp" line="6"/>
         <source>Player</source>
-        <translation type="unfinished"></translation>
+        <translation>Joueur</translation>
     </message>
 </context>
 <context>
@@ -105,55 +105,55 @@
     <message>
         <location filename="PreferencesMenu.cpp" line="9"/>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Préférences</translation>
     </message>
     <message>
         <location filename="PreferencesMenu.cpp" line="35"/>
         <location filename="PreferencesMenu.cpp" line="37"/>
         <source>Compiler preference</source>
-        <translation type="unfinished"></translation>
+        <translation>Préférence du compilateur</translation>
     </message>
     <message>
         <location filename="PreferencesMenu.cpp" line="35"/>
         <source>Compiler:</source>
-        <translation type="unfinished"></translation>
+        <translation>Compilateur :</translation>
     </message>
     <message>
         <location filename="PreferencesMenu.cpp" line="37"/>
         <source>Compiler</source>
-        <translation type="unfinished"></translation>
+        <translation>Compilateur</translation>
     </message>
     <message>
         <location filename="PreferencesMenu.cpp" line="54"/>
         <location filename="PreferencesMenu.cpp" line="56"/>
         <source>Player preference</source>
-        <translation type="unfinished"></translation>
+        <translation>Préférence du joueur</translation>
     </message>
     <message>
         <location filename="PreferencesMenu.cpp" line="54"/>
         <source>Player:</source>
-        <translation type="unfinished"></translation>
+        <translation>Joueur :</translation>
     </message>
     <message>
         <location filename="PreferencesMenu.cpp" line="56"/>
         <source>Player</source>
-        <translation type="unfinished"></translation>
+        <translation>Joueur</translation>
     </message>
     <message>
         <location filename="PreferencesMenu.cpp" line="73"/>
         <location filename="PreferencesMenu.cpp" line="75"/>
         <source>Synth preference</source>
-        <translation type="unfinished"></translation>
+        <translation>Préférence du synthétiseur</translation>
     </message>
     <message>
         <location filename="PreferencesMenu.cpp" line="73"/>
         <source>Synth:</source>
-        <translation type="unfinished"></translation>
+        <translation>Synthétiseur :</translation>
     </message>
     <message>
         <location filename="PreferencesMenu.cpp" line="75"/>
         <source>Synth</source>
-        <translation type="unfinished"></translation>
+        <translation>Synthétiseur</translation>
     </message>
 </context>
 <context>
@@ -161,7 +161,7 @@
     <message>
         <location filename="QuitAction.cpp" line="6"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitter</translation>
     </message>
 </context>
 <context>
@@ -169,7 +169,7 @@
     <message>
         <location filename="ResetAction.cpp" line="6"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Remettre à zéro</translation>
     </message>
 </context>
 <context>
@@ -177,7 +177,7 @@
     <message>
         <location filename="RunPushButton.cpp" line="6"/>
         <source>Generate score</source>
-        <translation type="unfinished"></translation>
+        <translation>Générer la partition</translation>
     </message>
 </context>
 <context>
@@ -185,7 +185,7 @@
     <message>
         <location filename="SaveAction.cpp" line="6"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer</translation>
     </message>
 </context>
 <context>
@@ -193,7 +193,7 @@
     <message>
         <location filename="SaveasAction.cpp" line="6"/>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer sous</translation>
     </message>
 </context>
 <context>
@@ -201,33 +201,33 @@
     <message>
         <location filename="ScoreMenu.cpp" line="12"/>
         <source>Score</source>
-        <translation type="unfinished"></translation>
+        <translation>Partition</translation>
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="40"/>
         <source>Open ABC Score</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir une partition ABC</translation>
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="40"/>
         <location filename="ScoreMenu.cpp" line="90"/>
         <source>ABC score (*.abc)</source>
-        <translation type="unfinished"></translation>
+        <translation>Partition ABC (*.abc)</translation>
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="83"/>
         <source>Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>Attention</translation>
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="83"/>
         <source>Could not save ABC score!</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible d&apos;enregistrer la partition ABC !</translation>
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="90"/>
         <source>Save ABC Score</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer la partition ABC</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
     <message>
         <location filename="SynthAction.cpp" line="6"/>
         <source>Synth</source>
-        <translation type="unfinished"></translation>
+        <translation>Synthétiseur</translation>
     </message>
 </context>
 </TS>

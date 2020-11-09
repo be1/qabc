@@ -200,40 +200,40 @@
 <context>
     <name>ScoreMenu</name>
     <message>
-        <location filename="ScoreMenu.cpp" line="12"/>
+        <location filename="ScoreMenu.cpp" line="14"/>
         <source>Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="40"/>
+        <location filename="ScoreMenu.cpp" line="42"/>
         <source>Open ABC Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="40"/>
-        <location filename="ScoreMenu.cpp" line="92"/>
+        <location filename="ScoreMenu.cpp" line="42"/>
+        <location filename="ScoreMenu.cpp" line="91"/>
         <source>ABC score (*.abc)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="71"/>
-        <location filename="ScoreMenu.cpp" line="85"/>
+        <location filename="ScoreMenu.cpp" line="70"/>
+        <location filename="ScoreMenu.cpp" line="84"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="71"/>
-        <source>Could not save an Untitled ABC score!</source>
+        <location filename="ScoreMenu.cpp" line="70"/>
+        <source>Could not save an untitled ABC score!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="85"/>
+        <location filename="ScoreMenu.cpp" line="91"/>
+        <source>Save ABC score</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="84"/>
         <source>Could not save ABC score!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ScoreMenu.cpp" line="92"/>
-        <source>Save ABC Score</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -200,41 +200,41 @@
 <context>
     <name>ScoreMenu</name>
     <message>
-        <location filename="ScoreMenu.cpp" line="12"/>
+        <location filename="ScoreMenu.cpp" line="14"/>
         <source>Score</source>
         <translation>Partition</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="40"/>
+        <location filename="ScoreMenu.cpp" line="42"/>
         <source>Open ABC Score</source>
         <translation>Ouvrir une partition ABC</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="40"/>
-        <location filename="ScoreMenu.cpp" line="92"/>
+        <location filename="ScoreMenu.cpp" line="42"/>
+        <location filename="ScoreMenu.cpp" line="91"/>
         <source>ABC score (*.abc)</source>
         <translation>Partition ABC (*.abc)</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="71"/>
-        <location filename="ScoreMenu.cpp" line="85"/>
+        <location filename="ScoreMenu.cpp" line="70"/>
+        <location filename="ScoreMenu.cpp" line="84"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="71"/>
-        <source>Could not save an Untitled ABC score!</source>
-        <translation>Impossible d&apos;enregistrer une partition ABC sans Nom !</translation>
+        <location filename="ScoreMenu.cpp" line="70"/>
+        <source>Could not save an untitled ABC score!</source>
+        <translation>Impossible d&apos;enregistrer une partition ABC sans titre !</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="85"/>
+        <location filename="ScoreMenu.cpp" line="91"/>
+        <source>Save ABC score</source>
+        <translation>Enregistrer la partition ABC</translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="84"/>
         <source>Could not save ABC score!</source>
         <translation>Impossible d&apos;enregistrer la partition ABC !</translation>
-    </message>
-    <message>
-        <location filename="ScoreMenu.cpp" line="92"/>
-        <source>Save ABC Score</source>
-        <translation>Enregistrer la partition ABC</translation>
     </message>
 </context>
 <context>

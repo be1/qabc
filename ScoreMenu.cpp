@@ -67,7 +67,7 @@ void ScoreMenu::onSaveActionTriggered()
 
     QString fileName = (*edittabs->currentEditWidget()->fileName());
     if (fileName.isEmpty()) {
-        QMessageBox::warning(this, tr("Warning"), tr("Could not save an Untitled ABC score!"));
+        QMessageBox::warning(this, tr("Warning"), tr("Could not save an untitled ABC score!"));
         return;
     }
 
@@ -88,7 +88,9 @@ void ScoreMenu::onSaveActionTriggered()
 void ScoreMenu::onSaveAsActionTriggered()
 {
     QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save ABC Score"), home, tr("ABC score (*.abc)"));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save ABC score"), home, tr("ABC score (*.abc)"));
+    if (fileName.isEmpty())
+        return; /* cancelled */
 
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();

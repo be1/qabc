@@ -59,13 +59,14 @@
     <message>
         <location filename="HelpMenu.cpp" line="20"/>
         <location filename="HelpMenu.cpp" line="25"/>
-        <source>Abc score editor</source>
+        <source>ABC score editor</source>
+        <oldsource>Abc score editor</oldsource>
         <translation>Éditeur de partition ABC</translation>
     </message>
     <message>
         <location filename="HelpMenu.cpp" line="20"/>
-        <source>copyright © 2020 Benoît Rouits &lt;brouits@free.fr&gt;</source>
-        <translation type="unfinished"></translation>
+        <source>Copyright © 2020 Benoît Rouits &lt;brouits@free.fr&gt;</source>
+        <translation>Copyright © 2020 Benoît Rouits &lt;brouit@free.fr&gt;</translation>
     </message>
 </context>
 <context>
@@ -210,22 +211,28 @@
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="40"/>
-        <location filename="ScoreMenu.cpp" line="90"/>
+        <location filename="ScoreMenu.cpp" line="92"/>
         <source>ABC score (*.abc)</source>
         <translation>Partition ABC (*.abc)</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="83"/>
+        <location filename="ScoreMenu.cpp" line="71"/>
+        <location filename="ScoreMenu.cpp" line="85"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="83"/>
+        <location filename="ScoreMenu.cpp" line="71"/>
+        <source>Could not save an Untitled ABC score!</source>
+        <translation>Impossible d&apos;enregistrer une partition ABC sans Nom !</translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="85"/>
         <source>Could not save ABC score!</source>
         <translation>Impossible d&apos;enregistrer la partition ABC !</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="90"/>
+        <location filename="ScoreMenu.cpp" line="92"/>
         <source>Save ABC Score</source>
         <translation>Enregistrer la partition ABC</translation>
     </message>
@@ -236,6 +243,14 @@
         <location filename="SynthAction.cpp" line="6"/>
         <source>Synth</source>
         <translation>Synthétiseur</translation>
+    </message>
+</context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="main.cpp" line="28"/>
+        <source>ABC score file to work on.</source>
+        <translation>Partition ABC sur laquelle travailler.</translation>
     </message>
 </context>
 </TS>

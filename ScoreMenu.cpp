@@ -67,8 +67,10 @@ void ScoreMenu::onSaveActionTriggered()
     EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();
 
     QString fileName = edittabs->currentFileNameEditWidget()->fileName;
-    if (fileName.isEmpty())
-        return onSaveAsActionTriggered();
+    if (fileName.isEmpty()) {
+        QMessageBox::warning(this, tr("Warning"), tr("Could not save an Untitled ABC score!"));
+        return;
+    }
 
     QFile file(fileName);
     if (file.open(QFile::WriteOnly | QFile::Text)) {

@@ -30,6 +30,7 @@ int EditTabWidget::addTab(FileNameEditWidget *swidget)
     setCurrentWidget(swidget->widget);
     filenameeditwidgetlist.append(swidget);
     currentfilenameeditwidget = swidget;
+    qDebug() << "addTab: " << currentfilenameeditwidget->fileName;
     return ret;
 }
 

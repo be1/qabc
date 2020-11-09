@@ -48,14 +48,10 @@ void ScoreMenu::onOpenActionTriggered()
         AbcApplication* a = static_cast<AbcApplication*>(qApp);
         EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();
 
-        EditWidget* widget = new EditWidget(fileName, edittabs);
-        FileNameEditWidget* swidget = new FileNameEditWidget;
-        swidget->widget = widget;
-        swidget->fileName = fileName;
-
+        FileNameEditWidget* swidget = new FileNameEditWidget(fileName, edittabs);
         edittabs->addTab(swidget);
 
-        AbcPlainTextEdit *edit = widget->editVBoxLayout()->abcPlainTextEdit();
+        AbcPlainTextEdit *edit = swidget->editVBoxLayout()->abcPlainTextEdit();
         edit->setPlainText(file.readAll());
         file.close();
     }
@@ -66,7 +62,7 @@ void ScoreMenu::onSaveActionTriggered()
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();
 
-    QString fileName = edittabs->currentFileNameEditWidget()->fileName;
+    QString fileName = (*edittabs->currentFileNameEditWidget()->fileName());
     if (fileName.isEmpty()) {
         QMessageBox::warning(this, tr("Warning"), tr("Could not save an Untitled ABC score!"));
         return;
@@ -93,7 +89,9 @@ void ScoreMenu::onSaveAsActionTriggered()
 
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();
-    edittabs->currentFileNameEditWidget()->fileName = fileName; /* shared */
+    QFileInfo info(fileName);
+    edittabs->setTabText(edittabs->currentIndex(), info.baseName());
+    edittabs->currentFileNameEditWidget()->setFileName(fileName);
     return onSaveActionTriggered();
 }
 
@@ -110,10 +108,7 @@ void ScoreMenu::onNewActionTriggered()
     EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();
 
     QString empty;
-    EditWidget* widget = new EditWidget(empty, edittabs);
-    FileNameEditWidget* swidget = new FileNameEditWidget;
-    swidget->widget = widget;
-    swidget->fileName = empty;
+    FileNameEditWidget* swidget = new FileNameEditWidget(empty, edittabs);
 
     edittabs->addTab(swidget);
 }

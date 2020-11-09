@@ -19,6 +19,7 @@ public:
     AbcPlainTextEdit *abcPlainTextEdit();
     PlayPushButton *playPushButton();
     RunPushButton *runPushButton();
+    void setFileName(const QString& fn);
 
 protected slots:
     void onXChanged(int value);

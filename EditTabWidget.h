@@ -4,10 +4,7 @@
 #include "EditWidget.h"
 #include <QTabWidget>
 
-struct FileNameEditWidget {
-    EditWidget* widget;
-    QString fileName;
-};
+
 
 class EditTabWidget: public QTabWidget
 {
@@ -18,7 +15,7 @@ public:
     ~EditTabWidget();
 
     QList<FileNameEditWidget*> *fileNameEditWidgetList();
-    FileNameEditWidget* currentFileNameEditWidget();
+    FileNameEditWidget *currentFileNameEditWidget();
 
     int addTab(FileNameEditWidget *swidget);
     void removeTab(int index);

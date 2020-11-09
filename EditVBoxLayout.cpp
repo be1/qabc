@@ -24,7 +24,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     addLayout(&hboxlayout);
 
     connect(&xspinbox, SIGNAL(valueChanged(int)), this, SLOT(onXChanged(int)));
-    connect(&playpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onPlayClicked);
+    connect(&playpushbutton, SIGNAL(clicked()), this, SLOT(onPlayClicked()));
     connect(&runpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onRunClicked);
 
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
@@ -50,7 +50,12 @@ PlayPushButton *EditVBoxLayout::playPushButton()
 
 RunPushButton *EditVBoxLayout::runPushButton()
 {
-   return &runpushbutton;
+    return &runpushbutton;
+}
+
+void EditVBoxLayout::setFileName(const QString &fn)
+{
+   fileName = fn;
 }
 
 void EditVBoxLayout::onXChanged(int value)
@@ -78,8 +83,10 @@ void EditVBoxLayout::onPlayClicked()
 void EditVBoxLayout::onPlayFinished(int exitCode)
 {
     qDebug() << "play" << exitCode;
-    if (exitCode)
+    if (exitCode) {
+        playpushbutton.setEnabled(true);
         return;
+    }
 
     QSettings settings("Herewe", "QAbc");
     QVariant synth = settings.value(SYNTH_KEY);

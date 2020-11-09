@@ -17,4 +17,22 @@ public:
 private:
 	EditVBoxLayout editvboxlayout;
 };
+
+class FileNameEditWidget : public EditWidget
+{
+    Q_OBJECT
+
+public:
+    FileNameEditWidget(const QString& fileName, QWidget *parent = nullptr)
+        : EditWidget(fileName, parent),
+          filename(fileName)
+    {
+    }
+
+    QString *fileName();
+    void setFileName(const QString& fileName);
+
+private:
+    QString filename;
+};
 #endif

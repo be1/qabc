@@ -10,7 +10,6 @@ EditTabWidget::EditTabWidget(QWidget* parent)
 
 EditTabWidget::~EditTabWidget()
 {
-
 }
 
 QList<FileNameEditWidget*> *EditTabWidget::fileNameEditWidgetList()
@@ -25,12 +24,12 @@ FileNameEditWidget *EditTabWidget::currentFileNameEditWidget()
 
 int EditTabWidget::addTab(FileNameEditWidget *swidget)
 {
-    QFileInfo info(swidget->fileName);
-    int ret = QTabWidget::addTab(swidget->widget, info.baseName());
-    setCurrentWidget(swidget->widget);
+    QFileInfo info(*(swidget->fileName()));
+    int ret = QTabWidget::addTab(swidget, info.baseName());
+    setCurrentWidget(swidget);
     filenameeditwidgetlist.append(swidget);
     currentfilenameeditwidget = swidget;
-    qDebug() << "addTab: " << currentfilenameeditwidget->fileName;
+    qDebug() << "addTab: " << (*currentfilenameeditwidget->fileName());
     return ret;
 }
 
@@ -42,11 +41,11 @@ void EditTabWidget::removeTab(int index)
 
 void EditTabWidget::onCurrentChanged(int index)
 {
-    EditWidget* widget = static_cast<EditWidget*>(currentWidget());
+    FileNameEditWidget* swidget = static_cast<FileNameEditWidget*>(currentWidget());
     for (int i = 0; i < filenameeditwidgetlist.length(); i++) {
-        if (filenameeditwidgetlist.at(i)->widget == widget) {
+        if (filenameeditwidgetlist.at(i) == swidget) {
             currentfilenameeditwidget = filenameeditwidgetlist.at(i);
-            qDebug() << "currentTab: " << index << currentfilenameeditwidget->fileName << i;
+            qDebug() << "currentTab: " << index << (*currentfilenameeditwidget->fileName()) << i;
             break;
         }
     }

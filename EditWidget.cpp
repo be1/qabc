@@ -1,9 +1,11 @@
 #include "EditWidget.h"
+#include <QTabWidget>
 
-EditWidget::EditWidget(const QString& fileName, QWidget* parent)
+EditWidget::EditWidget(const QString& fileName, QTabWidget* parent)
     : QWidget(parent),
       editvboxlayout(fileName, this)
 {
+    filename = fileName;
 	setLayout(&editvboxlayout);
 }
 
@@ -16,12 +18,12 @@ EditVBoxLayout *EditWidget::editVBoxLayout()
    return &editvboxlayout;
 }
 
-QString *FileNameEditWidget::fileName()
+QString *EditWidget::fileName()
 {
     return &filename;
 }
 
-void FileNameEditWidget::setFileName(const QString &fileName)
+void EditWidget::setFileName(const QString &fileName)
 {
     filename = fileName;
     editVBoxLayout()->setFileName(fileName);

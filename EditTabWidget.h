@@ -14,17 +14,17 @@ public:
 	EditTabWidget(QWidget* parent = nullptr);
     ~EditTabWidget();
 
-    QList<FileNameEditWidget*> *fileNameEditWidgetList();
-    FileNameEditWidget *currentFileNameEditWidget();
+    QList<EditWidget*> *editWidgetList();
+    EditWidget *currentEditWidget();
 
-    int addTab(FileNameEditWidget *swidget);
+    int addTab(EditWidget *swidget);
     void removeTab(int index);
 
 protected slots:
     void onCurrentChanged(int index);
 
 private:
-    QList<FileNameEditWidget*> filenameeditwidgetlist;
-    FileNameEditWidget* currentfilenameeditwidget;
+    QList<EditWidget*> editwidgetlist;
+    EditWidget* currenteditwidget;
 };
 #endif

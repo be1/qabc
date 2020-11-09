@@ -1,10 +1,12 @@
 #include "ScoreMenu.h"
+#include "AbcApplication.h"
+#include "AbcPlainTextEdit.h"
+#include "EditTabWidget.h"
+#include "EditWidget.h"
+#include <QMessageBox>
 #include <QApplication>
 #include <QFileDialog>
 #include <QStandardPaths>
-#include "AbcApplication.h"
-#include "AbcPlainTextEdit.h"
-#include <QMessageBox>
 
 ScoreMenu::ScoreMenu(QWidget* parent)
 	: QMenu(parent)
@@ -46,12 +48,13 @@ void ScoreMenu::onOpenActionTriggered()
     QFile file(fileName);
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         AbcApplication* a = static_cast<AbcApplication*>(qApp);
-        EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();
+        CentralWidget* w = static_cast<CentralWidget*>(a->mainWindow()->centralWidget());
+        EditTabWidget *edittabs = w->mainHBoxLayout()->editTabWidget();
 
-        FileNameEditWidget* swidget = new FileNameEditWidget(fileName, edittabs);
-        edittabs->addTab(swidget);
+        EditWidget* widget = new EditWidget(fileName, edittabs);
+        edittabs->addTab(widget);
 
-        AbcPlainTextEdit *edit = swidget->editVBoxLayout()->abcPlainTextEdit();
+        AbcPlainTextEdit *edit = widget->editVBoxLayout()->abcPlainTextEdit();
         edit->setPlainText(file.readAll());
         file.close();
     }
@@ -62,7 +65,7 @@ void ScoreMenu::onSaveActionTriggered()
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();
 
-    QString fileName = (*edittabs->currentFileNameEditWidget()->fileName());
+    QString fileName = (*edittabs->currentEditWidget()->fileName());
     if (fileName.isEmpty()) {
         QMessageBox::warning(this, tr("Warning"), tr("Could not save an Untitled ABC score!"));
         return;
@@ -91,7 +94,7 @@ void ScoreMenu::onSaveAsActionTriggered()
     EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();
     QFileInfo info(fileName);
     edittabs->setTabText(edittabs->currentIndex(), info.baseName());
-    edittabs->currentFileNameEditWidget()->setFileName(fileName);
+    edittabs->currentEditWidget()->setFileName(fileName);
     return onSaveActionTriggered();
 }
 
@@ -108,7 +111,7 @@ void ScoreMenu::onNewActionTriggered()
     EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();
 
     QString empty;
-    FileNameEditWidget* swidget = new FileNameEditWidget(empty, edittabs);
+    EditWidget* swidget = new EditWidget(empty, edittabs);
 
     edittabs->addTab(swidget);
 }

@@ -1,0 +1,29 @@
+---
+AbcApplication:
+    AbcMainWindow:
+        ScoreMenu:
+            NewAction:
+            OpenAction:
+            SaveAction:
+            SaveasAction:
+            CloseAction:
+            QuitAction:
+        PreferencesMenu:
+            EditorAction:
+            CompilerAction:
+            ViewerAction:
+            PlayerAction:
+        HelpMenu:
+            AboutAction:
+            AboutqtAction:
+        CentralWidget:
+            MainHBoxLayout:
+                EditTabWidget:
+                    EditWidget:
+                        EditVBoxLayout:
+                            AbcPlainTextEdit:
+                            PlayPushButton:
+                ViewWidget:
+                    ViewVBoxLayout:
+                        PdfWidget:
+                        RunPushButton:

@@ -9,6 +9,12 @@
 
 EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     : QVBoxLayout(parent),
+      abcplaintextedit(parent),
+      playpushbutton(parent),
+      runpushbutton(parent),
+      hboxlayout(parent),
+      xspinbox(parent),
+      xlabel(parent),
       fileName(fileName)
 {
     xspinbox.setMinimum(1);

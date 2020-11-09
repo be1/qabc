@@ -3,9 +3,9 @@
 
 EditWidget::EditWidget(const QString& fileName, QTabWidget* parent)
     : QWidget(parent),
-      editvboxlayout(fileName, this)
+      editvboxlayout(fileName, this),
+      filename(fileName)
 {
-    filename = fileName;
 	setLayout(&editvboxlayout);
 }
 

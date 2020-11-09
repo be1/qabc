@@ -15,6 +15,7 @@ public:
     ~AbcApplication();
 
     AbcMainWindow *mainWindow();
+    void openFileNames(const QStringList& fileNames);
     void spawnCompiler(const QString &prog, const QStringList &args, const QDir& wrk);
     void spawnPlayer(const QString &prog, const QStringList& args, const QDir& wrk);
     void spawnSynth(const QString &prog, const QStringList &args, const QDir& wrk);

@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QFileDialog>
 #include <QStandardPaths>
+#include <QDebug>
 
 ScoreMenu::ScoreMenu(QWidget* parent)
 	: QMenu(parent)
@@ -65,6 +66,10 @@ void ScoreMenu::onSaveActionTriggered()
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();
 
+    int cur = edittabs->currentIndex();
+    if (cur < 0)
+        return;
+
     QString fileName = (*edittabs->currentEditWidget()->fileName());
     if (fileName.isEmpty()) {
         QMessageBox::warning(this, tr("Warning"), tr("Could not save an untitled ABC score!"));
@@ -87,13 +92,17 @@ void ScoreMenu::onSaveActionTriggered()
 
 void ScoreMenu::onSaveAsActionTriggered()
 {
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();
+    int cur = edittabs->currentIndex();
+    if (cur < 0)
+        return;
+
     QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save ABC score"), home, tr("ABC score (*.abc)"));
     if (fileName.isEmpty())
         return; /* cancelled */
 
-    AbcApplication* a = static_cast<AbcApplication*>(qApp);
-    EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();
     QFileInfo info(fileName);
     edittabs->setTabText(edittabs->currentIndex(), info.baseName());
     edittabs->currentEditWidget()->setFileName(fileName);
@@ -104,7 +113,10 @@ void ScoreMenu::onCloseActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     EditTabWidget *edittabs = static_cast<CentralWidget*>(a->mainWindow()->centralWidget())->mainHBoxLayout()->editTabWidget();
-    edittabs->removeTab(edittabs->currentIndex());
+    //qDebug() << edittabs->currentIndex();
+    int cur = edittabs->currentIndex();
+    if (cur >= 0)
+        edittabs->removeTab(cur);
 }
 
 void ScoreMenu::onNewActionTriggered()

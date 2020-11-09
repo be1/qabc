@@ -37,6 +37,23 @@ AbcMainWindow *AbcApplication::mainWindow()
     return &abcmainwindow;
 }
 
+void AbcApplication::openFileNames(const QStringList &fileNames)
+{
+    CentralWidget *cw = static_cast<CentralWidget*>(mainWindow()->centralWidget());
+    EditTabWidget* edittabs = cw->mainHBoxLayout()->editTabWidget();
+    for (int i = 0; i < fileNames.length(); i++) {
+        QString fileName = fileNames[i];
+        QFile file(fileName);
+        if (file.open(QFile::ReadOnly | QFile::Text)) {
+            EditWidget* widget = new EditWidget(fileName, edittabs);
+            edittabs->addTab(widget);
+            AbcPlainTextEdit *edit = widget->editVBoxLayout()->abcPlainTextEdit();
+            edit->setPlainText(file.readAll());
+            file.close();
+        }
+    }
+}
+
 void AbcApplication::spawnCompiler(const QString &prog, const QStringList& args, const QDir &wrk)
 {
     CentralWidget* cw =  static_cast<CentralWidget*>(abcmainwindow.centralWidget());

@@ -11,3 +11,28 @@ HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h Qui
 	LogView.h \
 	ResetAction.h \
 	SynthAction.h
+VERSION = 0.1
+REVISION = $$system(svnversion|grep '[[:digit:]]' || git describe --long --tags 2>/dev/null || echo "stable")
+CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
+isEmpty(PREFIX): PREFIX = /usr/local
+isEmpty(BINDIR): BINDIR = $$PREFIX/bin
+isEmpty(DATADIR): DATADIR = $$PREFIX/share
+config.input = config.h.in
+config.output = config.h
+QMAKE_SUBSTITUTES += config
+isEmpty(QMAKE_LRELEASE):QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+TRANSLATIONS += $${TARGET}_en.ts $${TARGET}_fr.ts
+LOCALE_DIR = locale
+updateqm.input = TRANSLATIONS
+updateqm.output = $$LOCALE_DIR/${QMAKE_FILE_BASE}.qm
+updateqm.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm $$LOCALE_DIR/${QMAKE_FILE_BASE}.qm
+updateqm.CONFIG += no_link target_predeps
+QMAKE_EXTRA_COMPILERS += updateqm
+target.path = $$BINDIR
+translations.path = $$DATADIR/$$TARGET
+translations.files = $$LOCALE_DIR
+desktop.path = $$DATADIR/applications
+desktop.files = $${TARGET}.desktop
+icon.path = $$DATADIR/pixmaps
+icon.files = $${TARGET}.png
+INSTALLS += target translations desktop icon

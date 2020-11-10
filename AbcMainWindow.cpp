@@ -6,8 +6,10 @@ AbcMainWindow::AbcMainWindow(QWidget* parent)
 	setWindowTitle(tr("QAbc"));
 	menuBar()->addMenu(&scoremenu);
 	menuBar()->addMenu(&preferencesmenu);
-	menuBar()->addMenu(&helpmenu);
-	setCentralWidget(&centralwidget);
+    menuBar()->addMenu(&helpmenu);
+    setCentralWidget(new QWidget(this));
+    centralWidget()->setLayout(&mainhboxlayout);
+    statusBar()->showMessage(tr("Idle"));
 	setMinimumWidth(800);
 	setMinimumHeight(480);
 	show();
@@ -15,4 +17,9 @@ AbcMainWindow::AbcMainWindow(QWidget* parent)
 
 AbcMainWindow::~AbcMainWindow()
 {
+}
+
+MainHBoxLayout *AbcMainWindow::mainHBoxLayout()
+{
+   return &mainhboxlayout;
 }

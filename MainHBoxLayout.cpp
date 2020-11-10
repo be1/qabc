@@ -3,8 +3,10 @@
 MainHBoxLayout::MainHBoxLayout(QWidget* parent)
 	: QHBoxLayout(parent)
 {
-	addWidget(&edittabwidget);
-	addWidget(&viewwidget);
+    addWidget(&edittabwidget);
+    addWidget(&viewwidget);
+    setStretchFactor(&edittabwidget, 2);
+    setStretchFactor(&viewwidget, 1);
 }
 
 MainHBoxLayout::~MainHBoxLayout()

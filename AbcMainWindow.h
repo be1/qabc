@@ -1,10 +1,10 @@
 #ifndef ABCMAINWINDOW_H
 #define ABCMAINWINDOW_H
 
-#include "CentralWidget.h"
 #include "HelpMenu.h"
 #include "PreferencesMenu.h"
 #include "ScoreMenu.h"
+#include "MainHBoxLayout.h"
 #include <QStatusBar>
 #include <QDockWidget>
 #include <QToolBar>
@@ -18,12 +18,14 @@ class AbcMainWindow: public QMainWindow
 
 public:
 	AbcMainWindow(QWidget* parent = nullptr);
-	~AbcMainWindow();
+    ~AbcMainWindow();
+
+    MainHBoxLayout *mainHBoxLayout();
 
 private:
 	ScoreMenu scoremenu;
 	PreferencesMenu preferencesmenu;
-	HelpMenu helpmenu;
-	CentralWidget centralwidget;
+    HelpMenu helpmenu;
+    MainHBoxLayout mainhboxlayout;
 };
 #endif

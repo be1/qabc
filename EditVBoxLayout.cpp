@@ -74,8 +74,8 @@ void EditVBoxLayout::onXChanged(int value)
 void EditVBoxLayout::spawnCompiler(const QString &prog, const QStringList& args, const QDir &wrk)
 {
 	AbcApplication* a = static_cast<AbcApplication*>(qApp);
-	CentralWidget* cw =  static_cast<CentralWidget*>(a->mainWindow()->centralWidget());
-	cw->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView()->clear();
+    AbcMainWindow* w =  a->mainWindow();
+    w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView()->clear();
 	return spawnProgram(prog, args, AbcProcess::ProcessCompiler, wrk);
 }
 
@@ -87,8 +87,8 @@ void EditVBoxLayout::spawnViewer(const QString &prog, const QStringList &args, c
 void EditVBoxLayout::spawnPlayer(const QString& prog, const QStringList &args, const QDir &wrk)
 {
 	AbcApplication* a = static_cast<AbcApplication*>(qApp);
-	CentralWidget* cw =  static_cast<CentralWidget*>(a->mainWindow()->centralWidget());
-	cw->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView()->clear();
+    AbcMainWindow *w = a->mainWindow();
+    w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView()->clear();
 	return spawnProgram(prog, args, AbcProcess::ProcessPlayer, wrk);
 }
 
@@ -134,8 +134,8 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
 				&& proc->which() == which) {
 			QString str = QString::fromUtf8(*proc->log());
 			AbcApplication* a = static_cast<AbcApplication*>(qApp);
-            CentralWidget* cw =  static_cast<CentralWidget*>(a->mainWindow()->centralWidget());
-            LogView* lv = cw->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
+            AbcMainWindow* w =  a->mainWindow();
+            LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
             lv->appendPlainText(str);
 			disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
 			delete proc;
@@ -152,8 +152,8 @@ void EditVBoxLayout::killSynth()
                 && proc->which() == AbcProcess::ProcessSynth) {
             QString str = QString::fromUtf8(*proc->log());
             AbcApplication* a = static_cast<AbcApplication*>(qApp);
-            CentralWidget* cw =  static_cast<CentralWidget*>(a->mainWindow()->centralWidget());
-            LogView* lv = cw->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
+            AbcMainWindow* w =  a->mainWindow();
+            LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
             lv->appendPlainText(str);
             disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
             delete proc;

@@ -48,8 +48,7 @@ AbcMainWindow *AbcApplication::mainWindow()
 
 void AbcApplication::openFileNames(const QStringList &fileNames)
 {
-	CentralWidget *cw = static_cast<CentralWidget*>(mainWindow()->centralWidget());
-	EditTabWidget* edittabs = cw->mainHBoxLayout()->editTabWidget();
+    EditTabWidget* edittabs = mainWindow()->mainHBoxLayout()->editTabWidget();
 	for (int i = 0; i < fileNames.length(); i++) {
 		QString fileName = fileNames[i];
 		QFile file(fileName);

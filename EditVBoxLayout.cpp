@@ -265,7 +265,7 @@ void EditVBoxLayout::onCompileFinished(int exitCode)
     qDebug() << "compile" << exitCode;
 
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
-    if (exitCode) {
+    if (exitCode < 0 || exitCode > 1) { /* sometimes, abcm2ps returns 1 even on success */
         a->mainWindow()->statusBar()->showMessage(tr("Error during score generation."));
         runpushbutton.setEnabled(true);
         return;

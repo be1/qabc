@@ -9,6 +9,7 @@
 #include <QSpinBox>
 #include <QLabel>
 #include <QDir>
+#include <QTemporaryFile>
 
 class EditVBoxLayout: public QVBoxLayout
 {
@@ -53,6 +54,7 @@ private:
     QSpinBox xspinbox;
     QLabel xlabel;
     QString fileName;
+    QTemporaryFile tempFile;
     QList<AbcProcess*> processlist;
 };
 #endif

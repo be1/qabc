@@ -18,7 +18,8 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	fileName(fileName)
 {
 	setObjectName("EditVBoxLayout:" + fileName);
-	xspinbox.setMinimum(1);
+    tempFile.setFileTemplate(".XXXXXX.abc");
+    xspinbox.setMinimum(1);
 	xlabel.setText(tr("X:"));
 	xlabel.setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 	xlabel.setBuddy(&xspinbox);
@@ -136,15 +137,21 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
 
 void EditVBoxLayout::onPlayClicked()
 {
-	playpushbutton.setEnabled(false);
+    playpushbutton.setEnabled(false);
+    xspinbox.setEnabled(false);
+    QString tosave = abcPlainTextEdit()->toPlainText();
+    tempFile.open();
+    tempFile.write(tosave.toUtf8());
+    tempFile.close();
 	QSettings settings("Herewe", "QAbc");
 	QVariant player = settings.value(PLAYER_KEY);
 	QString program = player.toString();
 	QStringList argv = program.split(" ");
 	program = argv.at(0);
 	argv.removeAt(0);
-	argv << fileName;
-	QFileInfo info(fileName);
+    argv << tempFile.fileName();
+    argv << QString::number(xspinbox.value());
+    QFileInfo info(tempFile.fileName());
 	QDir dir = info.absoluteDir();
 
 	spawnPlayer(program, argv, dir);
@@ -152,9 +159,10 @@ void EditVBoxLayout::onPlayClicked()
 
 void EditVBoxLayout::onPlayFinished(int exitCode)
 {
-	qDebug() << "play" << exitCode;
+    qDebug() << "play" << exitCode;
 	if (exitCode) {
-		playpushbutton.setEnabled(true);
+        playpushbutton.setEnabled(true);
+        xspinbox.setEnabled(true);
 		return;
 	}
 
@@ -164,7 +172,7 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
 	QStringList argv = program.split(" ");
 	program = argv.at(0);
 	argv.removeAt(0);
-	QString temp(fileName);
+    QString temp(tempFile.fileName());
 	argv << (temp.replace(".abc", QString::number(xspinbox.value())  + ".mid"));
 
 	QFileInfo info(temp);
@@ -176,22 +184,33 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
 
 void EditVBoxLayout::onSynthFinished(int exitCode)
 {
-	qDebug() << "synth" << exitCode;
-	playpushbutton.setEnabled(true);
+    qDebug() << "synth" << exitCode;
+
+    int x = xspinbox.value();
+    QString mid (tempFile.fileName());
+    mid.replace(QRegularExpression("\\.abc$"), QString::number(x) + ".mid");
+    QFile::remove(mid);
+
+    playpushbutton.setEnabled(true);
+    xspinbox.setEnabled(true);
 }
 
 void EditVBoxLayout::onRunClicked()
 {
 	runpushbutton.setEnabled(false);
-	QSettings settings("Herewe", "QAbc");
+    QString tosave = abcPlainTextEdit()->toPlainText();
+    tempFile.open();
+    tempFile.write(tosave.toUtf8());
+    tempFile.close();
+    QSettings settings("Herewe", "QAbc");
 	QVariant compiler = settings.value(COMPILER_KEY);
 	QString program = compiler.toString();
 	QStringList argv = program.split(" ");
 	program = argv.at(0);
 	argv.removeAt(0);
-	argv << fileName;
+    argv << tempFile.fileName();
 
-	QFileInfo info(fileName);
+    QFileInfo info(tempFile.fileName());
 	QDir dir = info.absoluteDir();
 
 	spawnCompiler(program, argv, dir);

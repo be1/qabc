@@ -1,5 +1,6 @@
 #include "config.h"
 #include "AbcApplication.h"
+#include "AbcMainWindow.h"
 #include <QCommandLineParser>
 #include <QLibraryInfo>
 #include <QLocale>
@@ -21,20 +22,22 @@ int main(int argc, char** argv)
 	abcapplication.installTranslator(&qabcTranslator);
 
 	QCommandLineParser parser;
-    parser.setApplicationDescription("ABC music notation minimal GUI.");
+	parser.setApplicationDescription("ABC music notation minimal GUI.");
 	parser.addHelpOption();
 	parser.addVersionOption();
-    parser.addPositionalArgument("score", QCoreApplication::translate("main", "ABC score file to work on."));
+	parser.addPositionalArgument("score", QCoreApplication::translate("main", "ABC score file to work on."));
 
 	parser.process(abcapplication);
 
 	const QStringList args = parser.positionalArguments();
-    if (args.length() > 0)
-        abcapplication.openFileNames(args);
+	if (args.length() > 0)
+		abcapplication.openFileNames(args);
 
-    QString iconpath = QString(DATADIR "/pixmaps/" TARGET ".png");
-    if (QFileInfo::exists(iconpath))
-        abcapplication.setWindowIcon(QIcon(iconpath));
+	QString iconpath = QString(DATADIR "/pixmaps/" TARGET ".png");
+	if (QFileInfo::exists(iconpath))
+		abcapplication.setWindowIcon(QIcon(iconpath));
 
-    return abcapplication.exec();
+	AbcMainWindow w;
+	abcapplication.setMainWindow(&w);
+	return abcapplication.exec();
 }

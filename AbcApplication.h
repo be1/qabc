@@ -11,11 +11,12 @@ class AbcApplication: public QApplication
 
 public:
 	AbcApplication(int& argc, char **argv);
-    ~AbcApplication();
+	~AbcApplication();
 
-    AbcMainWindow *mainWindow();
-    void openFileNames(const QStringList& fileNames);
+	void setMainWindow(AbcMainWindow* w);
+	AbcMainWindow *mainWindow();
+	void openFileNames(const QStringList& fileNames);
 private:
-    AbcMainWindow abcmainwindow;
+	AbcMainWindow *abcmainwindow;
 };
 #endif

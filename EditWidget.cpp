@@ -6,6 +6,7 @@ EditWidget::EditWidget(const QString& fileName, QWidget *parent)
       editvboxlayout(fileName, this),
       filename(fileName)
 {
+	setObjectName("EditWidget:" + fileName);
 	setLayout(&editvboxlayout);
 }
 
@@ -15,16 +16,16 @@ EditWidget::~EditWidget()
 
 EditVBoxLayout *EditWidget::editVBoxLayout()
 {
-   return &editvboxlayout;
+	return &editvboxlayout;
 }
 
 QString *EditWidget::fileName()
 {
-    return &filename;
+	return &filename;
 }
 
 void EditWidget::setFileName(const QString &fileName)
 {
-    filename = fileName;
-    editVBoxLayout()->setFileName(fileName);
+	filename = fileName;
+	editVBoxLayout()->setFileName(fileName);
 }

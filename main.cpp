@@ -29,15 +29,16 @@ int main(int argc, char** argv)
 
 	parser.process(abcapplication);
 
-	const QStringList args = parser.positionalArguments();
-	if (args.length() > 0)
-		abcapplication.openFileNames(args);
+	AbcMainWindow w;
+	abcapplication.setMainWindow(&w);
 
 	QString iconpath = QString(DATADIR "/pixmaps/" TARGET ".png");
 	if (QFileInfo::exists(iconpath))
 		abcapplication.setWindowIcon(QIcon(iconpath));
 
-	AbcMainWindow w;
-	abcapplication.setMainWindow(&w);
+	const QStringList args = parser.positionalArguments();
+	if (args.length() > 0)
+		abcapplication.openFileNames(args);
+
 	return abcapplication.exec();
 }

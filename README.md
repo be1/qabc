@@ -7,6 +7,9 @@ QAbc uses third-party softwares to generate MIDI, AUDIO, and PostScript files. W
 - fluidsynth (CLI)
 - abcm2ps
 
+## Screenshot
+http://brouits.free.fr/images/qabc-shot.png
+
 ## Building
 Just a matter of:
 ```

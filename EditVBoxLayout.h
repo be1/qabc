@@ -25,11 +25,14 @@ public:
     void setFileName(const QString& fn);
 
     void spawnCompiler(const QString &prog, const QStringList &args, const QDir& wrk);
+    void spawnViewer(const QString &prog, const QStringList &args, const QDir& wrk);
+
     void spawnPlayer(const QString &prog, const QStringList& args, const QDir& wrk);
     void spawnSynth(const QString &prog, const QStringList &args, const QDir& wrk);
 
 signals:
     void compilerFinished(int exitCode);
+    void viewerFinished(int exitCode);
     void playerFinished(int exitCode);
     void synthFinished(int exitCode);
 
@@ -38,18 +41,19 @@ protected:
 
 protected slots:
     void onXChanged(int value);
-    void onPlayClicked();
-    void onRunClicked();
+    void onPlayClicked(); /* midi */
+    void onRunClicked(); /* ps */
 
     void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType);
     void onPlayFinished(int exitCode);
     void onSynthFinished(int exitCode);
     void onCompileFinished(int exitCode);
+    void onViewFinished(int exitCode);
 
 private:
 	AbcPlainTextEdit abcplaintextedit;
-    PlayPushButton playpushbutton;
-    RunPushButton runpushbutton;
+    PlayPushButton playpushbutton; /* midi */
+    RunPushButton runpushbutton; /* ps */
     QHBoxLayout hboxlayout;
     QSpinBox xspinbox;
     QLabel xlabel;

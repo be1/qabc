@@ -7,7 +7,7 @@ class AbcProcess : public QProcess
 {
     Q_OBJECT
 public:
-    enum ProcessType {ProcessUnknown, ProcessCompiler, ProcessPlayer, ProcessSynth};
+    enum ProcessType {ProcessUnknown, ProcessCompiler, ProcessViewer, ProcessPlayer, ProcessSynth};
     explicit AbcProcess(ProcessType which, QObject *parent);
     ProcessType which();
     QByteArray* log();

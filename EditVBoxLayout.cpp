@@ -38,6 +38,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	connect(this, &EditVBoxLayout::playerFinished, this, &EditVBoxLayout::onPlayFinished);
 	connect(this, &EditVBoxLayout::synthFinished, this, &EditVBoxLayout::onSynthFinished);
 	connect(this, &EditVBoxLayout::compilerFinished, this, &EditVBoxLayout::onCompileFinished);
+    connect(this, &EditVBoxLayout::viewerFinished, this, &EditVBoxLayout::onViewFinished);
 }
 
 
@@ -78,6 +79,11 @@ void EditVBoxLayout::spawnCompiler(const QString &prog, const QStringList& args,
 	return spawnProgram(prog, args, AbcProcess::ProcessCompiler, wrk);
 }
 
+void EditVBoxLayout::spawnViewer(const QString &prog, const QStringList &args, const QDir &wrk)
+{
+    return spawnProgram(prog, args, AbcProcess::ProcessViewer, wrk);
+}
+
 void EditVBoxLayout::spawnPlayer(const QString& prog, const QStringList &args, const QDir &wrk)
 {
 	AbcApplication* a = static_cast<AbcApplication*>(qApp);
@@ -104,17 +110,19 @@ void EditVBoxLayout::spawnProgram(const QString& prog, const QStringList& args, 
 void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType which)
 {
 	//qDebug() << exitStatus;
-	switch (which) {
-		case AbcProcess::ProcessPlayer:
-			emit playerFinished(exitCode); break;
-		case AbcProcess::ProcessCompiler:
-			emit compilerFinished(exitCode); break;
-		case AbcProcess::ProcessSynth:
-			emit synthFinished(exitCode); break;
-		case AbcProcess::ProcessUnknown:
-		default:
-			break;
-	}
+    switch (which) {
+    case AbcProcess::ProcessPlayer:
+        emit playerFinished(exitCode); break;
+    case AbcProcess::ProcessCompiler:
+        emit compilerFinished(exitCode); break;
+    case AbcProcess::ProcessSynth:
+        emit synthFinished(exitCode); break;
+    case AbcProcess::ProcessViewer:
+        emit viewerFinished(exitCode); break;
+    case AbcProcess::ProcessUnknown:
+    default:
+        break;
+    }
 
 	/* delete garbage */
 	for (int i = 0; i < processlist.length(); i++) {
@@ -173,7 +181,7 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
 	program = argv.at(0);
 	argv.removeAt(0);
     QString temp(tempFile.fileName());
-	argv << (temp.replace(".abc", QString::number(xspinbox.value())  + ".mid"));
+    argv << (temp.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid"));
 
 	QFileInfo info(temp);
 	QDir dir = info.absoluteDir();
@@ -218,6 +226,34 @@ void EditVBoxLayout::onRunClicked()
 
 void EditVBoxLayout::onCompileFinished(int exitCode)
 {
-	qDebug() << "compile" << exitCode;
-	runpushbutton.setEnabled(true);
+    qDebug() << "compile" << exitCode;
+    if (exitCode) {
+        runpushbutton.setEnabled(true);
+        return;
+    }
+
+    QSettings settings("Herewe", "QAbc");
+    QVariant synth = settings.value(VIEWER_KEY);
+    QString program = synth.toString();
+    QStringList argv = program.split(" ");
+    program = argv.at(0);
+    argv.removeAt(0);
+    QString temp(tempFile.fileName());
+    argv << (temp.replace(QRegularExpression("\\.abc$"), ".ps"));
+
+    QFileInfo info(temp);
+    QDir dir = info.absoluteDir();
+
+    spawnViewer(program, argv, dir);
+}
+
+void EditVBoxLayout::onViewFinished(int exitCode)
+{
+    qDebug() << "viewer" << exitCode;
+
+    QString ps (tempFile.fileName());
+    ps.replace(QRegularExpression("\\.abc$"), ".ps");
+    QFile::remove(ps);
+
+    runpushbutton.setEnabled(true);
 }

@@ -25,7 +25,11 @@ AbcApplication::AbcApplication(int& argc, char **argv)
 	if (!synth.isValid())
 		settings.setValue(SYNTH_KEY, FLUIDSYNTH);
 
-	settings.sync();
+    QVariant viewer = settings.value(VIEWER_KEY);
+    if (!viewer.isValid())
+        settings.setValue(VIEWER_KEY, PSVIEWER);
+
+    settings.sync();
 }
 
 AbcApplication::~AbcApplication()

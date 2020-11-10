@@ -111,17 +111,17 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
     rule.format = noteFormat;
     highlightingRules.append(rule);
 
-    keywordFormat.setForeground(Qt::magenta);
+    keywordFormat.setForeground(Qt::darkMagenta);
     keywordFormat.setFontWeight(QFont::Normal);
     const QString keywordPatterns[] = {
-        QStringLiteral("^A:"), QStringLiteral("^B:"), QStringLiteral("^C:"),
-        QStringLiteral("^D:"), QStringLiteral("^E:"), QStringLiteral("^F:"),
-        QStringLiteral("^G:"), QStringLiteral("^H:"), QStringLiteral("^I:"),
-        QStringLiteral("^K:"), QStringLiteral("^L:"), QStringLiteral("^M:"),
-        QStringLiteral("^N:"), QStringLiteral("^O:"), QStringLiteral("^P:"),
-        QStringLiteral("^Q:"), QStringLiteral("^R:"), QStringLiteral("^S:"),
-        QStringLiteral("^T:"), QStringLiteral("^W:"), QStringLiteral("^$ w:"),
-        QStringLiteral("^X:"), QStringLiteral("^Z:")
+        QStringLiteral("^A:[^\n]+"), QStringLiteral("^B:[^\n]+"), QStringLiteral("^C:[^\n]+"),
+        QStringLiteral("^D:[^\n]+"), QStringLiteral("^E:[^\n]+"), QStringLiteral("^F:[^\n]+"),
+        QStringLiteral("^G:[^\n]+"), QStringLiteral("^H:[^\n]+"), QStringLiteral("^I:[^\n]+"),
+        QStringLiteral("^K:[^\n]+"), QStringLiteral("^L:[^\n]+"), QStringLiteral("^M:[^\n]+"),
+        QStringLiteral("^N:[^\n]+"), QStringLiteral("^O:[^\n]+"), QStringLiteral("^P:[^\n]+"),
+        QStringLiteral("^Q:[^\n]+"), QStringLiteral("^R:[^\n]+"), QStringLiteral("^S:[^\n]+"),
+        QStringLiteral("^T:[^\n]+"), QStringLiteral("^W:|^\n]+"), QStringLiteral("^w:[^\n]+"),
+        QStringLiteral("^X:[^\n]+"), QStringLiteral("^Z:[^\n]+")
     };
     for (const QString &pattern : keywordPatterns) {
         rule.pattern = QRegularExpression(pattern);
@@ -130,26 +130,27 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
     }
 
     chordFormat.setForeground(Qt::darkGreen);
-    rule.pattern = QRegularExpression(QStringLiteral("\"[A-H][^A-H\"]*\""));
+    rule.pattern = QRegularExpression(QStringLiteral("\"[A-H][^\"]*\""));
     rule.format = chordFormat;
     highlightingRules.append(rule);
 
     extraInstructionFormat.setFontItalic(true);
     extraInstructionFormat.setForeground(Qt::blue);
-    rule.pattern = QRegularExpression(QStringLiteral("^%%[^\n]*"));
+    rule.pattern = QRegularExpression(QStringLiteral("^%{2}[^\n]*"));
     rule.format = extraInstructionFormat;
     highlightingRules.append(rule);
 
     singleLineCommentFormat.setForeground(Qt::blue);
-    rule.pattern = QRegularExpression(QStringLiteral("^%[^%][^\n]*"));
+    rule.pattern = QRegularExpression(QStringLiteral("^%{1}[^\n]*"));
     rule.format = singleLineCommentFormat;
     highlightingRules.append(rule);
-
+#if 0
     multiLineHeaderFormat.setForeground(Qt::darkMagenta);
 
     headerStartExpression = QRegularExpression(QStringLiteral("^X:"));
     headerEndExpression = QRegularExpression(QStringLiteral("^K:[^\n]+"));
-};
+#endif
+}
 
 void AbcHighlighter::highlightBlock(const QString &text)
 {
@@ -160,7 +161,7 @@ void AbcHighlighter::highlightBlock(const QString &text)
             setFormat(match.capturedStart(), match.capturedLength(), rule.format);
         }
     }
-
+#if 0
     setCurrentBlockState(0);
 
     int startIndex = 0;
@@ -181,4 +182,5 @@ void AbcHighlighter::highlightBlock(const QString &text)
         setFormat(startIndex, headerLength, multiLineHeaderFormat);
         startIndex = text.indexOf(headerStartExpression, startIndex + headerLength);
     }
+#endif
 }

@@ -24,15 +24,18 @@ private:
 
     QVector<AbcHighlightingRule> highlightingRules;
 
+#if 0
     QRegularExpression headerStartExpression;
     QRegularExpression headerEndExpression;
-
+#endif
     QTextCharFormat keywordFormat;
     QTextCharFormat extraInstructionFormat;
     QTextCharFormat singleLineCommentFormat;
     QTextCharFormat noteFormat;
     QTextCharFormat chordFormat;
+#if 0
     QTextCharFormat multiLineHeaderFormat;
+#endif
 };
 
 class AbcPlainTextEdit: public QPlainTextEdit

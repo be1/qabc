@@ -136,12 +136,12 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
 
     extraInstructionFormat.setFontItalic(true);
     extraInstructionFormat.setForeground(Qt::blue);
-    rule.pattern = QRegularExpression(QStringLiteral("^%{2}[^\n]*"));
+    rule.pattern = QRegularExpression(QStringLiteral("^%%[^\n]*"));
     rule.format = extraInstructionFormat;
     highlightingRules.append(rule);
 
     singleLineCommentFormat.setForeground(Qt::blue);
-    rule.pattern = QRegularExpression(QStringLiteral("^%{1}[^\n]*"));
+    rule.pattern = QRegularExpression(QStringLiteral("^%[^%\n]*"));
     rule.format = singleLineCommentFormat;
     highlightingRules.append(rule);
 #if 0

@@ -100,9 +100,13 @@ void EditVBoxLayout::spawnSynth(const QString &prog, const QStringList& args, co
 void EditVBoxLayout::spawnProgram(const QString& prog, const QStringList& args, AbcProcess::ProcessType which, const QDir& wrk)
 {
 	AbcProcess *process = new AbcProcess(which, this);
-	process->setWorkingDirectory(wrk.absolutePath());
+    process->setWorkingDirectory(wrk.absolutePath());
 	connect(process, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
-	processlist.append(process);
+    connect(process, &AbcProcess::outputText, this, &EditVBoxLayout::onProgramOutputText);
+#if 0
+    connect(process, &AbcProcess::errorText, this, &EditVBoxLayout::onProgramErrorText);
+#endif
+    processlist.append(process);
 	qDebug() << prog << args;
 	process->start(prog, args);
 }
@@ -132,16 +136,24 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
 				&& proc->exitCode() == exitCode
 				&& proc->exitStatus() == exitStatus
 				&& proc->which() == which) {
-			QString str = QString::fromUtf8(*proc->log());
-			AbcApplication* a = static_cast<AbcApplication*>(qApp);
-            AbcMainWindow* w =  a->mainWindow();
-            LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
-            lv->appendPlainText(str);
 			disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
 			delete proc;
 			processlist.removeAt(i);
 		}
-	}
+    }
+}
+
+void EditVBoxLayout::onProgramOutputText(const QByteArray &text)
+{
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcMainWindow* w =  a->mainWindow();
+    LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
+    lv->appendPlainText(QString::fromUtf8(text));
+}
+
+void EditVBoxLayout::onProgramErrorText(const QByteArray &text)
+{
+   onProgramOutputText(text);
 }
 
 void EditVBoxLayout::killSynth()

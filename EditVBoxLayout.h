@@ -46,6 +46,8 @@ protected slots:
     void onRunClicked(); /* ps */
 
     void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType);
+    void onProgramOutputText(const QByteArray& text);
+    void onProgramErrorText(const QByteArray& text);
     void onPlayFinished(int exitCode);
     void onSynthFinished(int exitCode);
     void onCompileFinished(int exitCode);

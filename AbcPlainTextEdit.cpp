@@ -105,10 +105,32 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
 {
     AbcHighlightingRule rule;
 
+    barFormat.setFontWeight(QFont::Bold);
+    barFormat.setForeground(Qt::darkRed);
+    rule.pattern = QRegularExpression(QStringLiteral(":?\\|[:\\|]?"));
+    rule.format = barFormat;
+    highlightingRules.append(rule);
+
     noteFormat.setFontWeight(QFont::Bold);
     noteFormat.setForeground(Qt::darkGray);
     rule.pattern = QRegularExpression(QStringLiteral("[_=^]*[A-HZa-hz][,']*/*[1-9]*"));
     rule.format = noteFormat;
+    highlightingRules.append(rule);
+
+    chordFormat.setForeground(Qt::darkGreen);
+    rule.pattern = QRegularExpression(QStringLiteral("\"[A-H][^\"]*\""));
+    rule.format = chordFormat;
+    highlightingRules.append(rule);
+
+    extraInstructionFormat.setFontItalic(true);
+    extraInstructionFormat.setForeground(Qt::blue);
+    rule.pattern = QRegularExpression(QStringLiteral("^%%[^\n]*"));
+    rule.format = extraInstructionFormat;
+    highlightingRules.append(rule);
+
+    singleLineCommentFormat.setForeground(Qt::blue);
+    rule.pattern = QRegularExpression(QStringLiteral("^%[^%\n]*"));
+    rule.format = singleLineCommentFormat;
     highlightingRules.append(rule);
 
     keywordFormat.setForeground(Qt::darkMagenta);
@@ -129,21 +151,6 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
         highlightingRules.append(rule);
     }
 
-    chordFormat.setForeground(Qt::darkGreen);
-    rule.pattern = QRegularExpression(QStringLiteral("\"[A-H][^\"]*\""));
-    rule.format = chordFormat;
-    highlightingRules.append(rule);
-
-    extraInstructionFormat.setFontItalic(true);
-    extraInstructionFormat.setForeground(Qt::blue);
-    rule.pattern = QRegularExpression(QStringLiteral("^%%[^\n]*"));
-    rule.format = extraInstructionFormat;
-    highlightingRules.append(rule);
-
-    singleLineCommentFormat.setForeground(Qt::blue);
-    rule.pattern = QRegularExpression(QStringLiteral("^%[^%\n]*"));
-    rule.format = singleLineCommentFormat;
-    highlightingRules.append(rule);
 #if 0
     multiLineHeaderFormat.setForeground(Qt::darkMagenta);
 

@@ -33,6 +33,7 @@ private:
     QTextCharFormat singleLineCommentFormat;
     QTextCharFormat noteFormat;
     QTextCharFormat chordFormat;
+    QTextCharFormat barFormat;
 #if 0
     QTextCharFormat multiLineHeaderFormat;
 #endif

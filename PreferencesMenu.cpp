@@ -94,7 +94,7 @@ void PreferencesMenu::onViewerActionTriggered()
     if (!viewer.isNull())
         command = QInputDialog::getText(this, tr("PS viewer preference"), tr("PS Viewer:"), QLineEdit::Normal, viewer.toString(), &ok);
     else
-        command = QInputDialog::getText(this, tr("PS Viewer preference"), tr("PS Viewer:"), QLineEdit::Normal, PSVIEWER, &ok);
+        command = QInputDialog::getText(this, tr("PS viewer preference"), tr("PS Viewer:"), QLineEdit::Normal, PSVIEWER, &ok);
 
     if (!ok)
         return;

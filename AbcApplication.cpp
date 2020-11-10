@@ -6,12 +6,12 @@
 AbcApplication::AbcApplication(int& argc, char **argv)
 	: QApplication(argc, argv)
 {
-	setOrganizationName("Herewe");
+    setOrganizationName(SETTINGS_DOMAIN);
 	setOrganizationDomain("herewe");
-	setApplicationName("QAbc");
+    setApplicationName(SETTINGS_APP);
 	setApplicationVersion(VERSION " (" REVISION ")");
 
-	QSettings settings("Herewe", "QAbc");
+    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
 
 	QVariant compiler = settings.value(COMPILER_KEY);
 	if (!compiler.isValid())

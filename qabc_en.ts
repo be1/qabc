@@ -44,7 +44,7 @@
 <context>
     <name>EditVBoxLayout</name>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="15"/>
+        <location filename="EditVBoxLayout.cpp" line="23"/>
         <source>X:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -109,51 +109,58 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="35"/>
-        <location filename="PreferencesMenu.cpp" line="37"/>
+        <location filename="PreferencesMenu.cpp" line="38"/>
+        <location filename="PreferencesMenu.cpp" line="40"/>
         <source>Compiler preference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="35"/>
+        <location filename="PreferencesMenu.cpp" line="38"/>
+        <location filename="PreferencesMenu.cpp" line="40"/>
         <source>Compiler:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="37"/>
-        <source>Compiler</source>
+        <location filename="PreferencesMenu.cpp" line="95"/>
+        <location filename="PreferencesMenu.cpp" line="97"/>
+        <source>PS viewer preference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="54"/>
-        <location filename="PreferencesMenu.cpp" line="56"/>
+        <location filename="PreferencesMenu.cpp" line="95"/>
+        <location filename="PreferencesMenu.cpp" line="97"/>
+        <source>PS Viewer:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="95"/>
+        <location filename="PreferencesMenu.cpp" line="97"/>
+        <source>PS viewer preference</source>
+        <oldsource>PS Viewer preference</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="57"/>
+        <location filename="PreferencesMenu.cpp" line="59"/>
         <source>Player preference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="54"/>
+        <location filename="PreferencesMenu.cpp" line="57"/>
+        <location filename="PreferencesMenu.cpp" line="59"/>
         <source>Player:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="56"/>
-        <source>Player</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PreferencesMenu.cpp" line="73"/>
-        <location filename="PreferencesMenu.cpp" line="75"/>
+        <location filename="PreferencesMenu.cpp" line="76"/>
+        <location filename="PreferencesMenu.cpp" line="78"/>
         <source>Synth preference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="73"/>
+        <location filename="PreferencesMenu.cpp" line="76"/>
+        <location filename="PreferencesMenu.cpp" line="78"/>
         <source>Synth:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PreferencesMenu.cpp" line="75"/>
-        <source>Synth</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -200,39 +207,39 @@
 <context>
     <name>ScoreMenu</name>
     <message>
-        <location filename="ScoreMenu.cpp" line="14"/>
+        <location filename="ScoreMenu.cpp" line="15"/>
         <source>Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="42"/>
+        <location filename="ScoreMenu.cpp" line="43"/>
         <source>Open ABC Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="42"/>
-        <location filename="ScoreMenu.cpp" line="91"/>
+        <location filename="ScoreMenu.cpp" line="43"/>
+        <location filename="ScoreMenu.cpp" line="104"/>
         <source>ABC score (*.abc)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="70"/>
-        <location filename="ScoreMenu.cpp" line="84"/>
+        <location filename="ScoreMenu.cpp" line="76"/>
+        <location filename="ScoreMenu.cpp" line="90"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="70"/>
+        <location filename="ScoreMenu.cpp" line="76"/>
         <source>Could not save an untitled ABC score!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="91"/>
+        <location filename="ScoreMenu.cpp" line="104"/>
         <source>Save ABC score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="84"/>
+        <location filename="ScoreMenu.cpp" line="90"/>
         <source>Could not save ABC score!</source>
         <translation type="unfinished"></translation>
     </message>

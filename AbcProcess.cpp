@@ -6,10 +6,11 @@ AbcProcess::AbcProcess(ProcessType which, QObject *parent)
 {
     type = which;
     connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &AbcProcess::onFinished);
-    connect(this, &QProcess::readyRead, this, &AbcProcess::onOutput);
 #if 0
+    connect(this, &QProcess::readyRead, this, &AbcProcess::onOutput);
+#else
     connect(this, &QProcess::readyReadStandardOutput, this, &AbcProcess::onStdout);
-    connect(this, &QProcess::readAllStandardError, this, &AbcProcess::onStderr);
+    connect(this, &QProcess::readyReadStandardError, this, &AbcProcess::onStderr);
 #endif
 }
 
@@ -22,14 +23,14 @@ QByteArray *AbcProcess::log()
 {
    return &output;
 }
-
+#if 0
 void AbcProcess::onOutput()
 {
     output = readAll();
     qDebug() << output;
     emit outputText(output);
 }
-#if 0
+#else
 void AbcProcess::onStdout()
 {
     emit outputText(readAllStandardOutput());

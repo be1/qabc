@@ -103,7 +103,7 @@ void EditVBoxLayout::spawnProgram(const QString& prog, const QStringList& args, 
     process->setWorkingDirectory(wrk.absolutePath());
 	connect(process, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
     connect(process, &AbcProcess::outputText, this, &EditVBoxLayout::onProgramOutputText);
-#if 0
+#if 1
     connect(process, &AbcProcess::errorText, this, &EditVBoxLayout::onProgramErrorText);
 #endif
     processlist.append(process);

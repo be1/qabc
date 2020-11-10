@@ -15,13 +15,14 @@ public:
 signals:
     void finished(int exitCode, QProcess::ExitStatus exitStatus, ProcessType which);
     void outputText(const QByteArray& text);
-#if 0
+#if 1
     void errorText(const QByteArray& text);
 #endif
 
 protected slots:
-    void onOutput();
 #if 0
+    void onOutput();
+#else
     void onStdout();
     void onStderr();
 #endif

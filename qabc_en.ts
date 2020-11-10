@@ -88,8 +88,14 @@
 <context>
     <name>PlayPushButton</name>
     <message>
-        <location filename="PlayPushButton.cpp" line="6"/>
+        <location filename="PlayPushButton.cpp" line="7"/>
+        <location filename="PlayPushButton.cpp" line="19"/>
         <source>Play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PlayPushButton.cpp" line="17"/>
+        <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

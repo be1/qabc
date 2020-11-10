@@ -3,9 +3,6 @@
 
 #include <QPushButton>
 
-#define TEXT_PLAY "Play"
-#define TEXT_STOP "Stop"
-
 class PlayPushButton: public QPushButton
 {
 	Q_OBJECT

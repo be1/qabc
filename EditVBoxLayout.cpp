@@ -185,8 +185,7 @@ void EditVBoxLayout::onPlayClicked()
         spawnPlayer(program, argv, dir);
     } else {
         killSynth();
-        playpushbutton.flip();
-        xspinbox.setEnabled(true);
+		onSynthFinished(0);
     }
 }
 

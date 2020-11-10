@@ -4,7 +4,7 @@ PlayPushButton::PlayPushButton(QWidget* parent)
 	: QPushButton(parent)
 {
     play = true;
-    setText(tr(TEXT_PLAY));
+    setText(tr("Play"));
 }
 
 PlayPushButton::~PlayPushButton()
@@ -14,9 +14,9 @@ PlayPushButton::~PlayPushButton()
 void PlayPushButton::flip()
 {
     if (play)
-        setText(tr(TEXT_STOP));
+        setText(tr("Stop"));
     else
-        setText(tr(TEXT_PLAY));
+        setText(tr("Play"));
 
     play = !play;
 }

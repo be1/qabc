@@ -12,7 +12,7 @@ PreferencesMenu::PreferencesMenu(QWidget* parent)
 	addAction(&compileraction);
     addAction(&playeraction);
     addAction(&synthaction);
-    vieweraction.setText("Viewer");
+    vieweraction.setText(tr("Viewer"));
     addAction(&vieweraction);
     addAction(&resetaction);
 

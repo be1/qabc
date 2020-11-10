@@ -109,6 +109,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="PreferencesMenu.cpp" line="15"/>
+        <source>Viewer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="PreferencesMenu.cpp" line="38"/>
         <location filename="PreferencesMenu.cpp" line="40"/>
         <source>Compiler preference</source>
@@ -130,13 +135,6 @@
         <location filename="PreferencesMenu.cpp" line="95"/>
         <location filename="PreferencesMenu.cpp" line="97"/>
         <source>PS Viewer:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PreferencesMenu.cpp" line="95"/>
-        <location filename="PreferencesMenu.cpp" line="97"/>
-        <source>PS viewer preference</source>
-        <oldsource>PS Viewer preference</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>

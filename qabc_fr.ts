@@ -109,6 +109,11 @@
         <translation>Préférences</translation>
     </message>
     <message>
+        <location filename="PreferencesMenu.cpp" line="15"/>
+        <source>Viewer</source>
+        <translation>Visualiseur</translation>
+    </message>
+    <message>
         <location filename="PreferencesMenu.cpp" line="38"/>
         <location filename="PreferencesMenu.cpp" line="40"/>
         <source>Compiler preference</source>

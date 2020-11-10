@@ -134,8 +134,9 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
 				&& proc->which() == which) {
 			QString str = QString::fromUtf8(*proc->log());
 			AbcApplication* a = static_cast<AbcApplication*>(qApp);
-			CentralWidget* cw =  static_cast<CentralWidget*>(a->mainWindow()->centralWidget());
-			cw->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView()->appendPlainText(str);
+            CentralWidget* cw =  static_cast<CentralWidget*>(a->mainWindow()->centralWidget());
+            LogView* lv = cw->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
+            lv->appendPlainText(str);
 			disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
 			delete proc;
 			processlist.removeAt(i);
@@ -143,38 +144,62 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
 	}
 }
 
+void EditVBoxLayout::killSynth()
+{
+    for (int i = 0; i < processlist.length(); i++) {
+        AbcProcess* proc = processlist.at(i);
+        if (proc->state() == QProcess::Running
+                && proc->which() == AbcProcess::ProcessSynth) {
+            QString str = QString::fromUtf8(*proc->log());
+            AbcApplication* a = static_cast<AbcApplication*>(qApp);
+            CentralWidget* cw =  static_cast<CentralWidget*>(a->mainWindow()->centralWidget());
+            LogView* lv = cw->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
+            lv->appendPlainText(str);
+            disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
+            delete proc;
+            processlist.removeAt(i);
+        }
+    }
+}
+
 void EditVBoxLayout::onPlayClicked()
 {
-    playpushbutton.setEnabled(false);
-    xspinbox.setEnabled(false);
-    QString tosave = abcPlainTextEdit()->toPlainText();
-    tempFile.open();
-    tempFile.write(tosave.toUtf8());
-    tempFile.close();
-	QSettings settings("Herewe", "QAbc");
-	QVariant player = settings.value(PLAYER_KEY);
-	QString program = player.toString();
-	QStringList argv = program.split(" ");
-	program = argv.at(0);
-	argv.removeAt(0);
-    argv << tempFile.fileName();
-    argv << QString::number(xspinbox.value());
-    QFileInfo info(tempFile.fileName());
-	QDir dir = info.absoluteDir();
+    if (playpushbutton.isPlay()) {
+        playpushbutton.flip();
+        xspinbox.setEnabled(false);
+        QString tosave = abcPlainTextEdit()->toPlainText();
+        tempFile.open();
+        tempFile.write(tosave.toUtf8());
+        tempFile.close();
+        QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+        QVariant player = settings.value(PLAYER_KEY);
+        QString program = player.toString();
+        QStringList argv = program.split(" ");
+        program = argv.at(0);
+        argv.removeAt(0);
+        argv << tempFile.fileName();
+        argv << QString::number(xspinbox.value());
+        QFileInfo info(tempFile.fileName());
+        QDir dir = info.absoluteDir();
 
-	spawnPlayer(program, argv, dir);
+        spawnPlayer(program, argv, dir);
+    } else {
+        killSynth();
+        playpushbutton.flip();
+        xspinbox.setEnabled(true);
+    }
 }
 
 void EditVBoxLayout::onPlayFinished(int exitCode)
 {
     qDebug() << "play" << exitCode;
 	if (exitCode) {
-        playpushbutton.setEnabled(true);
+        playpushbutton.flip();
         xspinbox.setEnabled(true);
 		return;
 	}
 
-	QSettings settings("Herewe", "QAbc");
+    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
 	QVariant synth = settings.value(SYNTH_KEY);
 	QString program = synth.toString();
 	QStringList argv = program.split(" ");
@@ -199,7 +224,7 @@ void EditVBoxLayout::onSynthFinished(int exitCode)
     mid.replace(QRegularExpression("\\.abc$"), QString::number(x) + ".mid");
     QFile::remove(mid);
 
-    playpushbutton.setEnabled(true);
+    playpushbutton.flip();
     xspinbox.setEnabled(true);
 }
 
@@ -210,7 +235,7 @@ void EditVBoxLayout::onRunClicked()
     tempFile.open();
     tempFile.write(tosave.toUtf8());
     tempFile.close();
-    QSettings settings("Herewe", "QAbc");
+    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
 	QVariant compiler = settings.value(COMPILER_KEY);
 	QString program = compiler.toString();
 	QStringList argv = program.split(" ");
@@ -232,7 +257,7 @@ void EditVBoxLayout::onCompileFinished(int exitCode)
         return;
     }
 
-    QSettings settings("Herewe", "QAbc");
+    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
     QVariant synth = settings.value(VIEWER_KEY);
     QString program = synth.toString();
     QStringList argv = program.split(" ");

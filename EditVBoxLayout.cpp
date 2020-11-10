@@ -18,7 +18,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	fileName(fileName)
 {
 	setObjectName("EditVBoxLayout:" + fileName);
-    tempFile.setFileTemplate(".XXXXXX.abc");
+    tempFile.setFileTemplate("XXXXXX.abc");
     xspinbox.setMinimum(1);
 	xlabel.setText(tr("X:"));
 	xlabel.setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -164,7 +164,9 @@ void EditVBoxLayout::killSynth()
 
 void EditVBoxLayout::onPlayClicked()
 {
+    AbcApplication *a = static_cast<AbcApplication*>(qApp);
     if (playpushbutton.isPlay()) {
+        a->mainWindow()->statusBar()->showMessage(tr("Generating MIDI for playing."));
         playpushbutton.flip();
         xspinbox.setEnabled(false);
         QString tosave = abcPlainTextEdit()->toPlainText();
@@ -184,6 +186,7 @@ void EditVBoxLayout::onPlayClicked()
 
         spawnPlayer(program, argv, dir);
     } else {
+        a->mainWindow()->statusBar()->showMessage(tr("Stopping synthesis."));
         killSynth();
 		onSynthFinished(0);
     }
@@ -192,11 +195,14 @@ void EditVBoxLayout::onPlayClicked()
 void EditVBoxLayout::onPlayFinished(int exitCode)
 {
     qDebug() << "play" << exitCode;
-	if (exitCode) {
+    AbcApplication *a = static_cast<AbcApplication*>(qApp);
+    if (exitCode) {
+        a->mainWindow()->statusBar()->showMessage(tr("Error during MIDI generation."));
         playpushbutton.flip();
         xspinbox.setEnabled(true);
 		return;
 	}
+    a->mainWindow()->statusBar()->showMessage(tr("MIDI generation finished."));
 
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
 	QVariant synth = settings.value(SYNTH_KEY);
@@ -210,13 +216,17 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
 	QFileInfo info(temp);
 	QDir dir = info.absoluteDir();
 
-	spawnSynth(program, argv, dir);
+    a->mainWindow()->statusBar()->showMessage(tr("Starting synthesis..."));
+    spawnSynth(program, argv, dir);
 
 }
 
 void EditVBoxLayout::onSynthFinished(int exitCode)
 {
     qDebug() << "synth" << exitCode;
+
+    AbcApplication *a = static_cast<AbcApplication*>(qApp);
+    a->mainWindow()->statusBar()->showMessage(tr("Synthesis finished."));
 
     int x = xspinbox.value();
     QString mid (tempFile.fileName());
@@ -229,7 +239,9 @@ void EditVBoxLayout::onSynthFinished(int exitCode)
 
 void EditVBoxLayout::onRunClicked()
 {
-	runpushbutton.setEnabled(false);
+    runpushbutton.setEnabled(false);
+    AbcApplication *a = static_cast<AbcApplication*>(qApp);
+    a->mainWindow()->statusBar()->showMessage(tr("Generating score..."));
     QString tosave = abcPlainTextEdit()->toPlainText();
     tempFile.open();
     tempFile.write(tosave.toUtf8());
@@ -251,10 +263,14 @@ void EditVBoxLayout::onRunClicked()
 void EditVBoxLayout::onCompileFinished(int exitCode)
 {
     qDebug() << "compile" << exitCode;
+
+    AbcApplication *a = static_cast<AbcApplication*>(qApp);
     if (exitCode) {
+        a->mainWindow()->statusBar()->showMessage(tr("Error during score generation."));
         runpushbutton.setEnabled(true);
         return;
     }
+    a->mainWindow()->statusBar()->showMessage(tr("Score generated."));
 
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
     QVariant synth = settings.value(VIEWER_KEY);
@@ -268,6 +284,7 @@ void EditVBoxLayout::onCompileFinished(int exitCode)
     QFileInfo info(temp);
     QDir dir = info.absoluteDir();
 
+    a->mainWindow()->statusBar()->showMessage(tr("Starting viewer..."));
     spawnViewer(program, argv, dir);
 }
 
@@ -275,6 +292,10 @@ void EditVBoxLayout::onViewFinished(int exitCode)
 {
     qDebug() << "viewer" << exitCode;
 
+    AbcApplication *a = static_cast<AbcApplication*>(qApp);
+    a->mainWindow()->statusBar()->showMessage(tr("Viewer closed."));
+
+    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
     QString ps (tempFile.fileName());
     ps.replace(QRegularExpression("\\.abc$"), ".ps");
     QFile::remove(ps);

@@ -148,12 +148,12 @@ void EditVBoxLayout::onProgramOutputText(const QByteArray &text)
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w =  a->mainWindow();
     LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
-    lv->appendHtml("<em>" + QString::fromUtf8(text) + "</em>");
+    lv->appendHtml("<em>" + QString::fromUtf8(text).replace("\n", "<br />") + "</em>");
 }
 
 void EditVBoxLayout::onProgramErrorText(const QByteArray &text)
 {
-   //onProgramOutputText(text);
+    //onProgramOutputText(text);
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w =  a->mainWindow();
     LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();

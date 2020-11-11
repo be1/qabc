@@ -5,6 +5,7 @@ AbcProcess::AbcProcess(ProcessType which, QObject *parent)
     : QProcess(parent)
 {
     type = which;
+    setProcessChannelMode(SeparateChannels);
     connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &AbcProcess::onFinished);
 #if 0
     connect(this, &QProcess::readyRead, this, &AbcProcess::onOutput);
@@ -33,10 +34,12 @@ void AbcProcess::onOutput()
 #else
 void AbcProcess::onStdout()
 {
-    //emit outputText(readAllStandardOutput());
+    emit outputText(readAllStandardOutput());
+    /*
     while(canReadLine()) {
         emit outputText(readLine());
     }
+    */
 }
 
 void AbcProcess::onStderr()

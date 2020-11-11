@@ -39,14 +39,6 @@
     </message>
 </context>
 <context>
-    <name>CompilerAction</name>
-    <message>
-        <location filename="CompilerAction.cpp" line="6"/>
-        <source>Compiler</source>
-        <translation>Compilateur</translation>
-    </message>
-</context>
-<context>
     <name>EditVBoxLayout</name>
     <message>
         <location filename="EditVBoxLayout.cpp" line="23"/>
@@ -147,6 +139,14 @@ QAbc version </translation>
     </message>
 </context>
 <context>
+    <name>MIDIPrefAction</name>
+    <message>
+        <location filename="MIDIPrefAction.cpp" line="6"/>
+        <source>MIDI Generator</source>
+        <translation>Générateur MIDI</translation>
+    </message>
+</context>
+<context>
     <name>NewAction</name>
     <message>
         <location filename="NewAction.cpp" line="7"/>
@@ -160,6 +160,14 @@ QAbc version </translation>
         <location filename="OpenAction.cpp" line="7"/>
         <source>Open</source>
         <translation>Ouvrir</translation>
+    </message>
+</context>
+<context>
+    <name>PSPrefAction</name>
+    <message>
+        <location filename="PSPrefAction.cpp" line="6"/>
+        <source>Score generator</source>
+        <translation>Générateur de partition</translation>
     </message>
 </context>
 <context>
@@ -178,14 +186,6 @@ QAbc version </translation>
     </message>
 </context>
 <context>
-    <name>PlayerAction</name>
-    <message>
-        <location filename="PlayerAction.cpp" line="6"/>
-        <source>Player</source>
-        <translation>Joueur</translation>
-    </message>
-</context>
-<context>
     <name>PreferencesMenu</name>
     <message>
         <location filename="PreferencesMenu.cpp" line="9"/>
@@ -194,8 +194,9 @@ QAbc version </translation>
     </message>
     <message>
         <location filename="PreferencesMenu.cpp" line="15"/>
-        <source>Viewer</source>
-        <translation>Visualiseur</translation>
+        <source>Score viewer</source>
+        <oldsource>Viewer</oldsource>
+        <translation>Visualiseur de partition</translation>
     </message>
     <message>
         <location filename="PreferencesMenu.cpp" line="38"/>
@@ -333,11 +334,11 @@ QAbc version </translation>
     </message>
 </context>
 <context>
-    <name>SynthAction</name>
+    <name>SynthPrefAction</name>
     <message>
-        <location filename="SynthAction.cpp" line="6"/>
-        <source>Synth</source>
-        <translation>Synthétiseur</translation>
+        <location filename="SynthPrefAction.cpp" line="6"/>
+        <source>MIDI Synthesizer</source>
+        <translation>Synthétiseur MIDI</translation>
     </message>
 </context>
 <context>

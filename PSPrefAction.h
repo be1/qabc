@@ -3,13 +3,13 @@
 
 #include <QAction>
 
-class CompilerAction: public QAction
+class PSPrefAction: public QAction
 {
 	Q_OBJECT
 
 public:
-	CompilerAction(QWidget* parent = nullptr);
-	~CompilerAction();
+    PSPrefAction(QWidget* parent = nullptr);
+    ~PSPrefAction();
 
 private:
 };

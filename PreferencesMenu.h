@@ -1,9 +1,9 @@
 #ifndef PREFERENCESMENU_H
 #define PREFERENCESMENU_H
 
-#include "PlayerAction.h"
-#include "CompilerAction.h"
-#include "SynthAction.h"
+#include "MIDIPrefAction.h"
+#include "PSPrefAction.h"
+#include "SynthPrefAction.h"
 #include "ResetAction.h"
 #include <QMenu>
 
@@ -14,7 +14,7 @@
 #define PLAYER_KEY "ABC/player"
 #define ABCM2PS "/usr/bin/abcm2ps -i -O="
 #define SYNTH_KEY "ABC/synth"
-#define FLUIDSYNTH "/usr/bin/fluidsynth --no-shell --audio-driver=pulseaudio /usr/share/sounds/sf2/FluidR3_GM.sf2"
+#define FLUIDSYNTH "/usr/bin/fluidsynth --no-shell --audio-driver=alsa /usr/share/sounds/sf2/FluidR3_GM.sf2"
 #define VIEWER_KEY "ABC/viewer"
 #define PSVIEWER "/usr/bin/evince"
 
@@ -34,9 +34,9 @@ protected slots:
     void onViewerActionTriggered();
 
 private:
-	CompilerAction compileraction;
-    PlayerAction playeraction;
-    SynthAction synthaction;
+	PSPrefAction compileraction;
+    MIDIPrefAction playeraction;
+    SynthPrefAction synthaction;
     ResetAction resetaction;
     QAction vieweraction;
 };

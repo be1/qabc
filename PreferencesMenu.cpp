@@ -9,10 +9,10 @@ PreferencesMenu::PreferencesMenu(QWidget* parent)
     setTitle(tr("Preferences"));
 
 
-	addAction(&compileraction);
     addAction(&playeraction);
     addAction(&synthaction);
-    vieweraction.setText(tr("Viewer"));
+    addAction(&compileraction);
+    vieweraction.setText(tr("Score viewer"));
     addAction(&vieweraction);
     addAction(&resetaction);
 

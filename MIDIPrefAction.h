@@ -3,13 +3,13 @@
 
 #include <QAction>
 
-class PlayerAction: public QAction
+class MIDIPrefAction: public QAction
 {
 	Q_OBJECT
 
 public:
-	PlayerAction(QWidget* parent = nullptr);
-	~PlayerAction();
+    MIDIPrefAction(QWidget* parent = nullptr);
+    ~MIDIPrefAction();
 
 private:
 };

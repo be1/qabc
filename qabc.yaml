@@ -23,7 +23,7 @@ AbcApplication:
                         EditVBoxLayout:
                             AbcPlainTextEdit:
                             PlayPushButton:
+                            RunPushButton:
                 ViewWidget:
                     ViewVBoxLayout:
-                        PdfWidget:
-                        RunPushButton:
+                        LogWidget:

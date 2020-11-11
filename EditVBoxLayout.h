@@ -39,6 +39,7 @@ signals:
 protected:
     void spawnProgram(const QString& prog, const QStringList &args, AbcProcess::ProcessType which, const QDir &wrk);
     void killSynth();
+    bool checkViewer();
 
 protected slots:
     void onXChanged(int value);

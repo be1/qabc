@@ -180,6 +180,17 @@ void EditVBoxLayout::killSynth()
     }
 }
 
+bool EditVBoxLayout::checkViewer()
+{
+   for (int i = 0; i < processlist.length(); i++) {
+       AbcProcess* proc = processlist.at(i);
+       if (proc->which() == AbcProcess::ProcessViewer)
+           return true;
+   }
+
+   return false;
+}
+
 void EditVBoxLayout::onPlayClicked()
 {
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
@@ -282,13 +293,20 @@ void EditVBoxLayout::onCompileFinished(int exitCode)
 {
     qDebug() << "compile" << exitCode;
 
+    runpushbutton.setText(tr("Refresh &view"));
+    runpushbutton.setEnabled(true);
+
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
-    if (exitCode < 0 || exitCode > 1) { /* sometimes, abcm2ps returns 1 even on success */
+    if (exitCode < 0 || exitCode > 1) { /* sometimes, abcm2ps returns 1 even on 'success' */
         a->mainWindow()->statusBar()->showMessage(tr("Error during score generation."));
-        runpushbutton.setEnabled(true);
         return;
     }
+
     a->mainWindow()->statusBar()->showMessage(tr("Score generated."));
+
+
+    if (checkViewer())
+        return;
 
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
     QVariant synth = settings.value(VIEWER_KEY);
@@ -318,5 +336,5 @@ void EditVBoxLayout::onViewFinished(int exitCode)
     ps.replace(QRegularExpression("\\.abc$"), ".ps");
     QFile::remove(ps);
 
-    runpushbutton.setEnabled(true);
+    runpushbutton.setText(tr("&View score"));
 }

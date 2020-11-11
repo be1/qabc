@@ -54,59 +54,69 @@
         <translation>X:</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="187"/>
+        <location filename="EditVBoxLayout.cpp" line="198"/>
         <source>Generating MIDI for playing.</source>
         <translation>Génération du MIDI pour jouer.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="207"/>
+        <location filename="EditVBoxLayout.cpp" line="218"/>
         <source>Stopping synthesis.</source>
         <translation>Arrêt de la synthèse.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="218"/>
+        <location filename="EditVBoxLayout.cpp" line="229"/>
         <source>Error during MIDI generation.</source>
         <translation>Erreur pendant la génération du MIDI.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="223"/>
+        <location filename="EditVBoxLayout.cpp" line="234"/>
         <source>MIDI generation finished.</source>
         <translation>Génération du MIDI terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="237"/>
+        <location filename="EditVBoxLayout.cpp" line="248"/>
         <source>Starting synthesis...</source>
         <translation>Démarrage de la synthèse...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="247"/>
+        <location filename="EditVBoxLayout.cpp" line="258"/>
         <source>Synthesis finished.</source>
         <translation>Synthèse terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="262"/>
+        <location filename="EditVBoxLayout.cpp" line="273"/>
         <source>Generating score...</source>
         <translation>Génération de la partition...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="287"/>
+        <location filename="EditVBoxLayout.cpp" line="296"/>
+        <source>Refresh &amp;view</source>
+        <translation>Rafraîchir la &amp;vue</translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="301"/>
         <source>Error during score generation.</source>
         <translation>Erreur pendant la génération de la partition.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="291"/>
+        <location filename="EditVBoxLayout.cpp" line="305"/>
         <source>Score generated.</source>
         <translation>Patition générée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="305"/>
+        <location filename="EditVBoxLayout.cpp" line="323"/>
         <source>Starting viewer...</source>
         <translation>Démarrage du visualiseur...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="314"/>
+        <location filename="EditVBoxLayout.cpp" line="332"/>
         <source>Viewer closed.</source>
         <translation>Visualiseur fermé.</translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="339"/>
+        <source>&amp;View score</source>
+        <translation>&amp;Voir la partition</translation>
     </message>
 </context>
 <context>

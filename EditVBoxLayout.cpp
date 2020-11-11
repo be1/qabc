@@ -148,12 +148,16 @@ void EditVBoxLayout::onProgramOutputText(const QByteArray &text)
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w =  a->mainWindow();
     LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
-    lv->appendPlainText(QString::fromUtf8(text));
+    lv->appendHtml("<em>" + QString::fromUtf8(text) + "</em>");
 }
 
 void EditVBoxLayout::onProgramErrorText(const QByteArray &text)
 {
-   onProgramOutputText(text);
+   //onProgramOutputText(text);
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcMainWindow* w =  a->mainWindow();
+    LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
+    lv->appendHtml("<b style=\"color: red\">" + QString::fromUtf8(text).replace("\n", "<br />") + "</b>");
 }
 
 void EditVBoxLayout::killSynth()
@@ -162,11 +166,13 @@ void EditVBoxLayout::killSynth()
         AbcProcess* proc = processlist.at(i);
         if (proc->state() == QProcess::Running
                 && proc->which() == AbcProcess::ProcessSynth) {
+#if 0
             QString str = QString::fromUtf8(*proc->log());
             AbcApplication* a = static_cast<AbcApplication*>(qApp);
             AbcMainWindow* w =  a->mainWindow();
             LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
             lv->appendPlainText(str);
+#endif
             disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
             delete proc;
             processlist.removeAt(i);

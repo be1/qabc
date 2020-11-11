@@ -33,7 +33,10 @@ void AbcProcess::onOutput()
 #else
 void AbcProcess::onStdout()
 {
-    emit outputText(readAllStandardOutput());
+    //emit outputText(readAllStandardOutput());
+    while(canReadLine()) {
+        emit outputText(readLine());
+    }
 }
 
 void AbcProcess::onStderr()

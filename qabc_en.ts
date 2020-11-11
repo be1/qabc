@@ -8,6 +8,11 @@
         <source>QAbc</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="AbcMainWindow.cpp" line="12"/>
+        <source>Idle</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AboutAction</name>
@@ -28,7 +33,7 @@
 <context>
     <name>CloseAction</name>
     <message>
-        <location filename="CloseAction.cpp" line="6"/>
+        <location filename="CloseAction.cpp" line="7"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -46,6 +51,61 @@
     <message>
         <location filename="EditVBoxLayout.cpp" line="23"/>
         <source>X:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="187"/>
+        <source>Generating MIDI for playing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="207"/>
+        <source>Stopping synthesis.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="218"/>
+        <source>Error during MIDI generation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="223"/>
+        <source>MIDI generation finished.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="237"/>
+        <source>Starting synthesis...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="247"/>
+        <source>Synthesis finished.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="262"/>
+        <source>Generating score...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="287"/>
+        <source>Error during score generation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="291"/>
+        <source>Score generated.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="305"/>
+        <source>Starting viewer...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="314"/>
+        <source>Viewer closed.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -72,7 +132,7 @@
 <context>
     <name>NewAction</name>
     <message>
-        <location filename="NewAction.cpp" line="6"/>
+        <location filename="NewAction.cpp" line="7"/>
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
@@ -80,7 +140,7 @@
 <context>
     <name>OpenAction</name>
     <message>
-        <location filename="OpenAction.cpp" line="6"/>
+        <location filename="OpenAction.cpp" line="7"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
@@ -171,7 +231,7 @@
 <context>
     <name>QuitAction</name>
     <message>
-        <location filename="QuitAction.cpp" line="6"/>
+        <location filename="QuitAction.cpp" line="7"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -195,7 +255,7 @@
 <context>
     <name>SaveAction</name>
     <message>
-        <location filename="SaveAction.cpp" line="6"/>
+        <location filename="SaveAction.cpp" line="7"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>

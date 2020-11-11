@@ -3,7 +3,8 @@
 RunPushButton::RunPushButton(QWidget* parent)
 	: QPushButton(parent)
 {
-    setText(tr("Generate score"));
+    setText(tr("&View score"));
+    setIcon(QIcon::fromTheme("document-print-preview"));
 }
 
 RunPushButton::~RunPushButton()

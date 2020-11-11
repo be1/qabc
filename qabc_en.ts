@@ -149,13 +149,14 @@
     <name>PlayPushButton</name>
     <message>
         <location filename="PlayPushButton.cpp" line="7"/>
-        <location filename="PlayPushButton.cpp" line="19"/>
-        <source>Play</source>
+        <location filename="PlayPushButton.cpp" line="21"/>
+        <source>&amp;Play</source>
+        <oldsource>Play</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlayPushButton.cpp" line="17"/>
-        <source>Stop</source>
+        <location filename="PlayPushButton.cpp" line="18"/>
+        <source>Sto&amp;p</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -248,7 +249,8 @@
     <name>RunPushButton</name>
     <message>
         <location filename="RunPushButton.cpp" line="6"/>
-        <source>Generate score</source>
+        <source>&amp;View score</source>
+        <oldsource>Generate score</oldsource>
         <translation type="unfinished"></translation>
     </message>
 </context>

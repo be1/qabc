@@ -1,4 +1,5 @@
 #include "HelpMenu.h"
+#include "config.h"
 #include <QMessageBox>
 
 HelpMenu::HelpMenu(QWidget* parent)
@@ -17,7 +18,7 @@ HelpMenu::~HelpMenu()
 
 void HelpMenu::onAboutActionTriggered()
 {
-    QMessageBox::about(this, tr("ABC score editor"), tr("Copyright © 2020 Benoît Rouits <brouits@free.fr>"));
+    QMessageBox::about(this, tr("ABC score editor"), tr("\nQAbc version ") + VERSION + " (" + REVISION + ")\n" +tr( "Copyright © 2020 Benoît Rouits <brouits@free.fr>"));
 }
 
 void HelpMenu::onAboutQtActionTriggered()

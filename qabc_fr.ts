@@ -122,21 +122,28 @@
 <context>
     <name>HelpMenu</name>
     <message>
-        <location filename="HelpMenu.cpp" line="7"/>
+        <location filename="HelpMenu.cpp" line="8"/>
         <source>Help</source>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="HelpMenu.cpp" line="20"/>
-        <location filename="HelpMenu.cpp" line="25"/>
+        <location filename="HelpMenu.cpp" line="21"/>
+        <location filename="HelpMenu.cpp" line="26"/>
         <source>ABC score editor</source>
         <oldsource>Abc score editor</oldsource>
         <translation>Éditeur de partition ABC</translation>
     </message>
     <message>
-        <location filename="HelpMenu.cpp" line="20"/>
+        <location filename="HelpMenu.cpp" line="21"/>
         <source>Copyright © 2020 Benoît Rouits &lt;brouits@free.fr&gt;</source>
         <translation>Copyright © 2020 Benoît Rouits &lt;brouit@free.fr&gt;</translation>
+    </message>
+    <message>
+        <location filename="HelpMenu.cpp" line="21"/>
+        <source>
+QAbc version </source>
+        <translation>
+QAbc version </translation>
     </message>
 </context>
 <context>

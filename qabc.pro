@@ -15,7 +15,7 @@ HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h Qui
 	PSPrefAction.h \
 	ResetAction.h \
 	SynthPrefAction.h
-VERSION = 1.2
+VERSION = 1.3
 REVISION = $$system(svnversion|grep '[[:digit:]]' || git describe --long --tags 2>/dev/null || echo "stable")
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 isEmpty(PREFIX): PREFIX = /usr/local

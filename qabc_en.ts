@@ -284,13 +284,13 @@
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="43"/>
-        <location filename="ScoreMenu.cpp" line="104"/>
+        <location filename="ScoreMenu.cpp" line="105"/>
         <source>ABC score (*.abc)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="76"/>
-        <location filename="ScoreMenu.cpp" line="90"/>
+        <location filename="ScoreMenu.cpp" line="91"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
@@ -300,12 +300,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="104"/>
+        <location filename="ScoreMenu.cpp" line="89"/>
+        <source>Score saved.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="105"/>
         <source>Save ABC score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="90"/>
+        <location filename="ScoreMenu.cpp" line="91"/>
         <source>Could not save ABC score!</source>
         <translation type="unfinished"></translation>
     </message>

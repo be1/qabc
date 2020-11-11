@@ -284,13 +284,13 @@
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="43"/>
-        <location filename="ScoreMenu.cpp" line="104"/>
+        <location filename="ScoreMenu.cpp" line="105"/>
         <source>ABC score (*.abc)</source>
         <translation>Partition ABC (*.abc)</translation>
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="76"/>
-        <location filename="ScoreMenu.cpp" line="90"/>
+        <location filename="ScoreMenu.cpp" line="91"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
@@ -300,12 +300,17 @@
         <translation>Impossible d&apos;enregistrer une partition ABC sans titre !</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="104"/>
+        <location filename="ScoreMenu.cpp" line="89"/>
+        <source>Score saved.</source>
+        <translation>Partition enregistrée.</translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="105"/>
         <source>Save ABC score</source>
         <translation>Enregistrer la partition ABC</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="90"/>
+        <location filename="ScoreMenu.cpp" line="91"/>
         <source>Could not save ABC score!</source>
         <translation>Impossible d&apos;enregistrer la partition ABC !</translation>
     </message>

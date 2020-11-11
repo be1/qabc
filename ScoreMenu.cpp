@@ -86,6 +86,7 @@ void ScoreMenu::onSaveActionTriggered()
         QString tosave = edit->toPlainText();
         file.write(tosave.toUtf8());
         file.close();
+        w->statusBar()->showMessage(tr("Score saved."));
     } else {
         QMessageBox::warning(this, tr("Warning"), tr("Could not save ABC score!"));
     }

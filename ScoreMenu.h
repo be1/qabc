@@ -33,4 +33,6 @@ private:
 	CloseAction closeaction;
     QuitAction quitaction;
 };
+
+#define NEW_TEMPLATE "X:1\nT:[Title]\nC:[Composer]\nM:[Metric, e.g: 4/4]\nL:[Note Length, e.g: 1/8]\nK:[Key, e.g: C]\n"
 #endif

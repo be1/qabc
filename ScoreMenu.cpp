@@ -131,6 +131,7 @@ void ScoreMenu::onNewActionTriggered()
 
     QString empty;
     EditWidget* swidget = new EditWidget(empty, nullptr);
+    swidget->editVBoxLayout()->abcPlainTextEdit()->setPlainText(NEW_TEMPLATE);
 
     edittabs->addTab(swidget);
 }

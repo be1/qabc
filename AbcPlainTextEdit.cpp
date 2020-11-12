@@ -1,12 +1,24 @@
 #include "AbcPlainTextEdit.h"
+#include <QDebug>
 #include <QPainter>
 #include <QTextBlock>
+#include <QAbstractItemView>
+#include <QAbstractItemModel>
+#include <QScrollBar>
+#include <QStringListModel>
+#include <QGuiApplication>
 
 AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
 	: QPlainTextEdit(parent)
 {
     lineNumberArea = new LineNumberArea(this);
     highlighter = new AbcHighlighter(this->document());
+    QCompleter *com = new QCompleter(this);
+    com->setModel(modelFromFile(":dict.txt"));
+    com->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+    com->setCaseSensitivity(Qt::CaseInsensitive);
+    com->setWrapAround(false);
+    setCompleter(com);
 
     connect(this, &AbcPlainTextEdit::blockCountChanged, this, &AbcPlainTextEdit::updateLineNumberAreaWidth);
     connect(this, &AbcPlainTextEdit::updateRequest, this, &AbcPlainTextEdit::updateLineNumberArea);
@@ -18,6 +30,108 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
 
 AbcPlainTextEdit::~AbcPlainTextEdit()
 {
+}
+
+void AbcPlainTextEdit::setCompleter(QCompleter *completer)
+{
+    if (c)
+        c->disconnect(this);
+
+    c = completer;
+
+    if (!c)
+        return;
+
+    c->setWidget(this);
+    c->setCompletionMode(QCompleter::PopupCompletion);
+    c->setCaseSensitivity(Qt::CaseSensitive);
+    QObject::connect(c, QOverload<const QString &>::of(&QCompleter::activated),
+                     this, &AbcPlainTextEdit::insertCompletion);
+}
+
+QCompleter *AbcPlainTextEdit::completer() const
+{
+    return c;
+}
+
+void AbcPlainTextEdit::insertCompletion(const QString &completion)
+{
+    if (c->widget() != this)
+        return;
+    QTextCursor tc = textCursor();
+    int extra = completion.length() - c->completionPrefix().length();
+    tc.movePosition(QTextCursor::Left);
+    tc.movePosition(QTextCursor::EndOfWord);
+    tc.insertText(completion.right(extra));
+    setTextCursor(tc);
+}
+
+QString AbcPlainTextEdit::textUnderCursor() const
+{
+    QTextCursor tc = textCursor();
+    tc.select(QTextCursor::WordUnderCursor);
+    return tc.selectedText();
+}
+
+
+void AbcPlainTextEdit::focusInEvent(QFocusEvent *e)
+{
+    if (c)
+        c->setWidget(this);
+    QPlainTextEdit::focusInEvent(e);
+}
+
+void AbcPlainTextEdit::keyPressEvent(QKeyEvent *e)
+{
+    if (c && c->popup()->isVisible()) {
+        // The following keys are forwarded by the completer to the widget
+       switch (e->key()) {
+       case Qt::Key_Enter:
+       case Qt::Key_Return:
+       case Qt::Key_Escape:
+       case Qt::Key_Tab:
+       case Qt::Key_Backtab:
+            e->ignore();
+            return; // let the completer do default behavior
+       default:
+           break;
+       }
+    }
+
+    /* Here, the completer popup is not shown yet */
+
+    //const bool isShortcut = (e->modifiers().testFlag(Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
+    const bool isShortcut = e->key() == Qt::Key_Tab && e->modifiers().testFlag(Qt::NoModifier);
+    if (!c || !isShortcut)
+        QPlainTextEdit::keyPressEvent(e);
+
+    const bool ctrlOrShift = e->modifiers().testFlag(Qt::ControlModifier) ||
+                             e->modifiers().testFlag(Qt::ShiftModifier);
+    if (!c || (ctrlOrShift && e->text().isEmpty()))
+        return;
+
+    static QString eow("!%~@#$^&*()_+{}|:\"<>?,./;'[]\\-="); // end of word
+    const bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
+    QString completionPrefix = textUnderCursor();
+
+    /* no shortcut pressed, or a modifier-only key is pressed,
+     * or the word typed is too short, or it is a complete word:
+     * then unshow popup if needed and return */
+    if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 3
+                      || eow.contains(e->text().right(1)))) {
+        c->popup()->hide();
+        return;
+    }
+
+    /* here we have a possible case of showing completion popup */
+    if (completionPrefix != c->completionPrefix()) {
+        c->setCompletionPrefix(completionPrefix);
+        c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
+    }
+    QRect cr = cursorRect();
+    cr.setWidth(c->popup()->sizeHintForColumn(0)
+                + c->popup()->verticalScrollBar()->sizeHint().width());
+    c->complete(cr); // popup it up!
 }
 
 int AbcPlainTextEdit::lineNumberAreaWidth()
@@ -107,7 +221,7 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
 
     barFormat.setFontWeight(QFont::Bold);
     barFormat.setForeground(Qt::darkRed);
-    rule.pattern = QRegularExpression(QStringLiteral(":?\\|[:\\|]?"));
+    rule.pattern = QRegularExpression(QStringLiteral("(::|[:\\|\\[]?\\|[:\\|\\]]?)"));
     rule.format = barFormat;
     highlightingRules.append(rule);
 
@@ -190,4 +304,27 @@ void AbcHighlighter::highlightBlock(const QString &text)
         startIndex = text.indexOf(headerStartExpression, startIndex + headerLength);
     }
 #endif
+}
+
+QAbstractItemModel *AbcPlainTextEdit::modelFromFile(const QString& fileName)
+{
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly))
+        return new QStringListModel(c);
+
+#ifndef QT_NO_CURSOR
+    QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+#endif
+    QStringList words;
+
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        if (!line.isEmpty())
+            words << QString::fromUtf8(line.trimmed());
+    }
+
+#ifndef QT_NO_CURSOR
+    QGuiApplication::restoreOverrideCursor();
+#endif
+    return new QStringListModel(words, c);
 }

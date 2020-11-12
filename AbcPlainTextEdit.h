@@ -4,6 +4,7 @@
 #include <QPlainTextEdit>
 #include <QSyntaxHighlighter>
 #include <QRegularExpression>
+#include <QCompleter>
 
 class AbcHighlighter : public QSyntaxHighlighter
 {
@@ -50,17 +51,28 @@ public:
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
 
+    void setCompleter(QCompleter *c);
+    QCompleter *completer() const;
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
+    void keyPressEvent(QKeyEvent *e) override;
+    void focusInEvent(QFocusEvent *e) override;
 
 private slots:
     void updateLineNumberAreaWidth(int newBlockCount);
     void highlightCurrentLine();
     void updateLineNumberArea(const QRect &rect, int dy);
+    void insertCompletion(const QString &completion);
 
 private:
+    QAbstractItemModel *modelFromFile(const QString &fileName);
+
     QWidget *lineNumberArea;
     AbcHighlighter *highlighter;
+    QString textUnderCursor() const;
+
+    QCompleter *c = nullptr;
 };
 
 class LineNumberArea : public QWidget

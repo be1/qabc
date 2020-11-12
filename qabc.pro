@@ -1,6 +1,8 @@
 QT += core widgets gui
 TEMPLATE = app
 TARGET = qabc
+RESOURCES += resources.qrc
+DISTFILES +=  dict.txt
 SOURCES = NewAction.cpp OpenAction.cpp SaveAction.cpp SaveasAction.cpp CloseAction.cpp QuitAction.cpp ScoreMenu.cpp PreferencesMenu.cpp AboutAction.cpp AboutqtAction.cpp HelpMenu.cpp AbcPlainTextEdit.cpp PlayPushButton.cpp EditVBoxLayout.cpp EditWidget.cpp EditTabWidget.cpp RunPushButton.cpp ViewVBoxLayout.cpp ViewWidget.cpp MainHBoxLayout.cpp AbcMainWindow.cpp AbcApplication.cpp main.cpp \
 	AbcProcess.cpp \
 	LogView.cpp \

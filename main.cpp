@@ -8,6 +8,8 @@
 
 int main(int argc, char** argv)
 {
+	Q_INIT_RESOURCE(resources);
+
 	AbcApplication abcapplication(argc, argv);
 
 	QString locale = QLocale::system().name();

@@ -35,11 +35,12 @@ ScoreMenu::~ScoreMenu()
 void ScoreMenu::onQuitActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
-#if 0
+#if 1
     EditTabWidget* tabs = a->mainWindow()->mainHBoxLayout()->editTabWidget();
     int len = tabs->editWidgetList()->length();
     for (int i = 0; i < len; i++ ) {
-        tabs->removeTab(i);
+        EditWidget *w = tabs->editWidgetList()->at(i);
+        w->editVBoxLayout()->cleanup();
     }
 #endif
     a->quit();

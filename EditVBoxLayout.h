@@ -23,6 +23,7 @@ public:
     PlayPushButton *playPushButton();
     RunPushButton *runPushButton();
     void setFileName(const QString& fn);
+    void cleanup();
 
     void spawnCompiler(const QString &prog, const QStringList &args, const QDir& wrk);
     void spawnViewer(const QString &prog, const QStringList &args, const QDir& wrk);

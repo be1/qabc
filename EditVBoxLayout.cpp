@@ -44,11 +44,8 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 
 EditVBoxLayout::~EditVBoxLayout()
 {
-    /* early kill in case of external programs are open and we quit the app anyway */
-    for (int i = 0; i < processlist.length(); i++)
-        processlist.at(i)->kill();
-
-    /* kill slots seem not to be called, so cleanup manually */
+#if 1
+    /* kill slots could not to be called, so cleanup manually */
     QString temp(tempFile.fileName());
     temp.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid");
     if (QFileInfo::exists(temp))
@@ -58,6 +55,7 @@ EditVBoxLayout::~EditVBoxLayout()
     temp.replace(QRegularExpression("\\.abc$"), ".ps");
     if (QFileInfo::exists(temp))
         QDir().remove(temp);
+#endif
 }
 
 AbcPlainTextEdit *EditVBoxLayout::abcPlainTextEdit()
@@ -77,7 +75,14 @@ RunPushButton *EditVBoxLayout::runPushButton()
 
 void EditVBoxLayout::setFileName(const QString &fn)
 {
-	fileName = fn;
+    fileName = fn;
+}
+
+void EditVBoxLayout::cleanup()
+{
+    /* early kill in case  we quit the app brutally */
+    for (int i = 0; i < processlist.length(); i++)
+        processlist.at(i)->kill();
 }
 
 void EditVBoxLayout::onXChanged(int value)

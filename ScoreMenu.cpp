@@ -34,7 +34,15 @@ ScoreMenu::~ScoreMenu()
 
 void ScoreMenu::onQuitActionTriggered()
 {
-    qApp->quit();
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+#if 0
+    EditTabWidget* tabs = a->mainWindow()->mainHBoxLayout()->editTabWidget();
+    int len = tabs->editWidgetList()->length();
+    for (int i = 0; i < len; i++ ) {
+        tabs->removeTab(i);
+    }
+#endif
+    a->quit();
 }
 
 void ScoreMenu::onOpenActionTriggered()

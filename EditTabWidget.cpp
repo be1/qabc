@@ -10,6 +10,9 @@ EditTabWidget::EditTabWidget(QWidget* parent)
 
 EditTabWidget::~EditTabWidget()
 {
+    for (int i = 0; i < editwidgetlist.length(); i++ ) {
+        removeTab(i);
+    }
 }
 
 QList<EditWidget*> *EditTabWidget::editWidgetList()

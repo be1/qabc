@@ -44,6 +44,16 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 
 EditVBoxLayout::~EditVBoxLayout()
 {
+    /*in case of external programs are open and we quit the app anyway */
+    QString temp(tempFile.fileName());
+    temp.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid");
+    if (QFileInfo::exists(temp))
+        QDir().remove(temp);
+
+    temp = tempFile.fileName();
+    temp.replace(QRegularExpression("\\.abc$"), ".ps");
+    if (QFileInfo::exists(temp))
+        QDir().remove(temp);
 }
 
 AbcPlainTextEdit *EditVBoxLayout::abcPlainTextEdit()

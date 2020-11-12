@@ -44,7 +44,11 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 
 EditVBoxLayout::~EditVBoxLayout()
 {
-    /*in case of external programs are open and we quit the app anyway */
+    /* early kill in case of external programs are open and we quit the app anyway */
+    for (int i = 0; i < processlist.length(); i++)
+        processlist.at(i)->kill();
+
+    /* kill slots seem not to be called, so cleanup manually */
     QString temp(tempFile.fileName());
     temp.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid");
     if (QFileInfo::exists(temp))

@@ -34,5 +34,5 @@ private:
     QuitAction quitaction;
 };
 
-#define NEW_TEMPLATE "X:1\nT:[Title]\nC:[Composer]\nM:[Metric, e.g: 4/4]\nL:[Note Length, e.g: 1/8]\nK:[Key, e.g: C]\n"
+#define NEW_TEMPLATE "X:1\nT:Melody...\nC:Piotr Ilitch Tchaïkovski\nM:4/4\nL:1/4\nK:Amin\n!mf!ABcd|e3c|e3A|cAFc|A4|]"
 #endif

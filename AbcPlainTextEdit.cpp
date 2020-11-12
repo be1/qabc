@@ -231,6 +231,12 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
     rule.format = noteFormat;
     highlightingRules.append(rule);
 
+    indicFormat.setFontWeight(QFont::Normal);
+    indicFormat.setForeground(Qt::black);
+    rule.pattern = QRegularExpression(QStringLiteral("![^!]*!"));
+    rule.format = indicFormat;
+    highlightingRules.append(rule);
+
     chordFormat.setForeground(Qt::darkGreen);
     rule.pattern = QRegularExpression(QStringLiteral("\"[A-H][^\"]*\""));
     rule.format = chordFormat;
@@ -259,6 +265,7 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
         QStringLiteral("^T:[^\n]+"), QStringLiteral("^V:[^\n]+"), QStringLiteral("^W:|^\n]+"),
         QStringLiteral("^w:[^\n]+"), QStringLiteral("^X:[^\n]+"), QStringLiteral("^Z:[^\n]+")
     };
+
     for (const QString &pattern : keywordPatterns) {
         rule.pattern = QRegularExpression(pattern);
         rule.format = keywordFormat;

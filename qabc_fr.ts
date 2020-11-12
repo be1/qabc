@@ -46,67 +46,67 @@
         <translation>X:</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="198"/>
+        <location filename="EditVBoxLayout.cpp" line="217"/>
         <source>Generating MIDI for playing.</source>
         <translation>Génération du MIDI pour jouer.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="218"/>
+        <location filename="EditVBoxLayout.cpp" line="237"/>
         <source>Stopping synthesis.</source>
         <translation>Arrêt de la synthèse.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="229"/>
+        <location filename="EditVBoxLayout.cpp" line="248"/>
         <source>Error during MIDI generation.</source>
         <translation>Erreur pendant la génération du MIDI.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="234"/>
+        <location filename="EditVBoxLayout.cpp" line="253"/>
         <source>MIDI generation finished.</source>
         <translation>Génération du MIDI terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="248"/>
+        <location filename="EditVBoxLayout.cpp" line="267"/>
         <source>Starting synthesis...</source>
         <translation>Démarrage de la synthèse...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="258"/>
+        <location filename="EditVBoxLayout.cpp" line="277"/>
         <source>Synthesis finished.</source>
         <translation>Synthèse terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="273"/>
+        <location filename="EditVBoxLayout.cpp" line="292"/>
         <source>Generating score...</source>
         <translation>Génération de la partition...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="296"/>
+        <location filename="EditVBoxLayout.cpp" line="315"/>
         <source>Refresh &amp;view</source>
         <translation>Rafraîchir la &amp;vue</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="301"/>
+        <location filename="EditVBoxLayout.cpp" line="320"/>
         <source>Error during score generation.</source>
         <translation>Erreur pendant la génération de la partition.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="305"/>
+        <location filename="EditVBoxLayout.cpp" line="324"/>
         <source>Score generated.</source>
         <translation>Patition générée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="323"/>
+        <location filename="EditVBoxLayout.cpp" line="342"/>
         <source>Starting viewer...</source>
         <translation>Démarrage du visualiseur...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="332"/>
+        <location filename="EditVBoxLayout.cpp" line="351"/>
         <source>Viewer closed.</source>
         <translation>Visualiseur fermé.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="339"/>
+        <location filename="EditVBoxLayout.cpp" line="358"/>
         <source>&amp;View score</source>
         <translation>&amp;Voir la partition</translation>
     </message>
@@ -296,39 +296,39 @@ QAbc version </translation>
         <translation>Partition</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="43"/>
+        <location filename="ScoreMenu.cpp" line="52"/>
         <source>Open ABC Score</source>
         <translation>Ouvrir une partition ABC</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="43"/>
-        <location filename="ScoreMenu.cpp" line="105"/>
+        <location filename="ScoreMenu.cpp" line="52"/>
+        <location filename="ScoreMenu.cpp" line="114"/>
         <source>ABC score (*.abc)</source>
         <translation>Partition ABC (*.abc)</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="76"/>
-        <location filename="ScoreMenu.cpp" line="91"/>
+        <location filename="ScoreMenu.cpp" line="85"/>
+        <location filename="ScoreMenu.cpp" line="100"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="76"/>
+        <location filename="ScoreMenu.cpp" line="85"/>
         <source>Could not save an untitled ABC score!</source>
         <translation>Impossible d&apos;enregistrer une partition ABC sans titre !</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="89"/>
+        <location filename="ScoreMenu.cpp" line="98"/>
         <source>Score saved.</source>
         <translation>Partition enregistrée.</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="105"/>
+        <location filename="ScoreMenu.cpp" line="114"/>
         <source>Save ABC score</source>
         <translation>Enregistrer la partition ABC</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="91"/>
+        <location filename="ScoreMenu.cpp" line="100"/>
         <source>Could not save ABC score!</source>
         <translation>Impossible d&apos;enregistrer la partition ABC !</translation>
     </message>
@@ -342,9 +342,17 @@ QAbc version </translation>
     </message>
 </context>
 <context>
+    <name>ViewVBoxLayout</name>
+    <message>
+        <location filename="ViewVBoxLayout.cpp" line="7"/>
+        <source>Clear log</source>
+        <translation>Nettoyer le log</translation>
+    </message>
+</context>
+<context>
     <name>main</name>
     <message>
-        <location filename="main.cpp" line="28"/>
+        <location filename="main.cpp" line="30"/>
         <source>ABC score file to work on.</source>
         <translation>Partition ABC sur laquelle travailler.</translation>
     </message>

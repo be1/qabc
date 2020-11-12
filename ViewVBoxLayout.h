@@ -17,5 +17,6 @@ public:
 
 private:
     LogView logview;
+    QPushButton clearbutton;
 };
 #endif

@@ -15,6 +15,8 @@ diminuendo
 downbow
 emphasis
 fermata
+ff
+fff
 ffff
 fine
 gchord
@@ -25,10 +27,13 @@ invertedfermata
 longphrase
 lowermordent
 mediumphrase
+mf
 mordent
 nobarlines
 open
 pitchbend
+pp
+ppp
 pppp
 pralltriller
 program
@@ -37,6 +42,7 @@ repeatbar
 repeatbar2
 roll
 segno
+sfz
 shortphrase
 snap
 staves

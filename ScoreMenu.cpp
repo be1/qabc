@@ -36,7 +36,7 @@ void ScoreMenu::onQuitActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
 #if 1
-    EditTabWidget* tabs = a->mainWindow()->mainHBoxLayout()->editTabWidget();
+    EditTabWidget* tabs = a->mainWindow()->mainHSplitter()->editTabWidget();
     int len = tabs->editWidgetList()->length();
     for (int i = 0; i < len; i++ ) {
         EditWidget *w = tabs->editWidgetList()->at(i);
@@ -59,7 +59,7 @@ void ScoreMenu::onOpenActionTriggered()
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         AbcApplication* a = static_cast<AbcApplication*>(qApp);
         AbcMainWindow* w = a->mainWindow();
-        EditTabWidget *edittabs = w->mainHBoxLayout()->editTabWidget();
+        EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
 
         EditWidget* widget = new EditWidget(fileName, nullptr);
         edittabs->addTab(widget);
@@ -74,7 +74,7 @@ void ScoreMenu::onSaveActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w = a->mainWindow();
-    EditTabWidget *edittabs = w->mainHBoxLayout()->editTabWidget();
+    EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
 
     int cur = edittabs->currentIndex();
     if (cur < 0)
@@ -89,7 +89,7 @@ void ScoreMenu::onSaveActionTriggered()
     QFile file(fileName);
     if (file.open(QFile::WriteOnly | QFile::Text)) {
         AbcApplication* a = static_cast<AbcApplication*>(qApp);
-        EditTabWidget *edittabs = a->mainWindow()->mainHBoxLayout()->editTabWidget();
+        EditTabWidget *edittabs = a->mainWindow()->mainHSplitter()->editTabWidget();
         EditWidget* widget = static_cast<EditWidget*>(edittabs->currentWidget());
         AbcPlainTextEdit *edit = widget->editVBoxLayout()->abcPlainTextEdit();
         QString tosave = edit->toPlainText();
@@ -105,7 +105,7 @@ void ScoreMenu::onSaveAsActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w = a->mainWindow();
-    EditTabWidget *edittabs = w->mainHBoxLayout()->editTabWidget();
+    EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
     int cur = edittabs->currentIndex();
     if (cur < 0)
         return;
@@ -121,11 +121,16 @@ void ScoreMenu::onSaveAsActionTriggered()
     return onSaveActionTriggered();
 }
 
+void ScoreMenu::onExportActionTriggered()
+{
+
+}
+
 void ScoreMenu::onCloseActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w = a->mainWindow();
-    EditTabWidget *edittabs = w->mainHBoxLayout()->editTabWidget();
+    EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
     //qDebug() << edittabs->currentIndex();
     int cur = edittabs->currentIndex();
     if (cur >= 0)
@@ -136,7 +141,7 @@ void ScoreMenu::onNewActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w = a->mainWindow();
-    EditTabWidget *edittabs = w->mainHBoxLayout()->editTabWidget();
+    EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
 
     QString empty;
     EditWidget* swidget = new EditWidget(empty, nullptr);

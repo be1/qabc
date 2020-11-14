@@ -37,24 +37,34 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 
 	connect(this, &EditVBoxLayout::playerFinished, this, &EditVBoxLayout::onPlayFinished);
 	connect(this, &EditVBoxLayout::synthFinished, this, &EditVBoxLayout::onSynthFinished);
-	connect(this, &EditVBoxLayout::compilerFinished, this, &EditVBoxLayout::onCompileFinished);
+    connect(this, &EditVBoxLayout::compilerFinished, this, &EditVBoxLayout::onCompileFinished);
+#if 0
     connect(this, &EditVBoxLayout::viewerFinished, this, &EditVBoxLayout::onViewFinished);
+#endif
 }
 
 
 EditVBoxLayout::~EditVBoxLayout()
 {
 #if 1
-    /* kill slots could not to be called, so cleanup manually */
+    /* cleanup files manually */
     QString temp(tempFile.fileName());
     temp.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid");
     if (QFileInfo::exists(temp))
-        QDir().remove(temp);
+        QFile::remove(temp);
 
     temp = tempFile.fileName();
     temp.replace(QRegularExpression("\\.abc$"), ".ps");
     if (QFileInfo::exists(temp))
-        QDir().remove(temp);
+        QFile::remove(temp);
+
+    for (int i = 1; i < 999; i++) {
+        temp = tempFile.fileName();
+        temp.replace(QRegularExpression("\\.abc$"), QString::asprintf("%03d.svg", i));
+        if (!QFileInfo::exists(temp))
+            break;
+        QFile::remove(temp);
+    }
 #endif
 }
 
@@ -87,27 +97,29 @@ void EditVBoxLayout::cleanup()
 
 void EditVBoxLayout::onXChanged(int value)
 {
-	qDebug() << value;
+    qDebug() << value;
 }
 
 void EditVBoxLayout::spawnCompiler(const QString &prog, const QStringList& args, const QDir &wrk)
 {
 	AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w =  a->mainWindow();
-    w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView()->clear();
+    w->mainHSplitter()->viewWidget()->logView()->clear();
 	return spawnProgram(prog, args, AbcProcess::ProcessCompiler, wrk);
 }
 
+#if 0
 void EditVBoxLayout::spawnViewer(const QString &prog, const QStringList &args, const QDir &wrk)
 {
     return spawnProgram(prog, args, AbcProcess::ProcessViewer, wrk);
 }
+#endif
 
 void EditVBoxLayout::spawnPlayer(const QString& prog, const QStringList &args, const QDir &wrk)
 {
 	AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow *w = a->mainWindow();
-    w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView()->clear();
+    w->mainHSplitter()->viewWidget()->logView()->clear();
 	return spawnProgram(prog, args, AbcProcess::ProcessPlayer, wrk);
 }
 
@@ -141,7 +153,9 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
     case AbcProcess::ProcessSynth:
         emit synthFinished(exitCode); break;
     case AbcProcess::ProcessViewer:
+#if 0
         emit viewerFinished(exitCode); break;
+#endif
     case AbcProcess::ProcessUnknown:
     default:
         break;
@@ -166,7 +180,7 @@ void EditVBoxLayout::onProgramOutputText(const QByteArray &text)
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w =  a->mainWindow();
-    LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
+    LogView* lv = w->mainHSplitter()->viewWidget()->logView();
     lv->appendHtml("<em>" + QString::fromUtf8(text).replace("\n", "<br />") + "</em>");
 }
 
@@ -175,7 +189,7 @@ void EditVBoxLayout::onProgramErrorText(const QByteArray &text)
     //onProgramOutputText(text);
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w =  a->mainWindow();
-    LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
+    LogView* lv = w->mainHSplitter()->viewWidget()->logView();
     lv->appendHtml("<b style=\"color: red\">" + QString::fromUtf8(text).replace("\n", "<br />") + "</b>");
 }
 
@@ -288,6 +302,8 @@ void EditVBoxLayout::onSynthFinished(int exitCode)
 void EditVBoxLayout::onRunClicked()
 {
     runpushbutton.setEnabled(false);
+    /* do not disable/enable xspinbox because Play manages it for audio rendering! */
+
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     a->mainWindow()->statusBar()->showMessage(tr("Generating score..."));
     QString tosave = abcPlainTextEdit()->toPlainText();
@@ -299,7 +315,13 @@ void EditVBoxLayout::onRunClicked()
 	QString program = compiler.toString();
 	QStringList argv = program.split(" ");
 	program = argv.at(0);
-	argv.removeAt(0);
+    argv.removeAt(0);
+
+    argv << "-v";
+    argv << "-e" << QString::number(xspinbox.value());
+    QString temp(tempFile.fileName());
+    temp.replace(QRegularExpression("\\.abc$"), ".svg"); /* but remind, output will be tempNNN.svg */
+    argv << "-O" << temp;
     argv << tempFile.fileName();
 
     QFileInfo info(tempFile.fileName());
@@ -312,9 +334,6 @@ void EditVBoxLayout::onCompileFinished(int exitCode)
 {
     qDebug() << "compile" << exitCode;
 
-    runpushbutton.setText(tr("Refresh &view"));
-    runpushbutton.setEnabled(true);
-
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     if (exitCode < 0 || exitCode > 1) { /* sometimes, abcm2ps returns 1 even on 'success' */
         a->mainWindow()->statusBar()->showMessage(tr("Error during score generation."));
@@ -322,8 +341,13 @@ void EditVBoxLayout::onCompileFinished(int exitCode)
     }
 
     a->mainWindow()->statusBar()->showMessage(tr("Score generated."));
+    QFileInfo info(tempFile);
+    QString temp(info.baseName());
+    a->mainWindow()->mainHSplitter()->viewWidget()->initBasename(temp);
+    a->mainWindow()->mainHSplitter()->viewWidget()->requestPage(1);
 
-
+    runpushbutton.setEnabled(true);
+#if 0
     if (checkViewer())
         return;
 
@@ -341,8 +365,10 @@ void EditVBoxLayout::onCompileFinished(int exitCode)
 
     a->mainWindow()->statusBar()->showMessage(tr("Starting viewer..."));
     spawnViewer(program, argv, dir);
+#endif
 }
 
+#if 0
 void EditVBoxLayout::onViewFinished(int exitCode)
 {
     qDebug() << "viewer" << exitCode;
@@ -357,3 +383,4 @@ void EditVBoxLayout::onViewFinished(int exitCode)
 
     runpushbutton.setText(tr("&View score"));
 }
+#endif

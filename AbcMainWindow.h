@@ -4,7 +4,7 @@
 #include "HelpMenu.h"
 #include "PreferencesMenu.h"
 #include "ScoreMenu.h"
-#include "MainHBoxLayout.h"
+#include "MainHSplitter.h"
 #include <QStatusBar>
 #include <QDockWidget>
 #include <QToolBar>
@@ -20,12 +20,12 @@ public:
 	AbcMainWindow(QWidget* parent = nullptr);
     ~AbcMainWindow();
 
-    MainHBoxLayout *mainHBoxLayout();
+    MainHSplitter *mainHSplitter();
 
 private:
 	ScoreMenu scoremenu;
 	PreferencesMenu preferencesmenu;
     HelpMenu helpmenu;
-    MainHBoxLayout mainhboxlayout;
+    MainHSplitter mainhsplitter;
 };
 #endif

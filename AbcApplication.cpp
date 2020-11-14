@@ -19,7 +19,7 @@ AbcApplication::AbcApplication(int& argc, char **argv)
 
 	QVariant player = settings.value(PLAYER_KEY);
 	if (!player.isValid())
-		settings.setValue(PLAYER_KEY, ABC2MMIDI);
+		settings.setValue(PLAYER_KEY, ABC2MIDI);
 
 	QVariant synth = settings.value(SYNTH_KEY);
 	if (!synth.isValid())
@@ -48,7 +48,7 @@ AbcMainWindow *AbcApplication::mainWindow()
 
 void AbcApplication::openFileNames(const QStringList &fileNames)
 {
-    EditTabWidget* edittabs = mainWindow()->mainHBoxLayout()->editTabWidget();
+    EditTabWidget* edittabs = mainWindow()->mainHSplitter()->editTabWidget();
 	for (int i = 0; i < fileNames.length(); i++) {
 		QString fileName = fileNames[i];
 		QFile file(fileName);

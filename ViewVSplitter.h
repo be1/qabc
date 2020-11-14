@@ -1,0 +1,38 @@
+#ifndef VIEWVBOXLAYOUT_H
+#define VIEWVBOXLAYOUT_H
+
+#include "RunPushButton.h"
+#include "LogView.h"
+#include "ScoreSvgWidget.h"
+#include <QSplitter>
+#include <QHBoxLayout>
+
+class ViewVSplitter: public QSplitter
+{
+	Q_OBJECT
+
+public:
+    ViewVSplitter(QWidget* parent = nullptr);
+    ~ViewVSplitter();
+
+    ScoreSvgWidget* svgWidget();
+    LogView *logView();
+
+    void initBasename(const QString& b);
+    void requestPage(int page);
+
+protected slots:
+    void prevPageClicked();
+    void nextPageClicked();
+
+private:
+    ScoreSvgWidget svgwidget;
+    QHBoxLayout pageslayout;
+    QPushButton prev;
+    QPushButton next;
+    LogView logview;
+    int currentpage = 0;
+    int lastpage = 0;
+    QString basename;
+};
+#endif

@@ -7,7 +7,7 @@
 #include <QSpinBox>
 #include <QDir>
 #include <QStandardPaths>
-//#include "abcm2ps.h"
+//#include "../abcm2ps/abcm2ps.h"
 
 EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	: QVBoxLayout(parent),
@@ -49,7 +49,6 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 
 EditVBoxLayout::~EditVBoxLayout()
 {
-#if 1
     /* cleanup files manually */
     qDebug() << "cleaning MIDI for" << tempFile.fileName();
     QString temp(tempFile.fileName());
@@ -72,7 +71,6 @@ EditVBoxLayout::~EditVBoxLayout()
             break;
         QFile::remove(temp);
     }
-#endif
 }
 
 AbcPlainTextEdit *EditVBoxLayout::abcPlainTextEdit()
@@ -325,6 +323,7 @@ void EditVBoxLayout::onRunClicked()
     argv.removeAt(0); /* comment this line if using library version */
 
     argv << "-v";
+    argv << "-N1";
     argv << "-e" << QString::number(xspinbox.value());
     QString temp(tempFile.fileName());
     temp.replace(QRegularExpression("\\.abc$"), ".svg"); /* but remind, output will be tempNNN.svg */
@@ -334,15 +333,25 @@ void EditVBoxLayout::onRunClicked()
     QFileInfo info(tempFile.fileName());
     QDir dir = info.absoluteDir();
 #if 0
-    char **av = (char**)malloc(argv.length());
+	QString s;
+	QByteArray ba;
+    char **av = (char**)malloc(argv.length() * sizeof (char*));
     for (int i = 0; i < argv.length(); i++) {
-        QString s = argv.at(i);
-        QByteArray ba = s.toUtf8();
-        av[i] = (char*)malloc(ba.length());
-        memcpy(av[i], ba.constData(), ba.length());
+        s = argv.at(i);
+        ba = s.toUtf8();
+        av[i] = (char*)malloc((ba.length() + 1) * sizeof (char));
+        strncpy(av[i], ba.constData(), ba.length());
         av[i][ba.length()] = '\0';
     }
+
+	fprintf(stderr, "%d, %s, %s ...\n", argv.length(), av[0], av[1]);
     int ret = abcm2ps(argv.length(), av);
+
+	fprintf(stderr, "%d, %s, %s ...\n", argv.length(), av[0], av[1]);
+	for (int i = 0; i < argv.length(); i++) {
+		free(av[i]);
+	}
+	free(av);
     emit compilerFinished(ret);
 #else
     spawnCompiler(program, argv, dir);

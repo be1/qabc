@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QSpinBox>
 #include <QDir>
+#include <QStandardPaths>
 //#include "abcm2ps.h"
 
 EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
@@ -16,10 +17,10 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	hboxlayout(parent),
 	xspinbox(parent),
 	xlabel(parent),
-	fileName(fileName)
+    fileName(fileName),
+    tempFile("XXXXXX.abc")
 {
-	setObjectName("EditVBoxLayout:" + fileName);
-    tempFile.setFileTemplate("XXXXXX.abc");
+    setObjectName("EditVBoxLayout:" + fileName);
     xspinbox.setMinimum(1);
 	xlabel.setText(tr("X:"));
 	xlabel.setAlignment(Qt::AlignRight|Qt::AlignVCenter);

@@ -1,4 +1,3 @@
-MIDI
 accent
 alto
 barlines
@@ -28,6 +27,7 @@ longphrase
 lowermordent
 mediumphrase
 mf
+MIDI
 mordent
 nobarlines
 open
@@ -54,5 +54,6 @@ trill
 turn
 upbow
 uppermordent
+voicecolor
 vskip
 wedge

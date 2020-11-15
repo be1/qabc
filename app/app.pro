@@ -3,7 +3,7 @@ QT += core widgets gui svg printsupport
 TEMPLATE = app
 TARGET = qabc
 RESOURCES += resources.qrc
-DISTFILES +=  dict.txt
+DISTFILES +=  dict.txt config.h.in
 SOURCES = NewAction.cpp OpenAction.cpp SaveAction.cpp SaveasAction.cpp CloseAction.cpp QuitAction.cpp ScoreMenu.cpp PreferencesMenu.cpp AboutAction.cpp AboutqtAction.cpp HelpMenu.cpp AbcPlainTextEdit.cpp PlayPushButton.cpp EditVBoxLayout.cpp EditWidget.cpp EditTabWidget.cpp RunPushButton.cpp AbcMainWindow.cpp AbcApplication.cpp main.cpp \
 	AbcProcess.cpp \
 	LogView.cpp \
@@ -23,7 +23,8 @@ HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h Qui
 	ResetAction.h \
 	ScoreSvgWidget.h \
 	SynthPrefAction.h \
-	ViewVSplitter.h
+	ViewVSplitter.h \
+	config.h
 config.input = config.h.in
 config.output = config.h
 QMAKE_SUBSTITUTES += config

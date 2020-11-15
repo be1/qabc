@@ -9,6 +9,15 @@ QAbc uses third-party softwares to generate MIDI, AUDIO, and PostScript files. W
 ## Screenshot
 http://brouits.free.fr/images/qabc\_v2alpha.png
 
+# Setting up
+git clone https://github.com/be1/qabc.git
+git checkout svg
+cd abcm2ps
+git submodule init
+git submodule update
+git checkout lib
+cd ..
+
 ## Building
 Just a matter of:
 ```

@@ -3,10 +3,14 @@
 #include <QScrollArea>
 #include <QDir>
 #include <QDebug>
+#include <QPrintDialog>
+#include <QPrinter>
+#include <QPrinterInfo>
 
 ViewVSplitter::ViewVSplitter(QWidget* parent)
     : QSplitter(parent)
     , prev(QIcon::fromTheme("previous"), tr("Previous"), this)
+    , print(QIcon::fromTheme("document-print"), tr("Print"), this)
     , next(QIcon::fromTheme("next"), tr("Next"), this)
 {
     setOrientation(Qt::Vertical);
@@ -32,6 +36,8 @@ ViewVSplitter::ViewVSplitter(QWidget* parent)
     pagesWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     connect(&prev, &QPushButton::clicked, this, &ViewVSplitter::prevPageClicked);
     pageslayout.addWidget(&prev, 0, Qt::AlignLeft);
+    connect(&print, &QPushButton::clicked, this, &ViewVSplitter::printClicked);
+    pageslayout.addWidget(&print, 0, Qt::AlignCenter);
     connect(&next, &QPushButton::clicked, this, &ViewVSplitter::nextPageClicked);
     pageslayout.addWidget(&next, 0, Qt::AlignRight);
     pagesWidget->setLayout(&pageslayout);
@@ -106,6 +112,26 @@ ScoreSvgWidget *ViewVSplitter::svgWidget()
 void ViewVSplitter::prevPageClicked()
 {
     requestPage(-1);
+}
+
+void ViewVSplitter::printClicked()
+{
+    QPrinter printer;
+    printer.setCreator("QAbc");
+    printer.setDocName("abc_score");
+    printer.setOrientation(QPrinter::Portrait);
+    QPrintDialog dialog(&printer, this);
+    if (dialog.exec() == QDialog::Accepted) {
+        if (printer.isValid()) {
+            if (!svgwidget.print(&printer)) {
+                QPrinterInfo info(printer);
+                qWarning() << "printerinfo definition null:" << info.isNull();
+                qWarning() << "printerinfo state error:" << (info.state() == QPrinter::Error);
+            }
+        } else {
+            qWarning() << "invalid printer object";
+        }
+    }
 }
 
 

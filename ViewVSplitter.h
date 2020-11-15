@@ -23,13 +23,16 @@ public:
 
 protected slots:
     void prevPageClicked();
+    void printClicked();
     void nextPageClicked();
 
 private:
     ScoreSvgWidget svgwidget;
     QHBoxLayout pageslayout;
     QPushButton prev;
+    QPushButton print;
     QPushButton next;
+
     LogView logview;
     int currentpage = 0;
     int lastpage = 0;

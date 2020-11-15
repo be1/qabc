@@ -1,5 +1,6 @@
-QT += core widgets gui svg
-TEMPLATE = app
+QT += core widgets gui svg printsupport
+TEMPLATE = subdirs \
+			app
 TARGET = qabc
 RESOURCES += resources.qrc
 DISTFILES +=  dict.txt
@@ -23,6 +24,8 @@ HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h Qui
 	ScoreSvgWidget.h \
 	SynthPrefAction.h \
 	ViewVSplitter.h
+TEMPLATE += subdirs
+SUBDIRS += abcm2ps
 VERSION = 2.0
 REVISION = $$system(svnversion|grep '[[:digit:]]' || git describe --long --tags 2>/dev/null || echo "stable")
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
@@ -48,5 +51,9 @@ desktop.files = $${TARGET}.desktop
 icon.path = $$DATADIR/pixmaps
 icon.files = $${TARGET}.png
 mime.path = $$DATADIR/mime/packages
-mime.files = application-vnd-abc.xml
-INSTALLS += target translations desktop icon mime
+mime.files = "application-vnd-abc.xml"
+abcm2ps.path = $$DATADIR/$$TARGET/abcm2ps
+abcm2ps.files = "abcm2ps/abcm2ps"
+fmt.path = $$DATADIR/$$TARGET/abcm2ps
+fmt.files = "abcm2ps/abc2svg.ttf" "abcm2ps/flute.fmt"  "abcm2ps/landscape.fmt"  "abcm2ps/musicfont.fmt"
+INSTALLS += target translations desktop icon mime abcm2ps fmt

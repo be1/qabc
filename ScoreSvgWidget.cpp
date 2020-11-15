@@ -7,6 +7,17 @@ ScoreSvgWidget::ScoreSvgWidget(QWidget *parent)
 {
 
 }
+
+bool ScoreSvgWidget::print(QPrinter* printer)
+{
+    QPainter painter;
+    if (!painter.begin(printer))
+        return false;
+
+    renderer()->render(&painter);
+    painter.end();
+    return true;
+}
 #if 0
 void ScoreSvgWidget::dumpImage(const QString &outfileName)
 {

@@ -11,16 +11,18 @@ PreferencesMenu::PreferencesMenu(QWidget* parent)
 
     addAction(&playeraction);
     addAction(&synthaction);
+#if 0
     addAction(&compileraction);
     vieweraction.setText(tr("Score viewer"));
     addAction(&vieweraction);
+#endif
     addAction(&resetaction);
 
-    connect(&compileraction, &QAction::triggered, this, &PreferencesMenu::onCompilerActionTriggered);
+//    connect(&compileraction, &QAction::triggered, this, &PreferencesMenu::onCompilerActionTriggered);
     connect(&playeraction, &QAction::triggered, this, &PreferencesMenu::onPlayerActionTriggered);
     connect(&synthaction, &QAction::triggered, this, &PreferencesMenu::onSynthActionTriggered);
     connect(&resetaction, &QAction::triggered, this, &PreferencesMenu::onResetActionTriggered);
-    connect(&vieweraction, &QAction::triggered, this, &PreferencesMenu::onViewerActionTriggered);
+//    connect(&vieweraction, &QAction::triggered, this, &PreferencesMenu::onViewerActionTriggered);
 }
 
 PreferencesMenu::~PreferencesMenu()

@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QSpinBox>
 #include <QDir>
+//#include "abcm2ps.h"
 
 EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	: QVBoxLayout(parent),
@@ -311,11 +312,11 @@ void EditVBoxLayout::onRunClicked()
     tempFile.write(tosave.toUtf8());
     tempFile.close();
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
-	QVariant compiler = settings.value(COMPILER_KEY);
-	QString program = compiler.toString();
-	QStringList argv = program.split(" ");
-	program = argv.at(0);
-    argv.removeAt(0);
+    QVariant compiler = settings.value(COMPILER_KEY);
+    QString program = compiler.toString();
+    QStringList argv = program.split(" ");
+    program = argv.at(0);
+    argv.removeAt(0); /* comment this line if using library version */
 
     argv << "-v";
     argv << "-e" << QString::number(xspinbox.value());
@@ -325,9 +326,21 @@ void EditVBoxLayout::onRunClicked()
     argv << tempFile.fileName();
 
     QFileInfo info(tempFile.fileName());
-	QDir dir = info.absoluteDir();
-
-	spawnCompiler(program, argv, dir);
+    QDir dir = info.absoluteDir();
+#if 0
+    char **av = (char**)malloc(argv.length());
+    for (int i = 0; i < argv.length(); i++) {
+        QString s = argv.at(i);
+        QByteArray ba = s.toUtf8();
+        av[i] = (char*)malloc(ba.length());
+        memcpy(av[i], ba.constData(), ba.length());
+        av[i][ba.length()] = '\0';
+    }
+    int ret = abcm2ps(argv.length(), av);
+    emit compilerFinished(ret);
+#else
+    spawnCompiler(program, argv, dir);
+#endif
 }
 
 void EditVBoxLayout::onCompileFinished(int exitCode)

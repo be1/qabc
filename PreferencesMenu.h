@@ -41,10 +41,12 @@ protected slots:
     void onViewerActionTriggered();
 
 private:
-	PSPrefAction compileraction;
     MIDIPrefAction playeraction;
     SynthPrefAction synthaction;
     ResetAction resetaction;
+#if 0
+    PSPrefAction compileraction;
     QAction vieweraction;
+#endif
 };
 #endif

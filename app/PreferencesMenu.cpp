@@ -108,8 +108,6 @@ void PreferencesMenu::onResetActionTriggered()
 {
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
 
-    settings.setValue(SVG_KEY, ABCM2SVG);
-
     settings.setValue(COMPILER_KEY, ABCM2PS);
 
     settings.setValue(PLAYER_KEY, ABC2MIDI);

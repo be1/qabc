@@ -9,7 +9,7 @@
         <translation>QAbc</translation>
     </message>
     <message>
-        <location filename="AbcMainWindow.cpp" line="12"/>
+        <location filename="AbcMainWindow.cpp" line="11"/>
         <source>Idle</source>
         <translation>Rien à faire</translation>
     </message>
@@ -41,72 +41,67 @@
 <context>
     <name>EditVBoxLayout</name>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="23"/>
+        <location filename="EditVBoxLayout.cpp" line="25"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="217"/>
+        <location filename="EditVBoxLayout.cpp" line="233"/>
         <source>Generating MIDI for playing.</source>
         <translation>Génération du MIDI pour jouer.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="237"/>
+        <location filename="EditVBoxLayout.cpp" line="253"/>
         <source>Stopping synthesis.</source>
         <translation>Arrêt de la synthèse.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="248"/>
+        <location filename="EditVBoxLayout.cpp" line="264"/>
         <source>Error during MIDI generation.</source>
         <translation>Erreur pendant la génération du MIDI.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="253"/>
+        <location filename="EditVBoxLayout.cpp" line="269"/>
         <source>MIDI generation finished.</source>
         <translation>Génération du MIDI terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="267"/>
+        <location filename="EditVBoxLayout.cpp" line="283"/>
         <source>Starting synthesis...</source>
         <translation>Démarrage de la synthèse...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="277"/>
+        <location filename="EditVBoxLayout.cpp" line="293"/>
         <source>Synthesis finished.</source>
         <translation>Synthèse terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="292"/>
+        <location filename="EditVBoxLayout.cpp" line="310"/>
         <source>Generating score...</source>
         <translation>Génération de la partition...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="315"/>
-        <source>Refresh &amp;view</source>
-        <translation>Rafraîchir la &amp;vue</translation>
-    </message>
-    <message>
-        <location filename="EditVBoxLayout.cpp" line="320"/>
+        <location filename="EditVBoxLayout.cpp" line="353"/>
         <source>Error during score generation.</source>
         <translation>Erreur pendant la génération de la partition.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="324"/>
+        <location filename="EditVBoxLayout.cpp" line="357"/>
         <source>Score generated.</source>
         <translation>Patition générée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="342"/>
+        <location filename="EditVBoxLayout.cpp" line="380"/>
         <source>Starting viewer...</source>
         <translation>Démarrage du visualiseur...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="351"/>
+        <location filename="EditVBoxLayout.cpp" line="391"/>
         <source>Viewer closed.</source>
         <translation>Visualiseur fermé.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="358"/>
+        <location filename="EditVBoxLayout.cpp" line="398"/>
         <source>&amp;View score</source>
         <translation>&amp;Voir la partition</translation>
     </message>
@@ -193,56 +188,56 @@ QAbc version </translation>
         <translation>Préférences</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="15"/>
+        <location filename="PreferencesMenu.cpp" line="16"/>
         <source>Score viewer</source>
         <oldsource>Viewer</oldsource>
         <translation>Visualiseur de partition</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="38"/>
         <location filename="PreferencesMenu.cpp" line="40"/>
+        <location filename="PreferencesMenu.cpp" line="42"/>
         <source>Compiler preference</source>
         <translation>Préférence du compilateur</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="38"/>
         <location filename="PreferencesMenu.cpp" line="40"/>
+        <location filename="PreferencesMenu.cpp" line="42"/>
         <source>Compiler:</source>
         <translation>Compilateur :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="95"/>
         <location filename="PreferencesMenu.cpp" line="97"/>
+        <location filename="PreferencesMenu.cpp" line="99"/>
         <source>PS viewer preference</source>
         <translation>Préférence du visualiseur PS</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="95"/>
         <location filename="PreferencesMenu.cpp" line="97"/>
+        <location filename="PreferencesMenu.cpp" line="99"/>
         <source>PS Viewer:</source>
         <translation>Visualiseur PS :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="57"/>
         <location filename="PreferencesMenu.cpp" line="59"/>
+        <location filename="PreferencesMenu.cpp" line="61"/>
         <source>Player preference</source>
         <translation>Préférence du joueur</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="57"/>
         <location filename="PreferencesMenu.cpp" line="59"/>
+        <location filename="PreferencesMenu.cpp" line="61"/>
         <source>Player:</source>
         <translation>Joueur :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="76"/>
         <location filename="PreferencesMenu.cpp" line="78"/>
+        <location filename="PreferencesMenu.cpp" line="80"/>
         <source>Synth preference</source>
         <translation>Préférence du synthétiseur</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="76"/>
         <location filename="PreferencesMenu.cpp" line="78"/>
+        <location filename="PreferencesMenu.cpp" line="80"/>
         <source>Synth:</source>
         <translation>Synthétiseur :</translation>
     </message>
@@ -342,11 +337,21 @@ QAbc version </translation>
     </message>
 </context>
 <context>
-    <name>ViewVBoxLayout</name>
+    <name>ViewVSplitter</name>
     <message>
-        <location filename="ViewVBoxLayout.cpp" line="7"/>
-        <source>Clear log</source>
-        <translation>Nettoyer le log</translation>
+        <location filename="ViewVSplitter.cpp" line="12"/>
+        <source>Previous</source>
+        <translation>Précédent</translation>
+    </message>
+    <message>
+        <location filename="ViewVSplitter.cpp" line="13"/>
+        <source>Print</source>
+        <translation>Imprimer</translation>
+    </message>
+    <message>
+        <location filename="ViewVSplitter.cpp" line="14"/>
+        <source>Next</source>
+        <translation>Suivant</translation>
     </message>
 </context>
 <context>

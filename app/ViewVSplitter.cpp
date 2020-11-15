@@ -6,6 +6,8 @@
 #include <QPrintDialog>
 #include <QPrinter>
 #include <QPrinterInfo>
+#include <QPainter>
+#include <QSvgRenderer>
 
 ViewVSplitter::ViewVSplitter(QWidget* parent)
     : QSplitter(parent)
@@ -65,29 +67,31 @@ LogView *ViewVSplitter::logView()
     return &logview;
 }
 
-void ViewVSplitter::initBasename(const QString &b)
+void ViewVSplitter::initBasename(const QString &b, const QString &d)
 {
     qDebug() << "check" << b;
     basename = b;
+    basedir = d;
     currentpage = 0;
     for (int i = 1; i <= 999; i++) {
         QString nnn = QString::asprintf("%03d", i);
-        QString temp(b);
+        QString temp(d + QDir::separator() + b);
         temp += nnn;
         temp += ".svg";
         if (!QFile::exists(temp)) {
             lastpage = i - 1;
             break;
         }
+        svgnames.append(temp);
     }
 }
 
-void ViewVSplitter::requestPage(int i) {
+bool ViewVSplitter::requestPage(int i) {
     int page = i + currentpage;
     if (page > 0 && page <= lastpage) {
         currentpage = page;
         QString nnn = QString::asprintf("%03d", page);
-        QString temp(basename);
+        QString temp(basedir + QDir::separator() + basename);
         temp += nnn;
         temp += ".svg";
         svgWidget()->load(temp);
@@ -101,7 +105,17 @@ void ViewVSplitter::requestPage(int i) {
             next.setEnabled(true);
         else
             next.setEnabled(false);
+        return true;
     }
+
+    return false;
+}
+
+void ViewVSplitter::cleanup()
+{
+    svgnames.clear();
+    svgwidget.load(QString());
+    initBasename(QString(), QString());
 }
 
 ScoreSvgWidget *ViewVSplitter::svgWidget()
@@ -123,14 +137,25 @@ void ViewVSplitter::printClicked()
     QPrintDialog dialog(&printer, this);
     if (dialog.exec() == QDialog::Accepted) {
         if (printer.isValid()) {
-            if (!svgwidget.print(&printer)) {
-                QPrinterInfo info(printer);
-                qWarning() << "printerinfo definition null:" << info.isNull();
-                qWarning() << "printerinfo state error:" << (info.state() == QPrinter::Error);
+            QPainter painter;
+            if (!painter.begin(&printer)) {
+                qWarning() << "Could not start printing";
+                return;
             }
-        } else {
-            qWarning() << "invalid printer object";
+
+            requestPage(-currentpage +1);
+            for (int i = 0; i < svgnames.length(); i++) {
+                svgwidget.renderer()->render(&painter);
+                if (i < svgnames.length() - 1) {
+                    requestPage(1);
+                    printer.newPage();
+                }
+            }
+            painter.end();
+            requestPage(-currentpage +1);
         }
+    } else {
+        qWarning() << "invalid printer object";
     }
 }
 

@@ -135,6 +135,7 @@ void ScoreMenu::onCloseActionTriggered()
     int cur = edittabs->currentIndex();
     if (cur >= 0)
         edittabs->removeTab(cur);
+    a->mainWindow()->mainHSplitter()->viewWidget()->cleanup();
 }
 
 void ScoreMenu::onNewActionTriggered()

@@ -17,10 +17,11 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	hboxlayout(parent),
 	xspinbox(parent),
 	xlabel(parent),
-    fileName(fileName),
-    tempFile("XXXXXX.abc")
+    fileName(fileName)
 {
     setObjectName("EditVBoxLayout:" + fileName);
+    QString t = QDir::tempPath() + QDir::separator() + "qabc-XXXXXX.abc";
+	tempFile.setFileTemplate(t);
     xspinbox.setMinimum(1);
 	xlabel.setText(tr("X:"));
 	xlabel.setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -50,16 +51,20 @@ EditVBoxLayout::~EditVBoxLayout()
 {
 #if 1
     /* cleanup files manually */
+    qDebug() << "cleaning MIDI for" << tempFile.fileName();
     QString temp(tempFile.fileName());
     temp.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid");
     if (QFileInfo::exists(temp))
         QFile::remove(temp);
-
+#if 0
+    qDebug() << "cleaning ps for" << tempFile.fileName();
     temp = tempFile.fileName();
     temp.replace(QRegularExpression("\\.abc$"), ".ps");
     if (QFileInfo::exists(temp))
         QFile::remove(temp);
+#endif
 
+    qDebug() << "cleaning SVG for" << tempFile.fileName();
     for (int i = 1; i < 999; i++) {
         temp = tempFile.fileName();
         temp.replace(QRegularExpression("\\.abc$"), QString::asprintf("%03d.svg", i));
@@ -356,8 +361,9 @@ void EditVBoxLayout::onCompileFinished(int exitCode)
 
     a->mainWindow()->statusBar()->showMessage(tr("Score generated."));
     QFileInfo info(tempFile);
-    QString temp(info.baseName());
-    a->mainWindow()->mainHSplitter()->viewWidget()->initBasename(temp);
+    QString b(info.baseName());
+    QString d = info.dir().absolutePath();
+    a->mainWindow()->mainHSplitter()->viewWidget()->initBasename(b, d);
     a->mainWindow()->mainHSplitter()->viewWidget()->requestPage(1);
 
     runpushbutton.setEnabled(true);

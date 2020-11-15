@@ -18,8 +18,9 @@ public:
     ScoreSvgWidget* svgWidget();
     LogView *logView();
 
-    void initBasename(const QString& b);
-    void requestPage(int page);
+    void initBasename(const QString& b, const QString& d);
+    bool requestPage(int page);
+    void cleanup();
 
 protected slots:
     void prevPageClicked();
@@ -37,5 +38,7 @@ private:
     int currentpage = 0;
     int lastpage = 0;
     QString basename;
+    QString basedir;
+    QStringList svgnames;
 };
 #endif

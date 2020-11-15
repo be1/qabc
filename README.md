@@ -2,11 +2,11 @@
 ABC music notation minimal GUI, the SVG version (toward v2)
 
 ## Dependencies
-QAbc uses third-party softwares to generate MIDI, AUDIO, and PostScript files. Without them, QAbc would be very poor (only a little fancy text editor). So, please install them:
+QAbc uses third-party softwares to generate MIDI, AUDIO, and SVG files. Without them, QAbc would be very poor (only a little fancy text editor). So, please install them:
 - abc2midi
 - fluidsynth (CLI)
-- pangocairo
-- pangoft2
+- pangocairo (library)
+- pangoft2 (library)
 
 ## Screenshot
 http://brouits.free.fr/images/qabc_v2alpha.png

@@ -51,6 +51,7 @@ void EditTabWidget::onCurrentChanged(int index)
         if (editwidgetlist.at(i) == swidget) {
             currenteditwidget = editwidgetlist.at(i);
             qDebug() << "currentTab: " << index << (*currenteditwidget->fileName()) << i;
+            currenteditwidget->editVBoxLayout()->onRunClicked();
             break;
         }
     }

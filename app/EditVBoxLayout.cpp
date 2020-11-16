@@ -93,7 +93,7 @@ void EditVBoxLayout::setFileName(const QString &fn)
     fileName = fn;
 }
 
-void EditVBoxLayout::cleanup()
+void EditVBoxLayout::cleanupProcesses()
 {
     /* early kill in case  we quit the app brutally */
     for (int i = 0; i < processlist.length(); i++)
@@ -232,6 +232,9 @@ bool EditVBoxLayout::checkViewer()
 void EditVBoxLayout::onPlayClicked()
 {
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
+    if (a->isQuit())
+        return;
+
     if (playpushbutton.isPlay()) {
         a->mainWindow()->statusBar()->showMessage(tr("Generating MIDI for playing."));
         playpushbutton.flip();
@@ -263,6 +266,9 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
 {
     qDebug() << "play" << exitCode;
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
+    if (a->isQuit())
+        return;
+
     if (exitCode) {
         a->mainWindow()->statusBar()->showMessage(tr("Error during MIDI generation."));
         playpushbutton.flip();
@@ -310,6 +316,9 @@ void EditVBoxLayout::onRunClicked()
     /* do not disable/enable xspinbox because Play manages it for audio rendering! */
 
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
+    if (a->isQuit())
+        return;
+
     a->mainWindow()->statusBar()->showMessage(tr("Generating score..."));
     QString tosave = abcPlainTextEdit()->toPlainText();
     tempFile.open();

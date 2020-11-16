@@ -23,7 +23,7 @@ public:
     PlayPushButton *playPushButton();
     RunPushButton *runPushButton();
     void setFileName(const QString& fn);
-    void cleanup();
+    void cleanupProcesses();
 
     void spawnCompiler(const QString &prog, const QStringList &args, const QDir& wrk);
 #if 0
@@ -45,11 +45,12 @@ protected:
     void killSynth();
     bool checkViewer();
 
-protected slots:
+public slots:
     void onXChanged(int value);
     void onPlayClicked(); /* midi */
     void onRunClicked(); /* svg */
 
+protected slots:
     void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType);
     void onProgramOutputText(const QByteArray& text);
     void onProgramErrorText(const QByteArray& text);

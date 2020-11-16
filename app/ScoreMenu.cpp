@@ -40,7 +40,7 @@ void ScoreMenu::onQuitActionTriggered()
     int len = tabs->editWidgetList()->length();
     for (int i = 0; i < len; i++ ) {
         EditWidget *w = tabs->editWidgetList()->at(i);
-        w->editVBoxLayout()->cleanup();
+        w->editVBoxLayout()->cleanupProcesses();
     }
 #endif
     a->quit();

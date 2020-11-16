@@ -59,5 +59,18 @@ void AbcApplication::openFileNames(const QStringList &fileNames)
 			edit->setPlainText(file.readAll());
 			file.close();
 		}
-	}
+    }
+}
+
+bool AbcApplication::isquit = false;
+
+void AbcApplication::quit()
+{
+    AbcApplication::isquit = true;
+    QApplication::quit();
+}
+
+bool AbcApplication::isQuit()
+{
+    return AbcApplication::isquit;
 }

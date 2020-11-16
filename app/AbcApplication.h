@@ -15,8 +15,13 @@ public:
 
 	void setMainWindow(AbcMainWindow* w);
 	AbcMainWindow *mainWindow();
-	void openFileNames(const QStringList& fileNames);
+    void openFileNames(const QStringList& fileNames);
+    static bool isQuit();
+public slots:
+    static void quit();
+
 private:
-	AbcMainWindow *abcmainwindow;
+    AbcMainWindow *abcmainwindow;
+    static bool isquit;
 };
 #endif

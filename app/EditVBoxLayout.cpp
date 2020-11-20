@@ -7,7 +7,9 @@
 #include <QSpinBox>
 #include <QDir>
 #include <QStandardPaths>
-//#include "../abcm2ps/abcm2ps.h"
+#ifdef USE_LIBABCM2PS
+#include "../abcm2ps/abcm2ps.h"
+#endif
 
 EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	: QVBoxLayout(parent),
@@ -329,11 +331,12 @@ void EditVBoxLayout::onRunClicked()
     QString program = compiler.toString();
     QStringList argv = program.split(" ");
     program = argv.at(0);
-    argv.removeAt(0); /* comment this line if using library version */
-
+#ifndef USE_LIBABCM2PS
+    argv.removeAt(0);
+#endif
     argv << "-v";
-    argv << "-N1";
     argv << "-e" << QString::number(xspinbox.value());
+    argv << "-N1";
     QString temp(tempFile.fileName());
     temp.replace(QRegularExpression("\\.abc$"), ".svg"); /* but remind, output will be tempNNN.svg */
     argv << "-O" << temp;
@@ -341,7 +344,7 @@ void EditVBoxLayout::onRunClicked()
 
     QFileInfo info(tempFile.fileName());
     QDir dir = info.absoluteDir();
-#if 0
+#ifdef USE_LIBABCM2PS
 	QString s;
 	QByteArray ba;
     char **av = (char**)malloc(argv.length() * sizeof (char*));

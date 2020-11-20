@@ -7,7 +7,7 @@ EditWidget::EditWidget(const QString& fileName, QWidget *parent)
       filename(fileName)
 {
 	setObjectName("EditWidget:" + fileName);
-	setLayout(&editvboxlayout);
+    setLayout(&editvboxlayout);
 }
 
 EditWidget::~EditWidget()

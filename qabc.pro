@@ -1,3 +1,3 @@
 include(common.pri)
 TEMPLATE = subdirs
-SUBDIRS += app abcm2ps
+SUBDIRS += abcm2ps app

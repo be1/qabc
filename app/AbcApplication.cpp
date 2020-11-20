@@ -2,6 +2,7 @@
 #include <QSettings>
 #include <QDebug>
 #include "config.h"
+#include "../abcm2ps/abcm2ps.h"
 
 AbcApplication::AbcApplication(int& argc, char **argv)
 	: QApplication(argc, argv)
@@ -30,6 +31,8 @@ AbcApplication::AbcApplication(int& argc, char **argv)
         settings.setValue(VIEWER_KEY, PSVIEWER);
 
     settings.sync();
+
+	abcminit();
 }
 
 AbcApplication::~AbcApplication()

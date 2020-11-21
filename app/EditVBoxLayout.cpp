@@ -51,6 +51,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     strncpy(drv, ba.constData(), ba.length());
     drv[ba.length()] = 0;
 
+    qDebug() << fileName << drv;
     fluid_settings = new_fluid_settings();
     fluid_settings_setstr(fluid_settings, "audio.driver", drv);
     fluid_settings_setint(fluid_settings, "audio.jack.autoconnect", 1);
@@ -63,8 +64,25 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     id[ba.length()] = 0;
     fluid_settings_setstr(fluid_settings, "audio.jack.id", id);
 
+    qDebug() << id << drv;
+
     fluid_synth = new_fluid_synth(fluid_settings);
     fluid_adriver = new_fluid_audio_driver(fluid_settings, fluid_synth);
+
+    QVariant soundfont = settings.value(SOUNDFONT_KEY);
+    ba = soundfont.toString().toUtf8();
+    char * sf = (char*) malloc(ba.length() + 1);
+    strncpy(sf, ba.constData(), ba.length());
+    sf[ba.length()] = 0;
+    qDebug() << "soundfont:" << sf;
+    fluid_sfont_t* f = fluid_synth_get_sfont_by_id(fluid_synth, sfid);
+    if (f)
+        fluid_synth_sfunload(fluid_synth, sfid, 0);
+    int fid = fluid_synth_sfload(fluid_synth, sf, 0);
+    if (fid == FLUID_FAILED)
+        qWarning() << "Cannot load soundfont:" << sf;
+    else
+        sfid = fid;
 }
 
 
@@ -162,7 +180,6 @@ void EditVBoxLayout::spawnProgram(const QString& prog, const QStringList& args, 
 
 void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType which)
 {
-	//qDebug() << exitStatus;
     switch (which) {
     case AbcProcess::ProcessPlayer:
         emit playerFinished(exitCode); break;
@@ -228,6 +245,7 @@ void EditVBoxLayout::onPlayClicked()
         QFileInfo info(tempFile.fileName());
         QDir dir = info.absoluteDir();
 
+        /* despite the name, Player is abc2midi MIDI generator */
         spawnPlayer(program, argv, dir);
     } else {
         a->mainWindow()->statusBar()->showMessage(tr("Stopping synthesis..."));
@@ -251,7 +269,7 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
 
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
 
-#if 1
+#if 0
     QVariant driver = settings.value(DRIVER_KEY);
     QByteArray ba = driver.toString().toUtf8();
     char * drv = (char*) malloc (ba.length() + 1);
@@ -261,29 +279,14 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
     fluid_settings_setstr(fluid_settings, "audio.driver", drv);
 #endif
 
-    //QByteArray ba;
-    QVariant soundfont = settings.value(SOUNDFONT_KEY);
-    ba = soundfont.toString().toUtf8();
-    char * sf = (char*) malloc(ba.length() + 1);
-    strncpy(sf, ba.constData(), ba.length());
-    sf[ba.length()] = 0;
-    qDebug() << "soundfont:" << sf;
-    fluid_sfont_t* f = fluid_synth_get_sfont_by_id(fluid_synth, sfid);
-    if (f)
-        fluid_synth_sfunload(fluid_synth, sfid, 0);
-    int fid = fluid_synth_sfload(fluid_synth, sf, 0);
-    if (fid == FLUID_FAILED)
-        qWarning() << "Cannot load soundfont:" << sf;
-    else
-        sfid = fid;
 
-#if 1
+#if 0
     if (fluid_adriver)
         delete_fluid_audio_driver(fluid_adriver);
     fluid_adriver = new_fluid_audio_driver(fluid_settings, fluid_synth);
 #endif
     fluid_synth_set_gain(fluid_synth, 1.0);
-
+#if 1
     if (fluid_player) {
         fluid_player_stop(fluid_player);
         fluid_player_join(fluid_player);
@@ -291,11 +294,13 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
     }
 
     fluid_player = new_fluid_player(fluid_synth);
+#endif
     if (waiter && waiter->isFinished())
             delete waiter;
     waiter = new TuneWaiter(fluid_player, this);
     connect(waiter, &TuneWaiter::playerFinished, this, &EditVBoxLayout::onSynthFinished);
 
+    QByteArray ba;
     QString midifile(tempFile.fileName());
     midifile.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid");
     ba = midifile.toUtf8();

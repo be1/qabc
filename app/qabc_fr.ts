@@ -192,7 +192,7 @@ QAbc version </translation>
         <location filename="PreferencesMenu.cpp" line="35"/>
         <location filename="PreferencesMenu.cpp" line="37"/>
         <source>Audio driver:</source>
-        <translation>Pilot audio :</translation>
+        <translation>Pilote audio :</translation>
     </message>
     <message>
         <location filename="PreferencesMenu.cpp" line="54"/>
@@ -245,7 +245,7 @@ QAbc version </translation>
         <location filename="ResetAction.cpp" line="6"/>
         <source>Reset settings</source>
         <oldsource>Reset</oldsource>
-        <translation>Remettre les préférences d&apos;origine</translation>
+        <translation>Mettre les préférences d&apos;origine</translation>
     </message>
 </context>
 <context>

@@ -25,11 +25,11 @@ AbcApplication::AbcApplication(int& argc, char **argv)
     QVariant player = settings.value(PLAYER_KEY);
 	if (!player.isValid())
 		settings.setValue(PLAYER_KEY, ABC2MIDI);
-
-	QVariant synth = settings.value(SYNTH_KEY);
-	if (!synth.isValid())
-		settings.setValue(SYNTH_KEY, FLUIDSYNTH);
-
+#ifndef USE_LIBABCM2PS
+    QVariant compiler = settings.value(COMPILER_KEY);
+	if (!compiler.isValid())
+		settings.setValue(COMPILER_KEY, ABCM2PS);
+#endif
     settings.sync();
 
 	abcminit();

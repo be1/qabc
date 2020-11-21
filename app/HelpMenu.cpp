@@ -1,6 +1,7 @@
 #include "HelpMenu.h"
 #include "config.h"
 #include <QMessageBox>
+#include "AbcApplication.h"
 
 HelpMenu::HelpMenu(QWidget* parent)
 	: QMenu(parent)
@@ -18,10 +19,12 @@ HelpMenu::~HelpMenu()
 
 void HelpMenu::onAboutActionTriggered()
 {
-    QMessageBox::about(this, tr("ABC score editor"), tr("\nQAbc version ") + VERSION + " (" + REVISION + ")\n" +tr( "Copyright © 2020 Benoît Rouits <brouits@free.fr>"));
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    QMessageBox::about(a->mainWindow(), tr("ABC score editor"), tr("\nQAbc version ") + VERSION + " (" + REVISION + ")\n" +tr( "Copyright © 2020 Benoît Rouits <brouits@free.fr>"));
 }
 
 void HelpMenu::onAboutQtActionTriggered()
 {
-    QMessageBox::aboutQt(this, tr("ABC score editor"));
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    QMessageBox::aboutQt(a->mainWindow(), tr("ABC score editor"));
 }

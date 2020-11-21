@@ -35,6 +35,9 @@ ScoreMenu::~ScoreMenu()
 void ScoreMenu::onQuitActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    if (QMessageBox::StandardButton::No == QMessageBox::question(a->mainWindow(), tr("Really quit?"), tr("Do you really want to quit?")))
+        return;
+
 #if 1
     EditTabWidget* tabs = a->mainWindow()->mainHSplitter()->editTabWidget();
     int len = tabs->editWidgetList()->length();

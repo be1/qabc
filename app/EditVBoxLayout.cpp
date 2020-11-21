@@ -93,7 +93,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 EditVBoxLayout::~EditVBoxLayout()
 {
     /* stoppping synthesis */
-    if (waiter)
+    if (waiter && waiter->isRunning())
         waiter->terminate();
     if (fluid_player) {
         fluid_player_stop(fluid_player);
@@ -370,8 +370,12 @@ void EditVBoxLayout::onRunClicked()
     tempFile.write(tosave.toUtf8());
     tempFile.close();
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+#ifndef USE_LIBABCM2PS
     QVariant compiler = settings.value(COMPILER_KEY);
     QString program = compiler.toString();
+#else
+	QString program("abcm2ps");
+#endif
     QStringList argv = program.split(" ");
     program = argv.at(0);
 #ifndef USE_LIBABCM2PS

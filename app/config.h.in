@@ -10,14 +10,11 @@
 #define SETTINGS_DOMAIN \"Herewe\"
 #define SETTINGS_APP \"QAbc\"
 
-#define COMPILER_KEY \"ABC/compiler\"
-#define ABCM2PS \"$$DATADIR\" \"/qabc/abcm2ps/abcm2ps\"
-
 #define PLAYER_KEY \"ABC/player\"
 #define ABC2MIDI \"/usr/bin/abc2midi\"
 
-#define SYNTH_KEY \"ABC/synth\"
-#define FLUIDSYNTH \"/usr/bin/fluidsynth --no-shell --audio-driver=alsa /usr/share/sounds/sf2/FluidR3_GM.sf2\"
+#define COMPILER_KEY \"ABC/compiler\"
+#define ABCM2PS \"$$DATADIR\" \"/$$TARGET/\" \"abcm2ps/abcm2ps\"
 
 #define DRIVER_KEY	\"ABC/driver\"
 #define ALSA	\"alsa\"

@@ -21,7 +21,6 @@ protected slots:
     void onAdriverActionTriggered();
     void onSfontActionTriggered();
     void onResetActionTriggered();
-    void onSynthActionTriggered();
 
 private:
     MIDIPrefAction playeraction;

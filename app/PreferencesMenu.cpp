@@ -3,6 +3,7 @@
 #include <QSettings>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QFileDialog>
 #include "AbcApplication.h"
 
 PreferencesMenu::PreferencesMenu(QWidget* parent)
@@ -75,14 +76,15 @@ void PreferencesMenu::onSfontActionTriggered()
 
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
 
-    bool ok;
     QString sf;
-    if (!soundfont.isNull())
-        sf = QInputDialog::getText(a->mainWindow(), tr("Audio sound font preference"), tr("Soundfont:"), QLineEdit::Normal, soundfont.toString(), &ok);
-    else
-        sf = QInputDialog::getText(a->mainWindow(), tr("Audio sound font preference"), tr("Soundfont:"), QLineEdit::Normal, DEB_SF2_GM, &ok);
+    if (!soundfont.isNull()) {
+        QFileInfo info(soundfont.toString());
+        sf = QFileDialog::getOpenFileName(a->mainWindow(), tr("Audio sound font preference"),info.absolutePath(), tr("Soundfont (*.sf[23])"));
+    } else {
+        sf = QFileDialog::getOpenFileName(a->mainWindow(), tr("Audio sound font preference"), QDir::homePath(), tr("Soundfont (*.sf[23])"));
+    }
 
-    if (!ok)
+    if (sf.isNull())
         return;
 
     settings.setValue(SOUNDFONT_KEY, sf);

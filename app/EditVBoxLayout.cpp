@@ -20,7 +20,11 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	xspinbox(parent),
 	xlabel(parent),
     fileName(fileName),
-    waiter(nullptr)
+    waiter(nullptr),
+	mf(nullptr),
+	id(nullptr),
+	drv(nullptr),
+	sf(nullptr)
 {
     setObjectName("EditVBoxLayout:" + fileName);
     QString t = QDir::tempPath() + QDir::separator() + "qabc-XXXXXX.abc";
@@ -47,7 +51,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
     QByteArray ba;
     ba = settings.value(DRIVER_KEY).toString().toUtf8();
-    char *drv = (char*) malloc (ba.length() + 1);
+    drv = (char*) malloc (ba.length() + 1);
     strncpy(drv, ba.constData(), ba.length());
     drv[ba.length()] = 0;
 
@@ -59,7 +63,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     QFileInfo info(fileName);
     QString name = "qabc-" + info.baseName();
     ba = name.toUtf8();
-    char * id = (char*) malloc(ba.length() + 1);
+    id = (char*) malloc(ba.length() + 1);
     strncpy(id, ba.constData(), ba.length());
     id[ba.length()] = 0;
     fluid_settings_setstr(fluid_settings, "audio.jack.id", id);
@@ -71,7 +75,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 
     QVariant soundfont = settings.value(SOUNDFONT_KEY);
     ba = soundfont.toString().toUtf8();
-    char * sf = (char*) malloc(ba.length() + 1);
+    sf = (char*) malloc(ba.length() + 1);
     strncpy(sf, ba.constData(), ba.length());
     sf[ba.length()] = 0;
     qDebug() << "soundfont:" << sf;
@@ -100,6 +104,10 @@ EditVBoxLayout::~EditVBoxLayout()
     delete_fluid_audio_driver(fluid_adriver);
     delete_fluid_synth(fluid_synth);
     delete_fluid_settings(fluid_settings);
+    free(id);
+    free(drv);
+    free(sf);
+	free(mf);
 
     /* cleanup files manually */
     qDebug() << "cleaning MIDI for" << tempFile.fileName();
@@ -300,14 +308,16 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
     waiter = new TuneWaiter(fluid_player, this);
     connect(waiter, &TuneWaiter::playerFinished, this, &EditVBoxLayout::onSynthFinished);
 
-    QByteArray ba;
-    QString midifile(tempFile.fileName());
-    midifile.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid");
-    ba = midifile.toUtf8();
-    char* mf = (char*) malloc(ba.length() + 1);
-    strncpy(mf, ba.constData(), ba.length());
-    mf[ba.length()] = 0;
-    qDebug() << "midifile:" << mf;
+	/* midi file can change from tune (xspinbox) index */
+	QByteArray ba;
+	QString midifile(tempFile.fileName());
+	midifile.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid");
+	ba = midifile.toUtf8();
+	mf = (char*) realloc(mf, ba.length() + 1);
+	strncpy(mf, ba.constData(), ba.length());
+	mf[ba.length()] = 0;
+	qDebug() << "midifile:" << mf;
+
     if (FLUID_FAILED == fluid_player_add(fluid_player, mf))
             qWarning() << "Cannot not add MIDI file:" << mf;
 

@@ -42,7 +42,6 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	connect(&runpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onRunClicked);
 
 	connect(this, &EditVBoxLayout::playerFinished, this, &EditVBoxLayout::onPlayFinished);
-//	connect(this, &EditVBoxLayout::synthFinished, this, &EditVBoxLayout::onSynthFinished);
     connect(this, &EditVBoxLayout::compilerFinished, this, &EditVBoxLayout::onCompileFinished);
 
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
@@ -55,6 +54,15 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     fluid_settings = new_fluid_settings();
     fluid_settings_setstr(fluid_settings, "audio.driver", drv);
     fluid_settings_setint(fluid_settings, "audio.jack.autoconnect", 1);
+
+    QFileInfo info(fileName);
+    QString name = "qabc-" + info.baseName();
+    ba = name.toUtf8();
+    char * id = (char*) malloc(ba.length() + 1);
+    strncpy(id, ba.constData(), ba.length());
+    id[ba.length()] = 0;
+    fluid_settings_setstr(fluid_settings, "audio.jack.id", id);
+
     fluid_synth = new_fluid_synth(fluid_settings);
     fluid_adriver = new_fluid_audio_driver(fluid_settings, fluid_synth);
 }
@@ -139,21 +147,14 @@ void EditVBoxLayout::spawnPlayer(const QString& prog, const QStringList &args, c
     w->mainHSplitter()->viewWidget()->logView()->clear();
 	return spawnProgram(prog, args, AbcProcess::ProcessPlayer, wrk);
 }
-#if 0
-void EditVBoxLayout::spawnSynth(const QString &prog, const QStringList& args, const QDir& wrk)
-{
-	return spawnProgram(prog, args, AbcProcess::ProcessSynth, wrk);
-}
-#endif
+
 void EditVBoxLayout::spawnProgram(const QString& prog, const QStringList& args, AbcProcess::ProcessType which, const QDir& wrk)
 {
 	AbcProcess *process = new AbcProcess(which, this);
     process->setWorkingDirectory(wrk.absolutePath());
 	connect(process, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
     connect(process, &AbcProcess::outputText, this, &EditVBoxLayout::onProgramOutputText);
-#if 1
     connect(process, &AbcProcess::errorText, this, &EditVBoxLayout::onProgramErrorText);
-#endif
     processlist.append(process);
 	qDebug() << prog << args;
 	process->start(prog, args);
@@ -167,12 +168,6 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
         emit playerFinished(exitCode); break;
     case AbcProcess::ProcessCompiler:
         emit compilerFinished(exitCode); break;
-#if 0
-    case AbcProcess::ProcessSynth:
-        emit synthFinished(exitCode); break;
-    case AbcProcess::ProcessViewer:
-        emit viewerFinished(exitCode); break;
-#endif
     case AbcProcess::ProcessUnknown:
     default:
         break;
@@ -181,7 +176,6 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
 	/* delete garbage */
 	for (int i = 0; i < processlist.length(); i++) {
 		AbcProcess* proc = processlist.at(i);
-		//qDebug() << proc->state();
 		if (proc->state() == QProcess::NotRunning
 				&& proc->exitCode() == exitCode
 				&& proc->exitStatus() == exitStatus
@@ -203,34 +197,12 @@ void EditVBoxLayout::onProgramOutputText(const QByteArray &text)
 
 void EditVBoxLayout::onProgramErrorText(const QByteArray &text)
 {
-    //onProgramOutputText(text);
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w =  a->mainWindow();
     LogView* lv = w->mainHSplitter()->viewWidget()->logView();
     lv->appendHtml("<b style=\"color: red\">" + QString::fromUtf8(text).replace("\n", "<br />") + "</b>");
 }
 
-#if 0
-void EditVBoxLayout::killSynth()
-{
-    for (int i = 0; i < processlist.length(); i++) {
-        AbcProcess* proc = processlist.at(i);
-        if (proc->state() == QProcess::Running
-                && proc->which() == AbcProcess::ProcessSynth) {
-#if 0
-            QString str = QString::fromUtf8(*proc->log());
-            AbcApplication* a = static_cast<AbcApplication*>(qApp);
-            AbcMainWindow* w =  a->mainWindow();
-            LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
-            lv->appendPlainText(str);
-#endif
-            disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
-            delete proc;
-            processlist.removeAt(i);
-        }
-    }
-}
-#endif
 void EditVBoxLayout::onPlayClicked()
 {
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
@@ -265,7 +237,6 @@ void EditVBoxLayout::onPlayClicked()
 
 void EditVBoxLayout::onPlayFinished(int exitCode)
 {
-    qDebug() << "play" << exitCode;
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     if (a->isQuit())
         return;
@@ -280,6 +251,7 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
 
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
 
+#if 1
     QVariant driver = settings.value(DRIVER_KEY);
     QByteArray ba = driver.toString().toUtf8();
     char * drv = (char*) malloc (ba.length() + 1);
@@ -287,7 +259,9 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
     drv[ba.length()] = 0;
     qDebug() << "driver:" << drv;
     fluid_settings_setstr(fluid_settings, "audio.driver", drv);
+#endif
 
+    //QByteArray ba;
     QVariant soundfont = settings.value(SOUNDFONT_KEY);
     ba = soundfont.toString().toUtf8();
     char * sf = (char*) malloc(ba.length() + 1);
@@ -303,9 +277,11 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
     else
         sfid = fid;
 
+#if 1
     if (fluid_adriver)
         delete_fluid_audio_driver(fluid_adriver);
     fluid_adriver = new_fluid_audio_driver(fluid_settings, fluid_synth);
+#endif
     fluid_synth_set_gain(fluid_synth, 1.0);
 
     if (fluid_player) {
@@ -329,14 +305,6 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
     qDebug() << "midifile:" << mf;
     if (FLUID_FAILED == fluid_player_add(fluid_player, mf))
             qWarning() << "Cannot not add MIDI file:" << mf;
-
-    QFileInfo info(midifile);
-    QString name = info.baseName();
-    ba = name.toUtf8();
-    char * id = (char*) malloc(ba.length() + 1);
-    strncpy(id, ba.constData(), ba.length());
-    id[ba.length()] = 0;
-    fluid_settings_setstr(fluid_settings, "audio.jack.id", id);
 
     fluid_player_play(fluid_player);
     waiter->start();

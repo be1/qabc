@@ -245,7 +245,7 @@ QAbc version </translation>
         <location filename="ResetAction.cpp" line="6"/>
         <source>Reset settings</source>
         <oldsource>Reset</oldsource>
-        <translation>Remettre les préférences à zéro</translation>
+        <translation>Remettre les préférences d&apos;origine</translation>
     </message>
 </context>
 <context>

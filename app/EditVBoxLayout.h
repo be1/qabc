@@ -30,14 +30,12 @@ public:
 
     void spawnCompiler(const QString &prog, const QStringList &args, const QDir& wrk);
     void spawnPlayer(const QString &prog, const QStringList& args, const QDir& wrk);
-    //void spawnSynth(const QString &prog, const QStringList &args, const QDir& wrk);
 
     //static int handle_midi_event(void* data, fluid_midi_event_t *ev);
 
 signals:
     void compilerFinished(int exitCode);
     void playerFinished(int exitCode);
-    //void synthFinished(int exitCode);
 
 protected:
     void spawnProgram(const QString& prog, const QStringList &args, AbcProcess::ProcessType which, const QDir &wrk);

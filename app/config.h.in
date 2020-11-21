@@ -13,16 +13,18 @@
 #define COMPILER_KEY \"ABC/compiler\"
 #define ABCM2PS \"$$DATADIR\" \"/qabc/abcm2ps/abcm2ps\"
 
-#define SVG_KEY \"ABC/svg\"
-#define ABCM2SVG \"/usr/bin/abcm2ps -i\"
-
 #define PLAYER_KEY \"ABC/player\"
 #define ABC2MIDI \"/usr/bin/abc2midi\"
 
 #define SYNTH_KEY \"ABC/synth\"
 #define FLUIDSYNTH \"/usr/bin/fluidsynth --no-shell --audio-driver=alsa /usr/share/sounds/sf2/FluidR3_GM.sf2\"
 
-#define VIEWER_KEY \"ABC/viewer\"
-#define PSVIEWER \"/usr/bin/evince\"
+#define DRIVER_KEY	\"ABC/driver\"
+#define ALSA	\"alsa\"
+#define PULSEAUDIO	\"pulseaudio\"
+#define JACK	\"jack\"
+#define PORTAUDIO	\"portaudio\"
 
+#define SOUNDFONT_KEY \"ABC/soundfont\"
+#define DEB_SF2_GM	\"/usr/share/sounds/sf2/default-GM.sf2\"
 #endif

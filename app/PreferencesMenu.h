@@ -2,8 +2,8 @@
 #define PREFERENCESMENU_H
 
 #include "MIDIPrefAction.h"
-#include "PSPrefAction.h"
-#include "SynthPrefAction.h"
+#include "SfontPrefAction.h"
+#include "AdriverPrefAction.h"
 #include "ResetAction.h"
 #include "config.h"
 #include <QMenu>
@@ -17,19 +17,16 @@ public:
 	~PreferencesMenu();
 
 protected slots:
-    void onCompilerActionTriggered();
     void onPlayerActionTriggered();
-    void onSynthActionTriggered();
+    void onAdriverActionTriggered();
+    void onSfontActionTriggered();
     void onResetActionTriggered();
-    void onViewerActionTriggered();
+    void onSynthActionTriggered();
 
 private:
     MIDIPrefAction playeraction;
-    SynthPrefAction synthaction;
+    AdriverPrefAction adriveraction;
     ResetAction resetaction;
-#if 0
-    PSPrefAction compileraction;
-    QAction vieweraction;
-#endif
+    SfontPrefAction sfontaction;
 };
 #endif

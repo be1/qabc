@@ -2,30 +2,32 @@ include(../common.pri)
 QT += core widgets gui svg printsupport
 TEMPLATE = app
 CONFIG += link_pkgconfig
-PKGCONFIG += pangocairo pangoft2
+PKGCONFIG += pangocairo pangoft2 fluidsynth
 DEFINES += USE_LIBABCM2PS
 TARGET = qabc
 RESOURCES += resources.qrc
 DISTFILES +=  dict.txt config.h.in
 SOURCES = NewAction.cpp OpenAction.cpp SaveAction.cpp SaveasAction.cpp CloseAction.cpp QuitAction.cpp ScoreMenu.cpp PreferencesMenu.cpp AboutAction.cpp AboutqtAction.cpp HelpMenu.cpp AbcPlainTextEdit.cpp PlayPushButton.cpp EditVBoxLayout.cpp EditWidget.cpp EditTabWidget.cpp RunPushButton.cpp AbcMainWindow.cpp AbcApplication.cpp main.cpp \
 	AbcProcess.cpp \
+	AdriverPrefAction.cpp \
 	LogView.cpp \
 	MIDIPrefAction.cpp \
 	MainHSplitter.cpp \
-	PSPrefAction.cpp \
 	ResetAction.cpp \
 	ScoreSvgWidget.cpp \
-	SynthPrefAction.cpp \
+	SfontPrefAction.cpp \
+	TuneWaiter.cpp \
 	ViewVSplitter.cpp
 HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h QuitAction.h ScoreMenu.h PreferencesMenu.h AboutAction.h AboutqtAction.h HelpMenu.h AbcPlainTextEdit.h PlayPushButton.h EditVBoxLayout.h EditWidget.h EditTabWidget.h RunPushButton.h AbcMainWindow.h AbcApplication.h \
 	AbcProcess.h \
+	AdriverPrefAction.h \
 	LogView.h \
 	MIDIPrefAction.h \
 	MainHSplitter.h \
-	PSPrefAction.h \
 	ResetAction.h \
 	ScoreSvgWidget.h \
-	SynthPrefAction.h \
+	SfontPrefAction.h \
+	TuneWaiter.h \
 	ViewVSplitter.h \
 	config.h
 config.input = config.h.in

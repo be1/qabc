@@ -5,11 +5,14 @@
 #include "PlayPushButton.h"
 #include "AbcPlainTextEdit.h"
 #include "AbcProcess.h"
+#include "TuneWaiter.h"
 #include <QVBoxLayout>
 #include <QSpinBox>
 #include <QLabel>
 #include <QDir>
 #include <QTemporaryFile>
+#include <QThread>
+#include <fluidsynth.h>
 
 class EditVBoxLayout: public QVBoxLayout
 {
@@ -26,24 +29,18 @@ public:
     void cleanupProcesses();
 
     void spawnCompiler(const QString &prog, const QStringList &args, const QDir& wrk);
-#if 0
-    void spawnViewer(const QString &prog, const QStringList &args, const QDir& wrk);
-#endif
     void spawnPlayer(const QString &prog, const QStringList& args, const QDir& wrk);
-    void spawnSynth(const QString &prog, const QStringList &args, const QDir& wrk);
+    //void spawnSynth(const QString &prog, const QStringList &args, const QDir& wrk);
+
+    //static int handle_midi_event(void* data, fluid_midi_event_t *ev);
 
 signals:
     void compilerFinished(int exitCode);
-#if 0
-    void viewerFinished(int exitCode);
-#endif
     void playerFinished(int exitCode);
-    void synthFinished(int exitCode);
+    //void synthFinished(int exitCode);
 
 protected:
     void spawnProgram(const QString& prog, const QStringList &args, AbcProcess::ProcessType which, const QDir &wrk);
-    void killSynth();
-    bool checkViewer();
 
 public slots:
     void onXChanged(int value);
@@ -54,12 +51,10 @@ protected slots:
     void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType);
     void onProgramOutputText(const QByteArray& text);
     void onProgramErrorText(const QByteArray& text);
+    void onCompileFinished(int exitCode);
     void onPlayFinished(int exitCode);
     void onSynthFinished(int exitCode);
-    void onCompileFinished(int exitCode);
-#if 0
-    void onViewFinished(int exitCode);
-#endif
+
 private:
 	AbcPlainTextEdit abcplaintextedit;
     PlayPushButton playpushbutton; /* midi */
@@ -70,5 +65,12 @@ private:
     QString fileName;
     QTemporaryFile tempFile;
     QList<AbcProcess*> processlist;
+    TuneWaiter *waiter;
+
+    fluid_settings_t* fluid_settings = NULL;
+    fluid_synth_t* fluid_synth = NULL;
+    fluid_player_t* fluid_player = NULL;
+    fluid_audio_driver_t* fluid_adriver = NULL;
+    int sfid = 0;
 };
 #endif

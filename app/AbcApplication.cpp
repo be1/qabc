@@ -14,21 +14,21 @@ AbcApplication::AbcApplication(int& argc, char **argv)
 
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
 
-	QVariant compiler = settings.value(COMPILER_KEY);
-	if (!compiler.isValid())
-		settings.setValue(COMPILER_KEY, ABCM2PS);
+    QVariant sfont = settings.value(SOUNDFONT_KEY);
+    if (!sfont.isValid())
+        settings.setValue(SOUNDFONT_KEY, DEB_SF2_GM);
 
-	QVariant player = settings.value(PLAYER_KEY);
+    QVariant driver = settings.value(DRIVER_KEY);
+    if (!sfont.isValid())
+        settings.setValue(DRIVER_KEY, ALSA);
+
+    QVariant player = settings.value(PLAYER_KEY);
 	if (!player.isValid())
 		settings.setValue(PLAYER_KEY, ABC2MIDI);
 
 	QVariant synth = settings.value(SYNTH_KEY);
 	if (!synth.isValid())
 		settings.setValue(SYNTH_KEY, FLUIDSYNTH);
-
-    QVariant viewer = settings.value(VIEWER_KEY);
-    if (!viewer.isValid())
-        settings.setValue(VIEWER_KEY, PSVIEWER);
 
     settings.sync();
 

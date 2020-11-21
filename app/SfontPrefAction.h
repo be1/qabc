@@ -3,13 +3,13 @@
 
 #include <QAction>
 
-class PSPrefAction: public QAction
+class SfontPrefAction: public QAction
 {
 	Q_OBJECT
 
 public:
-    PSPrefAction(QWidget* parent = nullptr);
-    ~PSPrefAction();
+    SfontPrefAction(QWidget* parent = nullptr);
+    ~SfontPrefAction();
 
 private:
 };

@@ -10,41 +10,36 @@ PreferencesMenu::PreferencesMenu(QWidget* parent)
 
 
     addAction(&playeraction);
-    addAction(&synthaction);
-#if 0
-    addAction(&compileraction);
-    vieweraction.setText(tr("Score viewer"));
-    addAction(&vieweraction);
-#endif
+    addAction(&adriveraction);
+    addAction(&sfontaction);
     addAction(&resetaction);
 
-//    connect(&compileraction, &QAction::triggered, this, &PreferencesMenu::onCompilerActionTriggered);
     connect(&playeraction, &QAction::triggered, this, &PreferencesMenu::onPlayerActionTriggered);
-    connect(&synthaction, &QAction::triggered, this, &PreferencesMenu::onSynthActionTriggered);
+    connect(&adriveraction, &QAction::triggered, this, &PreferencesMenu::onAdriverActionTriggered);
+    connect(&sfontaction, &QAction::triggered, this, &PreferencesMenu::onSfontActionTriggered);
     connect(&resetaction, &QAction::triggered, this, &PreferencesMenu::onResetActionTriggered);
-//    connect(&vieweraction, &QAction::triggered, this, &PreferencesMenu::onViewerActionTriggered);
 }
 
 PreferencesMenu::~PreferencesMenu()
 {
 }
 
-void PreferencesMenu::onCompilerActionTriggered()
+void PreferencesMenu::onAdriverActionTriggered()
 {
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
-    QVariant compiler = settings.value(COMPILER_KEY);
+    QVariant driver = settings.value(DRIVER_KEY);
 
     bool ok;
-    QString command;
-    if (!compiler.isNull())
-        command = QInputDialog::getText(this, tr("Compiler preference"), tr("Compiler:"), QLineEdit::Normal, compiler.toString(), &ok);
+    QString drv;
+    if (!driver.isNull())
+        drv = QInputDialog::getText(this, tr("Audio driver preference"), tr("Audio driver:"), QLineEdit::Normal, driver.toString(), &ok);
     else
-        command = QInputDialog::getText(this, tr("Compiler preference"), tr("Compiler:"), QLineEdit::Normal, ABCM2PS, &ok);
+        drv = QInputDialog::getText(this, tr("Audio driver preference"), tr("Audio driver:"), QLineEdit::Normal, ALSA, &ok);
 
     if (!ok)
         return;
 
-    settings.setValue(COMPILER_KEY, command);
+    settings.setValue(DRIVER_KEY, drv);
     settings.sync();
 }
 
@@ -86,35 +81,36 @@ void PreferencesMenu::onSynthActionTriggered()
     settings.sync();
 }
 
-void PreferencesMenu::onViewerActionTriggered()
+void PreferencesMenu::onSfontActionTriggered()
 {
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
-    QVariant viewer = settings.value(VIEWER_KEY);
+    QVariant soundfont = settings.value(SOUNDFONT_KEY);
 
     bool ok;
-    QString command;
-    if (!viewer.isNull())
-        command = QInputDialog::getText(this, tr("PS viewer preference"), tr("PS Viewer:"), QLineEdit::Normal, viewer.toString(), &ok);
+    QString sf;
+    if (!soundfont.isNull())
+        sf = QInputDialog::getText(this, tr("Audio sound font preference"), tr("Soundfont:"), QLineEdit::Normal, soundfont.toString(), &ok);
     else
-        command = QInputDialog::getText(this, tr("PS viewer preference"), tr("PS Viewer:"), QLineEdit::Normal, PSVIEWER, &ok);
+        sf = QInputDialog::getText(this, tr("Audio sound font preference"), tr("Soundfont:"), QLineEdit::Normal, DEB_SF2_GM, &ok);
 
     if (!ok)
         return;
 
-    settings.setValue(VIEWER_KEY, command);
+    settings.setValue(SOUNDFONT_KEY, sf);
     settings.sync();
 }
+
 void PreferencesMenu::onResetActionTriggered()
 {
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
-
-    settings.setValue(COMPILER_KEY, ABCM2PS);
 
     settings.setValue(PLAYER_KEY, ABC2MIDI);
 
     settings.setValue(SYNTH_KEY, FLUIDSYNTH);
 
-    settings.setValue(VIEWER_KEY, PSVIEWER);
+    settings.setValue(DRIVER_KEY, ALSA);
+
+    settings.setValue(SOUNDFONT_KEY, DEB_SF2_GM);
 
     settings.sync();
 }

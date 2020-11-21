@@ -126,7 +126,7 @@
     <message>
         <location filename="HelpMenu.cpp" line="21"/>
         <source>Copyright © 2020 Benoît Rouits &lt;brouits@free.fr&gt;</source>
-        <translation>Copyright © 2020 Benoît Rouits &lt;brouit@free.fr&gt;</translation>
+        <translation>Copyright © 2020 Benoît Rouits &lt;brouits@free.fr&gt;</translation>
     </message>
     <message>
         <location filename="HelpMenu.cpp" line="21"/>

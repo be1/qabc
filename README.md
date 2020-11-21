@@ -1,12 +1,12 @@
 # QAbc
-ABC music notation minimal GUI, the SVG version (toward v2)
+ABC music notation minimal GUI, the SVG and fluid version (toward v2)
 
 ## Dependencies
-QAbc uses third-party softwares to generate MIDI, AUDIO, and SVG files. Without them, QAbc would be very poor (only a little fancy text editor). So, please install them:
-- abc2midi
-- fluidsynth (CLI)
-- pangocairo (library)
-- pangoft2 (library)
+QAbc uses third-party software to generate MIDI, AUDIO, and SVG files. Without them, QAbc would be very poor (only a little fancy text editor). So, please install them:
+- abc2midi (program)
+- fluidsynth (library and headers)
+- pangocairo (library and headers)
+- pangoft2 (library and headers)
 
 ## Screenshot
 http://brouits.free.fr/images/qabc_v2alpha.png
@@ -14,7 +14,7 @@ http://brouits.free.fr/images/qabc_v2alpha.png
 # Setting up
 ```
 git clone https://github.com/be1/qabc.git
-git checkout svg
+git checkout fluid
 cd abcm2ps
 git submodule init
 git submodule update

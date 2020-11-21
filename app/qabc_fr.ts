@@ -178,55 +178,55 @@ QAbc version </translation>
 <context>
     <name>PreferencesMenu</name>
     <message>
-        <location filename="PreferencesMenu.cpp" line="11"/>
+        <location filename="PreferencesMenu.cpp" line="12"/>
         <source>Preferences</source>
         <translation>Préférences</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="39"/>
-        <location filename="PreferencesMenu.cpp" line="41"/>
+        <location filename="PreferencesMenu.cpp" line="40"/>
+        <location filename="PreferencesMenu.cpp" line="42"/>
         <source>Audio driver preference</source>
         <translation>Préférence du pilote audio</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="39"/>
-        <location filename="PreferencesMenu.cpp" line="41"/>
+        <location filename="PreferencesMenu.cpp" line="40"/>
+        <location filename="PreferencesMenu.cpp" line="42"/>
         <source>Audio driver:</source>
         <translation>Pilote audio :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="60"/>
-        <location filename="PreferencesMenu.cpp" line="62"/>
+        <location filename="PreferencesMenu.cpp" line="61"/>
+        <location filename="PreferencesMenu.cpp" line="63"/>
         <source>Player preference</source>
         <translation>Préférence du joueur</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="60"/>
-        <location filename="PreferencesMenu.cpp" line="62"/>
+        <location filename="PreferencesMenu.cpp" line="61"/>
+        <location filename="PreferencesMenu.cpp" line="63"/>
         <source>Player:</source>
         <translation>Joueur :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="96"/>
+        <location filename="PreferencesMenu.cpp" line="82"/>
+        <location filename="PreferencesMenu.cpp" line="84"/>
+        <source>Soundfont (*.sf[23])</source>
+        <translation>Fonte sonore (*.sf[23])</translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="98"/>
         <source>Reset prefrences?</source>
         <translation>Remettre les préférences d&apos;origine ?</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="96"/>
+        <location filename="PreferencesMenu.cpp" line="98"/>
         <source>Do you really want to reset preferences?</source>
         <translation>Voulez-vous vraiment remettre les préférences d&apos;origine ?</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="81"/>
-        <location filename="PreferencesMenu.cpp" line="83"/>
+        <location filename="PreferencesMenu.cpp" line="82"/>
+        <location filename="PreferencesMenu.cpp" line="84"/>
         <source>Audio sound font preference</source>
         <translation>Préférence de la fonte d&apos;échantillons</translation>
-    </message>
-    <message>
-        <location filename="PreferencesMenu.cpp" line="81"/>
-        <location filename="PreferencesMenu.cpp" line="83"/>
-        <source>Soundfont:</source>
-        <translation>Fonte d&apos;échantillons :</translation>
     </message>
 </context>
 <context>

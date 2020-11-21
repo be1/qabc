@@ -21,10 +21,10 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	xlabel(parent),
     fileName(fileName),
     waiter(nullptr),
-	mf(nullptr),
 	id(nullptr),
 	drv(nullptr),
-	sf(nullptr)
+	sf(nullptr),
+	mf(nullptr)
 {
     setObjectName("EditVBoxLayout:" + fileName);
     QString t = QDir::tempPath() + QDir::separator() + "qabc-XXXXXX.abc";

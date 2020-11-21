@@ -31,6 +31,14 @@
     </message>
 </context>
 <context>
+    <name>AdriverPrefAction</name>
+    <message>
+        <location filename="AdriverPrefAction.cpp" line="6"/>
+        <source>Audio output driver</source>
+        <translation>Pilote de sortie audio</translation>
+    </message>
+</context>
+<context>
     <name>CloseAction</name>
     <message>
         <location filename="CloseAction.cpp" line="7"/>
@@ -41,69 +49,64 @@
 <context>
     <name>EditVBoxLayout</name>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="25"/>
+        <location filename="EditVBoxLayout.cpp" line="29"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="233"/>
+        <location filename="EditVBoxLayout.cpp" line="241"/>
         <source>Generating MIDI for playing.</source>
         <translation>Génération du MIDI pour jouer.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="253"/>
-        <source>Stopping synthesis.</source>
-        <translation>Arrêt de la synthèse.</translation>
+        <location filename="EditVBoxLayout.cpp" line="261"/>
+        <source>Stopping synthesis...</source>
+        <translation>Arrêt de la synthèse...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="264"/>
+        <location filename="EditVBoxLayout.cpp" line="274"/>
         <source>Error during MIDI generation.</source>
         <translation>Erreur pendant la génération du MIDI.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="269"/>
+        <location filename="EditVBoxLayout.cpp" line="279"/>
         <source>MIDI generation finished.</source>
         <translation>Génération du MIDI terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="283"/>
+        <location filename="EditVBoxLayout.cpp" line="346"/>
         <source>Starting synthesis...</source>
         <translation>Démarrage de la synthèse...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="293"/>
+        <location filename="EditVBoxLayout.cpp" line="349"/>
+        <source>Synthesis playing...</source>
+        <translation>Synthèse en cours...</translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="352"/>
+        <source>Synthesis done.</source>
+        <translation>Synthèse terminée.</translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="364"/>
         <source>Synthesis finished.</source>
         <translation>Synthèse terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="310"/>
+        <location filename="EditVBoxLayout.cpp" line="384"/>
         <source>Generating score...</source>
         <translation>Génération de la partition...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="353"/>
+        <location filename="EditVBoxLayout.cpp" line="439"/>
         <source>Error during score generation.</source>
         <translation>Erreur pendant la génération de la partition.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="357"/>
+        <location filename="EditVBoxLayout.cpp" line="443"/>
         <source>Score generated.</source>
         <translation>Patition générée.</translation>
-    </message>
-    <message>
-        <location filename="EditVBoxLayout.cpp" line="380"/>
-        <source>Starting viewer...</source>
-        <translation>Démarrage du visualiseur...</translation>
-    </message>
-    <message>
-        <location filename="EditVBoxLayout.cpp" line="391"/>
-        <source>Viewer closed.</source>
-        <translation>Visualiseur fermé.</translation>
-    </message>
-    <message>
-        <location filename="EditVBoxLayout.cpp" line="398"/>
-        <source>&amp;View score</source>
-        <translation>&amp;Voir la partition</translation>
     </message>
 </context>
 <context>
@@ -158,14 +161,6 @@ QAbc version </translation>
     </message>
 </context>
 <context>
-    <name>PSPrefAction</name>
-    <message>
-        <location filename="PSPrefAction.cpp" line="6"/>
-        <source>Score generator</source>
-        <translation>Générateur de partition</translation>
-    </message>
-</context>
-<context>
     <name>PlayPushButton</name>
     <message>
         <location filename="PlayPushButton.cpp" line="7"/>
@@ -188,58 +183,52 @@ QAbc version </translation>
         <translation>Préférences</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="16"/>
-        <source>Score viewer</source>
-        <oldsource>Viewer</oldsource>
-        <translation>Visualiseur de partition</translation>
+        <location filename="PreferencesMenu.cpp" line="35"/>
+        <location filename="PreferencesMenu.cpp" line="37"/>
+        <source>Audio driver preference</source>
+        <translation>Préférence du pilote audio</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="40"/>
-        <location filename="PreferencesMenu.cpp" line="42"/>
-        <source>Compiler preference</source>
-        <translation>Préférence du compilateur</translation>
+        <location filename="PreferencesMenu.cpp" line="35"/>
+        <location filename="PreferencesMenu.cpp" line="37"/>
+        <source>Audio driver:</source>
+        <translation>Pilot audio :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="40"/>
-        <location filename="PreferencesMenu.cpp" line="42"/>
-        <source>Compiler:</source>
-        <translation>Compilateur :</translation>
-    </message>
-    <message>
-        <location filename="PreferencesMenu.cpp" line="97"/>
-        <location filename="PreferencesMenu.cpp" line="99"/>
-        <source>PS viewer preference</source>
-        <translation>Préférence du visualiseur PS</translation>
-    </message>
-    <message>
-        <location filename="PreferencesMenu.cpp" line="97"/>
-        <location filename="PreferencesMenu.cpp" line="99"/>
-        <source>PS Viewer:</source>
-        <translation>Visualiseur PS :</translation>
-    </message>
-    <message>
-        <location filename="PreferencesMenu.cpp" line="59"/>
-        <location filename="PreferencesMenu.cpp" line="61"/>
+        <location filename="PreferencesMenu.cpp" line="54"/>
+        <location filename="PreferencesMenu.cpp" line="56"/>
         <source>Player preference</source>
         <translation>Préférence du joueur</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="59"/>
-        <location filename="PreferencesMenu.cpp" line="61"/>
+        <location filename="PreferencesMenu.cpp" line="54"/>
+        <location filename="PreferencesMenu.cpp" line="56"/>
         <source>Player:</source>
         <translation>Joueur :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="78"/>
-        <location filename="PreferencesMenu.cpp" line="80"/>
+        <location filename="PreferencesMenu.cpp" line="73"/>
+        <location filename="PreferencesMenu.cpp" line="75"/>
         <source>Synth preference</source>
         <translation>Préférence du synthétiseur</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="78"/>
-        <location filename="PreferencesMenu.cpp" line="80"/>
+        <location filename="PreferencesMenu.cpp" line="73"/>
+        <location filename="PreferencesMenu.cpp" line="75"/>
         <source>Synth:</source>
         <translation>Synthétiseur :</translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="92"/>
+        <location filename="PreferencesMenu.cpp" line="94"/>
+        <source>Audio sound font preference</source>
+        <translation>Préférence de la fonte d&apos;échantillons</translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="92"/>
+        <location filename="PreferencesMenu.cpp" line="94"/>
+        <source>Soundfont:</source>
+        <translation>Fonte d&apos;échantillons :</translation>
     </message>
 </context>
 <context>
@@ -254,8 +243,9 @@ QAbc version </translation>
     <name>ResetAction</name>
     <message>
         <location filename="ResetAction.cpp" line="6"/>
-        <source>Reset</source>
-        <translation>Remettre à zéro</translation>
+        <source>Reset settings</source>
+        <oldsource>Reset</oldsource>
+        <translation>Remettre les préférences à zéro</translation>
     </message>
 </context>
 <context>
@@ -329,27 +319,27 @@ QAbc version </translation>
     </message>
 </context>
 <context>
-    <name>SynthPrefAction</name>
+    <name>SfontPrefAction</name>
     <message>
-        <location filename="SynthPrefAction.cpp" line="6"/>
-        <source>MIDI Synthesizer</source>
-        <translation>Synthétiseur MIDI</translation>
+        <location filename="SfontPrefAction.cpp" line="6"/>
+        <source>Audio sound font</source>
+        <translation>Fonte d&apos;échantillons audio</translation>
     </message>
 </context>
 <context>
     <name>ViewVSplitter</name>
     <message>
-        <location filename="ViewVSplitter.cpp" line="12"/>
+        <location filename="ViewVSplitter.cpp" line="14"/>
         <source>Previous</source>
         <translation>Précédent</translation>
     </message>
     <message>
-        <location filename="ViewVSplitter.cpp" line="13"/>
+        <location filename="ViewVSplitter.cpp" line="15"/>
         <source>Print</source>
         <translation>Imprimer</translation>
     </message>
     <message>
-        <location filename="ViewVSplitter.cpp" line="14"/>
+        <location filename="ViewVSplitter.cpp" line="16"/>
         <source>Next</source>
         <translation>Suivant</translation>
     </message>

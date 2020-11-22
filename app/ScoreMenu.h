@@ -36,5 +36,5 @@ private:
     QuitAction quitaction;
 };
 
-#define NEW_TEMPLATE "X:1\nT:Melody from «Le lac des signes»\nC:Piotr Ilitch Tchaïkovski\nM:C\nL:1/4\nK:Amin\n!mf!ABcd|e3c|e3A|cAFc|A4-|AdcB|e3c|e3A|cAFc|A4|]"
+#define NEW_TEMPLATE "X:1\nT:Melody from «Le lac des cygnes»\nC:Piotr Ilitch Tchaïkovski\nM:C\nL:1/4\nK:Amin\n!mf!ABcd|e3c|e3A|cAFc|A4-|AdcB|e3c|e3A|cAFc|A4|]"
 #endif

@@ -33,6 +33,7 @@ int EditTabWidget::addTab(EditWidget *swidget)
     editwidgetlist.append(swidget);
     currenteditwidget = swidget;
     qDebug() << "addTab: " << (*currenteditwidget->fileName());
+    currenteditwidget->editVBoxLayout()->onRunClicked();
     return ret;
 }
 

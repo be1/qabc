@@ -51,7 +51,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
     QByteArray ba;
     ba = settings.value(DRIVER_KEY).toString().toUtf8();
-    drv = (char*) malloc (ba.length() + 1);
+    drv = (char*) realloc(drv, ba.length() + 1);
     strncpy(drv, ba.constData(), ba.length());
     drv[ba.length()] = 0;
 
@@ -63,7 +63,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     QFileInfo info(fileName);
     QString name = "qabc-" + info.baseName();
     ba = name.toUtf8();
-    id = (char*) malloc(ba.length() + 1);
+    id = (char*) realloc(id, ba.length() + 1);
     strncpy(id, ba.constData(), ba.length());
     id[ba.length()] = 0;
     fluid_settings_setstr(fluid_settings, "audio.jack.id", id);
@@ -75,7 +75,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 
     QVariant soundfont = settings.value(SOUNDFONT_KEY);
     ba = soundfont.toString().toUtf8();
-    sf = (char*) malloc(ba.length() + 1);
+    sf = (char*) realloc(sf, ba.length() + 1);
     strncpy(sf, ba.constData(), ba.length());
     sf[ba.length()] = 0;
     qDebug() << "soundfont:" << sf;
@@ -280,7 +280,7 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
 #if 0
     QVariant driver = settings.value(DRIVER_KEY);
     QByteArray ba = driver.toString().toUtf8();
-    char * drv = (char*) malloc (ba.length() + 1);
+    char * drv = (char*) realloc(ba.length() + 1);
     strncpy(drv, ba.constData(), ba.length());
     drv[ba.length()] = 0;
     qDebug() << "driver:" << drv;

@@ -70,9 +70,9 @@ private:
     fluid_player_t* fluid_player = NULL;
     fluid_audio_driver_t* fluid_adriver = NULL;
     int sfid = 0;
-    char *id; /* jack identifier */
-    char *drv; /* "alsa" or "pulseaudi"o or "jack" */
-    char *sf; /* soundfont file name */
-	char *mf; /* current midi file name */
+    char *id = NULL; /* jack identifier */
+    char *drv = NULL; /* "alsa" or "pulseaudi"o or "jack" */
+    char *sf = NULL; /* soundfont file name */
+    char *mf = NULL; /* current midi file name */
 };
 #endif

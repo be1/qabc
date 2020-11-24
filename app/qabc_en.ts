@@ -54,57 +54,57 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="238"/>
+        <location filename="EditVBoxLayout.cpp" line="223"/>
         <source>Generating MIDI for playing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="259"/>
+        <location filename="EditVBoxLayout.cpp" line="244"/>
         <source>Stopping synthesis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="271"/>
+        <location filename="EditVBoxLayout.cpp" line="256"/>
         <source>Error during MIDI generation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="276"/>
+        <location filename="EditVBoxLayout.cpp" line="261"/>
         <source>MIDI generation finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="329"/>
+        <location filename="EditVBoxLayout.cpp" line="332"/>
         <source>Starting synthesis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="332"/>
+        <location filename="EditVBoxLayout.cpp" line="335"/>
         <source>Synthesis playing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="335"/>
+        <location filename="EditVBoxLayout.cpp" line="338"/>
         <source>Synthesis done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="347"/>
+        <location filename="EditVBoxLayout.cpp" line="350"/>
         <source>Synthesis finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="367"/>
+        <location filename="EditVBoxLayout.cpp" line="370"/>
         <source>Generating score...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="426"/>
+        <location filename="EditVBoxLayout.cpp" line="429"/>
         <source>Error during score generation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="430"/>
+        <location filename="EditVBoxLayout.cpp" line="433"/>
         <source>Score generated.</source>
         <translation type="unfinished"></translation>
     </message>

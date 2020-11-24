@@ -72,21 +72,6 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 
     fluid_synth = new_fluid_synth(fluid_settings);
     fluid_adriver = new_fluid_audio_driver(fluid_settings, fluid_synth);
-
-    QVariant soundfont = settings.value(SOUNDFONT_KEY);
-    ba = soundfont.toString().toUtf8();
-    sf = (char*) realloc(sf, ba.length() + 1);
-    strncpy(sf, ba.constData(), ba.length());
-    sf[ba.length()] = 0;
-    qDebug() << "soundfont:" << sf;
-    fluid_sfont_t* f = fluid_synth_get_sfont_by_id(fluid_synth, sfid);
-    if (f)
-        fluid_synth_sfunload(fluid_synth, sfid, 0);
-    int fid = fluid_synth_sfload(fluid_synth, sf, 0);
-    if (fid == FLUID_FAILED)
-        qWarning() << "Cannot load soundfont:" << sf;
-    else
-        sfid = fid;
 }
 
 
@@ -294,15 +279,33 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
     fluid_adriver = new_fluid_audio_driver(fluid_settings, fluid_synth);
 #endif
     fluid_synth_set_gain(fluid_synth, 1.0);
-#if 1
+
     if (fluid_player) {
         fluid_player_stop(fluid_player);
         fluid_player_join(fluid_player);
         delete_fluid_player(fluid_player);
     }
 
+    QVariant soundfont = settings.value(SOUNDFONT_KEY);
+    if (soundfont.toString() != curSFont) {
+        curSFont = soundfont.toString();
+        QByteArray ba(curSFont.toUtf8());
+        sf = (char*) realloc(sf, ba.length() + 1);
+        strncpy(sf, ba.constData(), ba.length());
+        sf[ba.length()] = 0;
+        qDebug() << "soundfont:" << sf;
+        fluid_sfont_t* f = fluid_synth_get_sfont_by_id(fluid_synth, sfid);
+        if (f)
+            fluid_synth_sfunload(fluid_synth, sfid, 0);
+        int fid = fluid_synth_sfload(fluid_synth, sf, 0);
+        if (fid == FLUID_FAILED)
+            qWarning() << "Cannot load soundfont:" << sf;
+        else
+            sfid = fid;
+    }
+
     fluid_player = new_fluid_player(fluid_synth);
-#endif
+
     if (waiter && waiter->isFinished())
             delete waiter;
     waiter = new TuneWaiter(fluid_player, this);

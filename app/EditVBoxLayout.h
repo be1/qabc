@@ -69,6 +69,7 @@ private:
     fluid_synth_t* fluid_synth = NULL;
     fluid_player_t* fluid_player = NULL;
     fluid_audio_driver_t* fluid_adriver = NULL;
+    QString curSFont;
     int sfid = 0;
     char *id = NULL; /* jack identifier */
     char *drv = NULL; /* "alsa" or "pulseaudi"o or "jack" */

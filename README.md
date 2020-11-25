@@ -1,5 +1,5 @@
 # QAbc
-ABC music notation minimal GUI, the SVG and fluid version (toward v2)
+ABC music notation minimal GUI, the SVG and fluid version (v2).
 
 ## Dependencies
 QAbc uses third-party software to generate MIDI, AUDIO, and SVG files. Without them, QAbc would be very poor (only a little fancy text editor). So, please install them:
@@ -7,6 +7,9 @@ QAbc uses third-party software to generate MIDI, AUDIO, and SVG files. Without t
 - fluidsynth (library and headers)
 - pangocairo (library and headers)
 - pangoft2 (library and headers)
+
+Note that this version of QAbc uses a *modified* version of the open source abcm2ps code, maintained in a specific submodule for QAbc.
+Original `abcm2ps` code is Copyright © 2014-2016 Jean-Francois Moine. 
 
 ## Screenshot
 http://brouits.free.fr/images/qabc_v2alpha.png

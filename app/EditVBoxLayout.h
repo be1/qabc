@@ -6,6 +6,7 @@
 #include "AbcPlainTextEdit.h"
 #include "AbcProcess.h"
 #include "TuneWaiter.h"
+#include "AbcTemporaryFile.h"
 #include <QVBoxLayout>
 #include <QSpinBox>
 #include <QLabel>
@@ -61,7 +62,7 @@ private:
     QSpinBox xspinbox;
     QLabel xlabel;
     QString fileName;
-    QTemporaryFile tempFile;
+    AbcTemporaryFile tempFile;
     QList<AbcProcess*> processlist;
     TuneWaiter *waiter;
 

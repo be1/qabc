@@ -293,7 +293,7 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
         sf = (char*) realloc(sf, ba.length() + 1);
         strncpy(sf, ba.constData(), ba.length());
         sf[ba.length()] = 0;
-        qDebug() << "soundfont:" << sf;
+        qDebug() << "new soundfont:" << sf;
         fluid_sfont_t* f = fluid_synth_get_sfont_by_id(fluid_synth, sfid);
         if (f)
             fluid_synth_sfunload(fluid_synth, sfid, 0);
@@ -350,9 +350,9 @@ void EditVBoxLayout::onSynthFinished(int exitCode)
     a->mainWindow()->statusBar()->showMessage(tr("Synthesis finished."));
 
     int x = xspinbox.value();
-    QString mid (tempFile.fileName());
-    mid.replace(QRegularExpression("\\.abc$"), QString::number(x) + ".mid");
-    QFile::remove(mid);
+    QString midi (tempFile.fileName());
+    midi.replace(QRegularExpression("\\.abc$"), QString::number(x) + ".mid");
+    QFile::remove(midi);
 
     playpushbutton.flip();
     xspinbox.setEnabled(true);

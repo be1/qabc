@@ -225,6 +225,7 @@ void EditVBoxLayout::onPlayClicked()
         xspinbox.setEnabled(false);
         QString tosave = abcPlainTextEdit()->toPlainText();
         tempFile.open();
+        tempFile.resize(0);
         tempFile.write(tosave.toUtf8());
         tempFile.close();
         QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
@@ -370,6 +371,7 @@ void EditVBoxLayout::onRunClicked()
     a->mainWindow()->statusBar()->showMessage(tr("Generating score..."));
     QString tosave = abcPlainTextEdit()->toPlainText();
     tempFile.open();
+    tempFile.resize(0);
     tempFile.write(tosave.toUtf8());
     tempFile.close();
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);

@@ -1,5 +1,5 @@
 # QAbc
-ABC music notation minimal GUI
+ABC music notation minimal GUI. Please note that the main branch will not evolve. The latest and active version of QAbc is in the `fluid` branch.
 
 ## Dependencies
 QAbc uses third-party softwares to generate MIDI, AUDIO, and PostScript files. Without them, QAbc would be very poor (only a little fancy text editor). So, please install them:

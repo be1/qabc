@@ -53,7 +53,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     ba = settings.value(DRIVER_KEY).toString().toUtf8();
     drv = (char*) realloc(drv, ba.length() + 1);
     strncpy(drv, ba.constData(), ba.length());
-    drv[ba.length()] = 0;
+    drv[ba.length()] = '\0';
 
     qDebug() << fileName << drv;
     fluid_settings = new_fluid_settings();
@@ -65,7 +65,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     ba = name.toUtf8();
     id = (char*) realloc(id, ba.length() + 1);
     strncpy(id, ba.constData(), ba.length());
-    id[ba.length()] = 0;
+    id[ba.length()] = '\0';
     fluid_settings_setstr(fluid_settings, "audio.jack.id", id);
 
     qDebug() << id << drv;
@@ -225,7 +225,6 @@ void EditVBoxLayout::onPlayClicked()
         xspinbox.setEnabled(false);
         QString tosave = abcPlainTextEdit()->toPlainText();
         tempFile.open();
-        tempFile.resize(0);
         tempFile.write(tosave.toUtf8());
         tempFile.close();
         QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
@@ -268,7 +267,7 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
     QByteArray ba = driver.toString().toUtf8();
     char * drv = (char*) realloc(ba.length() + 1);
     strncpy(drv, ba.constData(), ba.length());
-    drv[ba.length()] = 0;
+    drv[ba.length()] = '\0';
     qDebug() << "driver:" << drv;
     fluid_settings_setstr(fluid_settings, "audio.driver", drv);
 #endif
@@ -293,7 +292,7 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
         QByteArray ba(curSFont.toUtf8());
         sf = (char*) realloc(sf, ba.length() + 1);
         strncpy(sf, ba.constData(), ba.length());
-        sf[ba.length()] = 0;
+        sf[ba.length()] = '\0';
         qDebug() << "new soundfont:" << sf;
         fluid_sfont_t* f = fluid_synth_get_sfont_by_id(fluid_synth, sfid);
         if (f)
@@ -319,11 +318,12 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
 	ba = midifile.toUtf8();
 	mf = (char*) realloc(mf, ba.length() + 1);
 	strncpy(mf, ba.constData(), ba.length());
-	mf[ba.length()] = 0;
+    mf[ba.length()] = '\0';
 	qDebug() << "midifile:" << mf;
 
-    if (FLUID_FAILED == fluid_player_add(fluid_player, mf))
-            qWarning() << "Cannot not add MIDI file:" << mf;
+    if (FLUID_FAILED == fluid_player_add(fluid_player, mf)) {
+        qWarning() << "Cannot not add MIDI file:" << mf;
+    }
 
     fluid_player_play(fluid_player);
     waiter->start();
@@ -371,7 +371,6 @@ void EditVBoxLayout::onRunClicked()
     a->mainWindow()->statusBar()->showMessage(tr("Generating score..."));
     QString tosave = abcPlainTextEdit()->toPlainText();
     tempFile.open();
-    tempFile.resize(0);
     tempFile.write(tosave.toUtf8());
     tempFile.close();
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
@@ -386,13 +385,13 @@ void EditVBoxLayout::onRunClicked()
 #ifndef USE_LIBABCM2PS
     argv.removeAt(0);
 #endif
-    argv << "-v";
-    argv << "-e" << QString::number(xspinbox.value());
-    argv << "-N1";
+    argv << "-v"; /* SVG output*/
+    argv << "-e" << QString::number(xspinbox.value()); /* one tune to consider */
+    argv << "-N1"; /* numbering pages on  the up-left */
     QString temp(tempFile.fileName());
     temp.replace(QRegularExpression("\\.abc$"), ".svg"); /* but remind, output will be tempNNN.svg */
-    argv << "-O" << temp;
-    argv << tempFile.fileName();
+    argv << "-O" << temp; /* output filename */
+    argv << tempFile.fileName(); /* input ABC */
 
     QFileInfo info(tempFile.fileName());
     QDir dir = info.absoluteDir();
@@ -408,10 +407,8 @@ void EditVBoxLayout::onRunClicked()
         av[i][ba.length()] = '\0';
     }
 
-	fprintf(stderr, "%d, %s, %s ...\n", argv.length(), av[0], av[1]);
     int ret = abcm2ps(argv.length(), av);
 
-	fprintf(stderr, "%d, %s, %s ...\n", argv.length(), av[0], av[1]);
 	for (int i = 0; i < argv.length(); i++) {
 		free(av[i]);
 	}

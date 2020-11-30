@@ -9,7 +9,7 @@ class AbcTemporaryFile : public QTemporaryFile
 public:
     AbcTemporaryFile();
 
-    bool open() { return open(QIODevice::WriteOnly); };
+    bool open() { resize(0); return open(QIODevice::WriteOnly|QIODevice::Truncate); };
 
 protected:
     bool open(OpenMode mode) { return QTemporaryFile::open(mode);};

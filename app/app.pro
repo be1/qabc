@@ -3,7 +3,7 @@ QT += core widgets gui svg printsupport
 TEMPLATE = app
 CONFIG += link_pkgconfig
 PKGCONFIG += pangocairo pangoft2 fluidsynth
-DEFINES += USE_LIBABCM2PS
+DEFINES += USE_LIBABCM2PS _FORTIFY_SOURCE=2
 TARGET = qabc
 RESOURCES += resources.qrc
 DISTFILES +=  dict.txt config.h.in

@@ -40,6 +40,8 @@ signals:
 
 protected:
     void spawnProgram(const QString& prog, const QStringList &args, AbcProcess::ProcessType which, const QDir &wrk);
+    void removeSvgFiles();
+    void removeMIDIFile();
 
 public slots:
     void onXChanged(int value);

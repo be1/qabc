@@ -7,6 +7,7 @@
 #include <QSpinBox>
 #include <QDir>
 #include <QStandardPaths>
+#include <QMessageBox>
 #ifdef USE_LIBABCM2PS
 #include "../abcm2ps/abcm2ps.h"
 #endif
@@ -92,16 +93,24 @@ EditVBoxLayout::~EditVBoxLayout()
     free(id);
     free(drv);
     free(sf);
-	free(mf);
+    free(mf);
 
+    removeMIDIFile();
+    removeSvgFiles();
+}
+
+void EditVBoxLayout::removeMIDIFile() {
     /* cleanup files manually */
-    qDebug() << "cleaning MIDI for" << tempFile.fileName();
     QString temp(tempFile.fileName());
+    qDebug() << "cleaning MIDI for" << temp;
     temp.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid");
     if (QFileInfo::exists(temp))
         QFile::remove(temp);
+}
 
-    qDebug() << "cleaning SVG for" << tempFile.fileName();
+void EditVBoxLayout::removeSvgFiles() {
+    QString temp(tempFile.fileName());
+    qDebug() << "cleaning SVG for" << temp;
     for (int i = 1; i < 999; i++) {
         temp = tempFile.fileName();
         temp.replace(QRegularExpression("\\.abc$"), QString::asprintf("%03d.svg", i));
@@ -232,13 +241,19 @@ void EditVBoxLayout::onPlayClicked()
         QString program = player.toString();
         QStringList argv = program.split(" ");
         program = argv.at(0);
+        if (!QFileInfo::exists(program)) {
+            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Cannot generate MIDI! Please install abcmidi to obtain abc2midi."));
+            playpushbutton.flip();
+            xspinbox.setEnabled(true);
+            return;
+        }
         argv.removeAt(0);
         argv << tempFile.fileName();
         argv << QString::number(xspinbox.value());
         QFileInfo info(tempFile.fileName());
         QDir dir = info.absoluteDir();
 
-        /* despite the name, Player is abc2midi MIDI generator */
+        /* despite the name, 'Player' starts with abc2midi MIDI generator */
         spawnPlayer(program, argv, dir);
     } else {
         a->mainWindow()->statusBar()->showMessage(tr("Stopping synthesis..."));
@@ -367,6 +382,10 @@ void EditVBoxLayout::onRunClicked()
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     if (a->isQuit())
         return;
+
+    /* as we do not know the number of previous pages (it could be more or less)
+     * we have to remove bruteforcely them */
+    removeSvgFiles();
 
     a->mainWindow()->statusBar()->showMessage(tr("Generating score..."));
     QString tosave = abcPlainTextEdit()->toPlainText();

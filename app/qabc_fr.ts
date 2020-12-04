@@ -49,62 +49,72 @@
 <context>
     <name>EditVBoxLayout</name>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="33"/>
+        <location filename="EditVBoxLayout.cpp" line="34"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="223"/>
+        <location filename="EditVBoxLayout.cpp" line="232"/>
         <source>Generating MIDI for playing.</source>
         <translation>Génération du MIDI pour jouer.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="244"/>
+        <location filename="EditVBoxLayout.cpp" line="245"/>
+        <source>Error</source>
+        <translation>Erreur</translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="245"/>
+        <source>Cannot generate MIDI! Please install abcmidi to obtain abc2midi.</source>
+        <translation>Impossible de générer le MIDI ! Veuillez installer abcmidi pour obtenir abc2midi.</translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="259"/>
         <source>Stopping synthesis...</source>
         <translation>Arrêt de la synthèse...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="256"/>
+        <location filename="EditVBoxLayout.cpp" line="271"/>
         <source>Error during MIDI generation.</source>
         <translation>Erreur pendant la génération du MIDI.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="261"/>
+        <location filename="EditVBoxLayout.cpp" line="276"/>
         <source>MIDI generation finished.</source>
         <translation>Génération du MIDI terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="332"/>
+        <location filename="EditVBoxLayout.cpp" line="348"/>
         <source>Starting synthesis...</source>
         <translation>Démarrage de la synthèse...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="335"/>
+        <location filename="EditVBoxLayout.cpp" line="351"/>
         <source>Synthesis playing...</source>
         <translation>Synthèse en cours...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="338"/>
+        <location filename="EditVBoxLayout.cpp" line="354"/>
         <source>Synthesis done.</source>
         <translation>Synthèse terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="350"/>
+        <location filename="EditVBoxLayout.cpp" line="366"/>
         <source>Synthesis finished.</source>
         <translation>Synthèse terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="370"/>
+        <location filename="EditVBoxLayout.cpp" line="390"/>
         <source>Generating score...</source>
         <translation>Génération de la partition...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="429"/>
+        <location filename="EditVBoxLayout.cpp" line="447"/>
         <source>Error during score generation.</source>
         <translation>Erreur pendant la génération de la partition.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="433"/>
+        <location filename="EditVBoxLayout.cpp" line="451"/>
         <source>Score generated.</source>
         <translation>Partition générée.</translation>
     </message>

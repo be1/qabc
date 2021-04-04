@@ -87,6 +87,7 @@ void ViewVSplitter::initBasename(const QString &b, const QString &d)
 }
 
 bool ViewVSplitter::requestPage(int i) {
+    qDebug() << "requesting page" << i;
     int page = i + currentpage;
     if (page > 0 && page <= lastpage) {
         currentpage = page;
@@ -133,7 +134,7 @@ void ViewVSplitter::printClicked()
     QPrinter printer;
     printer.setCreator("QAbc");
     printer.setDocName("abc_score");
-    printer.setOrientation(QPrinter::Portrait);
+    printer.setPageOrientation(QPageLayout::Portrait);
     QPrintDialog dialog(&printer, this);
     if (dialog.exec() == QDialog::Accepted) {
         if (printer.isValid()) {

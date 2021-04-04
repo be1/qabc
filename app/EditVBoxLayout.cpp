@@ -452,6 +452,7 @@ void EditVBoxLayout::onCompileFinished(int exitCode)
     QFileInfo info(tempFile);
     QString b(info.baseName());
     QString d = info.dir().absolutePath();
+    a->mainWindow()->mainHSplitter()->viewWidget()->cleanup();
     a->mainWindow()->mainHSplitter()->viewWidget()->initBasename(b, d);
     a->mainWindow()->mainHSplitter()->viewWidget()->requestPage(1);
 

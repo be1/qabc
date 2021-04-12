@@ -60,7 +60,7 @@ void PreferencesMenu::onPlayerActionTriggered()
     if (!player.isNull())
         command = QInputDialog::getText(a->mainWindow(), tr("Player preference"), tr("Player:"), QLineEdit::Normal, player.toString(), &ok);
     else
-        command = QInputDialog::getText(a->mainWindow(), tr("Player preference"), tr("Player:"), QLineEdit::Normal, ABC2MIDI, &ok);
+        command = QInputDialog::getText(a->mainWindow(), tr("Player preference"), tr("Player:"), QLineEdit::Normal, LIBABC2SMF, &ok);
 
     if (!ok)
         return;
@@ -102,7 +102,7 @@ void PreferencesMenu::onResetActionTriggered()
 #ifndef USE_LIBABCM2PS
 	settings.setValue(COMPILER_KEY, ABCM2PS);
 #endif
-    settings.setValue(PLAYER_KEY, ABC2MIDI);
+    settings.setValue(PLAYER_KEY, LIBABC2SMF);
 
     settings.setValue(DRIVER_KEY, ALSA);
 

@@ -8,6 +8,10 @@
 #include <QDir>
 #include <QStandardPaths>
 #include <QMessageBox>
+#include "../abc2smf/abc.h"
+#include "../abc2smf/abcparse.h"
+#include "../abc2smf/abcsmf.h"
+#include <smf.h>
 #ifdef USE_LIBABCM2PS
 #include "../abcm2ps/abcm2ps.h"
 #endif
@@ -233,16 +237,37 @@ void EditVBoxLayout::onPlayClicked()
         playpushbutton.flip();
         xspinbox.setEnabled(false);
         QString tosave = abcPlainTextEdit()->toPlainText();
+
+        QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+        QVariant player = settings.value(PLAYER_KEY);
+
+        if (player == LIBABC2SMF) {
+            QByteArray ba = tosave.toUtf8();
+            struct abc* yy = abc2smf_abc_parse(ba.constData(), ba.count());
+            if (yy->error) {
+                QMessageBox::warning(a->mainWindow(), tr("Error"), yy->error_string);
+                emit playerFinished(1);
+            } else {
+                smf_t* smf = abc2smf(yy, xspinbox.value());
+                QString midiout = tempFile.fileName().replace(".abc", QString::number(xspinbox.value()) + ".mid");
+                int ret = smf_save(smf, midiout.toUtf8().constData());
+                smf_delete(smf);
+                emit playerFinished(ret);
+            }
+            abc2smf_abc_release(yy);
+
+            return;
+        }
+
         tempFile.open();
         tempFile.write(tosave.toUtf8());
         tempFile.close();
-        QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
-        QVariant player = settings.value(PLAYER_KEY);
+
         QString program = player.toString();
         QStringList argv = program.split(" ");
         program = argv.at(0);
         if (!QFileInfo::exists(program)) {
-            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Cannot generate MIDI! Please install abcmidi to obtain abc2midi."));
+            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Cannot generate MIDI! Please check settings."));
             playpushbutton.flip();
             xspinbox.setEnabled(true);
             return;

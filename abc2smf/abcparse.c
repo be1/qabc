@@ -38,6 +38,9 @@ struct tune* find_tune(struct abc* yy, int x) {
 }
 
 struct header* find_header(struct tune* t, char h) {
+    if (!t)
+        return NULL;
+
 	struct header* header = t->headers;
 
 	while(header) {
@@ -48,7 +51,7 @@ struct header* find_header(struct tune* t, char h) {
         header = header->next;
     }
 
-    return NULL;
+    return header;
 }
 
 struct voice* find_voice(struct tune* t, int v) {
@@ -129,23 +132,23 @@ double second_per_unit(struct tune* t) {
 		} else if (1 == sscanf(qh->text, "%d", &q)) {
 			s = 60.0 / (double) q;
 			return s;
-		} else if (!strncasecmp(qh->text, "Largo", 5))
+        } else if (!strncasecmp(qh->text, "\"Largo\"", 5))
 			q = 40;
-		else if (!strncasecmp(qh->text, "Larghetto", 9))
+        else if (!strncasecmp(qh->text, "\"Larghetto\"", 9))
 			q = 60;
-		else if (!strncasecmp(qh->text, "Lento", 5))
+        else if (!strncasecmp(qh->text, "\"Lento\"", 5))
 			q = 50;
-		else if (!strncasecmp(qh->text, "Adagio", 6))
+        else if (!strncasecmp(qh->text, "\"Adagio\"", 6))
 			q = 60;
-		else if (!strncasecmp(qh->text, "Andante", 7))
+        else if (!strncasecmp(qh->text, "\"Andante\"", 7))
 			q = 80;
-		else if (!strncasecmp(qh->text, "Moderato", 8))
+        else if (!strncasecmp(qh->text, "\"Moderato\"", 8))
 			q = 90;
-		else if (!strncasecmp(qh->text, "Allegro", 7))
+        else if (!strncasecmp(qh->text, "\"Allegro\"", 7))
 			q = 120;
-		else if (!strncasecmp(qh->text, "Presto", 6))
+        else if (!strncasecmp(qh->text, "\"Presto\"", 6))
 			q = 140;
-		else if (!strncasecmp(qh->text, "Vivace", 6))
+        else if (!strncasecmp(qh->text, "\"Vivace\"", 6))
 			q = 160;
 		else
 			q = 120;

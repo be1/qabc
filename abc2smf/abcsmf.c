@@ -276,7 +276,7 @@ const unsigned char _pitch_diff_FMaj_0x3c[] = {
 
 /* semitones between note over C or c. */
 static
-unsigned char pitch_diff_0x3c(const char* ks, char note) {
+unsigned char pitch_diff_0x3c(const char* ks, int note) {
 	if (!ks || !strcasecmp(ks, "") || !strcasecmp(ks, "C") || !strcasecmp(ks, "Cmaj") || !strcasecmp(ks, "Amin") /* || !strcasecmp(ks, "Ddor") ... */ )
 		return _pitch_diff_CMaj_0x3c[note];
 
@@ -353,15 +353,15 @@ unsigned char note2midi (const char* keysig, const char* note, int* measure_alte
 
 	if ((*c >= 'A' && *c <= 'G') || (*c >= 'a' && *c <= 'g')) {
 		if (alter)
-			measure_alter[*c] = alter;
+            measure_alter[(int)*c] = alter;
 
 		if (alter == ALTER_NATURAL)
 			pitch = pitch_diff_0x3c("Cmaj", *c) + 0 + (octava * 12);
 		else if (!alter) {
-			if (measure_alter[*c] == ALTER_NATURAL)
+            if (measure_alter[(int)*c] == ALTER_NATURAL)
 				pitch = pitch_diff_0x3c("Cmaj", *c) + 0 + (octava * 12);
 			else
-				pitch = pitch_diff_0x3c(keysig, *c) + measure_alter[*c] + (octava * 12);
+                pitch = pitch_diff_0x3c(keysig, *c) + measure_alter[(int)*c] + (octava * 12);
 		} else
 			pitch = pitch_diff_0x3c("Cmaj", *c) + alter + (octava * 12);
 
@@ -399,7 +399,7 @@ void compute_pqr(int* p, int* q, int* r, char* ts) {
 }
 
 #define DYN_DEFAULT 80
-#define SHORTEN_DEFAULT 0.2
+#define SHORTEN_DEFAULT 0.15
 #define EXPRESSION_DEFAULT 0
 
 /* converts an ABC syntax tree into an SMF struct */
@@ -411,11 +411,17 @@ smf_t* abc2smf(struct abc* yy, int x) {
 		return NULL;
 
 	struct tune* t = find_tune(yy, x);
+    if(!t) return NULL;
+
 	struct header* kh = find_header(t, 'K');
 
-	for (int j = 0; j < t->count; j++) {
+    for (int j = 0; j < t->count && j < 16; j++) {
 		struct voice* v = t->voices[j];
 		struct symbol* s = v->first;
+
+        int noteon = 0x90 + j;
+        int program = 0xc0 + j;
+        int control = 0xb0 + j;
 
 		smf_track_t* track = smf_track_new();
 		if (!track) {
@@ -454,7 +460,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
 		int p, q, r = 0;
 		double dur_mod = 1.0;
 		int expr = EXPRESSION_DEFAULT;
-		double shorten = SHORTEN_DEFAULT; /* dur will be lowered to 80% */
+        double shorten = SHORTEN_DEFAULT; /* dur will be shortened to 85% */
 		struct symbol* tie = NULL;
 
 		while (s) {
@@ -477,7 +483,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
 
 					double start = cur_sec;
 					if (expr) {
-						ev = smf_event_new_from_bytes(0xb0, 0x0b, expr); /* L => CC expression level */
+                        ev = smf_event_new_from_bytes(control, 0x0b, expr); /* L => CC expression level */
 						smf_track_add_event_seconds(track, ev, start);
 					}
 
@@ -485,14 +491,14 @@ smf_t* abc2smf(struct abc* yy, int x) {
 					unsigned char n = note2midi(ks, s->text, measure_alter);
 
 					if (!tie) {
-						ev = smf_event_new_from_bytes(0x90, n, cur_dyn); /* note on */
+                        ev = smf_event_new_from_bytes(noteon, n, cur_dyn); /* note on */
 						smf_track_add_event_seconds(track, ev, start);
 					} else {
 						tie = NULL;
 					}
 
 					if (!s->next || (s->next && s->next->kind != TIE)) {
-						ev = smf_event_new_from_bytes(0x90, n, 0x00); /* note off */
+                        ev = smf_event_new_from_bytes(noteon, n, 0x00); /* note off */
 						double stop = start + dur - (dur * shorten);
 						smf_track_add_event_seconds(track, ev, stop);
 					}
@@ -532,13 +538,13 @@ smf_t* abc2smf(struct abc* yy, int x) {
 					continue;
 				}
 			} else if (s->kind == NUP) {
-				sscanf(s->text, "%d:%d:%d", &p, &q, &r);
+                if(3 != sscanf(s->text, "%d:%d:%d", &p, &q, &r)) { /* should not happen */;}
 				struct header* th = find_header(t, 'T');
 				compute_pqr(&p, &q, &r, th->text);
 				dur_mod = (double) q / (double) p;
 			} else if (s->kind == DECO) {
 				char deco[32];
-				if (sscanf(s->text, "%s", deco))
+                if (sscanf(s->text, "%s", deco)) {
 					if (!strcmp(deco, "pppp")) cur_dyn = 30;
 					else if (!strcmp(deco, "ppp")) cur_dyn = 30;
 					else if (!strcmp(deco, "pp")) cur_dyn = 45;
@@ -572,8 +578,14 @@ smf_t* abc2smf(struct abc* yy, int x) {
 						s = find_next_segno(s);
 						continue;
                     } else if (!strcmp(deco,"D.C.")) { /* FIXME */; }
-                    else { /* FIXME */ ;}
-			}
+                } else { /* FIXME */ ;}
+            } else if (s->kind == INST) {
+                int prog;
+                if (sscanf(s->text, "MIDI program %d", &prog)) {
+                    smf_event_t* ev = smf_event_new_from_bytes(program, prog, -1);
+                    smf_track_add_event_seconds(track, ev, cur_sec);
+                };
+            }
 
 			s = s->next;
 		}

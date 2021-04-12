@@ -249,6 +249,10 @@ void EditVBoxLayout::onPlayClicked()
                 emit playerFinished(1);
             } else {
                 smf_t* smf = abc2smf(yy, xspinbox.value());
+                if (!smf) {
+                    emit playerFinished(1);
+                    return;
+                }
                 QString midiout = tempFile.fileName().replace(".abc", QString::number(xspinbox.value()) + ".mid");
                 int ret = smf_save(smf, midiout.toUtf8().constData());
                 smf_delete(smf);

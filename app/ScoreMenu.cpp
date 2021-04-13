@@ -134,7 +134,7 @@ void ScoreMenu::onExportActionTriggered()
 void ScoreMenu::onCloseActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
-    if (QMessageBox::StandardButton::No == QMessageBox::question(a->mainWindow(), tr("Really close?"), tr("Do you really want to close?")))
+    if (QMessageBox::StandardButton::No == QMessageBox::question(a->mainWindow(), tr("Really close?"), tr("Do you really want to close this score?")))
         return;
 
     AbcMainWindow* w = a->mainWindow();

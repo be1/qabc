@@ -8,11 +8,6 @@
         <source>QAbc</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="AbcMainWindow.cpp" line="11"/>
-        <source>Idle</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AboutAction</name>
@@ -49,72 +44,95 @@
 <context>
     <name>EditVBoxLayout</name>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="34"/>
+        <location filename="EditVBoxLayout.cpp" line="47"/>
         <source>X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="232"/>
+        <location filename="EditVBoxLayout.cpp" line="103"/>
+        <location filename="EditVBoxLayout.cpp" line="426"/>
+        <source>Loading sound font: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="137"/>
+        <location filename="EditVBoxLayout.cpp" line="436"/>
+        <source>Cannot load sound font: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="287"/>
         <source>Generating MIDI for playing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="245"/>
+        <location filename="EditVBoxLayout.cpp" line="305"/>
+        <location filename="EditVBoxLayout.cpp" line="339"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="245"/>
-        <source>Cannot generate MIDI! Please install abcmidi to obtain abc2midi.</source>
+        <location filename="EditVBoxLayout.cpp" line="339"/>
+        <source>Cannot generate MIDI: Please check settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="259"/>
+        <location filename="EditVBoxLayout.cpp" line="355"/>
         <source>Stopping synthesis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="271"/>
+        <location filename="EditVBoxLayout.cpp" line="358"/>
+        <source>Please wait...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="371"/>
         <source>Error during MIDI generation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="276"/>
+        <location filename="EditVBoxLayout.cpp" line="377"/>
         <source>MIDI generation finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="348"/>
+        <location filename="EditVBoxLayout.cpp" line="467"/>
+        <source>Cannot load MIDI file: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="475"/>
         <source>Starting synthesis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="351"/>
+        <location filename="EditVBoxLayout.cpp" line="478"/>
         <source>Synthesis playing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="354"/>
+        <location filename="EditVBoxLayout.cpp" line="481"/>
         <source>Synthesis done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="366"/>
+        <location filename="EditVBoxLayout.cpp" line="493"/>
         <source>Synthesis finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="390"/>
+        <location filename="EditVBoxLayout.cpp" line="517"/>
         <source>Generating score...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="447"/>
+        <location filename="EditVBoxLayout.cpp" line="574"/>
         <source>Error during score generation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="451"/>
+        <location filename="EditVBoxLayout.cpp" line="578"/>
         <source>Score generated.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -222,12 +240,12 @@ QAbc version </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="98"/>
+        <location filename="PreferencesMenu.cpp" line="103"/>
         <source>Reset prefrences?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="98"/>
+        <location filename="PreferencesMenu.cpp" line="103"/>
         <source>Do you really want to reset preferences?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -298,39 +316,55 @@ QAbc version </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="55"/>
+        <location filename="ScoreMenu.cpp" line="56"/>
         <source>Open ABC Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="55"/>
-        <location filename="ScoreMenu.cpp" line="117"/>
+        <location filename="ScoreMenu.cpp" line="56"/>
+        <location filename="ScoreMenu.cpp" line="119"/>
         <source>ABC score (*.abc)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="88"/>
-        <location filename="ScoreMenu.cpp" line="103"/>
+        <location filename="ScoreMenu.cpp" line="90"/>
+        <location filename="ScoreMenu.cpp" line="105"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="88"/>
-        <source>Could not save an untitled ABC score!</source>
+        <location filename="ScoreMenu.cpp" line="90"/>
+        <source>Could not save an untitled ABC file!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="101"/>
-        <source>Score saved.</source>
+        <location filename="ScoreMenu.cpp" line="137"/>
+        <source>Really close?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="117"/>
-        <source>Save ABC score</source>
+        <location filename="ScoreMenu.cpp" line="137"/>
+        <source>Really close?</source>
+        <oldsource>Do you really want to close?</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="137"/>
+        <source>Do you really want to close this score?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="103"/>
+        <source>Score saved.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="119"/>
+        <source>Save ABC score</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="105"/>
         <source>Could not save ABC score!</source>
         <translation type="unfinished"></translation>
     </message>

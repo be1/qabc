@@ -336,7 +336,7 @@ void EditVBoxLayout::onPlayClicked()
         program = argv.at(0);
 
         if (!QFileInfo::exists(program)) {
-            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Cannot generate MIDI! Please check settings."));
+            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Cannot generate MIDI: Please check settings."));
             playpushbutton.flip();
             xspinbox.setEnabled(true);
             return;
@@ -464,7 +464,7 @@ void EditVBoxLayout::playMIDI() {
 	qDebug() << "midifile:" << mf;
 
     if (FLUID_FAILED == fluid_player_add(fluid_player, mf)) {
-        qWarning() << "Cannot not add MIDI file:" << mf;
+        a->mainWindow()->statusBar()->showMessage(tr("Cannot load MIDI file: ") + mf);
     }
 
     fluid_player_play(fluid_player);

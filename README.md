@@ -15,7 +15,7 @@ Original `abcm2ps` code is Copyright © 2014-2016 Jean-Francois Moine.
 ## Screenshot
 http://brouits.free.fr/images/qabc_v2alpha.png
 
-# Setting up
+## Setting up
 ```
 git clone https://github.com/be1/qabc.git
 git checkout fluid

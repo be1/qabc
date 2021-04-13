@@ -87,7 +87,7 @@ void ScoreMenu::onSaveActionTriggered()
 
     QString fileName = (*edittabs->currentEditWidget()->fileName());
     if (fileName.isEmpty()) {
-        QMessageBox::warning(this, tr("Warning"), tr("Could not save an untitled ABC score!"));
+        QMessageBox::warning(this, tr("Warning"), tr("Could not save an untitled ABC file!"));
         return;
     }
 
@@ -134,13 +134,16 @@ void ScoreMenu::onExportActionTriggered()
 void ScoreMenu::onCloseActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    if (QMessageBox::StandardButton::No == QMessageBox::question(a->mainWindow(), tr("Really close?"), tr("Do you really want to close?")))
+        return;
+
     AbcMainWindow* w = a->mainWindow();
     EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
-    //qDebug() << edittabs->currentIndex();
     int cur = edittabs->currentIndex();
 
     if (cur >= 0) {
-        edittabs->currentEditWidget()->editVBoxLayout()->cleanupThreads();
+        EditWidget* ew = edittabs->editWidgetList()->at(cur);
+        ew->editVBoxLayout()->cleanupThreads();
         edittabs->removeTab(cur);
     }
 

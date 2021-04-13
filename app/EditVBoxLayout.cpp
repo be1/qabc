@@ -67,7 +67,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     qDebug() << fileName << drv;
     fluid_settings = new_fluid_settings();
     fluid_settings_setstr(fluid_settings, "audio.driver", drv);
-    fluid_settings_setint(fluid_settings, "audio.jack.autoconnect", 1);
+    //fluid_settings_setint(fluid_settings, "audio.jack.autoconnect", 1);
 
     QFileInfo info(fileName);
     QString name = "qabc-" + info.baseName();
@@ -192,9 +192,11 @@ void EditVBoxLayout::cleanupThreads()
     if (fluid_player)
         fluid_player_stop(fluid_player);
 
-    //if (sfloader && sfloader->isRunning()) {
-    //    sfloader->terminatet();
-    //}
+    if (sfloader && sfloader->isRunning()) {
+        sfloader->terminate();
+        sfloader->deleteLater();
+        sfloader = nullptr;
+    }
 }
 
 void EditVBoxLayout::onXChanged(int value)
@@ -411,8 +413,11 @@ void EditVBoxLayout::onGenerateMIDIFinished(int exitCode)
         if (f)
             fluid_synth_sfunload(fluid_synth, sfid, 0);
 
-        if (sfloader && sfloader->isFinished())
-            delete sfloader;
+        if (sfloader && sfloader->isRunning()) {
+            sfloader->terminate();
+            sfloader->deleteLater();
+            sfloader = nullptr;
+        }
 
         sfloader = new SFLoader(fluid_synth, sf, this);
         connect(sfloader, &SFLoader::sfloadFinished, this, &EditVBoxLayout::onSFLoadFinished);
@@ -446,8 +451,10 @@ void EditVBoxLayout::playMIDI() {
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     fluid_player = new_fluid_player(fluid_synth);
 
-    if (waiter && waiter->isFinished())
-            delete waiter;
+    if (waiter && waiter->isRunning()) {
+        waiter->wait();
+        delete waiter;
+    }
 
     waiter = new TuneWaiter(fluid_player, this);
     connect(waiter, &TuneWaiter::playerFinished, this, &EditVBoxLayout::onSynthFinished);

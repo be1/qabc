@@ -38,13 +38,12 @@ struct tune* find_tune(struct abc* yy, int x) {
 }
 
 struct header* find_header(struct tune* t, char h) {
-    if (!t)
-        return NULL;
+    if (!t) return NULL;
 
-	struct header* header = t->headers;
+    struct header* header = t->headers;
 
-	while(header) {
-		if (header->h == h) {
+    while(header) {
+        if (header->h == h) {
 			return header;
 		}
 

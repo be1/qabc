@@ -399,7 +399,7 @@ void compute_pqr(int* p, int* q, int* r, char* ts) {
 }
 
 #define DYN_DEFAULT 80
-#define SHORTEN_DEFAULT 0.15
+#define SHORTEN_DEFAULT 0.1
 #define EXPRESSION_DEFAULT 0
 
 /* converts an ABC syntax tree into an SMF struct */
@@ -414,6 +414,8 @@ smf_t* abc2smf(struct abc* yy, int x) {
     if(!t) return NULL;
 
 	struct header* kh = find_header(t, 'K');
+    double spu = second_per_unit(t);
+    int upm = unit_per_measure(t);
 
     for (int j = 0; j < t->count && j < 16; j++) {
 		struct voice* v = t->voices[j];
@@ -457,18 +459,18 @@ smf_t* abc2smf(struct abc* yy, int x) {
 		};
 
 		struct symbol* repeat = NULL;
-		int p, q, r = 0;
-		double dur_mod = 1.0;
+        int p, q, r = 0; /* n-uplet definition */
+        double dur_mod = 1.0; /* duration modified for n-uplets */
 		int expr = EXPRESSION_DEFAULT;
-        double shorten = SHORTEN_DEFAULT; /* dur will be shortened to 85% */
+        double shorten = SHORTEN_DEFAULT; /* dur will be shortened of 10% of a unit */
 		struct symbol* tie = NULL;
 
 		while (s) {
 			double dur  = 0.0;
 			if (s->kind == NOTE) {
-				dur = (double) s->dur_num * second_per_unit(t) / (double) s->dur_den;
+                dur = (double) s->dur_num * spu / (double) s->dur_den;
 				/* n-uplet */
-				if (r) {
+                if (r) {
 					dur *= dur_mod;
 					r--;
 				}
@@ -476,7 +478,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
 				chord_dur = chord_dur < dur ? dur : chord_dur;
 
 				if (s->text[0] == 'Z') {
-					dur = (double) unit_per_measure(t) * second_per_unit(t);
+                    dur = (double) upm * spu;
 					/* do nothing else for 'z' */
 				} else {
 					smf_event_t* ev;
@@ -499,7 +501,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
 
 					if (!s->next || (s->next && s->next->kind != TIE)) {
                         ev = smf_event_new_from_bytes(noteon, n, 0x00); /* note off */
-						double stop = start + dur - (dur * shorten);
+                        double stop = start + dur - (spu * shorten);
 						smf_track_add_event_seconds(track, ev, stop);
 					}
 				}
@@ -557,8 +559,8 @@ smf_t* abc2smf(struct abc* yy, int x) {
 					else if (!strcmp(deco, "ffff")) cur_dyn = 127;
 					else if (!strcmp(deco, "sfz")) cur_dyn = 100;
 					else if (!strcmp(deco,".")) shorten = 0.5;
-					else if (!strcmp(deco,"H")) shorten = 0.01; /* dur of 99% */
-					else if (!strcmp(deco,"tenuto")) shorten = 0.01; /* dur of 99% */
+                    else if (!strcmp(deco,"H")) shorten = 0.01;
+                    else if (!strcmp(deco,"tenuto")) shorten = 0.01;
 					else if (!strcmp(deco,"L")) expr = 127;
 					else if (!strcmp(deco,"accent")) expr = 127;
 					else if (!strcmp(deco,"emphasis")) expr = 127;

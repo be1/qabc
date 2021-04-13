@@ -44,6 +44,7 @@ void ScoreMenu::onQuitActionTriggered()
     for (int i = 0; i < len; i++ ) {
         EditWidget *w = tabs->editWidgetList()->at(i);
         w->editVBoxLayout()->cleanupProcesses();
+        w->editVBoxLayout()->cleanupThreads();
     }
 #endif
     a->quit();
@@ -65,11 +66,12 @@ void ScoreMenu::onOpenActionTriggered()
         EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
 
         EditWidget* widget = new EditWidget(fileName, nullptr);
-        edittabs->addTab(widget);
 
         AbcPlainTextEdit *edit = widget->editVBoxLayout()->abcPlainTextEdit();
         edit->setPlainText(file.readAll());
         file.close();
+
+        edittabs->addTab(widget);
     }
 }
 
@@ -136,9 +138,13 @@ void ScoreMenu::onCloseActionTriggered()
     EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
     //qDebug() << edittabs->currentIndex();
     int cur = edittabs->currentIndex();
-    if (cur >= 0)
+
+    if (cur >= 0) {
+        edittabs->currentEditWidget()->editVBoxLayout()->cleanupThreads();
         edittabs->removeTab(cur);
-    a->mainWindow()->mainHSplitter()->viewWidget()->cleanup();
+    }
+
+    w->mainHSplitter()->viewWidget()->cleanup();
 }
 
 void ScoreMenu::onNewActionTriggered()

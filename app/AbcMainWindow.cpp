@@ -8,7 +8,7 @@ AbcMainWindow::AbcMainWindow(QWidget* parent)
 	menuBar()->addMenu(&preferencesmenu);
     menuBar()->addMenu(&helpmenu);
     setCentralWidget(&mainhsplitter);
-    statusBar()->showMessage(tr("Idle"));
+    statusBar()->show();
     setMinimumWidth(1280);
     setMinimumHeight(720);
 	show();

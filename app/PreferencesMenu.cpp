@@ -89,6 +89,11 @@ void PreferencesMenu::onSfontActionTriggered()
 
     settings.setValue(SOUNDFONT_KEY, sf);
     settings.sync();
+    /* FIXME
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcMainWindow* w =  a->mainWindow();
+    w->mainHSplitter()->editTabWidget()->currentEditWidget()->editVBoxLayout()
+    */
 }
 
 void PreferencesMenu::onResetActionTriggered()

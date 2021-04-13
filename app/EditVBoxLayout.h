@@ -7,6 +7,7 @@
 #include "AbcProcess.h"
 #include "TuneWaiter.h"
 #include "AbcTemporaryFile.h"
+#include "sfloader.h"
 #include <QVBoxLayout>
 #include <QSpinBox>
 #include <QLabel>
@@ -28,20 +29,22 @@ public:
     RunPushButton *runPushButton();
     void setFileName(const QString& fn);
     void cleanupProcesses();
+    void cleanupThreads();
 
-    void spawnCompiler(const QString &prog, const QStringList &args, const QDir& wrk);
-    void spawnPlayer(const QString &prog, const QStringList& args, const QDir& wrk);
+    void spawnSVGCompiler(const QString &prog, const QStringList &args, const QDir& wrk);
+    void spawnMIDIGenerator(const QString &prog, const QStringList& args, const QDir& wrk);
 
     //static int handle_midi_event(void* data, fluid_midi_event_t *ev);
 
 signals:
     void compilerFinished(int exitCode);
-    void playerFinished(int exitCode);
+    void generateMIDIFinished(int exitCode);
 
 protected:
     void spawnProgram(const QString& prog, const QStringList &args, AbcProcess::ProcessType which, const QDir &wrk);
     void removeSvgFiles();
     void removeMIDIFile();
+    void playMIDI();
 
 public slots:
     void onXChanged(int value);
@@ -53,8 +56,11 @@ protected slots:
     void onProgramOutputText(const QByteArray& text);
     void onProgramErrorText(const QByteArray& text);
     void onCompileFinished(int exitCode);
-    void onPlayFinished(int exitCode);
+    void onGenerateMIDIFinished(int exitCode);
     void onSynthFinished(int exitCode);
+    void onEarlySFLoadFinished(int fid);
+    void onSFLoadFinished(int fid);
+    void updateDots(void);
 
 private:
 	AbcPlainTextEdit abcplaintextedit;
@@ -67,6 +73,8 @@ private:
     AbcTemporaryFile tempFile;
     QList<AbcProcess*> processlist;
     TuneWaiter *waiter;
+    SFLoader *sfloader;
+    QTimer *dotstimer;
 
     fluid_settings_t* fluid_settings = NULL;
     fluid_synth_t* fluid_synth = NULL;

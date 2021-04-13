@@ -8,6 +8,7 @@
 #include "TuneWaiter.h"
 #include "AbcTemporaryFile.h"
 #include "sfloader.h"
+#include "QProgressIndicator.h"
 #include <QVBoxLayout>
 #include <QSpinBox>
 #include <QLabel>
@@ -60,7 +61,6 @@ protected slots:
     void onSynthFinished(int exitCode);
     void onEarlySFLoadFinished(int fid);
     void onSFLoadFinished(int fid);
-    void updateDots(void);
 
 private:
 	AbcPlainTextEdit abcplaintextedit;
@@ -74,7 +74,7 @@ private:
     QList<AbcProcess*> processlist;
     TuneWaiter *waiter;
     SFLoader *sfloader;
-    QTimer *dotstimer;
+    QProgressIndicator* progress;
 
     fluid_settings_t* fluid_settings = NULL;
     fluid_synth_t* fluid_synth = NULL;

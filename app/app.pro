@@ -20,7 +20,8 @@ SOURCES = NewAction.cpp OpenAction.cpp SaveAction.cpp SaveasAction.cpp CloseActi
 	SfontPrefAction.cpp \
 	TuneWaiter.cpp \
 	ViewVSplitter.cpp \
-	sfloader.cpp
+	sfloader.cpp \
+	QProgressIndicator.cpp
 HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h QuitAction.h ScoreMenu.h PreferencesMenu.h AboutAction.h AboutqtAction.h HelpMenu.h AbcPlainTextEdit.h PlayPushButton.h EditVBoxLayout.h EditWidget.h EditTabWidget.h RunPushButton.h AbcMainWindow.h AbcApplication.h \
 	AbcProcess.h \
 	AbcTemporaryFile.h \
@@ -34,7 +35,8 @@ HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h Qui
 	TuneWaiter.h \
 	ViewVSplitter.h \
 	config.h \
-	sfloader.h
+	sfloader.h \
+	QProgressIndicator.h
 config.input = config.h.in
 config.output = config.h
 QMAKE_SUBSTITUTES += config

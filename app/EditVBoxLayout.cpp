@@ -29,13 +29,18 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     fileName(fileName),
     waiter(nullptr),
     sfloader(nullptr),
-    dotstimer(nullptr),
+    progress(nullptr),
     id(nullptr),
 	drv(nullptr),
 	sf(nullptr),
 	mf(nullptr)
 {
     setObjectName("EditVBoxLayout:" + fileName);
+
+    progress = new QProgressIndicator();
+    hboxlayout.addWidget(progress);
+    progress->startAnimation();
+
     QString t = QDir::tempPath() + QDir::separator() + "qabc-XXXXXX.abc";
 	tempFile.setFileTemplate(t);
     xspinbox.setMinimum(1);
@@ -97,11 +102,6 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     playpushbutton.setEnabled(false);
     a->mainWindow()->statusBar()->showMessage(tr("Loading sound font: ") + sf);
     sfloader->start();
-
-    dotstimer = new QTimer(this);
-    dotstimer->setInterval(500);
-    connect(dotstimer, &QTimer::timeout, this, &EditVBoxLayout::updateDots);
-    dotstimer->start();
 }
 
 
@@ -129,7 +129,9 @@ EditVBoxLayout::~EditVBoxLayout()
 
 void EditVBoxLayout::onEarlySFLoadFinished(int fid) {
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
-    dotstimer->stop();
+    progress->stopAnimation();
+    progress->deleteLater();
+    progress = nullptr;
     playpushbutton.setEnabled(true);
     if (fid == FLUID_FAILED)
         a->mainWindow()->statusBar()->showMessage(tr("Cannot load sound font: ") + sf);
@@ -437,14 +439,6 @@ void EditVBoxLayout::onSFLoadFinished(int fid) {
         a->mainWindow()->statusBar()->clearMessage();
         playMIDI();
     }
-}
-
-void EditVBoxLayout::updateDots()
-{
-    AbcApplication *a = static_cast<AbcApplication*>(qApp);
-    QString msg(a->mainWindow()->statusBar()->currentMessage());
-    msg += ".";
-    a->mainWindow()->statusBar()->showMessage(msg);
 }
 
 void EditVBoxLayout::playMIDI() {

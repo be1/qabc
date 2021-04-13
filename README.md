@@ -43,7 +43,7 @@ Lots of!
 ## Colophon
 This project is (was), as of version 0.1, a one-night project because I wanted to be more comfortable with ABC notation and I could not find a GUI software that could run on my laptop.
 
-#Thanks
+## Thanks
 QProgressIndicator is from Morgan Leborgne, thanks to him for this free piece of software. https://github.com/mojocorp/QProgressIndicator
 
 Icon is derived from johnny\_automatic (from the Lulu Alphabet, 1867).

@@ -73,6 +73,7 @@ struct symbol* new_symbol(struct abc* yy)
 		voice->last = new;
 		s->next = new;
 		new->prev = s;
+		new->index = s->index + 1;
 	}
 
 	return new;
@@ -272,7 +273,7 @@ void nuplet_append(struct abc* yy, int p, int q, int r)
 {
 	struct symbol* new = new_symbol(yy);
 	new->kind = NUP;
-    if (-1 == asprintf(&new->text, "%d:%d:%d", p, q, r)) {;}
+	if (-1 == asprintf(&new->text, "%d:%d:%d", p, q, r)) {;}
 }
 
 void deco_append(struct abc* yy, const char* yytext)
@@ -325,7 +326,7 @@ struct abc* abc_alloc_yy(void)
 
 void abc_release_yy(struct abc* yy)
 {
-    free(yy->error_string);
+	free(yy->error_string);
 	free(yy->buffer->buf);
 	free(yy->buffer);
 
@@ -360,7 +361,7 @@ void abc_release_yy(struct abc* yy)
 		free(t->voices);
 		free(t);
 	}
-	
+
 	free(yy->tunes);
 	free(yy);
 }

@@ -51,7 +51,8 @@ struct symbol {
 	char* lyric;
 	char* text;
 	int dur_num;
-	int dur_den;
+    int dur_den;
+    int index;
 	struct symbol* next;
 	struct symbol* prev;
 };

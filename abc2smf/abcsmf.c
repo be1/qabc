@@ -533,12 +533,17 @@ smf_t* abc2smf(struct abc* yy, int x) {
 			} else if (s->kind == BAR) {
 				/* reset measure accidentals */
 				memset(measure_alter, 0, sizeof measure_alter);
-				/* loop for repeat bars */
-				if (strstr(s->text, ":|") && s != repeat) {
-					repeat = s;
-					s = find_start_repeat(s);
-					continue;
-				}
+                /* check loop for repeat bars */
+                if (strstr(s->text, ":|") && s != repeat) {
+                    if (repeat && (s->index <= repeat->index)) {
+                        s = s->next;
+                        continue;
+                    }
+
+                    repeat = s;
+                    s = find_start_repeat(s);
+                    continue;
+                }
 			} else if (s->kind == NUP) {
                 if(3 != sscanf(s->text, "%d:%d:%d", &p, &q, &r)) { /* should not happen */;}
 				struct header* th = find_header(t, 'T');
@@ -558,24 +563,24 @@ smf_t* abc2smf(struct abc* yy, int x) {
 					else if (!strcmp(deco, "fff")) cur_dyn = 127;
 					else if (!strcmp(deco, "ffff")) cur_dyn = 127;
 					else if (!strcmp(deco, "sfz")) cur_dyn = 100;
-					else if (!strcmp(deco,".")) shorten = 0.5;
-                    else if (!strcmp(deco,"H")) shorten = 0.01;
-                    else if (!strcmp(deco,"tenuto")) shorten = 0.01;
-					else if (!strcmp(deco,"L")) expr = 127;
-					else if (!strcmp(deco,"accent")) expr = 127;
-					else if (!strcmp(deco,"emphasis")) expr = 127;
-					else if (!strcmp(deco,"crescendo(")) /* FIXME */;
-					else if (!strcmp(deco,"<(")) /* FIXME */;
-					else if (!strcmp(deco,"crescendo)")) /* FIXME */;
-					else if (!strcmp(deco,"<)")) /* FIXME */;
-					else if (!strcmp(deco,"diminuendo(")) /* FIXME */;
-					else if (!strcmp(deco,">(")) /* FIXME */;
-					else if (!strcmp(deco,"diminuendo)")) /* FIXME */;
-					else if (!strcmp(deco,">)")) /* FIXME */;
-					else if (!strcmp(deco,"trill")) /* FIXME */;
-					else if (!strcmp(deco,"trill(")) /* FIXME */;
-					else if (!strcmp(deco,"trill)")) /* FIXME */;
-					else if (!strcmp(deco,"D.S.")) {
+                    else if (!strcmp(deco, ".")) shorten = 0.5;
+                    else if (!strcmp(deco, "H")) shorten = 0.01;
+                    else if (!strcmp(deco, "tenuto")) shorten = 0.01;
+                    else if (!strcmp(deco, "L")) expr = 127;
+                    else if (!strcmp(deco, "accent")) expr = 127;
+                    else if (!strcmp(deco, "emphasis")) expr = 127;
+                    else if (!strcmp(deco, "crescendo(")) /* FIXME */;
+                    else if (!strcmp(deco, "<(")) /* FIXME */;
+                    else if (!strcmp(deco, "crescendo)")) /* FIXME */;
+                    else if (!strcmp(deco, "<)")) /* FIXME */;
+                    else if (!strcmp(deco, "diminuendo(")) /* FIXME */;
+                    else if (!strcmp(deco, ">(")) /* FIXME */;
+                    else if (!strcmp(deco, "diminuendo)")) /* FIXME */;
+                    else if (!strcmp(deco, ">)")) /* FIXME */;
+                    else if (!strcmp(deco, "trill")) /* FIXME */;
+                    else if (!strcmp(deco, "trill(")) /* FIXME */;
+                    else if (!strcmp(deco, "trill)")) /* FIXME */;
+                    else if (!strcmp(deco, "D.S.")) {
 						memset(measure_alter, 0, sizeof measure_alter);
 						s = find_next_segno(s);
 						continue;

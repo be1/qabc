@@ -67,9 +67,9 @@ struct voice* find_voice(struct tune* t, int v) {
 
 struct symbol* find_start_repeat(struct symbol* s) {
 	while (s->prev) {
-		s = s->prev;
+        s = s->prev;
 		if (s->kind == BAR && strstr(s->text, "|:"))
-			return s;
+            return s->next;
 	}
 
 	return s;

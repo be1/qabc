@@ -37,19 +37,19 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 {
     setObjectName("EditVBoxLayout:" + fileName);
 
-    progress = new QProgressIndicator();
-    hboxlayout.addWidget(progress);
-    progress->startAnimation();
-
     QString t = QDir::tempPath() + QDir::separator() + "qabc-XXXXXX.abc";
 	tempFile.setFileTemplate(t);
     xspinbox.setMinimum(1);
 	xlabel.setText(tr("X:"));
 	xlabel.setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-	xlabel.setBuddy(&xspinbox);
-	hboxlayout.addWidget(&xlabel);
+    xlabel.setBuddy(&xspinbox);
+    progress = new QProgressIndicator();
+    progress->startAnimation();
+
+    hboxlayout.addWidget(&xlabel);
 	hboxlayout.addWidget(&xspinbox);
-	hboxlayout.addWidget(&playpushbutton);
+    hboxlayout.addWidget(progress);
+    hboxlayout.addWidget(&playpushbutton);
 	hboxlayout.addWidget(&runpushbutton);
 
 	addWidget(&abcplaintextedit);

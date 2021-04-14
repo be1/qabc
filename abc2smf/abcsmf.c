@@ -544,6 +544,14 @@ smf_t* abc2smf(struct abc* yy, int x) {
                     s = find_start_repeat(s);
                     continue;
                 }
+            } else if (s->kind == ALT) {
+                int alt;
+                if (repeat &&
+                        ((1 == sscanf(s->text, "%d", &alt)) ||
+                        (1 == sscanf(s->text, "[%d", &alt)))) {
+                    s = find_next_alt(s, alt);
+                    continue;
+                }
 			} else if (s->kind == NUP) {
                 if(3 != sscanf(s->text, "%d:%d:%d", &p, &q, &r)) { /* should not happen */;}
 				struct header* th = find_header(t, 'T');

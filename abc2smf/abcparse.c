@@ -75,6 +75,24 @@ struct symbol* find_start_repeat(struct symbol* s) {
 	return s;
 }
 
+struct symbol* find_next_alt(struct symbol* s, int alt) {
+    struct symbol* orig = s;
+
+    while (s->next) {
+        int alt2;
+        s = s->next;
+        if (s->kind == ALT &&
+                ((1 == sscanf(s->text, "%d", &alt2)) ||
+                (1 == sscanf(s->text, "[%d", &alt2)))) {
+            if (alt2 == (alt + 1))
+                return s->next;
+            return orig->next;
+        }
+    }
+
+    return orig->next;
+}
+
 struct symbol* find_next_segno(struct symbol* s) {
 	while (s->next) {
 		s = s->next;

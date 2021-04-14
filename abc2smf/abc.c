@@ -19,12 +19,12 @@ void header_append(struct abc* yy, const char* yytext, const char which)
 {
 	struct tune* tune = yy->tunes[yy->count-1];
 	struct header* new = calloc(1, sizeof (struct header));
-	struct header* h = tune->headers;
 
 	if (!tune->headers) {
 		tune->headers = new;
-	} else {
-		for (h = tune->headers; h->next; h = h->next);
+    } else {
+        struct header* h;
+        for (h = tune->headers; h->next; h = h->next);
 
 		h->next = new;
 	}
@@ -39,7 +39,7 @@ void voice_append(struct abc* yy, const char* yytext)
 	new->v = atoi(yytext);
 
 	struct tune* tune = yy->tunes[yy->count-1];
-	tune->voices = realloc(tune->voices, sizeof (struct voices*) * (tune->count + 1));
+    tune->voices = realloc(tune->voices, sizeof (struct voice*) * (tune->count + 1));
 	tune->voices[tune->count] = new;
 	tune->count++;
 }

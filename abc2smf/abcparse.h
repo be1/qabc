@@ -16,6 +16,7 @@ struct header* find_header(struct tune* t, char h);
 struct voice* find_voice(struct tune* t, int v);
 struct symbol* find_start_repeat(struct symbol* s);
 struct symbol* find_next_segno(struct symbol* s);
+struct symbol* find_next_alt(struct symbol* s, int alt);
 
 int unit_per_measure(struct tune* t);
 double second_per_unit(struct tune* t);

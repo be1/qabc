@@ -547,6 +547,26 @@ smf_t* abc2smf(struct abc* yy, int x) {
                             repeat = NULL;
                         }
                     }
+                /*  check pass for Nth in-alternation measure */
+                } else if (s->alt && s->alt != pass) {
+                    struct symbol*  n;
+                    if ((n = find_next_alt(s, pass))) {
+                        s = n;
+                        continue;
+                    } else {
+                        if (!repeat) {
+                            repeat = find_next_repeat(s);
+                            s = find_start_repeat(repeat);
+                            pass++;
+                            continue;
+                        } else {
+                            struct symbol* r = find_next_repeat(s);
+                            if (r) {
+                                s = r->next;
+                                continue;
+                            }
+                        }
+                    }
                 }
             } else if (s->kind == ALT) {
                 int variant = alt_number(s);

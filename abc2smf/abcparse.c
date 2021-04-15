@@ -75,21 +75,6 @@ struct symbol* find_start_repeat(struct symbol* s) {
 	return s;
 }
 
-int alt_number(const struct symbol* s) {
-    int number;
-    if (sscanf(s->text, "%d", &number) || sscanf(s->text, "[%d", &number))
-        return number;
-    return 0;
-}
-
-int is_repeat(const struct symbol* s) {
-    return (strstr(s->text, ":|") != NULL);
-}
-
-int is_endbar(const struct symbol* s) {
-    return (strstr(s->text, "||") || strstr(s->text, "|]"));
-}
-
 struct symbol* find_next_repeat(struct symbol* s) {
     while (s->next) {
         s = s->next;

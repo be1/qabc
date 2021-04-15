@@ -255,25 +255,52 @@ void duration_den_set(struct abc* yy, const char* yytext)
 	voice->last->dur_den = atoi(yytext);
 }
 
+int is_endbar(const struct symbol* s) {
+    return (strstr(s->text, "||") || strstr(s->text, "|]"));
+}
+
+int is_repeat(const struct symbol* s) {
+    return (strstr(s->text, ":|") != NULL);
+}
+
 void bar_append(struct abc* yy, const char* yytext)
 {
 	struct symbol* new = new_symbol(yy);
-	new->kind = BAR;
-	new->text = strdup(yytext);
+    new->kind = BAR;
+    new->text = strdup(yytext);
+    struct tune* t = yy->tunes[yy->count-1];
+    struct voice* v = t->voices[t->count-1];
+    if (is_endbar(new) || is_repeat(new)) {
+        v->cur_alt = 0;
+    }
+    // for now, only bars and alternations have 'alt' field set.
+    new->alt = v->cur_alt;
+}
+
+int alt_number(const struct symbol* s) {
+    int number;
+    if (sscanf(s->text, "%d", &number) || sscanf(s->text, "[%d", &number))
+        return number;
+    return 0;
 }
 
 void alt_append(struct abc* yy, const char* yytext)
 {
 	struct symbol* new = new_symbol(yy);
-	new->kind = ALT;
-	new->text = strdup(yytext);
+    new->kind = ALT;
+    new->text = strdup(yytext);
+    // for now, only bars and alternations have 'alt' field set.
+    new->alt = alt_number(new);
+    struct tune* t = yy->tunes[yy->count-1];
+    struct voice* v = t->voices[t->count-1];
+    v->cur_alt = new->alt;
 }
 
 void nuplet_append(struct abc* yy, int p, int q, int r)
 {
 	struct symbol* new = new_symbol(yy);
 	new->kind = NUP;
-	if (-1 == asprintf(&new->text, "%d:%d:%d", p, q, r)) {;}
+    if (-1 == asprintf(&new->text, "%d:%d:%d", p, q, r)) {;}
 }
 
 void deco_append(struct abc* yy, const char* yytext)

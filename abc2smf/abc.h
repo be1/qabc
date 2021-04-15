@@ -42,7 +42,8 @@ struct tune {
 struct voice {
 	int v;
 	struct symbol* first;
-	struct symbol* last;
+    struct symbol* last;
+    int cur_alt;
 };
 
 struct symbol {
@@ -53,6 +54,7 @@ struct symbol {
 	int dur_num;
     int dur_den;
     int index;
+    int alt;
 	struct symbol* next;
 	struct symbol* prev;
 };
@@ -109,6 +111,11 @@ struct abc* abc_alloc_yy(void);
 
 void abc_release_yy(struct abc* yy);
 
+int alt_number(const struct symbol* s);
+
+int is_repeat(const struct symbol* s);
+
+int is_endbar(const struct symbol* s);
 
 #ifdef __cplusplus
 }

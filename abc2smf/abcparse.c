@@ -75,22 +75,53 @@ struct symbol* find_start_repeat(struct symbol* s) {
 	return s;
 }
 
-struct symbol* find_next_alt(struct symbol* s, int alt) {
-    struct symbol* orig = s;
+int alt_number(const struct symbol* s) {
+    int number;
+    if (sscanf(s->text, "%d", &number) || sscanf(s->text, "[%d", &number))
+        return number;
+    return 0;
+}
 
+int is_repeat(const struct symbol* s) {
+    return (strstr(s->text, ":|") != NULL);
+}
+
+int is_endbar(const struct symbol* s) {
+    return (strstr(s->text, "||") || strstr(s->text, "|]"));
+}
+
+struct symbol* find_next_repeat(struct symbol* s) {
     while (s->next) {
-        int alt2;
         s = s->next;
-        if (s->kind == ALT &&
-                ((1 == sscanf(s->text, "%d", &alt2)) ||
-                (1 == sscanf(s->text, "[%d", &alt2)))) {
-            if (alt2 == (alt + 1))
-                return s->next;
-            return orig->next;
+        if (s->kind == BAR && is_repeat(s))
+            return s;
+    }
+
+    return s;
+}
+
+struct symbol* find_next_alt(struct symbol* s, int alt) {
+    while (s->next) {
+        s = s->next;
+
+        if (s->kind == BAR && is_repeat(s))
+            return NULL;
+
+        if (s->kind == BAR && is_endbar(s)) {
+            return s;
+        }
+
+        if (s->kind == ALT && (alt == alt_number(s))) {
+                return s;
+        }
+
+        if (s->kind == BAR) {
+            if (s->next && s->next->kind != ALT)
+                return s;
         }
     }
 
-    return orig->next;
+    return s;
 }
 
 struct symbol* find_next_segno(struct symbol* s) {

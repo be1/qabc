@@ -72,7 +72,13 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     qDebug() << fileName << drv;
     fluid_settings = new_fluid_settings();
     fluid_settings_setstr(fluid_settings, "audio.driver", drv);
-    //fluid_settings_setint(fluid_settings, "audio.jack.autoconnect", 1);
+#if 0
+    fluid_settings_setnum(fluid_settings, "synth.reverb.room-size", 0.4);
+    fluid_settings_setnum(fluid_settings, "synth.reverb.width", 40.0);
+    fluid_settings_setnum(fluid_settings, "synth.reverb.damp", 0.4);
+    fluid_settings_setint(fluid_settings, "synth.reverb.active", 1);
+    fluid_settings_setint(fluid_settings, "audio.jack.autoconnect", 1);
+#endif
 
     QFileInfo info(fileName);
     QString name = "qabc-" + info.baseName();

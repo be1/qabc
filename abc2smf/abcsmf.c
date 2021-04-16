@@ -463,7 +463,8 @@ smf_t* abc2smf(struct abc* yy, int x) {
         int p, q, r = 0; /* n-uplet definition */
         double dur_mod = 1.0; /* duration modified for n-uplets */
         int expr = EXPRESSION_DEFAULT;
-        double shorten = SHORTEN_DEFAULT; /* dur will be shortened of 10% of a unit */
+        double in_slur = SHORTEN_DEFAULT;
+        double shorten = in_slur; /* dur will be shortened of 10% of a unit */
         struct symbol* tie = NULL;
 
         while (s) {
@@ -510,7 +511,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
                 if (!chord) {
                     chord_dur = 0.0;
                     cur_sec += dur;
-                    shorten = SHORTEN_DEFAULT;
+                    shorten = in_slur;
 
                     if (expr) {
                         smf_event_t* ev = smf_event_new_from_bytes(0xb0, 0x0b, expr);
@@ -525,7 +526,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
                 if (s->text[0] == '[')
                     chord = 1;
                 else {
-                    shorten = SHORTEN_DEFAULT;
+                    shorten = in_slur;
                     expr = EXPRESSION_DEFAULT;
                     cur_sec += chord_dur;
                     chord_dur = 0.0;
@@ -578,6 +579,12 @@ smf_t* abc2smf(struct abc* yy, int x) {
                 struct header* th = find_header(t, 'T');
                 compute_pqr(&p, &q, &r, th->text);
                 dur_mod = (double) q / (double) p;
+            } else if (s->kind == SLUR) {
+                if (strchr(s->text, '(')) {
+                    in_slur = 0.01;
+                } else {
+                    in_slur = SHORTEN_DEFAULT;
+                }
             } else if (s->kind == DECO) {
                 char deco[32];
                 if (sscanf(s->text, "%s", deco)) {

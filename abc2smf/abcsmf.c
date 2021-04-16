@@ -437,7 +437,9 @@ smf_t* abc2smf(struct abc* yy, int x) {
 
         int chord = 0; /* inside a chord */
         double cur_sec = 0.0; /* current second in the tune */
-        unsigned char cur_dyn = DYN_DEFAULT; /* current dynamic in the tune */
+        int in_cresc = 0;
+        int mark_dyn = DYN_DEFAULT;
+        unsigned char cur_dyn = mark_dyn; /* current dynamic in the tune */
         double chord_dur = 0.0; /* chord duration */
 
         /* measure accidentals context */
@@ -470,6 +472,13 @@ smf_t* abc2smf(struct abc* yy, int x) {
         while (s) {
             double dur  = 0.0;
             if (s->kind == NOTE) {
+                if (in_cresc > 0)
+                    cur_dyn = (cur_dyn + 2) < 128 ? cur_dyn + 2 : 127;
+                else if (in_cresc < 0)
+                    cur_dyn = (cur_dyn - 2) > 30 ? cur_dyn - 2 : 30;
+                else
+                    cur_dyn = mark_dyn;
+
                 dur = (double) s->dur_num * spu / (double) s->dur_den;
                 /* n-uplet */
                 if (r) {
@@ -588,31 +597,31 @@ smf_t* abc2smf(struct abc* yy, int x) {
             } else if (s->kind == DECO) {
                 char deco[32];
                 if (sscanf(s->text, "%s", deco)) {
-                    if (!strcmp(deco, "pppp")) cur_dyn = 30;
-                    else if (!strcmp(deco, "ppp")) cur_dyn = 30;
-                    else if (!strcmp(deco, "pp")) cur_dyn = 45;
-                    else if (!strcmp(deco, "p")) cur_dyn = 60;
-                    else if (!strcmp(deco, "mp")) cur_dyn = 75;
-                    else if (!strcmp(deco, "mf")) cur_dyn = 90;
-                    else if (!strcmp(deco, "f")) cur_dyn = 105;
-                    else if (!strcmp(deco, "ff")) cur_dyn = 120;
-                    else if (!strcmp(deco, "fff")) cur_dyn = 127;
-                    else if (!strcmp(deco, "ffff")) cur_dyn = 127;
-                    else if (!strcmp(deco, "sfz")) cur_dyn = 100;
+                    if (!strcmp(deco, "pppp")) mark_dyn = cur_dyn = 30;
+                    else if (!strcmp(deco, "ppp")) mark_dyn = cur_dyn = 30;
+                    else if (!strcmp(deco, "pp")) mark_dyn = cur_dyn = 45;
+                    else if (!strcmp(deco, "p")) mark_dyn = cur_dyn = 60;
+                    else if (!strcmp(deco, "mp")) mark_dyn = cur_dyn = 75;
+                    else if (!strcmp(deco, "mf")) mark_dyn = cur_dyn = 90;
+                    else if (!strcmp(deco, "f")) mark_dyn = cur_dyn = 105;
+                    else if (!strcmp(deco, "ff")) mark_dyn = cur_dyn = 120;
+                    else if (!strcmp(deco, "fff")) mark_dyn = cur_dyn = 127;
+                    else if (!strcmp(deco, "ffff")) mark_dyn = cur_dyn = 127;
+                    else if (!strcmp(deco, "sfz")) mark_dyn = cur_dyn = 100;
                     else if (!strcmp(deco, ".")) shorten = 0.5;
                     else if (!strcmp(deco, "H")) shorten = 0.01;
                     else if (!strcmp(deco, "tenuto")) shorten = 0.01;
                     else if (!strcmp(deco, "L")) expr = 127;
                     else if (!strcmp(deco, "accent")) expr = 127;
                     else if (!strcmp(deco, "emphasis")) expr = 127;
-                    else if (!strcmp(deco, "crescendo(")) /* FIXME */;
-                    else if (!strcmp(deco, "<(")) /* FIXME */;
-                    else if (!strcmp(deco, "crescendo)")) /* FIXME */;
-                    else if (!strcmp(deco, "<)")) /* FIXME */;
-                    else if (!strcmp(deco, "diminuendo(")) /* FIXME */;
-                    else if (!strcmp(deco, ">(")) /* FIXME */;
-                    else if (!strcmp(deco, "diminuendo)")) /* FIXME */;
-                    else if (!strcmp(deco, ">)")) /* FIXME */;
+                    else if (!strcmp(deco, "crescendo(")) in_cresc = 1;
+                    else if (!strcmp(deco, "<(")) in_cresc = 1;
+                    else if (!strcmp(deco, "crescendo)")) in_cresc = 0;
+                    else if (!strcmp(deco, "<)")) in_cresc = 0;
+                    else if (!strcmp(deco, "diminuendo(")) in_cresc = -1;
+                    else if (!strcmp(deco, ">(")) in_cresc = -1;
+                    else if (!strcmp(deco, "diminuendo)")) in_cresc = 0;
+                    else if (!strcmp(deco, ">)")) in_cresc = 0;
                     else if (!strcmp(deco, "trill")) /* FIXME */;
                     else if (!strcmp(deco, "trill(")) /* FIXME */;
                     else if (!strcmp(deco, "trill)")) /* FIXME */;
@@ -627,7 +636,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
                 if (sscanf(s->text, "MIDI program %d", &prog)) {
                     smf_event_t* ev = smf_event_new_from_bytes(program, prog, -1);
                     smf_track_add_event_seconds(track, ev, cur_sec);
-                };
+                }
             }
 
             s = s->next;

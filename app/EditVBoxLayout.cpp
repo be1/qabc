@@ -315,6 +315,12 @@ void EditVBoxLayout::onPlayClicked()
             /* construct headers */
             for (int j = xl;  j < lines.count(); j++) {
                 if (lines.at(j).contains(QRegularExpression("^(%[^\n]*)|([A-Z]:[^\n]+)$"))) {
+                    if (lines.at(j).startsWith("V:")) /* ignore voice number */
+                        continue;
+
+                    if (lines.at(j).startsWith("%%")) /* ignore MIDI instruction, use basic Piano */
+                        continue;
+
                     tosave += lines.at(j) + "\n";
                 } else
                     break;
@@ -627,9 +633,12 @@ void EditVBoxLayout::onSelectionChanged()
         selection.clear();
         selectionIndex = c.selectionStart();
         /* set X spinbox */
-        xspinbox.setValue(xOfCursor(c));
-        /* refresh print */
-        onRunClicked();
+        int x = xOfCursor(c);
+        if (xspinbox.value() != x) {
+            xspinbox.setValue(xOfCursor(c));
+            /* refresh print */
+            onRunClicked();
+        }
     }
 }
 

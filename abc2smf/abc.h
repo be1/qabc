@@ -43,7 +43,7 @@ struct voice {
 	int v;
 	struct symbol* first;
     struct symbol* last;
-    int cur_alt;
+    int in_alt;
 };
 
 struct symbol {
@@ -54,7 +54,7 @@ struct symbol {
 	int dur_num;
     int dur_den;
     int index;
-    int alt;
+    int in_alt;
 	struct symbol* next;
 	struct symbol* prev;
 };
@@ -113,7 +113,7 @@ void abc_release_yy(struct abc* yy);
 
 int alt_is_of(const struct symbol* s, int alt);
 
-int alt_number(const struct symbol* s);
+int is_start(const struct symbol* s);
 
 int is_repeat(const struct symbol* s);
 

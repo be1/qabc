@@ -97,11 +97,11 @@ struct symbol* find_next_alt(struct symbol* s, int alt) {
         }
 
         if ((s->kind == ALT) && alt_is_of(s, alt)) {
-                return s;
+                return s->prev;
         }
 
         if (s->kind == BAR) {
-            if (s->next && s->next->kind != ALT)
+            if (!s->in_alt)
                 return s;
         }
     }

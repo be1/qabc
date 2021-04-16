@@ -259,6 +259,10 @@ int is_endbar(const struct symbol* s) {
     return (strstr(s->text, "||") || strstr(s->text, "|]"));
 }
 
+int is_start(const struct symbol* s) {
+    return (strstr(s->text, "|:") != NULL);
+}
+
 int is_repeat(const struct symbol* s) {
     return (strstr(s->text, ":|") != NULL);
 }
@@ -271,21 +275,14 @@ void bar_append(struct abc* yy, const char* yytext)
     struct tune* t = yy->tunes[yy->count-1];
     struct voice* v = t->voices[t->count-1];
     if (is_endbar(new) || is_repeat(new)) {
-        v->cur_alt = 0;
+        v->in_alt = 0;
     }
-    // for now, only bars and alternations have 'alt' field set.
-    new->alt = v->cur_alt;
+    // for now, only bars and have 'in_alt' field set.
+    new->in_alt = v->in_alt;
 }
 
 int alt_is_of(const struct symbol* s, int alt) {
     return (strchr(s->text, alt + '0') != NULL);
-}
-
-int alt_number(const struct symbol* s) {
-    int number;
-    if (sscanf(s->text, "%d", &number) || sscanf(s->text, "[%d", &number))
-        return number;
-    return 0;
 }
 
 void alt_append(struct abc* yy, const char* yytext)
@@ -293,11 +290,9 @@ void alt_append(struct abc* yy, const char* yytext)
 	struct symbol* new = new_symbol(yy);
     new->kind = ALT;
     new->text = strdup(yytext);
-    // for now, only bars and alternations have 'alt' field set.
-    new->alt = alt_number(new);
     struct tune* t = yy->tunes[yy->count-1];
     struct voice* v = t->voices[t->count-1];
-    v->cur_alt = new->alt;
+    v->in_alt = 1;
 }
 
 void nuplet_append(struct abc* yy, int p, int q, int r)

@@ -542,29 +542,10 @@ smf_t* abc2smf(struct abc* yy, int x) {
                         s = find_start_repeat(s);
                         pass++;
                         continue;
-                    } else {
-                        if (repeat == s) {
-                            repeat = NULL;
-                        }
-                    }
-                /*  check pass for Nth in-alternation measure */
-                } else if (s->alt && s->alt != pass) {
-                    struct symbol*  n;
-                    if ((n = find_next_alt(s, pass))) {
-                        s = n;
-                        continue;
-                    } else {
-                        if (!repeat) {
-                            repeat = find_next_repeat(s);
-                            s = find_start_repeat(repeat);
-                            pass++;
-                            continue;
-                        } else {
-                            struct symbol* r = find_next_repeat(s);
-                            if (r) {
-                                s = r->next;
-                                continue;
-                            }
+                    } else if (repeat == s) {
+                        repeat = NULL;
+                        if (is_start(s)) {
+                            pass = 1;
                         }
                     }
                 }
@@ -583,6 +564,9 @@ smf_t* abc2smf(struct abc* yy, int x) {
                         } else {
                             struct symbol* r = find_next_repeat(s);
                             if (r) {
+                                if (is_start(r)) {
+                                    pass = 1;
+                                }
                                 s = r->next;
                                 continue;
                             }

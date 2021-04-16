@@ -296,7 +296,7 @@ void EditVBoxLayout::onPlayClicked()
         xspinbox.setEnabled(false);
         QString tosave;
 
-        if (selection.isNull()) {
+        if (selection.isEmpty()) {
             tosave = abcPlainTextEdit()->toPlainText();
         } else {
             QString all = abcPlainTextEdit()->toPlainText();
@@ -599,6 +599,24 @@ void EditVBoxLayout::onRunClicked()
 #endif
 }
 
+int EditVBoxLayout::xOfCursor(const QTextCursor& c) {
+    int index = c.selectionStart();
+    QString all = abcPlainTextEdit()->toPlainText();
+    int x;
+    int i = 0;
+    QStringList lines = all.split('\n');
+
+    /* find last X: before selectionIndex */
+    for (int l = 0; l < lines.count() && i < index; l++) {
+        i += lines.at(l).count() +1; /* count \n */
+        if (lines.at(l).startsWith("X:")) {
+            x = lines.at(l).rightRef(1).toInt();
+        }
+    }
+
+    return x;
+}
+
 void EditVBoxLayout::onSelectionChanged()
 {
     QTextCursor c = abcPlainTextEdit()->textCursor();
@@ -607,7 +625,11 @@ void EditVBoxLayout::onSelectionChanged()
         selectionIndex = c.selectionStart();
     } else {
         selection.clear();
-        selectionIndex = 0;
+        selectionIndex = c.selectionStart();
+        /* set X spinbox */
+        xspinbox.setValue(xOfCursor(c));
+        /* refresh print */
+        onRunClicked();
     }
 }
 

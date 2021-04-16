@@ -46,6 +46,7 @@ protected:
     void removeSvgFiles();
     void removeMIDIFile();
     void playMIDI();
+    int xOfCursor(const QTextCursor& c);
 
 public slots:
     void onXChanged(int value);

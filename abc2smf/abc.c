@@ -277,6 +277,10 @@ void bar_append(struct abc* yy, const char* yytext)
     new->alt = v->cur_alt;
 }
 
+int alt_is_of(const struct symbol* s, int alt) {
+    return (strchr(s->text, alt + '0') != NULL);
+}
+
 int alt_number(const struct symbol* s) {
     int number;
     if (sscanf(s->text, "%d", &number) || sscanf(s->text, "[%d", &number))

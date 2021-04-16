@@ -96,7 +96,7 @@ struct symbol* find_next_alt(struct symbol* s, int alt) {
             return s;
         }
 
-        if (s->kind == ALT && (alt == alt_number(s))) {
+        if ((s->kind == ALT) && alt_is_of(s, alt)) {
                 return s;
         }
 

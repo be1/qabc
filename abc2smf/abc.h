@@ -111,6 +111,8 @@ struct abc* abc_alloc_yy(void);
 
 void abc_release_yy(struct abc* yy);
 
+int alt_is_of(const struct symbol* s, int alt);
+
 int alt_number(const struct symbol* s);
 
 int is_repeat(const struct symbol* s);

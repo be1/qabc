@@ -569,8 +569,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
                     }
                 }
             } else if (s->kind == ALT) {
-                int variant = alt_number(s);
-                if (variant != pass) {
+                if (!alt_is_of(s, pass)) {
                     struct symbol*  n;
                     if ((n = find_next_alt(s, pass))) {
                         s = n;

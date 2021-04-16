@@ -318,7 +318,7 @@ void EditVBoxLayout::onPlayClicked()
             int j;
             /* construct headers */
             for (j = xl;  j < lines.count(); j++) {
-                if (lines.at(j).contains(QRegularExpression("^(%[^\n]*)|([A-Z]:[^\n]+)$"))) {
+                if (lines.at(j).contains(QRegularExpression("^((%[^\n]*)|([A-Z]:[^\n]+))$"))) {
                     if (lines.at(j).startsWith("V:")) /* ignore voice number */
                         continue;
 

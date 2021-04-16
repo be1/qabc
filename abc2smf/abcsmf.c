@@ -630,7 +630,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
                         s = find_next_segno(s);
                         continue;
                     } else if (!strcmp(deco,"D.C.")) { /* FIXME */; }
-                } else { /* FIXME */ ;}
+                } else { /* ERROR */ ;}
             } else if (s->kind == INST) {
                 int prog;
                 if (sscanf(s->text, "MIDI program %d", &prog)) {

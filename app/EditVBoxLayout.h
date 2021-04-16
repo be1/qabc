@@ -51,6 +51,7 @@ public slots:
     void onXChanged(int value);
     void onPlayClicked(); /* midi */
     void onRunClicked(); /* svg */
+    void onSelectionChanged();
 
 protected slots:
     void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType);
@@ -75,6 +76,8 @@ private:
     TuneWaiter *waiter;
     SFLoader *sfloader;
     QProgressIndicator* progress;
+    QString selection;
+    int selectionIndex;
 
     fluid_settings_t* fluid_settings = NULL;
     fluid_synth_t* fluid_synth = NULL;

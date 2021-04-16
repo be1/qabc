@@ -55,7 +55,8 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	addWidget(&abcplaintextedit);
 	addLayout(&hboxlayout);
 
-	connect(&xspinbox, SIGNAL(valueChanged(int)), this, SLOT(onXChanged(int)));
+    connect(&abcplaintextedit, &QPlainTextEdit::selectionChanged, this, &EditVBoxLayout::onSelectionChanged);
+    connect(&xspinbox, SIGNAL(valueChanged(int)), this, SLOT(onXChanged(int)));
 	connect(&playpushbutton, SIGNAL(clicked()), this, SLOT(onPlayClicked()));
 	connect(&runpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onRunClicked);
 
@@ -293,7 +294,34 @@ void EditVBoxLayout::onPlayClicked()
         a->mainWindow()->statusBar()->showMessage(tr("Generating MIDI for playing."));
         playpushbutton.flip();
         xspinbox.setEnabled(false);
-        QString tosave = abcPlainTextEdit()->toPlainText();
+        QString tosave;
+
+        if (selection.isNull()) {
+            tosave = abcPlainTextEdit()->toPlainText();
+        } else {
+            QString all = abcPlainTextEdit()->toPlainText();
+            int i = 0, xl = 0;
+            QStringList lines = all.split('\n');
+
+            /* find last X: before selectionIndex */
+            for (int l = 0; l < lines.count() && i < selectionIndex; l++) {
+                i += lines.at(l).count() +1; /* count \n */
+                if (lines.at(l).startsWith("X:")) {
+                    xspinbox.setValue(lines.at(l).rightRef(1).toInt());
+                    xl = l;
+                }
+            }
+
+            /* construct headers */
+            for (int j = xl;  j < lines.count(); j++) {
+                if (lines.at(j).contains(QRegularExpression("^(%[^\n]*)|([A-Z]:[^\n]+)$"))) {
+                    tosave += lines.at(j) + "\n";
+                } else
+                    break;
+            }
+
+            tosave += selection;
+        }
 
         /* early opening of tempfile to set a random name even if we don't use always the file */
         tempFile.open();
@@ -569,6 +597,18 @@ void EditVBoxLayout::onRunClicked()
 #else
     spawnCompiler(program, argv, dir);
 #endif
+}
+
+void EditVBoxLayout::onSelectionChanged()
+{
+    QTextCursor c = abcPlainTextEdit()->textCursor();
+    if (c.hasSelection()) {
+        selection = c.selectedText();
+        selectionIndex = c.selectionStart();
+    } else {
+        selection.clear();
+        selectionIndex = 0;
+    }
 }
 
 void EditVBoxLayout::onCompileFinished(int exitCode)

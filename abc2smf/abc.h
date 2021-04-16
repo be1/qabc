@@ -23,7 +23,7 @@ struct abc {
 	int count;
 	struct buffer* buffer;
 	int error;
-	char* error_string;
+    int error_line;
 };
 
 struct header {

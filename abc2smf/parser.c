@@ -40,11 +40,6 @@ static int get_char(struct abc* auxil) {
         if (auxil->buffer->count == auxil->buffer->index)
                 return -1;
 
-        if (auxil->error_string) {
-                free(auxil->error_string);
-                auxil->error_string = NULL;
-        }
-
         return auxil->buffer->buf[auxil->buffer->index++];
 }
 
@@ -56,8 +51,8 @@ static void print_error(struct abc* auxil) {
                 if (auxil->buffer->buf[i] == '\n')
                         line++;
 
-        if (-1 == asprintf(&auxil->error_string, "Parse error at line %d\n", line)) {;}
         auxil->error = 1;
+        auxil->error_line = line;
 }
 #ifndef PCC_BUFFERSIZE
 #define PCC_BUFFERSIZE 256

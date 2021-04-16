@@ -296,6 +296,8 @@ void EditVBoxLayout::onPlayClicked()
         xspinbox.setEnabled(false);
         QString tosave;
 
+        int virtualLineCount = 0;
+
         if (selection.isEmpty()) {
             tosave = abcPlainTextEdit()->toPlainText();
         } else {
@@ -303,8 +305,9 @@ void EditVBoxLayout::onPlayClicked()
             int i = 0, xl = 0;
             QStringList lines = all.split('\n');
 
+            int l;
             /* find last X: before selectionIndex */
-            for (int l = 0; l < lines.count() && i < selectionIndex; l++) {
+            for (l = 0; l < lines.count() && i < selectionIndex; l++) {
                 i += lines.at(l).count() +1; /* count \n */
                 if (lines.at(l).startsWith("X:")) {
                     xspinbox.setValue(lines.at(l).rightRef(1).toInt());
@@ -312,8 +315,9 @@ void EditVBoxLayout::onPlayClicked()
                 }
             }
 
+            int j;
             /* construct headers */
-            for (int j = xl;  j < lines.count(); j++) {
+            for (j = xl;  j < lines.count(); j++) {
                 if (lines.at(j).contains(QRegularExpression("^(%[^\n]*)|([A-Z]:[^\n]+)$"))) {
                     if (lines.at(j).startsWith("V:")) /* ignore voice number */
                         continue;
@@ -326,6 +330,7 @@ void EditVBoxLayout::onPlayClicked()
                     break;
             }
 
+            virtualLineCount = l;
             tosave += selection;
         }
 
@@ -342,7 +347,7 @@ void EditVBoxLayout::onPlayClicked()
             struct abc* yy = abc2smf_abc_parse(ba.constData(), ba.count());
 
             if (yy->error) {
-                QMessageBox::warning(a->mainWindow(), tr("Error"), yy->error_string);
+                QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Parse error line: ") + (virtualLineCount ? QString::number(virtualLineCount) : QString::number(yy->error_line)));
                 emit generateMIDIFinished(1);
             } else {
                 smf_t* smf = abc2smf(yy, xspinbox.value());

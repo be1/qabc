@@ -352,7 +352,6 @@ struct abc* abc_alloc_yy(void)
 
 void abc_release_yy(struct abc* yy)
 {
-	free(yy->error_string);
 	free(yy->buffer->buf);
 	free(yy->buffer);
 

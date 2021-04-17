@@ -13,8 +13,14 @@ struct abc* abc2smf_abc_parse(const char* buffer, int size) {
     pcc_context_t *ctx = pcc_create(yy);
 
     while (pcc_parse(ctx, NULL)) {
-		if (yy->error)
-			break;
+        if (yy->error){
+#if 0
+            FILE* out = fopen("out.abc", "w");
+            fprintf(out, "%.*s", yy->buffer->count, yy->buffer->buf);
+            fclose(out);
+#endif
+            break;
+        }
 	}
 
 	pcc_destroy(ctx);

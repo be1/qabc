@@ -334,16 +334,17 @@ void EditVBoxLayout::onPlayClicked()
             tosave += selection;
         }
 
-        /* early opening of tempfile to set a random name even if we don't use always the file */
+        /* early opening of tempfile to set a random name */
+        /* when coming from QTextCursor::selectedText(), LF is replaced by U+2029 */
         tempFile.open();
-        tempFile.write(tosave.toUtf8());
+        tempFile.write(tosave.replace(QChar::ParagraphSeparator, "\n").toUtf8());
         tempFile.close();
 
         QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
         QVariant player = settings.value(PLAYER_KEY);
 
         if (player == LIBABC2SMF) {
-            QByteArray ba = tosave.toUtf8();
+            QByteArray ba = tosave.replace(QChar::ParagraphSeparator, "\n").toUtf8();
             struct abc* yy = abc2smf_abc_parse(ba.constData(), ba.count());
 
             if (yy->error) {

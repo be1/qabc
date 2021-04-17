@@ -471,7 +471,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
 
         char vname[] = "voice XXX";
         snprintf(vname, sizeof vname, "voice %d", v->v);
-        smf_event_t* ev = smf_event_new_textual(3, vname );
+        smf_event_t* ev = smf_event_new_textual(3, vname);
         smf_track_add_event_seconds(track, ev, cur_sec);
 
         while (s) {
@@ -494,10 +494,9 @@ smf_t* abc2smf(struct abc* yy, int x) {
                 else
                     cur_dyn = mark_dyn;
 
-
-
                 if (s->text[0] == 'Z') {
                     dur = (double) upm * spu;
+                } else if (s->text[0] == 'z') {
                     /* do nothing else for 'z' */
                 } else {
                     smf_event_t* ev;
@@ -531,16 +530,15 @@ smf_t* abc2smf(struct abc* yy, int x) {
                 }
 
                 if (!chord) {
-                    chord_dur = 0.0;
-                    cur_sec += dur;
-                    shorten = in_slur;
-
                     if (expr) {
                         smf_event_t* ev = smf_event_new_from_bytes(0xb0, 0x0b, expr);
                         smf_track_add_event_seconds(track, ev, cur_sec);
                         expr = EXPRESSION_DEFAULT;
                     }
 
+                    chord_dur = 0.0;
+                    cur_sec += dur; /* works for silences too */
+                    shorten = in_slur;
                 }
             } else if (s->kind == TIE) {
                 tie = s->prev;

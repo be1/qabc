@@ -74,13 +74,13 @@ Score <- Fragment+
 Fragment <- _ / "y"
 	/ "%%" Instruction EOL
 	/ "%" ( !EOL . )* EOL
-	/ Decoration* _* Note Duration* Tie*
+	/ NoteConstruct
 	/ '"' Gchord '"'
 	/ Chord Tie*
 	/ "{/" StrokeGrace+ "}"
 	/ "{" Grace+ "}"
 	/ "!" ExDecoration "!"
-	/ "(" Nuplet _* ( Note Duration* Tie* )+ _*
+	/ "(" Nuplet _* NoteConstruct+ _*
 	/ SlurStart
 	/ SlurEnd
 	/ Bar SimpleAlter
@@ -94,6 +94,8 @@ VoiceScore <- Vheader Fragment+ VoiceScore*
 Vheader <- "V:" Vvalue EOL
 
 Vvalue <- < [1-9][0-9]* > { voice_append(auxil, $0); }
+
+NoteConstruct <- Decoration* _* Note Duration* Tie*
 
 Instruction <- < (!EOL .)* > { instruction_append(auxil, $0); }
 

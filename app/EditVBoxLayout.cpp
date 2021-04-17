@@ -372,7 +372,13 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
         struct abc* yy = abc2smf_abc_parse(ba.constData(), ba.count());
 
         if (yy->error) {
-            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Parse error line: ") + (virtualLineCount ? QString::number(virtualLineCount) : QString::number(yy->error_line)));
+            int l;
+            if (virtualLineCount) {
+                l = virtualLineCount;
+            } else {
+                l = yy->error_line;
+            }
+            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Parse error line: ") + QString::number(l) + ", char: " + QString::number(yy->error_char));
             emit generateMIDIFinished(1, cont);
         } else {
             smf_t* smf = abc2smf(yy, xspinbox.value());
@@ -646,7 +652,7 @@ void EditVBoxLayout::onRunClicked()
 int EditVBoxLayout::xOfCursor(const QTextCursor& c) {
     int index = c.selectionStart();
     QString all = abcPlainTextEdit()->toPlainText();
-    int x;
+    int x = 1;
     int i = 0;
     QStringList lines = all.split('\n');
 

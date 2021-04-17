@@ -47,12 +47,16 @@ static int get_char(struct abc* auxil) {
 static void print_error(struct abc* auxil) {
         int line = 1;
 
+        int l = 0;
         for (int i = 0; i < auxil->buffer->index; i++)
-                if (auxil->buffer->buf[i] == '\n')
+                if (auxil->buffer->buf[i] == '\n') {
                         line++;
+                        l = i + 1;
+                }
 
         auxil->error = 1;
         auxil->error_line = line;
+        auxil->error_char = auxil->buffer->index - l;
 }
 #ifndef PCC_BUFFERSIZE
 #define PCC_BUFFERSIZE 256

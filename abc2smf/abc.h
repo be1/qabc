@@ -24,6 +24,7 @@ struct abc {
 	struct buffer* buffer;
 	int error;
     int error_line;
+    int error_char;
 };
 
 struct header {

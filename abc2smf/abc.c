@@ -24,7 +24,7 @@ void header_append(struct abc* yy, const char* yytext, const char which)
 		tune->headers = new;
     } else {
         struct header* h;
-        for (h = tune->headers; h->next; h = h->next);
+        for (h = tune->headers; h->next; h = h->next) {;}
 
 		h->next = new;
 	}

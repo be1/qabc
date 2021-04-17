@@ -355,14 +355,13 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
     tempFile.write(tosave.replace(QChar::ParagraphSeparator, "\n").toUtf8());
     tempFile.close();
 
-    QString fn;
     int cont;
     if (outfilename.isEmpty()) {
-        cont = 1;
-        fn = tempFile.fileName();
+        cont = 1; /* continue to playback */
+        exportpath.clear();
     } else {
-        cont = 0;
-        fn = outfilename;
+        cont = 0; /* move to exported midi file */
+        exportpath = outfilename;
     }
 
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
@@ -383,7 +382,7 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
                 return;
             }
 
-            QString midi(fn);
+            QString midi(tempFile.fileName());
             qWarning() << midi;
             midi.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value()) + ".mid");
             qWarning() << midi;
@@ -414,9 +413,9 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
     }
 
     argv.removeAt(0);
-    argv << fn;
+    argv << tempFile.fileName();
     argv << QString::number(xspinbox.value());
-    QFileInfo info(fn);
+    QFileInfo info(tempFile.fileName());
     QDir dir = info.absoluteDir();
 
     spawnMIDIGenerator(program, argv, dir, cont);
@@ -442,8 +441,18 @@ void EditVBoxLayout::onGenerateMIDIFinished(int exitCode, int cont)
 
     a->mainWindow()->statusBar()->showMessage(tr("MIDI generation finished."));
 
-    if (!cont)
+    if (!cont) {
+        /* move to export file name; */
+        QString midifile(tempFile.fileName());
+        midifile.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid");
+
+        QDir dir(tempFile.fileName());
+        dir.remove(exportpath);
+        if (!dir.rename(midifile, exportpath)) {
+            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Cannot rename MIDI file."));
+        }
         return;
+    }
 
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
 
@@ -516,7 +525,7 @@ void EditVBoxLayout::playMIDI() {
 
     if (waiter && waiter->isRunning()) {
         waiter->wait();
-        delete waiter;
+        waiter->deleteLater();
     }
 
     waiter = new TuneWaiter(fluid_player, this);

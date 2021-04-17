@@ -73,6 +73,7 @@ private:
     QSpinBox xspinbox;
     QLabel xlabel;
     QString fileName;
+    QString exportpath;
     AbcTemporaryFile tempFile;
     QList<AbcProcess*> processlist;
     TuneWaiter *waiter;

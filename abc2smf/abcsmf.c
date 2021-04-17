@@ -472,13 +472,6 @@ smf_t* abc2smf(struct abc* yy, int x) {
         while (s) {
             double dur  = 0.0;
             if (s->kind == NOTE) {
-                if (in_cresc > 0)
-                    cur_dyn = (cur_dyn + 2) < 128 ? cur_dyn + 2 : 127;
-                else if (in_cresc < 0)
-                    cur_dyn = (cur_dyn - 2) > 30 ? cur_dyn - 2 : 30;
-                else
-                    cur_dyn = mark_dyn;
-
                 dur = (double) s->dur_num * spu / (double) s->dur_den;
                 /* n-uplet */
                 if (r) {
@@ -487,6 +480,16 @@ smf_t* abc2smf(struct abc* yy, int x) {
                 }
                 /* chord duration is the longest note duration */
                 chord_dur = chord_dur < dur ? dur : chord_dur;
+
+                int d = (dur > !.0 ? 3 : dur > 0.5 ? 2 : 1);
+                if (in_cresc > 0)
+                    cur_dyn = (cur_dyn + d) < 128 ? cur_dyn + d : 127;
+                else if (in_cresc < 0)
+                    cur_dyn = (cur_dyn - d) > 30 ? cur_dyn - d : 30;
+                else
+                    cur_dyn = mark_dyn;
+
+
 
                 if (s->text[0] == 'Z') {
                     dur = (double) upm * spu;

@@ -431,7 +431,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
             return NULL;
         }
 
-        //if(smf_set_ppqn(smf, 24));
+        if(smf_set_ppqn(smf, 96)) {;}
 
         smf_add_track(smf, track);
 
@@ -469,6 +469,11 @@ smf_t* abc2smf(struct abc* yy, int x) {
         double shorten = in_slur; /* dur will be shortened of 10% of a unit */
         struct symbol* tie = NULL;
 
+        char vname[] = "voice XXX";
+        snprintf(vname, sizeof vname, "voice %d", v->v);
+        smf_event_t* ev = smf_event_new_textual(3, vname );
+        smf_track_add_event_seconds(track, ev, cur_sec);
+
         while (s) {
             double dur  = 0.0;
             if (s->kind == NOTE) {
@@ -500,6 +505,11 @@ smf_t* abc2smf(struct abc* yy, int x) {
                     double start = cur_sec;
                     if (expr) {
                         ev = smf_event_new_from_bytes(control, 0x0b, expr); /* L => CC expression level */
+                        smf_track_add_event_seconds(track, ev, start);
+                    }
+
+                    if (s->lyric) {
+                        ev = smf_event_new_textual(5, s->lyric);
                         smf_track_add_event_seconds(track, ev, start);
                     }
 

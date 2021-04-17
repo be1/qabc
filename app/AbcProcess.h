@@ -8,12 +8,12 @@ class AbcProcess : public QProcess
     Q_OBJECT
 public:
     enum ProcessType {ProcessUnknown, ProcessCompiler, ProcessPlayer};
-    explicit AbcProcess(ProcessType which, QObject *parent);
+    explicit AbcProcess(ProcessType which, QObject *parent, int cont);
     ProcessType which();
     QByteArray* log();
 
 signals:
-    void finished(int exitCode, QProcess::ExitStatus exitStatus, ProcessType which);
+    void finished(int exitCode, QProcess::ExitStatus exitStatus, ProcessType which, int cont);
     void outputText(const QByteArray& text);
 #if 1
     void errorText(const QByteArray& text);
@@ -30,6 +30,7 @@ protected slots:
 
 private:
     ProcessType type;
+    int cont; /* wether or not continue in processing chain */
     QByteArray output;
 };
 

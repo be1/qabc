@@ -1,10 +1,11 @@
 #include "AbcProcess.h"
 #include <QDebug>
 
-AbcProcess::AbcProcess(ProcessType which, QObject *parent)
-    : QProcess(parent)
+AbcProcess::AbcProcess(ProcessType which, QObject *parent, int cont)
+    : QProcess(parent),
+      type(which),
+      cont(cont)
 {
-    type = which;
     setProcessChannelMode(SeparateChannels);
     connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &AbcProcess::onFinished);
 #if 0
@@ -49,5 +50,5 @@ void AbcProcess::onStderr()
 #endif
 void AbcProcess::onFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    emit finished(exitCode, exitStatus, type);
+    emit finished(exitCode, exitStatus, type, this->cont);
 }

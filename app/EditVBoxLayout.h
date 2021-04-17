@@ -32,17 +32,18 @@ public:
     void cleanupProcesses();
     void cleanupThreads();
 
-    void spawnSVGCompiler(const QString &prog, const QStringList &args, const QDir& wrk);
-    void spawnMIDIGenerator(const QString &prog, const QStringList& args, const QDir& wrk);
+    void spawnSVGCompiler(const QString &prog, const QStringList &args, const QDir& wrk, int cont);
+    void spawnMIDIGenerator(const QString &prog, const QStringList& args, const QDir& wrk, int cont);
+    void exportMIDI(const QString& filename);
 
     //static int handle_midi_event(void* data, fluid_midi_event_t *ev);
 
 signals:
-    void compilerFinished(int exitCode);
-    void generateMIDIFinished(int exitCode);
+    void compilerFinished(int exitCode, int cont);
+    void generateMIDIFinished(int exitCode, int cont);
 
 protected:
-    void spawnProgram(const QString& prog, const QStringList &args, AbcProcess::ProcessType which, const QDir &wrk);
+    void spawnProgram(const QString& prog, const QStringList &args, AbcProcess::ProcessType which, const QDir &wrk, int cont);
     void removeSvgFiles();
     void removeMIDIFile();
     void playMIDI();
@@ -55,11 +56,11 @@ public slots:
     void onSelectionChanged();
 
 protected slots:
-    void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType);
+    void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType, int cont);
     void onProgramOutputText(const QByteArray& text);
     void onProgramErrorText(const QByteArray& text);
-    void onCompileFinished(int exitCode);
-    void onGenerateMIDIFinished(int exitCode);
+    void onCompileFinished(int exitCode, int cont);
+    void onGenerateMIDIFinished(int exitCode, int cont);
     void onSynthFinished(int exitCode);
     void onEarlySFLoadFinished(int fid);
     void onSFLoadFinished(int fid);

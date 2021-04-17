@@ -16,8 +16,10 @@ ScoreMenu::ScoreMenu(QWidget* parent)
 	addAction(&newaction);
 	addAction(&openaction);
 	addAction(&saveaction);
-	addAction(&saveasaction);
-	addAction(&closeaction);
+    addAction(&saveasaction);
+    exportaction.setText(tr("Export to MIDI"));
+    addAction(&exportaction);
+    addAction(&closeaction);
 	addAction(&quitaction);
 
 	connect(&quitaction, SIGNAL(triggered()), this, SLOT(onQuitActionTriggered()));
@@ -26,6 +28,7 @@ ScoreMenu::ScoreMenu(QWidget* parent)
     connect(&saveasaction, SIGNAL(triggered()), this, SLOT(onSaveAsActionTriggered()));
     connect(&closeaction, SIGNAL(triggered()), this, SLOT(onCloseActionTriggered()));
     connect(&newaction, SIGNAL(triggered()), this, SLOT(onNewActionTriggered()));
+    connect(&exportaction, SIGNAL(triggered()), this, SLOT(onExportActionTriggered()));
 }
 
 ScoreMenu::~ScoreMenu()
@@ -128,7 +131,20 @@ void ScoreMenu::onSaveAsActionTriggered()
 
 void ScoreMenu::onExportActionTriggered()
 {
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcMainWindow* w = a->mainWindow();
+    EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
+    int cur = edittabs->currentIndex();
+    if (cur < 0)
+        return;
 
+    QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Export MIDI file"), home, tr("MIDI file (*.mid)"));
+    if (fileName.isEmpty())
+        return; /* cancelled */
+
+    EditWidget* ew = edittabs->editWidgetList()->at(cur);
+    ew->editVBoxLayout()->exportMIDI(fileName);
 }
 
 void ScoreMenu::onCloseActionTriggered()

@@ -568,7 +568,11 @@ smf_t* abc2smf(struct abc* yy, int x) {
                         if (is_start(s)) {
                             pass = 1;
                         }
+                    } else if (is_start(s)) {
+                        pass = 1;
                     }
+                } else if (is_start(s)) {
+                    pass = 1;
                 }
             } else if (s->kind == ALT) {
                 if (!alt_is_of(s, pass)) {
@@ -590,6 +594,8 @@ smf_t* abc2smf(struct abc* yy, int x) {
                                 }
                                 s = r->next;
                                 continue;
+                            } else if (is_start(s)) {
+                                pass = 1;
                             }
                         }
                     }

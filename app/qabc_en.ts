@@ -44,95 +44,100 @@
 <context>
     <name>EditVBoxLayout</name>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="47"/>
+        <location filename="EditVBoxLayout.cpp" line="43"/>
         <source>X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="103"/>
-        <location filename="EditVBoxLayout.cpp" line="426"/>
+        <location filename="EditVBoxLayout.cpp" line="110"/>
+        <location filename="EditVBoxLayout.cpp" line="472"/>
         <source>Loading sound font: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="137"/>
-        <location filename="EditVBoxLayout.cpp" line="436"/>
+        <location filename="EditVBoxLayout.cpp" line="144"/>
+        <location filename="EditVBoxLayout.cpp" line="482"/>
         <source>Cannot load sound font: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="287"/>
+        <location filename="EditVBoxLayout.cpp" line="294"/>
         <source>Generating MIDI for playing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="305"/>
-        <location filename="EditVBoxLayout.cpp" line="339"/>
+        <location filename="EditVBoxLayout.cpp" line="351"/>
+        <location filename="EditVBoxLayout.cpp" line="385"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="339"/>
+        <location filename="EditVBoxLayout.cpp" line="351"/>
+        <source>Parse error line: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="385"/>
         <source>Cannot generate MIDI: Please check settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="355"/>
+        <location filename="EditVBoxLayout.cpp" line="401"/>
         <source>Stopping synthesis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="358"/>
+        <location filename="EditVBoxLayout.cpp" line="404"/>
         <source>Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="371"/>
+        <location filename="EditVBoxLayout.cpp" line="417"/>
         <source>Error during MIDI generation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="377"/>
+        <location filename="EditVBoxLayout.cpp" line="423"/>
         <source>MIDI generation finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="467"/>
+        <location filename="EditVBoxLayout.cpp" line="513"/>
         <source>Cannot load MIDI file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="475"/>
+        <location filename="EditVBoxLayout.cpp" line="521"/>
         <source>Starting synthesis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="478"/>
+        <location filename="EditVBoxLayout.cpp" line="524"/>
         <source>Synthesis playing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="481"/>
+        <location filename="EditVBoxLayout.cpp" line="527"/>
         <source>Synthesis done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="493"/>
+        <location filename="EditVBoxLayout.cpp" line="539"/>
         <source>Synthesis finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="517"/>
+        <location filename="EditVBoxLayout.cpp" line="563"/>
         <source>Generating score...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="574"/>
+        <location filename="EditVBoxLayout.cpp" line="657"/>
         <source>Error during score generation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="578"/>
+        <location filename="EditVBoxLayout.cpp" line="661"/>
         <source>Score generated.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -340,12 +345,6 @@ QAbc version </source>
     <message>
         <location filename="ScoreMenu.cpp" line="137"/>
         <source>Really close?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ScoreMenu.cpp" line="137"/>
-        <source>Really close?</source>
-        <oldsource>Do you really want to close?</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>

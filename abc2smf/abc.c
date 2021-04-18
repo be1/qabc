@@ -161,11 +161,10 @@ void note_append(struct abc* yy, const char* yytext)
 	new->text = strdup(yytext);
 }
 
-void grace_append(struct abc* yy, const char* yytext, int stroke)
+void grace_append(struct abc* yy, const char* yytext)
 {
 	struct symbol* new = new_symbol(yy);
 	new->kind = GRACE;
-	new->stroke = stroke;
 	new->text = strdup(yytext);
 }
 

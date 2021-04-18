@@ -132,6 +132,23 @@ int has_tie(struct symbol* s, int chord) {
     return 0;
 }
 
+double grace_duration(struct symbol* s) {
+    if (s->kind != GRACE)
+        return 0.0;
+
+    double dur = 0.0;
+    while (s->next) {
+        s = s->next;
+        if (s->kind == NOTE) {
+            dur += (double) s->dur_num / (double) s->dur_den;
+        }
+
+        if (s->kind == GRACE) /* end of grace */
+            return dur;
+    }
+
+    return dur;
+}
 
 double apply_divide(const char* div) {
 	if (!strchr(div, '/'))

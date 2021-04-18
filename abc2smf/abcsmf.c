@@ -416,6 +416,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
     struct header* kh = find_header(t, 'K');
     double spu = second_per_unit(t);
     int upm = unit_per_measure(t);
+	double ulen = 1.0 / upm;
 
     for (int j = 0; j < t->count && j < 16; j++) {
         struct voice* v = t->voices[j];
@@ -436,11 +437,13 @@ smf_t* abc2smf(struct abc* yy, int x) {
         smf_add_track(smf, track);
 
         int chord = 0; /* inside a chord */
+        int grace = 0; /* inside a grace */
         double cur_sec = 0.0; /* current second in the tune */
         int in_cresc = 0;
         int mark_dyn = DYN_DEFAULT;
         unsigned char cur_dyn = mark_dyn; /* current dynamic in the tune */
         double chord_dur = 0.0; /* chord duration */
+		double grace_shift = 0.0; /* grace group duration */
 
         /* measure accidentals context */
         int measure_accid[] = {
@@ -464,6 +467,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
         int pass = 1;
         int p, q, r = 0; /* n-uplet definition */
         double dur_mod = 1.0; /* duration modified for n-uplets */
+        double grace_mod = 1.0; /* duration modified for graces */
         int expr = EXPRESSION_DEFAULT;
         double in_slur = SHORTEN_DEFAULT;
         double shorten = in_slur; /* dur will be shortened of 10% of a unit */
@@ -474,6 +478,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
 
         while (s) {
             double dur  = 0.0;
+
             if (s->kind == NOTE) {
                 dur = (double) s->dur_num * spu / (double) s->dur_den;
                 /* n-uplet */
@@ -481,6 +486,9 @@ smf_t* abc2smf(struct abc* yy, int x) {
                     dur *= dur_mod;
                     r--;
                 }
+	
+				if (grace)
+					dur *= grace_mod;
 
                 /* chord duration is the longest note duration */
                 chord_dur = chord_dur < dur ? dur : chord_dur;
@@ -500,7 +508,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
                 } else {
                     smf_event_t* ev;
 
-                    double start = cur_sec;
+                    double start = cur_sec - grace_shift;
                     if (expr) {
                         ev = smf_event_new_from_bytes(control, 0x0b, expr); /* L => CC expression level */
                         smf_track_add_event_seconds(track, ev, start);
@@ -540,6 +548,16 @@ smf_t* abc2smf(struct abc* yy, int x) {
                     cur_sec += dur; /* works for silences too */
                     shorten = in_slur;
                 }
+			} else if (s->kind == GRACE) {
+                grace = strchr(s->text, '{') ? 1 : 0;
+				if (grace) {
+					double gd = grace_duration(s); /* in units L */
+					grace_mod = 0.5 / gd; /* play 'twice' faster */
+					grace_shift = gd * spu / 2.0;
+				} else {
+                    cur_sec -= grace_shift;
+					grace_shift = 0.0;
+				}
             } else if (s->kind == TIE) {
                 tie = s->prev;
             } else if (s->kind == CHORD) {

@@ -77,8 +77,7 @@ Fragment <- _ / "y"
 	/ NoteConstruct
 	/ '"' Gchord '"'
 	/ Chord Tie*
-	/ "{/" StrokeGrace+ "}"
-	/ "{" Grace+ "}"
+	/ Grace
 	/ "!" ExDecoration "!"
 	/ "(" Nuplet _* NoteConstruct+ _*
 	/ SlurStart
@@ -103,9 +102,7 @@ Lyrics <- < (!EOL .)* > {lyrics_append(auxil, $0); }
 
 Tie <- < "-" > { tie_append(auxil, $0); }
 
-Grace <- < [^/}]+ > { grace_append(auxil, $0, 0); }
-
-StrokeGrace <- < [^}]+ > { grace_append(auxil, $0, 1); }
+Grace <- < "{/" / "{" > { grace_append(auxil, $0); } NoteConstruct+ < "}" > { grace_append(auxil, $2); }
 
 Chord <- < "[" > { chord_append(auxil, $0); } NoteConstruct+ < "]" > { chord_append(auxil, $2); }
 

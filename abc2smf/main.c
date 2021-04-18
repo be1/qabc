@@ -16,7 +16,7 @@ int main() {
 	
 	struct abc* yy = abc2smf_abc_parse(buf, count);
 	if (yy->error)
-		puts(yy->error_string);
+		puts("Parse error");
 
 	printf("tunes: %d\n", yy->count);
 	for (int i = 0; i < yy->count; i++) {
@@ -31,7 +31,7 @@ int main() {
 		printf("title: %s\n", h? h->text: "");
 		for (int j = 0; j < t->count; j++) {
 			struct voice* v = t->voices[j];
-			printf("tune %d, voice %d\n", t->x, v->v);
+			printf("tune %d, voice %s\n", t->x, v->v);
 			struct symbol* s;
 			for (s = v->first; s; s = s->next) {
 				printf("%d %d/%d ", s->kind, s->dur_num, s->dur_den);

@@ -49,7 +49,6 @@ struct voice {
 
 struct symbol {
 	enum type kind;
-	int stroke;
 	char* lyric;
 	char* text;
 	int dur_num;
@@ -80,7 +79,7 @@ void space_append(struct abc* yy, const char* yytext);
 
 void note_append(struct abc* yy, const char* yytext);
 
-void grace_append(struct abc* yy, const char* yytext, int stroke);
+void grace_append(struct abc* yy, const char* yytext);
 
 void chord_append(struct abc* yy, const char* yytext);
 

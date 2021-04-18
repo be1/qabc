@@ -552,8 +552,8 @@ smf_t* abc2smf(struct abc* yy, int x) {
                 grace = strchr(s->text, '{') ? 1 : 0;
 				if (grace) {
 					double gd = grace_duration(s); /* in units L */
-					grace_mod = 0.5 / gd; /* play 'twice' faster */
-					grace_shift = gd * spu / 2.0;
+					grace_mod = 0.25 / gd; /* play 'fourth' faster */
+					grace_shift = gd * spu / 4.0;
 				} else {
                     cur_sec -= grace_shift;
 					grace_shift = 0.0;

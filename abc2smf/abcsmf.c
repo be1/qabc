@@ -485,7 +485,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
                 /* chord duration is the longest note duration */
                 chord_dur = chord_dur < dur ? dur : chord_dur;
 
-                int d = (dur > !.0 ? 3 : dur > 0.5 ? 2 : 1);
+                int d = (dur > 1.0 ? 4 : dur > 0.5 ? 2 : 1);
                 if (in_cresc > 0)
                     cur_dyn = (cur_dyn + d) < 128 ? cur_dyn + d : 127;
                 else if (in_cresc < 0)
@@ -518,10 +518,11 @@ smf_t* abc2smf(struct abc* yy, int x) {
                         ev = smf_event_new_from_bytes(noteon, n, cur_dyn); /* note on */
                         smf_track_add_event_seconds(track, ev, start);
                     } else {
-                        tie = NULL;
+                        if (tie->text[0] != ']')
+                            tie = NULL;
                     }
 
-                    if (!s->next || (s->next && s->next->kind != TIE)) {
+                    if (!has_tie(s, chord)) {
                         ev = smf_event_new_from_bytes(noteon, n, 0x00); /* note off */
                         double stop = start + dur - (spu * shorten);
                         smf_track_add_event_seconds(track, ev, stop);
@@ -545,6 +546,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
                 if (s->text[0] == '[')
                     chord = 1;
                 else {
+                    tie = NULL;
                     shorten = in_slur;
                     expr = EXPRESSION_DEFAULT;
                     cur_sec += chord_dur;

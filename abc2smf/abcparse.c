@@ -113,6 +113,25 @@ struct symbol* find_next_segno(struct symbol* s) {
 	return s;
 }
 
+int has_tie(struct symbol* s, int chord) {
+    while (s->next) {
+        s = s->next;
+        if (chord) {
+            if ((s->kind == CHORD) && s->text[0] == ']') {
+                if (s->next && (s->next->kind == TIE))
+                    return 1;
+                return 0;
+            }
+        } else {
+            if (s->kind == TIE)
+                return 1;
+            return 0;
+        }
+    }
+
+    return 0;
+}
+
 
 double apply_divide(const char* div) {
 	if (!strchr(div, '/'))

@@ -41,7 +41,7 @@ struct tune {
 };
 
 struct voice {
-	int v;
+	char* v;
 	struct symbol* first;
     struct symbol* last;
     int in_alt;

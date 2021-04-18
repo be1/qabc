@@ -93,7 +93,7 @@ VoiceScore <- Vheader Fragment+ VoiceScore*
 
 Vheader <- "V:" Vvalue EOL
 
-Vvalue <- < [1-9][0-9]* > { voice_append(auxil, $0); }
+Vvalue <- < (!EOL .)* > { voice_append(auxil, $0); }
 
 NoteConstruct <- Decoration* _* Note Duration* Tie*
 
@@ -107,7 +107,7 @@ Grace <- < [^/}]+ > { grace_append(auxil, $0, 0); }
 
 StrokeGrace <- < [^}]+ > { grace_append(auxil, $0, 1); }
 
-Chord <- < "[" > { chord_append(auxil, $0); } (Note Duration*)+ < "]" > { chord_append(auxil, $2); }
+Chord <- < "[" > { chord_append(auxil, $0); } NoteConstruct+ < "]" > { chord_append(auxil, $2); }
 
 _ <- < [ \t] > { space_append(auxil, $0); }
 

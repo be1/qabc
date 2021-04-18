@@ -59,18 +59,6 @@ struct header* find_header(struct tune* t, char h) {
     return header;
 }
 
-struct voice* find_voice(struct tune* t, int v) {
-	struct voice* voice = NULL;
-	for (int i = 0; i < t->count; i++) {
-		if (t->voices[i]->v == v) {
-			voice = t->voices[i];
-			break;
-		}
-	}
-
-	return voice;
-}
-
 struct symbol* find_start_repeat(struct symbol* s) {
 	while (s->prev) {
         s = s->prev;

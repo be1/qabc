@@ -36,7 +36,7 @@ void header_append(struct abc* yy, const char* yytext, const char which)
 void voice_append(struct abc* yy, const char* yytext)
 {
 	struct voice* new = calloc(1, sizeof (struct voice));
-	new->v = atoi(yytext);
+	new->v = strdup(yytext);
 
 	struct tune* tune = yy->tunes[yy->count-1];
     tune->voices = realloc(tune->voices, sizeof (struct voice*) * (tune->count + 1));

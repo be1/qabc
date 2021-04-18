@@ -469,9 +469,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
         double shorten = in_slur; /* dur will be shortened of 10% of a unit */
         struct symbol* tie = NULL;
 
-        char vname[] = "voice XXX";
-        snprintf(vname, sizeof vname, "voice %d", v->v);
-        smf_event_t* ev = smf_event_new_textual(3, vname);
+        smf_event_t* ev = smf_event_new_textual(3, v->v);
         smf_track_add_event_seconds(track, ev, cur_sec);
 
         while (s) {
@@ -483,6 +481,7 @@ smf_t* abc2smf(struct abc* yy, int x) {
                     dur *= dur_mod;
                     r--;
                 }
+
                 /* chord duration is the longest note duration */
                 chord_dur = chord_dur < dur ? dur : chord_dur;
 

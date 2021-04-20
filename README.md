@@ -4,7 +4,7 @@ ABC music notation minimal GUI, the SVG and fluid version (v2).
 ## Dependencies
 QAbc uses third-party software to generate MIDI, AUDIO, and SVG files. Without them, QAbc would be very poor (only a little fancy text editor). So, please install them:
 - abc2midi (program, not mandatory)
-- smf (library and headers)
+- drumstick-file (library and headers)
 - fluidsynth (library and headers)
 - pangocairo (library and headers)
 - pangoft2 (library and headers)

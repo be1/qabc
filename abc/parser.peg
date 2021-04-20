@@ -1,0 +1,144 @@
+%auxil "struct abc *"
+
+%common{
+#include "abc.h"
+}
+
+%earlysource {
+#define _GNU_SOURCE
+#include <stdio.h>
+}
+
+%source{
+#define PCC_GETCHAR(auxil) get_char(auxil)
+static int get_char(struct abc* auxil) {
+	if (auxil->error)
+		return -1;
+
+	if (auxil->buffer->count == auxil->buffer->index)
+		return -1;
+
+	return auxil->buffer->buf[auxil->buffer->index++];
+}
+
+#define PCC_ERROR(auxil) print_error(auxil)
+static void print_error(struct abc* auxil) {
+	int line = 1;
+
+	int l = 0;
+	for (int i = 0; i < auxil->buffer->index; i++)
+		if (auxil->buffer->buf[i] == '\n') {
+			line++;
+			l = i + 1;
+		}
+
+	auxil->error = 1;
+	auxil->error_line = line;
+	auxil->error_char = auxil->buffer->index - l;
+}
+}
+
+TuneBook <- Tune EOF
+	/ Tune TuneBook
+
+Tune <- Xheader (Oheader EOL)+ Score
+	/ Xheader Score
+
+Xheader <- "X:" Xvalue EOL
+
+Xvalue <- < [1-9][0-9]* > { abc_tune_append(auxil, $0); }
+
+Oheader <- "A:" < [^\r\n]+ > { abc_header_append(auxil, $1, 'A'); }
+	/ "B:" < [^\r\n]+ > { abc_header_append(auxil, $2, 'B'); }
+	/ "C:" < [^\r\n]+ > { abc_header_append(auxil, $3, 'C'); }
+	/ "D:" < [^\r\n]+ > { abc_header_append(auxil, $4, 'D'); }
+	/ "F:" < [^\r\n]+ > { abc_header_append(auxil, $5, 'F'); }
+	/ "G:" < [^\r\n]+ > { abc_header_append(auxil, $6, 'G'); }
+	/ "H:" < [^\r\n]+ > { abc_header_append(auxil, $7, 'H'); }
+	/ "I:" < [^\r\n]+ > { abc_header_append(auxil, $8, 'I'); }
+	/ "K:" < [^\r\n]+ > { abc_header_append(auxil, $9, 'K'); }
+	/ "L:" < [^\r\n]+ > { abc_header_append(auxil, $10, 'L'); }
+	/ "M:" < [^\r\n]+ > { abc_header_append(auxil, $11, 'M'); }
+	/ "N:" < [^\r\n]+ > { abc_header_append(auxil, $12, 'N'); }
+	/ "O:" < [^\r\n]+ > { abc_header_append(auxil, $13, 'O'); }
+	/ "P:" < [^\r\n]+ > { abc_header_append(auxil, $14, 'P'); }
+	/ "Q:" < [^\r\n]+ > { abc_header_append(auxil, $15, 'Q'); }
+	/ "R:" < [^\r\n]+ > { abc_header_append(auxil, $16, 'R'); }
+	/ "S:" < [^\r\n]+ > { abc_header_append(auxil, $17, 'S'); }
+	/ "T:" < [^\r\n]+ > { abc_header_append(auxil, $18, 'T'); }
+	/ "U:" < [^\r\n]+ > { abc_header_append(auxil, $19, 'U'); }
+
+Score <- Fragment+
+	/ VoiceScore
+
+Fragment <- _ / "y"
+	/ "%%" Instruction EOL
+	/ "%" ( !EOL . )* EOL
+	/ NoteConstruct
+	/ '"' Gchord '"'
+	/ Chord Tie*
+	/ Grace
+	/ "!" ExDecoration "!"
+	/ "(" Nuplet _* NoteConstruct+ _*
+	/ SlurStart
+	/ SlurEnd
+	/ Bar SimpleAlter
+	/ Bar
+	/ Alternative
+	/ LineBreak
+	/ "w:" Lyrics EOL
+
+VoiceScore <- Vheader Fragment+ VoiceScore*
+
+Vheader <- "V:" Vvalue EOL
+
+Vvalue <- < (!EOL .)* > { abc_voice_append(auxil, $0); }
+
+NoteConstruct <- Decoration* _* Note Duration* Tie*
+
+Instruction <- < (!EOL .)* > { abc_instruction_append(auxil, $0); }
+
+Lyrics <- < (!EOL .)* > { abc_lyrics_append(auxil, $0); }
+
+Tie <- < "-" > { abc_tie_append(auxil, $0); }
+
+Grace <- < "{/" / "{" > { abc_grace_append(auxil, $0); } NoteConstruct+ < "}" > { abc_grace_append(auxil, $2); }
+
+Chord <- < "[" > { abc_chord_append(auxil, $0); } NoteConstruct+ < "]" > { abc_chord_append(auxil, $2); }
+
+_ <- < [ \t] > { abc_space_append(auxil, $0); }
+
+Decoration <- < "." / "~" / "H" / "L" / "M" / "O" / "P" / "S" / "T" / "u" / "v" > { abc_deco_append(auxil, $0); }
+
+ExDecoration <- < [^!]+ > { abc_deco_append(auxil, $0); }
+
+Nuplet <- p:Digits "::" { abc_nuplet_append(auxil, p, 0, 0); }
+	/ p:Digits ":" q:Digits ":" r:Digits { abc_nuplet_append(auxil, p, q, r); }
+	/ p:Digits ":" q:Digits { abc_nuplet_append(auxil, p, q, 0); }
+	/ p:Digits { abc_nuplet_append(auxil, p, 0, 0); }
+
+Digits <- < [0-9]+ > { $$ = atoi($0); }
+
+Gchord <- < [A-H][^"]* > { abc_gchord_append(auxil, $0); }
+
+SlurStart <- < "(" > { abc_slur_append(auxil, $0); }
+
+SlurEnd <- < ")" > { abc_slur_append(auxil, $0); }
+
+SimpleAlter <- < [1-9]+([-,][1-9]+)* > { abc_alt_append(auxil, $0); }
+
+Alternative <- < "["[1-9]+([-,][1-9]+)* > { abc_alt_append(auxil, $0); }
+
+Bar <- < "["?[:|\]]+ > { abc_bar_append(auxil, $0); }
+
+Duration <- < [0-9]* > "/" { abc_duration_num_set(auxil, $0); } < [1-9][0-9]* > { abc_duration_den_set(auxil, $2); }
+	/ < [0-9]+ > { abc_duration_num_set(auxil, $3); }
+
+Note <- < [_=^]*[A-Ha-hZz][,']* > { abc_note_append(auxil, $0); }
+
+EOL <- "\r\n" / "\r" / "\n"
+
+LineBreak <- "\r\n" / "\r" / "\n" { abc_eol_append(auxil, $0); }
+
+EOF <- !.
+

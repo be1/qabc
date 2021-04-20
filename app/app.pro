@@ -2,7 +2,7 @@ include(../common.pri)
 QT += core widgets gui svg printsupport
 TEMPLATE = app
 CONFIG += link_pkgconfig
-PKGCONFIG += pangocairo pangoft2 fluidsynth smf
+PKGCONFIG += pangocairo pangoft2 fluidsynth drumstick-file
 DEFINES += USE_LIBABCM2PS _FORTIFY_SOURCE=2
 QMAKE_CXXFLAGS = -O2
 TARGET = qabc
@@ -40,7 +40,7 @@ HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h Qui
 config.input = config.h.in
 config.output = config.h
 QMAKE_SUBSTITUTES += config
-LIBS += ../abcm2ps/libabcm2ps.a ../abc2smf/libabc2smf.a
+LIBS += ../abcm2ps/libabcm2ps.a
 isEmpty(QMAKE_LRELEASE):QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
 TRANSLATIONS += $${TARGET}_en.ts $${TARGET}_fr.ts
 LOCALE_DIR = locale

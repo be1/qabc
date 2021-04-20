@@ -1038,7 +1038,7 @@ static void pcc_action_Xvalue_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in,
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    tune_append(auxil, _0);
+    abc_tune_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1058,7 +1058,7 @@ static void pcc_action_Oheader_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    header_append(auxil, _1, 'A');
+    abc_header_append(auxil, _1, 'A');
 #undef _1e
 #undef _1s
 #undef _1
@@ -1078,7 +1078,7 @@ static void pcc_action_Oheader_1(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in
 #define _2 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[1])
 #define _2s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[1]->range.start))
 #define _2e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[1]->range.end))
-    header_append(auxil, _2, 'B');
+    abc_header_append(auxil, _2, 'B');
 #undef _2e
 #undef _2s
 #undef _2
@@ -1098,7 +1098,7 @@ static void pcc_action_Oheader_2(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in
 #define _3 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[2])
 #define _3s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[2]->range.start))
 #define _3e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[2]->range.end))
-    header_append(auxil, _3, 'C');
+    abc_header_append(auxil, _3, 'C');
 #undef _3e
 #undef _3s
 #undef _3
@@ -1118,7 +1118,7 @@ static void pcc_action_Oheader_3(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in
 #define _4 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[3])
 #define _4s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[3]->range.start))
 #define _4e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[3]->range.end))
-    header_append(auxil, _4, 'D');
+    abc_header_append(auxil, _4, 'D');
 #undef _4e
 #undef _4s
 #undef _4
@@ -1138,7 +1138,7 @@ static void pcc_action_Oheader_4(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in
 #define _5 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[4])
 #define _5s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[4]->range.start))
 #define _5e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[4]->range.end))
-    header_append(auxil, _5, 'F');
+    abc_header_append(auxil, _5, 'F');
 #undef _5e
 #undef _5s
 #undef _5
@@ -1158,7 +1158,7 @@ static void pcc_action_Oheader_5(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in
 #define _6 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[5])
 #define _6s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[5]->range.start))
 #define _6e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[5]->range.end))
-    header_append(auxil, _6, 'G');
+    abc_header_append(auxil, _6, 'G');
 #undef _6e
 #undef _6s
 #undef _6
@@ -1178,7 +1178,7 @@ static void pcc_action_Oheader_6(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in
 #define _7 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[6])
 #define _7s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[6]->range.start))
 #define _7e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[6]->range.end))
-    header_append(auxil, _7, 'H');
+    abc_header_append(auxil, _7, 'H');
 #undef _7e
 #undef _7s
 #undef _7
@@ -1198,7 +1198,7 @@ static void pcc_action_Oheader_7(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in
 #define _8 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[7])
 #define _8s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[7]->range.start))
 #define _8e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[7]->range.end))
-    header_append(auxil, _8, 'I');
+    abc_header_append(auxil, _8, 'I');
 #undef _8e
 #undef _8s
 #undef _8
@@ -1218,7 +1218,7 @@ static void pcc_action_Oheader_8(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in
 #define _9 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[8])
 #define _9s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[8]->range.start))
 #define _9e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[8]->range.end))
-    header_append(auxil, _9, 'K');
+    abc_header_append(auxil, _9, 'K');
 #undef _9e
 #undef _9s
 #undef _9
@@ -1238,7 +1238,7 @@ static void pcc_action_Oheader_9(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in
 #define _10 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[9])
 #define _10s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[9]->range.start))
 #define _10e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[9]->range.end))
-    header_append(auxil, _10, 'L');
+    abc_header_append(auxil, _10, 'L');
 #undef _10e
 #undef _10s
 #undef _10
@@ -1258,7 +1258,7 @@ static void pcc_action_Oheader_10(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_i
 #define _11 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[10])
 #define _11s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[10]->range.start))
 #define _11e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[10]->range.end))
-    header_append(auxil, _11, 'M');
+    abc_header_append(auxil, _11, 'M');
 #undef _11e
 #undef _11s
 #undef _11
@@ -1278,7 +1278,7 @@ static void pcc_action_Oheader_11(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_i
 #define _12 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[11])
 #define _12s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[11]->range.start))
 #define _12e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[11]->range.end))
-    header_append(auxil, _12, 'N');
+    abc_header_append(auxil, _12, 'N');
 #undef _12e
 #undef _12s
 #undef _12
@@ -1298,7 +1298,7 @@ static void pcc_action_Oheader_12(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_i
 #define _13 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[12])
 #define _13s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[12]->range.start))
 #define _13e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[12]->range.end))
-    header_append(auxil, _13, 'O');
+    abc_header_append(auxil, _13, 'O');
 #undef _13e
 #undef _13s
 #undef _13
@@ -1318,7 +1318,7 @@ static void pcc_action_Oheader_13(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_i
 #define _14 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[13])
 #define _14s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[13]->range.start))
 #define _14e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[13]->range.end))
-    header_append(auxil, _14, 'P');
+    abc_header_append(auxil, _14, 'P');
 #undef _14e
 #undef _14s
 #undef _14
@@ -1338,7 +1338,7 @@ static void pcc_action_Oheader_14(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_i
 #define _15 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[14])
 #define _15s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[14]->range.start))
 #define _15e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[14]->range.end))
-    header_append(auxil, _15, 'Q');
+    abc_header_append(auxil, _15, 'Q');
 #undef _15e
 #undef _15s
 #undef _15
@@ -1358,7 +1358,7 @@ static void pcc_action_Oheader_15(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_i
 #define _16 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[15])
 #define _16s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[15]->range.start))
 #define _16e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[15]->range.end))
-    header_append(auxil, _16, 'R');
+    abc_header_append(auxil, _16, 'R');
 #undef _16e
 #undef _16s
 #undef _16
@@ -1378,7 +1378,7 @@ static void pcc_action_Oheader_16(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_i
 #define _17 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[16])
 #define _17s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[16]->range.start))
 #define _17e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[16]->range.end))
-    header_append(auxil, _17, 'S');
+    abc_header_append(auxil, _17, 'S');
 #undef _17e
 #undef _17s
 #undef _17
@@ -1398,7 +1398,7 @@ static void pcc_action_Oheader_17(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_i
 #define _18 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[17])
 #define _18s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[17]->range.start))
 #define _18e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[17]->range.end))
-    header_append(auxil, _18, 'T');
+    abc_header_append(auxil, _18, 'T');
 #undef _18e
 #undef _18s
 #undef _18
@@ -1418,7 +1418,7 @@ static void pcc_action_Oheader_18(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_i
 #define _19 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[18])
 #define _19s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[18]->range.start))
 #define _19e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[18]->range.end))
-    header_append(auxil, _19, 'U');
+    abc_header_append(auxil, _19, 'U');
 #undef _19e
 #undef _19s
 #undef _19
@@ -1438,7 +1438,7 @@ static void pcc_action_Vvalue_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in,
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    voice_append(auxil, _0);
+    abc_voice_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1458,7 +1458,7 @@ static void pcc_action_Instruction_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pc
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    instruction_append(auxil, _0);
+    abc_instruction_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1478,7 +1478,7 @@ static void pcc_action_Lyrics_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in,
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    lyrics_append(auxil, _0);
+    abc_lyrics_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1498,7 +1498,7 @@ static void pcc_action_Tie_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in, pc
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    tie_append(auxil, _0);
+    abc_tie_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1518,7 +1518,7 @@ static void pcc_action_Grace_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in, 
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    grace_append(auxil, _0);
+    abc_grace_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1541,7 +1541,7 @@ static void pcc_action_Grace_1(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in, 
 #define _2 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[1])
 #define _2s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[1]->range.start))
 #define _2e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[1]->range.end))
-    grace_append(auxil, _2);
+    abc_grace_append(auxil, _2);
 #undef _2e
 #undef _2s
 #undef _2
@@ -1564,7 +1564,7 @@ static void pcc_action_Chord_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in, 
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    chord_append(auxil, _0);
+    abc_chord_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1587,7 +1587,7 @@ static void pcc_action_Chord_1(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in, 
 #define _2 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[1])
 #define _2s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[1]->range.start))
 #define _2e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[1]->range.end))
-    chord_append(auxil, _2);
+    abc_chord_append(auxil, _2);
 #undef _2e
 #undef _2s
 #undef _2
@@ -1610,7 +1610,7 @@ static void pcc_action___0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in, pcc_
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    space_append(auxil, _0);
+    abc_space_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1630,7 +1630,7 @@ static void pcc_action_Decoration_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    deco_append(auxil, _0);
+    abc_deco_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1650,7 +1650,7 @@ static void pcc_action_ExDecoration_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__p
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    deco_append(auxil, _0);
+    abc_deco_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1668,7 +1668,7 @@ static void pcc_action_Nuplet_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in,
 #define _0 pcc_get_capture_string(__pcc_ctx, &__pcc_in->data.leaf.capt0)
 #define _0s ((const size_t)__pcc_in->data.leaf.capt0.range.start)
 #define _0e ((const size_t)__pcc_in->data.leaf.capt0.range.end)
-    nuplet_append(auxil, p, 0, 0);
+    abc_nuplet_append(auxil, p, 0, 0);
 #undef _0e
 #undef _0s
 #undef _0
@@ -1686,7 +1686,7 @@ static void pcc_action_Nuplet_1(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in,
 #define _0 pcc_get_capture_string(__pcc_ctx, &__pcc_in->data.leaf.capt0)
 #define _0s ((const size_t)__pcc_in->data.leaf.capt0.range.start)
 #define _0e ((const size_t)__pcc_in->data.leaf.capt0.range.end)
-    nuplet_append(auxil, p, q, r);
+    abc_nuplet_append(auxil, p, q, r);
 #undef _0e
 #undef _0s
 #undef _0
@@ -1705,7 +1705,7 @@ static void pcc_action_Nuplet_2(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in,
 #define _0 pcc_get_capture_string(__pcc_ctx, &__pcc_in->data.leaf.capt0)
 #define _0s ((const size_t)__pcc_in->data.leaf.capt0.range.start)
 #define _0e ((const size_t)__pcc_in->data.leaf.capt0.range.end)
-    nuplet_append(auxil, p, q, 0);
+    abc_nuplet_append(auxil, p, q, 0);
 #undef _0e
 #undef _0s
 #undef _0
@@ -1722,7 +1722,7 @@ static void pcc_action_Nuplet_3(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in,
 #define _0 pcc_get_capture_string(__pcc_ctx, &__pcc_in->data.leaf.capt0)
 #define _0s ((const size_t)__pcc_in->data.leaf.capt0.range.start)
 #define _0e ((const size_t)__pcc_in->data.leaf.capt0.range.end)
-    nuplet_append(auxil, p, 0, 0);
+    abc_nuplet_append(auxil, p, 0, 0);
 #undef _0e
 #undef _0s
 #undef _0
@@ -1760,7 +1760,7 @@ static void pcc_action_Gchord_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in,
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    gchord_append(auxil, _0);
+    abc_gchord_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1780,7 +1780,7 @@ static void pcc_action_SlurStart_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    slur_append(auxil, _0);
+    abc_slur_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1800,7 +1800,7 @@ static void pcc_action_SlurEnd_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    slur_append(auxil, _0);
+    abc_slur_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1820,7 +1820,7 @@ static void pcc_action_SimpleAlter_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pc
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    alt_append(auxil, _0);
+    abc_alt_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1840,7 +1840,7 @@ static void pcc_action_Alternative_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pc
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    alt_append(auxil, _0);
+    abc_alt_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1860,7 +1860,7 @@ static void pcc_action_Bar_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in, pc
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    bar_append(auxil, _0);
+    abc_bar_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1880,7 +1880,7 @@ static void pcc_action_Duration_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_i
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    duration_num_set(auxil, _0);
+    abc_duration_num_set(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1903,7 +1903,7 @@ static void pcc_action_Duration_1(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_i
 #define _2 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[1])
 #define _2s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[1]->range.start))
 #define _2e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[1]->range.end))
-    duration_den_set(auxil, _2);
+    abc_duration_den_set(auxil, _2);
 #undef _2e
 #undef _2s
 #undef _2
@@ -1926,7 +1926,7 @@ static void pcc_action_Duration_2(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_i
 #define _3 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[2])
 #define _3s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[2]->range.start))
 #define _3e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[2]->range.end))
-    duration_num_set(auxil, _3);
+    abc_duration_num_set(auxil, _3);
 #undef _3e
 #undef _3s
 #undef _3
@@ -1946,7 +1946,7 @@ static void pcc_action_Note_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_in, p
 #define _1 pcc_get_capture_string(__pcc_ctx, __pcc_in->data.leaf.capts.buf[0])
 #define _1s ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.start))
 #define _1e ((const size_t)(__pcc_ctx->pos + __pcc_in->data.leaf.capts.buf[0]->range.end))
-    note_append(auxil, _0);
+    abc_note_append(auxil, _0);
 #undef _1e
 #undef _1s
 #undef _1
@@ -1963,7 +1963,7 @@ static void pcc_action_LineBreak_0(pcc_context_t *__pcc_ctx, pcc_thunk_t *__pcc_
 #define _0 pcc_get_capture_string(__pcc_ctx, &__pcc_in->data.leaf.capt0)
 #define _0s ((const size_t)__pcc_in->data.leaf.capt0.range.start)
 #define _0e ((const size_t)__pcc_in->data.leaf.capt0.range.end)
-    eol_append(auxil, _0);
+    abc_eol_append(auxil, _0);
 #undef _0e
 #undef _0s
 #undef _0

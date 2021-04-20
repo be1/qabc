@@ -1,6 +1,4 @@
-#include "abcparse.h"
-#include "abcsmf.h"
-#include <smf.h>
+#include "abc.h"
 
 int main() {
 	int c;
@@ -14,7 +12,7 @@ int main() {
 		buf[count -1] = c;
 	}
 	
-	struct abc* yy = abc2smf_abc_parse(buf, count);
+	struct abc* yy = abc_parse(buf, count);
 	if (yy->error)
 		puts("Parse error");
 
@@ -44,15 +42,8 @@ int main() {
 	if (yy->error)
 		goto end;
 
-	smf_t* smf = abc2smf(yy, 1);
-	
-	if(smf_save(smf, "out1.mid"))
-		puts("error");
-
-	smf_delete(smf);
-
 end:
-	abc2smf_abc_release(yy);
+	abc_release_yy(yy);
 	free(buf);
     return 0;
 }

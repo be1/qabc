@@ -379,6 +379,7 @@ void abc_release_yy(struct abc* yy)
 			free(v->last->text);
 			free(v->last);
 
+            free(v->v);
 			free(v);
 		}
 

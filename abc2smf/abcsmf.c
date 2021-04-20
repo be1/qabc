@@ -402,7 +402,7 @@ void compute_pqr(int* p, int* q, int* r, char* ts) {
 #define SHORTEN_DEFAULT 0.1
 #define EXPRESSION_DEFAULT 0
 
-/* converts an ABC syntax tree into an SMF struct */
+/* converts an ABC 'syntax' tree into an SMF struct */
 smf_t* abc2smf(struct abc* yy, int x) {
     smf_t* smf;
 
@@ -416,7 +416,6 @@ smf_t* abc2smf(struct abc* yy, int x) {
     struct header* kh = find_header(t, 'K');
     double spu = second_per_unit(t);
     int upm = unit_per_measure(t);
-	double ulen = 1.0 / upm;
 
     for (int j = 0; j < t->count && j < 16; j++) {
         struct voice* v = t->voices[j];

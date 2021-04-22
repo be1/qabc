@@ -10,10 +10,8 @@
 #include <QStandardPaths>
 #include <QMessageBox>
 #include <QTimer>
-#include "../abc2smf/abc.h"
-#include "../abc2smf/abcparse.h"
-#include "../abc2smf/abcsmf.h"
-#include <smf.h>
+#include "../abc/abc.h"
+#include "abcsmf.h"
 #ifdef USE_LIBABCM2PS
 #include "../abcm2ps/abcm2ps.h"
 #endif
@@ -369,7 +367,7 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
 
     if (player == LIBABC2SMF) {
         QByteArray ba = tosave.replace(QChar::ParagraphSeparator, "\n").toUtf8();
-        struct abc* yy = abc2smf_abc_parse(ba.constData(), ba.count());
+        struct abc* yy = abc_parse_buffer(ba.constData(), ba.count());
 
         if (yy->error) {
             int l;
@@ -381,28 +379,29 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
             QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Parse error line: ") + QString::number(l) + ", char: " + QString::number(yy->error_char));
             emit generateMIDIFinished(1, cont);
         } else {
-            smf_t* smf = abc2smf(yy, xspinbox.value());
+            AbcSmf *smf = new AbcSmf(yy, xspinbox.value(), this);
 
             if (!smf) {
                 emit generateMIDIFinished(1, cont);
+                abc_release_yy(yy);
                 return;
             }
 
             QString midi(tempFile.fileName());
-            qWarning() << midi;
             midi.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value()) + ".mid");
-            qWarning() << midi;
+            /*
             ba = midi.toUtf8();
             char * out = (char*) malloc(ba.length() + 1);
             strncpy(out, ba.constData(), ba.length());
             out[ba.length()] = '\0';
-            int ret = smf_save(smf, out);
-            smf_delete(smf);
-            free(out);
-            emit generateMIDIFinished(ret, cont);
+            */
+            smf->writeToFile(midi);
+            delete smf;
+            // free(out);
+            emit generateMIDIFinished(0, cont);
         }
 
-        abc2smf_abc_release(yy);
+        abc_release_yy(yy);
         return;
     }
 

@@ -20,6 +20,7 @@ SOURCES = NewAction.cpp OpenAction.cpp SaveAction.cpp SaveasAction.cpp CloseActi
 	SfontPrefAction.cpp \
 	TuneWaiter.cpp \
 	ViewVSplitter.cpp \
+	abcsmf.cpp \
 	sfloader.cpp \
 	QProgressIndicator.cpp
 HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h QuitAction.h ScoreMenu.h PreferencesMenu.h AboutAction.h AboutqtAction.h HelpMenu.h AbcPlainTextEdit.h PlayPushButton.h EditVBoxLayout.h EditWidget.h EditTabWidget.h RunPushButton.h AbcMainWindow.h AbcApplication.h \
@@ -34,13 +35,14 @@ HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h Qui
 	SfontPrefAction.h \
 	TuneWaiter.h \
 	ViewVSplitter.h \
+	abcsmf.h \
 	config.h \
 	sfloader.h \
 	QProgressIndicator.h
 config.input = config.h.in
 config.output = config.h
 QMAKE_SUBSTITUTES += config
-LIBS += ../abcm2ps/libabcm2ps.a
+LIBS += ../abcm2ps/libabcm2ps.a ../abc/libabc.a
 isEmpty(QMAKE_LRELEASE):QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
 TRANSLATIONS += $${TARGET}_en.ts $${TARGET}_fr.ts
 LOCALE_DIR = locale

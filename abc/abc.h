@@ -10,53 +10,53 @@ extern "C" {
 #endif
 
 
-enum type { EOL, SPACE, NOTE, NUP, GRACE, CHORD, DECO, GCHORD, TIE, SLUR, BAR, ALT, INST };
+enum abc_type { ABC_EOL, ABC_SPACE, ABC_NOTE, ABC_NUP, ABC_GRACE, ABC_CHORD, ABC_DECO, ABC_GCHORD, ABC_TIE, ABC_SLUR, ABC_BAR, ABC_ALT, ABC_INST };
 
-struct buffer {
+struct abc_buffer {
 	char* buf;
 	int count;
 	int index;
 };
 
 struct abc {
-	struct tune** tunes;
+    struct abc_tune** tunes;
 	int count;
-	struct buffer* buffer;
+	struct abc_buffer* buffer;
 	int error;
-    int error_line;
-    int error_char;
+	int error_line;
+	int error_char;
 };
 
-struct header {
+struct abc_header {
 	char h;
 	char* text;
-	struct header* next;
+	struct abc_header* next;
 };
 
-struct tune {
+struct abc_tune {
 	int x;
-	struct header* headers;
-	struct voice** voices;
+	struct abc_header* headers;
+	struct abc_voice** voices;
 	int count;
 };
 
-struct voice {
+struct abc_voice {
 	char* v;
-	struct symbol* first;
-    struct symbol* last;
-    int in_alt;
+	struct abc_symbol* first;
+	struct abc_symbol* last;
+	int in_alt;
 };
 
-struct symbol {
-	enum type kind;
+struct abc_symbol {
+    enum abc_type kind;
 	char* lyric;
 	char* text;
 	int dur_num;
-    int dur_den;
-    int index;
-    int in_alt;
-	struct symbol* next;
-	struct symbol* prev;
+	int dur_den;
+	int index;
+	int in_alt;
+	struct abc_symbol* next;
+	struct abc_symbol* prev;
 };
 
 void abc_tune_append(struct abc* yy, const char* yytext);
@@ -65,9 +65,9 @@ void abc_header_append(struct abc* yy, const char* yytext, const char which);
 
 void abc_voice_append(struct abc* yy, const char* yytext);
 
-struct symbol* abc_last_symbol(struct abc* yy);
+struct abc_symbol* abc_last_symbol(struct abc* yy);
 
-struct symbol* abc_new_symbol(struct abc* yy);
+struct abc_symbol* abc_new_symbol(struct abc* yy);
 
 void abc_instruction_append(struct abc* yy, const char* yytext);
 
@@ -105,41 +105,45 @@ void abc_tie_append(struct abc* yy, const char* yytext);
 
 void abc_slur_append(struct abc* yy, const char* yytext);
 
-void abc_delete_symbols(struct symbol* s);
+void abc_delete_symbols(struct abc_symbol* s);
 
 struct abc* abc_alloc_yy(void);
 
 void abc_release_yy(struct abc* yy);
 
-int abc_alt_is_of(const struct symbol* s, int alt);
+int abc_alt_is_of(const struct abc_symbol* s, int alt);
 
-int abc_is_start(const struct symbol* s);
+int abc_is_start(const struct abc_symbol* s);
 
-int abc_is_repeat(const struct symbol* s);
+int abc_is_repeat(const struct abc_symbol* s);
 
-int abc_is_endbar(const struct symbol* s);
+int abc_is_endbar(const struct abc_symbol* s);
 
-struct tune* abc_find_tune(struct abc* yy, int x);
+struct abc_tune* abc_find_tune(struct abc* yy, int x);
 
-struct header* abc_find_header(struct tune* t, char h);
+struct abc_header* abc_find_header(struct abc_tune* t, char h);
 
-struct symbol* abc_find_start_repeat(struct symbol* s);
+struct abc_symbol* abc_find_start_repeat(struct abc_symbol* s);
 
-struct symbol* abc_find_next_segno(struct symbol* s);
+struct abc_symbol* abc_find_next_segno(struct abc_symbol* s);
 
-struct symbol* abc_find_next_alt(struct symbol* s, int alt);
+struct abc_symbol* abc_find_next_alt(struct abc_symbol* s, int alt);
 
-struct symbol* abc_find_next_repeat(struct symbol* s);
+struct abc_symbol* abc_find_next_repeat(struct abc_symbol* s);
 
-int abc_has_tie(struct symbol* s, int chord);
+int abc_has_tie(struct abc_symbol* s, int chord);
 
-double abc_grace_duration(struct symbol* s);
+double abc_grace_duration(struct abc_symbol* s);
 
-int abc_unit_per_measure(struct tune* t);
+int abc_unit_per_measure(struct abc_tune* t);
 
-double abc_second_per_unit(struct tune* t);
+double abc_time_per_unit(struct abc_tune* t, long base);
 
-struct abc* abc_parse(const char* buffer, int size);
+long abc_tempo(struct abc_tune* t);
+
+void abc_compute_pqr(int* p, int* q, int* r, struct abc_tune* t);
+
+struct abc* abc_parse_buffer(const char* buffer, int size);
 
 #ifdef __cplusplus
 }

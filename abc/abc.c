@@ -8,23 +8,23 @@
 
 void abc_tune_append(struct abc* yy, const char* yytext)
 {
-	struct tune* new = calloc(1, sizeof (struct tune));
+    struct abc_tune* new = calloc(1, sizeof (struct abc_tune));
 	new->x = atoi(yytext);
 
-	yy->tunes = realloc(yy->tunes, sizeof (struct tune*) * (yy->count + 1));
+    yy->tunes = realloc(yy->tunes, sizeof (struct abc_tune*) * (yy->count + 1));
 	yy->tunes[yy->count] = new;
 	yy->count++;
 }
 
 void abc_header_append(struct abc* yy, const char* yytext, const char which)
 {
-	struct tune* tune = yy->tunes[yy->count-1];
-	struct header* new = calloc(1, sizeof (struct header));
+    struct abc_tune* tune = yy->tunes[yy->count-1];
+    struct abc_header* new = calloc(1, sizeof (struct abc_header));
 
 	if (!tune->headers) {
 		tune->headers = new;
     } else {
-        struct header* h;
+        struct abc_header* h;
         for (h = tune->headers; h->next; h = h->next) {;}
 
 		h->next = new;
@@ -36,41 +36,41 @@ void abc_header_append(struct abc* yy, const char* yytext, const char which)
 
 void abc_voice_append(struct abc* yy, const char* yytext)
 {
-	struct voice* new = calloc(1, sizeof (struct voice));
+	struct abc_voice* new = calloc(1, sizeof (struct abc_voice));
 	new->v = strdup(yytext);
 
-	struct tune* tune = yy->tunes[yy->count-1];
-    tune->voices = realloc(tune->voices, sizeof (struct voice*) * (tune->count + 1));
+	struct abc_tune* tune = yy->tunes[yy->count-1];
+    tune->voices = realloc(tune->voices, sizeof (struct abc_voice*) * (tune->count + 1));
 	tune->voices[tune->count] = new;
 	tune->count++;
 }
 
-struct symbol* abc_last_symbol(struct abc* yy)
+struct abc_symbol* abc_last_symbol(struct abc* yy)
 {
-	struct tune* tune = yy->tunes[yy->count-1];
+	struct abc_tune* tune = yy->tunes[yy->count-1];
 	if (tune->count == 0) /* voice 1 can be implicit */
 		abc_voice_append(yy, "1");
 
-	struct voice* voice = tune->voices[tune->count-1];
+	struct abc_voice* voice = tune->voices[tune->count-1];
 
 	return voice->last;
 }
 
-struct symbol* abc_new_symbol(struct abc* yy)
+struct abc_symbol* abc_new_symbol(struct abc* yy)
 {
-	struct symbol* new = calloc(1, sizeof (struct symbol));
+	struct abc_symbol* new = calloc(1, sizeof (struct abc_symbol));
 
-	struct tune* tune = yy->tunes[yy->count-1];
+	struct abc_tune* tune = yy->tunes[yy->count-1];
 	if (tune->count == 0) /* voice 1 can be implicit */
 		abc_voice_append(yy, "1");
 
-	struct voice* voice = tune->voices[tune->count-1];
+	struct abc_voice* voice = tune->voices[tune->count-1];
 
 	if (voice->last == NULL) {
 		voice->last = new;
 		voice->first = voice->last;
 	} else {
-		struct symbol* s = voice->last;
+		struct abc_symbol* s = voice->last;
 		voice->last = new;
 		s->next = new;
 		new->prev = s;
@@ -82,8 +82,8 @@ struct symbol* abc_new_symbol(struct abc* yy)
 
 void abc_instruction_append(struct abc* yy, const char* yytext)
 {
-	struct symbol* new = abc_new_symbol(yy);
-	new->kind = INST;
+	struct abc_symbol* new = abc_new_symbol(yy);
+	new->kind = ABC_INST;
 	new->text = strdup(yytext);
 }
 
@@ -120,15 +120,15 @@ void abc_lyrics_append(struct abc* yy, const char* yytext)
 		i++;
 	}
 
-	struct symbol* s =  abc_last_symbol(yy);
-	while (s->kind != NOTE && s->prev)
+	struct abc_symbol* s =  abc_last_symbol(yy);
+    while (s->kind != ABC_NOTE && s->prev)
 		s = s->prev;
 
-	while (s->kind != EOL && s->prev)
+    while (s->kind != ABC_EOL && s->prev)
 		s = s->prev;
 
 	for (i = 0; i < count; i++) {
-		while (s->kind != NOTE && s->next)
+        while (s->kind != ABC_NOTE && s->next)
 			s = s->next;
 
 		s->lyric = syllables[i];
@@ -141,22 +141,22 @@ void abc_lyrics_append(struct abc* yy, const char* yytext)
 
 void abc_eol_append(struct abc* yy, const char* yytext)
 {
-	struct symbol* new = abc_new_symbol(yy);
-	new->kind = EOL;
+	struct abc_symbol* new = abc_new_symbol(yy);
+	new->kind = ABC_EOL;
 	new->text = strdup(yytext);
 }
 void abc_space_append(struct abc* yy, const char* yytext)
 {
-	struct symbol* new = abc_new_symbol(yy);
-	new->kind = SPACE;
+	struct abc_symbol* new = abc_new_symbol(yy);
+	new->kind = ABC_SPACE;
 	new->text = strdup(yytext);
 }
 
 void abc_note_append(struct abc* yy, const char* yytext)
 {
-	struct symbol* new = abc_new_symbol(yy);
+	struct abc_symbol* new = abc_new_symbol(yy);
 
-	new->kind = NOTE;
+	new->kind = ABC_NOTE;
 	new->dur_num = 1;
 	new->dur_den = 1;
 	new->text = strdup(yytext);
@@ -164,15 +164,15 @@ void abc_note_append(struct abc* yy, const char* yytext)
 
 void abc_grace_append(struct abc* yy, const char* yytext)
 {
-	struct symbol* new = abc_new_symbol(yy);
-	new->kind = GRACE;
+	struct abc_symbol* new = abc_new_symbol(yy);
+	new->kind = ABC_GRACE;
 	new->text = strdup(yytext);
 }
 
 void abc_chord_append(struct abc* yy, const char* yytext)
 {
-	struct symbol* new = abc_new_symbol(yy);
-	new->kind = CHORD;
+	struct abc_symbol* new = abc_new_symbol(yy);
+	new->kind = ABC_CHORD;
 	new->text = strdup(yytext);
 }
 
@@ -241,39 +241,39 @@ void abc_duration_num_set(struct abc* yy, const char* yytext)
 {
 	int num = atoi(yytext);
 
-	struct tune* tune = yy->tunes[yy->count-1];
-	struct voice* voice = tune->voices[tune->count-1];
+	struct abc_tune* tune = yy->tunes[yy->count-1];
+	struct abc_voice* voice = tune->voices[tune->count-1];
 
 	voice->last->dur_num = num? num: 1;
 }
 
 void abc_duration_den_set(struct abc* yy, const char* yytext)
 {
-	struct tune* tune = yy->tunes[yy->count-1];
-	struct voice* voice = tune->voices[tune->count-1];
+	struct abc_tune* tune = yy->tunes[yy->count-1];
+	struct abc_voice* voice = tune->voices[tune->count-1];
 
 	voice->last->dur_den = atoi(yytext);
 }
 
-int abc_is_endbar(const struct symbol* s) {
+int abc_is_endbar(const struct abc_symbol* s) {
     return (strstr(s->text, "||") || strstr(s->text, "|]"));
 }
 
-int abc_is_start(const struct symbol* s) {
+int abc_is_start(const struct abc_symbol* s) {
     return (strstr(s->text, "|:") != NULL);
 }
 
-int abc_is_repeat(const struct symbol* s) {
+int abc_is_repeat(const struct abc_symbol* s) {
     return (strstr(s->text, ":|") != NULL);
 }
 
 void abc_bar_append(struct abc* yy, const char* yytext)
 {
-	struct symbol* new = abc_new_symbol(yy);
-    new->kind = BAR;
+	struct abc_symbol* new = abc_new_symbol(yy);
+    new->kind = ABC_BAR;
     new->text = strdup(yytext);
-    struct tune* t = yy->tunes[yy->count-1];
-    struct voice* v = t->voices[t->count-1];
+    struct abc_tune* t = yy->tunes[yy->count-1];
+    struct abc_voice* v = t->voices[t->count-1];
     if (abc_is_endbar(new) || abc_is_repeat(new)) {
         v->in_alt = 0;
     }
@@ -281,57 +281,57 @@ void abc_bar_append(struct abc* yy, const char* yytext)
     new->in_alt = v->in_alt;
 }
 
-int abc_alt_is_of(const struct symbol* s, int alt) {
+int abc_alt_is_of(const struct abc_symbol* s, int alt) {
     return (strchr(s->text, alt + '0') != NULL);
 }
 
 void abc_alt_append(struct abc* yy, const char* yytext)
 {
-	struct symbol* new = abc_new_symbol(yy);
-    new->kind = ALT;
+	struct abc_symbol* new = abc_new_symbol(yy);
+    new->kind = ABC_ALT;
     new->text = strdup(yytext);
-    struct tune* t = yy->tunes[yy->count-1];
-    struct voice* v = t->voices[t->count-1];
+    struct abc_tune* t = yy->tunes[yy->count-1];
+    struct abc_voice* v = t->voices[t->count-1];
     v->in_alt = 1;
 }
 
 void abc_nuplet_append(struct abc* yy, int p, int q, int r)
 {
-	struct symbol* new = abc_new_symbol(yy);
-	new->kind = NUP;
+	struct abc_symbol* new = abc_new_symbol(yy);
+	new->kind = ABC_NUP;
     if (-1 == asprintf(&new->text, "%d:%d:%d", p, q, r)) {;}
 }
 
 void abc_deco_append(struct abc* yy, const char* yytext)
 {
-	struct symbol* new = abc_new_symbol(yy);
-	new->kind = DECO;
+	struct abc_symbol* new = abc_new_symbol(yy);
+	new->kind = ABC_DECO;
 	new->text = strdup(yytext);
 }
 
 void abc_gchord_append(struct abc* yy, const char* yytext)
 {
-	struct symbol* new = abc_new_symbol(yy);
-	new->kind = GCHORD;
+	struct abc_symbol* new = abc_new_symbol(yy);
+	new->kind = ABC_GCHORD;
 	new->text = strdup(yytext);
 }
 
 void abc_tie_append(struct abc* yy, const char* yytext)
 {
-	struct symbol* new = abc_new_symbol(yy);
-	new->kind = TIE;
+	struct abc_symbol* new = abc_new_symbol(yy);
+	new->kind = ABC_TIE;
 	new->text = strdup(yytext);
 }
 
 void abc_slur_append(struct abc* yy, const char* yytext)
 {
-	struct symbol* new = abc_new_symbol(yy);
-	new->kind = SLUR;
+	struct abc_symbol* new = abc_new_symbol(yy);
+	new->kind = ABC_SLUR;
 	new->text = strdup(yytext);
 }
 
-void abc_delete_symbols(struct symbol* s) {
-	struct symbol* next = s;
+void abc_delete_symbols(struct abc_symbol* s) {
+	struct abc_symbol* next = s;
 
 	while (s) {
 		free(s->text);
@@ -356,20 +356,20 @@ void abc_release_yy(struct abc* yy)
 	free(yy->buffer);
 
 	for (int i = 0; i < yy->count; i++) {
-		struct tune* t = yy->tunes[i];
-		struct header* h = t->headers;
+		struct abc_tune* t = yy->tunes[i];
+		struct abc_header* h = t->headers;
 		while (h) {
-			struct header* hn = h->next;
+			struct abc_header* hn = h->next;
 			free(h->text);
 			free(h);
 			h = hn;
 		}
 
 		for (int j = 0; j < t->count; j++) {
-			struct voice* v = t->voices[j];
-			struct symbol* s = v->first;
+			struct abc_voice* v = t->voices[j];
+			struct abc_symbol* s = v->first;
 			while (s != v->last) {
-				struct symbol* sn = s->next;
+				struct abc_symbol* sn = s->next;
 				free(s->lyric);
 				free(s->text);
 				free(s);
@@ -392,7 +392,7 @@ void abc_release_yy(struct abc* yy)
 	free(yy);
 }
 
-struct abc* abc_parse(const char* buffer, int size) {
+struct abc* abc_parse_buffer(const char* buffer, int size) {
 	struct abc* yy = abc_alloc_yy();
 
 	yy->buffer->buf = malloc(size * sizeof (char));
@@ -416,8 +416,8 @@ struct abc* abc_parse(const char* buffer, int size) {
 	return yy;
 }
 
-struct tune* abc_find_tune(struct abc* yy, int x) {
-	struct tune* t = NULL;
+struct abc_tune* abc_find_tune(struct abc* yy, int x) {
+	struct abc_tune* t = NULL;
 	for (int i = 0; i < yy->count; i++) {
 		if (yy->tunes[i]->x == x) {
 			t = yy->tunes[i];
@@ -428,10 +428,10 @@ struct tune* abc_find_tune(struct abc* yy, int x) {
 	return t;
 }
 
-struct header* abc_find_header(struct tune* t, char h) {
+struct abc_header* abc_find_header(struct abc_tune* t, char h) {
     if (!t) return NULL;
 
-    struct header* header = t->headers;
+    struct abc_header* header = t->headers;
 
     while(header) {
         if (header->h == h) {
@@ -444,42 +444,42 @@ struct header* abc_find_header(struct tune* t, char h) {
     return header;
 }
 
-struct symbol* abc_find_start_repeat(struct symbol* s) {
+struct abc_symbol* abc_find_start_repeat(struct abc_symbol* s) {
 	while (s->prev) {
         s = s->prev;
-		if (s->kind == BAR && strstr(s->text, "|:"))
+		if (s->kind == ABC_BAR && strstr(s->text, "|:"))
             return s->next;
 	}
 
 	return s;
 }
 
-struct symbol* abc_find_next_repeat(struct symbol* s) {
+struct abc_symbol* abc_find_next_repeat(struct abc_symbol* s) {
     while (s->next) {
         s = s->next;
-        if (s->kind == BAR && abc_is_repeat(s))
+        if (s->kind == ABC_BAR && abc_is_repeat(s))
             return s;
     }
 
     return s;
 }
 
-struct symbol* abc_find_next_alt(struct symbol* s, int alt) {
+struct abc_symbol* abc_find_next_alt(struct abc_symbol* s, int alt) {
     while (s->next) {
         s = s->next;
 
-        if (s->kind == BAR && abc_is_repeat(s))
+        if (s->kind == ABC_BAR && abc_is_repeat(s))
             return NULL;
 
-        if (s->kind == BAR && abc_is_endbar(s)) {
+        if (s->kind == ABC_BAR && abc_is_endbar(s)) {
             return s;
         }
 
-        if ((s->kind == ALT) && abc_alt_is_of(s, alt)) {
+        if ((s->kind == ABC_ALT) && abc_alt_is_of(s, alt)) {
                 return s->prev;
         }
 
-        if (s->kind == BAR) {
+        if (s->kind == ABC_BAR) {
             if (!s->in_alt)
                 return s;
         }
@@ -488,27 +488,27 @@ struct symbol* abc_find_next_alt(struct symbol* s, int alt) {
     return s;
 }
 
-struct symbol* abc_find_next_segno(struct symbol* s) {
+struct abc_symbol* abc_find_next_segno(struct abc_symbol* s) {
 	while (s->next) {
 		s = s->next;
-		if (s->kind == DECO && !strcmp(s->text, "segno"))
+		if (s->kind == ABC_DECO && !strcmp(s->text, "segno"))
 			return s;
 	}
 
 	return s;
 }
 
-int abc_has_tie(struct symbol* s, int chord) {
+int abc_has_tie(struct abc_symbol* s, int chord) {
     while (s->next) {
         s = s->next;
         if (chord) {
-            if ((s->kind == CHORD) && s->text[0] == ']') {
-                if (s->next && (s->next->kind == TIE))
+            if ((s->kind == ABC_CHORD) && s->text[0] == ']') {
+                if (s->next && (s->next->kind == ABC_TIE))
                     return 1;
                 return 0;
             }
         } else {
-            if (s->kind == TIE)
+            if (s->kind == ABC_TIE)
                 return 1;
             return 0;
         }
@@ -517,18 +517,18 @@ int abc_has_tie(struct symbol* s, int chord) {
     return 0;
 }
 
-double abc_grace_duration(struct symbol* s) {
-    if (s->kind != GRACE)
+double abc_grace_duration(struct abc_symbol* s) {
+    if (s->kind != ABC_GRACE)
         return 0.0;
 
     double dur = 0.0;
     while (s->next) {
         s = s->next;
-        if (s->kind == NOTE) {
+        if (s->kind == ABC_NOTE) {
             dur += (double) s->dur_num / (double) s->dur_den;
         }
 
-        if (s->kind == GRACE) /* end of grace */
+        if (s->kind == ABC_GRACE) /* end of grace */
             return dur;
     }
 
@@ -545,9 +545,9 @@ double abc_apply_divide(const char* div) {
 	return (double) num / (double) den;
 }
 
-int abc_unit_per_measure(struct tune* t) {
-	struct header* lh = abc_find_header(t, 'L');
-	struct header* mh = abc_find_header(t, 'M');
+int abc_unit_per_measure(struct abc_tune* t) {
+	struct abc_header* lh = abc_find_header(t, 'L');
+	struct abc_header* mh = abc_find_header(t, 'M');
 
 	int ln, ld, mn, md;
 	if (lh && (2 == sscanf(lh->text, "%d/%d", &ln, &ld))) {;}
@@ -559,51 +559,67 @@ int abc_unit_per_measure(struct tune* t) {
 	return ld * mn / md;
 }
 
-double abc_second_per_unit(struct tune* t) {
-	double s = 1.0;
-	struct header* lh = abc_find_header(t, 'L');
-	struct header* qh = abc_find_header(t, 'Q');
+/* tempo in quarter note per minute */
+long abc_tempo(struct abc_tune* t) {
+    long tempo = 120;
+    struct abc_header* qh = abc_find_header(t, 'Q');
+    if (qh) {
+            int q = 0;
+            int num, den;
+            if (3 == sscanf(qh->text, "%d/%d=%d", &num, &den, &q))
+                    tempo = (q * 4 * num) / den;
+            else if (1 == sscanf(qh->text, "%d", &q))
+                    tempo = q;
+            else if (!strncasecmp(qh->text, "\"Largo\"", 5))
+                    tempo = 40;
+            else if (!strncasecmp(qh->text, "\"Larghetto\"", 9))
+                    tempo = 60;
+            else if (!strncasecmp(qh->text, "\"Lento\"", 5))
+                    tempo = 50;
+            else if (!strncasecmp(qh->text, "\"Adagio\"", 6))
+                    tempo = 60;
+            else if (!strncasecmp(qh->text, "\"Andante\"", 7))
+                    tempo = 80;
+            else if (!strncasecmp(qh->text, "\"Moderato\"", 8))
+                    tempo = 90;
+            else if (!strncasecmp(qh->text, "\"Allegro\"", 7))
+                    tempo = 120;
+            else if (!strncasecmp(qh->text, "\"Presto\"", 6))
+                    tempo = 140;
+            else if (!strncasecmp(qh->text, "\"Vivace\"", 6))
+                    tempo = 160;
+            else
+                    tempo = 120;
+    }
 
-	double l;
-	if (lh)
-		l = abc_apply_divide(lh->text);
-	else
-		l = 0.125; /* 1/8 of a whole */
-	
-	if (qh) {
-		int q = 0;
-		int num, den;
-		if (3 == sscanf(qh->text, "%d/%d=%d", &num, &den, &q)) {
-			double b = (double) num / (double) den;
-			s = 60.0 / ((double) q * (b / l));
-			return s;
-		} else if (1 == sscanf(qh->text, "%d", &q)) {
-			s = 60.0 / (double) q;
-			return s;
-        } else if (!strncasecmp(qh->text, "\"Largo\"", 5))
-			q = 40;
-        else if (!strncasecmp(qh->text, "\"Larghetto\"", 9))
-			q = 60;
-        else if (!strncasecmp(qh->text, "\"Lento\"", 5))
-			q = 50;
-        else if (!strncasecmp(qh->text, "\"Adagio\"", 6))
-			q = 60;
-        else if (!strncasecmp(qh->text, "\"Andante\"", 7))
-			q = 80;
-        else if (!strncasecmp(qh->text, "\"Moderato\"", 8))
-			q = 90;
-        else if (!strncasecmp(qh->text, "\"Allegro\"", 7))
-			q = 120;
-        else if (!strncasecmp(qh->text, "\"Presto\"", 6))
-			q = 140;
-        else if (!strncasecmp(qh->text, "\"Vivace\"", 6))
-			q = 160;
-		else
-			q = 120;
-		s = 60.0 / ((double) q * (0.25 / l));
-	} else {
-		s = 60.0 / (120.0 * (0.25 / l)); /* 120 QPM */
-	}
+    return tempo;
+}
 
-	return s;
+void abc_compute_pqr(int* p, int* q, int* r, struct abc_tune* t) {
+        int num, den;
+        struct abc_header* mh = abc_find_header(t, 'M');
+
+        if (!mh)
+            num = den = 4;
+        if (mh->text[0] == 'C')
+                num = den = 4;
+        else if (2 != sscanf(mh->text, "%d/%d", &num, &den))
+                num = den = 4;
+
+        if (!*r)
+                *r = *p;
+
+        if (!*q) {
+                switch (*p) {
+                case 2: *q = 3; break;
+                case 3: *q = 2; break;
+                case 4: *q = 3; break;
+                case 5: if (!(num % 3) && (den == 8)) *q = 3; else *q = 2; break;
+                case 6: *q = 2; break;
+                case 7: if (!(num % 3) && (den == 8)) *q = 3; else *q = 2; break;
+                case 8: *q = 3; break;
+                case 9: if (!(num % 3) && (den == 8)) *q = 3; else *q = 2; break;
+                }
+
+        }
 }

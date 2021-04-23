@@ -51,7 +51,7 @@ private:
     bool in_chord;
     int in_slur;
     int shorten;
-    long dur_mod; /* duration modified for n-uplets */
+    double dur_mod; /* duration modified for n-uplets */
     int nuplets;
     long grace_mod; /* duration modified for grace notes */
     bool in_grace;

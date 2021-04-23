@@ -101,7 +101,8 @@ void AbcSmf::onSMFWriteTrack(int track) {
         struct abc_symbol* repeat = NULL;
         int pass = 1;
         int p, q, r = 0; /* n-uplet definition */
-        dur_mod = 1; /* duration modified for n-uplets */
+        dur_mod = 1.0; /* duration modified for n-uplets */
+        nuplets = 0; /* number of notes in n-uplets */
         grace_mod = 1; /* duration modified for graces */
         expr = EXPRESSION_DEFAULT;
         in_slur = SHORTEN_DEFAULT;
@@ -174,7 +175,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
                         if(3 != sscanf(s->text, "%d:%d:%d", &p, &q, &r)) { /* should not happen */;}
                         abc_compute_pqr(&p, &q, &r, t);
                         nuplets = r;
-                        dur_mod = tpu * q / p;
+                        dur_mod = (double) q / (double) p;
                         break;
                 }
                 case ABC_GRACE: {
@@ -594,7 +595,7 @@ long AbcSmf::duration(struct abc_symbol* s) {
 
     /* n-uplet duration */
     if (nuplets > 0) {
-            dur /= dur_mod;
+            dur *= dur_mod;
             nuplets--;
     }
 

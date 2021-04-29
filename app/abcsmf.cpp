@@ -13,6 +13,7 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         tempo(0),
         expr(EXPRESSION_DEFAULT),
         z_tick(0),
+        dur(0),
         in_tie(false),
         in_slur(SHORTEN_DEFAULT),
         in_grace(false),
@@ -53,7 +54,89 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
             ks = kh->text;
             mks = getSMFKeySignature(ks, &mode);
         }
+
+        memset(measure_accid, 0, sizeof (measure_accid));
 }
+
+void AbcSmf::manageDecoration(struct abc_symbol* s) {
+    if (!strcmp(s->text, "pppp")) mark_dyn = cur_dyn = 30;
+    else if (!strcmp(s->text, "ppp")) mark_dyn = cur_dyn = 30;
+    else if (!strcmp(s->text, "pp")) mark_dyn = cur_dyn = 45;
+    else if (!strcmp(s->text, "p")) mark_dyn = cur_dyn = 60;
+    else if (!strcmp(s->text, "mp")) mark_dyn = cur_dyn = 75;
+    else if (!strcmp(s->text, "mf")) mark_dyn = cur_dyn = 90;
+    else if (!strcmp(s->text, "f")) mark_dyn = cur_dyn = 105;
+    else if (!strcmp(s->text, "ff")) mark_dyn = cur_dyn = 120;
+    else if (!strcmp(s->text, "fff")) mark_dyn = cur_dyn = 127;
+    else if (!strcmp(s->text, "ffff")) mark_dyn = cur_dyn = 127;
+    else if (!strcmp(s->text, "sfz")) mark_dyn = cur_dyn = 100;
+    else if (!strcmp(s->text, ".")) shorten = 2;
+    else if (!strcmp(s->text, "H")) shorten = 100;
+    else if (!strcmp(s->text, "tenuto")) shorten = 100;
+    else if (!strcmp(s->text, "L")) expr = 127;
+    else if (!strcmp(s->text, "accent")) expr = 127;
+    else if (!strcmp(s->text, "emphasis")) expr = 127;
+    else if (!strcmp(s->text, "crescendo(")) in_cresc = 1;
+    else if (!strcmp(s->text, "<(")) in_cresc = 1;
+    else if (!strcmp(s->text, "crescendo)")) in_cresc = 0;
+    else if (!strcmp(s->text, "<)")) in_cresc = 0;
+    else if (!strcmp(s->text, "diminuendo(")) in_cresc = -1;
+    else if (!strcmp(s->text, ">(")) in_cresc = -1;
+    else if (!strcmp(s->text, "diminuendo)")) in_cresc = 0;
+    else if (!strcmp(s->text, ">)")) in_cresc = 0;
+}
+
+void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
+        dur = duration(s);
+        setDynamic(dur);
+
+        if (s->text[0] == 'Z') {
+                dur = upm * tpu;
+                z_tick += dur;
+        } else if (s->text[0] == 'z') {
+                z_tick += dur;
+        } else if (abc_has_tie(s, 0) && in_tie) {
+                /* do not replay note at all */
+                z_tick += dur; /* add durations as they follow */
+        } else if (abc_has_tie(s, 0) || !in_tie) {
+                /* prepend with expression pedal if any */
+                writeExpression(track);
+
+                /* set note lyrics if any */
+                writeLyric(s->lyric);
+
+                /* find MIDI pitch */
+                const char* ks = kh ? kh->text : NULL;
+                unsigned char n = note2midi(ks, s->text, measure_accid);
+
+                writeMidiEvent(getCurrentTime() + z_tick, noteon, track, n, cur_dyn); /* note on */
+                if (abc_has_tie(s, 0)) {
+                        z_tick = dur;
+                } else {
+                        writeMidiEvent(getCurrentTime() + dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
+                        z_tick = dur / shorten;
+                        shorten = in_slur;
+                }
+        } else if (in_tie) {
+                /* do not play note on */
+
+                /* prepend with expression pedal if any */
+                writeExpression(track);
+
+                /* set note lyrics if any */
+                writeLyric(s->lyric);
+
+                /* find MIDI pitch */
+                const char* ks = kh ? kh->text : NULL;
+                unsigned char n = note2midi(ks, s->text, measure_accid);
+
+                writeMidiEvent(getCurrentTime() + z_tick + dur - (dur /shorten), noteon, track, n, 0x00); /* note off */
+                z_tick = dur / shorten;
+                shorten = in_slur;
+                in_tie = 0;
+        }
+}
+
 
 void AbcSmf::onSMFWriteTempoTrack(void) {
     qWarning() << __func__;
@@ -66,7 +149,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
         writeBpmTempo(getCurrentTime(), tempo);
         writeKeySignature(getCurrentTime(), mks, mode);
 
-        struct abc_voice* v = t->voices[track];
+        struct abc_voice* v = abc_unfold_voice(t->voices[track]);
         struct abc_symbol* s = v->first;
 
         noteon = 0x90;
@@ -80,26 +163,6 @@ void AbcSmf::onSMFWriteTrack(int track) {
         cur_dyn = mark_dyn; /* current dynamic in the tune */
         grace_tick = 0; /* grace group duration */
 
-        /* measure accidentals context */
-        int measure_accid[] = {
-                ['A'] = 0,
-                ['B'] = 0,
-                ['C'] = 0,
-                ['D'] = 0,
-                ['E'] = 0,
-                ['F'] = 0,
-                ['G'] = 0,
-                ['a'] = 0,
-                ['b'] = 0,
-                ['c'] = 0,
-                ['d'] = 0,
-                ['e'] = 0,
-                ['f'] = 0,
-                ['g'] = 0
-        };
-
-        struct abc_symbol* repeat = NULL;
-        int pass = 1;
         int p, q, r = 0; /* n-uplet definition */
         dur_mod = 1.0; /* duration modified for n-uplets */
         nuplets = 0; /* number of notes in n-uplets */
@@ -115,60 +178,14 @@ void AbcSmf::onSMFWriteTrack(int track) {
                 long dur = 0;
 
                 switch (s->kind) {
+                case ABC_ALT: /* unfolding is already done */
                 case ABC_GCHORD:
                 case ABC_EOL:
                 case ABC_SPACE: {
                         break;
                 }
                 case ABC_NOTE: {
-                        dur = duration(s);
-                        setDynamic(dur);
-
-                        if (s->text[0] == 'Z') {
-                                dur = upm * tpu;
-                                z_tick += dur;
-                        } else if (s->text[0] == 'z') {
-                                z_tick += dur;
-                        } else if (abc_has_tie(s, 0) && in_tie) {
-                                /* do not replay note at all */
-                                z_tick += dur; /* add durations as they follow */
-                        } else if (abc_has_tie(s, 0) || !in_tie) {
-                                /* prepend with expression pedal if any */
-                                writeExpression(track);
-
-                                /* set note lyrics if any */
-                                writeLyric(s->lyric);
-
-                                /* find MIDI pitch */
-                                const char* ks = kh ? kh->text : NULL;
-                                unsigned char n = note2midi(ks, s->text, measure_accid);
-
-                                writeMidiEvent(getCurrentTime() + z_tick, noteon, track, n, cur_dyn); /* note on */
-                                if (abc_has_tie(s, 0)) {
-                                        z_tick = dur;
-                                } else {
-                                        writeMidiEvent(getCurrentTime() + dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
-                                        z_tick = dur / shorten;
-                                        shorten = in_slur;
-                                }
-                        } else if (in_tie) {
-                                /* do not play note on */
-
-                                /* prepend with expression pedal if any */
-                                writeExpression(track);
-
-                                /* set note lyrics if any */
-                                writeLyric(s->lyric);
-
-                                /* find MIDI pitch */
-                                const char* ks = kh ? kh->text : NULL;
-                                unsigned char n = note2midi(ks, s->text, measure_accid);
-
-                                writeMidiEvent(getCurrentTime() + z_tick + dur - (dur /shorten), noteon, track, n, 0x00); /* note off */
-                                z_tick = dur / shorten;
-                                shorten = in_slur;
-                                in_tie = 0;
-                        }
+                        writeSingleNote(track, s);
                         break;
                 }
                 case ABC_NUP: {
@@ -303,43 +320,8 @@ void AbcSmf::onSMFWriteTrack(int track) {
                         break;
                 }
                 case ABC_DECO: {
-                        char deco[32];
-                        if (sscanf(s->text, "%s", deco)) {
-                                if (!strcmp(deco, "pppp")) mark_dyn = cur_dyn = 30;
-                                else if (!strcmp(deco, "ppp")) mark_dyn = cur_dyn = 30;
-                                else if (!strcmp(deco, "pp")) mark_dyn = cur_dyn = 45;
-                                else if (!strcmp(deco, "p")) mark_dyn = cur_dyn = 60;
-                                else if (!strcmp(deco, "mp")) mark_dyn = cur_dyn = 75;
-                                else if (!strcmp(deco, "mf")) mark_dyn = cur_dyn = 90;
-                                else if (!strcmp(deco, "f")) mark_dyn = cur_dyn = 105;
-                                else if (!strcmp(deco, "ff")) mark_dyn = cur_dyn = 120;
-                                else if (!strcmp(deco, "fff")) mark_dyn = cur_dyn = 127;
-                                else if (!strcmp(deco, "ffff")) mark_dyn = cur_dyn = 127;
-                                else if (!strcmp(deco, "sfz")) mark_dyn = cur_dyn = 100;
-                                else if (!strcmp(deco, ".")) shorten = 2;
-                                else if (!strcmp(deco, "H")) shorten = 100;
-                                else if (!strcmp(deco, "tenuto")) shorten = 100;
-                                else if (!strcmp(deco, "L")) expr = 127;
-                                else if (!strcmp(deco, "accent")) expr = 127;
-                                else if (!strcmp(deco, "emphasis")) expr = 127;
-                                else if (!strcmp(deco, "crescendo(")) in_cresc = 1;
-                                else if (!strcmp(deco, "<(")) in_cresc = 1;
-                                else if (!strcmp(deco, "crescendo)")) in_cresc = 0;
-                                else if (!strcmp(deco, "<)")) in_cresc = 0;
-                                else if (!strcmp(deco, "diminuendo(")) in_cresc = -1;
-                                else if (!strcmp(deco, ">(")) in_cresc = -1;
-                                else if (!strcmp(deco, "diminuendo)")) in_cresc = 0;
-                                else if (!strcmp(deco, ">)")) in_cresc = 0;
-                                else if (!strcmp(deco, "trill")) /* FIXME */;
-                                else if (!strcmp(deco, "trill(")) /* FIXME */;
-                                else if (!strcmp(deco, "trill)")) /* FIXME */;
-                                else if (!strcmp(deco, "D.S.")) {
-                                        memset(measure_accid, 0, sizeof measure_accid);
-                                        s = abc_find_next_segno(s);
-                                        continue;
-                                } else if (!strcmp(deco,"D.C.")) { /* FIXME */; }
-                        } else { /* ERROR */ ;}
-                        break;
+                    manageDecoration(s);
+                    break;
                 }
                 case ABC_TIE: {
                         in_tie = 1;
@@ -356,53 +338,6 @@ void AbcSmf::onSMFWriteTrack(int track) {
                 case ABC_BAR: {
                         /* reset measure accidentals */
                         memset(measure_accid, 0, sizeof measure_accid);
-
-                        /* check loop for repeat bars */
-                        if (abc_is_repeat(s)) {
-                                if (!repeat || repeat->index < s->index) {
-                                        repeat = s;
-                                        s = abc_find_start_repeat(s);
-                                        pass++;
-                                        continue;
-                                } else if (repeat == s) {
-                                        repeat = NULL;
-                                        if (abc_is_start(s)) {
-                                                pass = 1;
-                                        }
-                                } else if (abc_is_start(s)) {
-                                        pass = 1;
-                                }
-                        } else if (abc_is_start(s)) {
-                                pass = 1;
-                        }
-                        break;
-                }
-                case ABC_ALT: {
-                        if (!abc_alt_is_of(s, pass)) {
-                                struct abc_symbol*  n;
-                                if ((n = abc_find_next_alt(s, pass))) {
-                                        s = n;
-                                        continue;
-                                } else {
-                                        if (!repeat) {
-                                                repeat = abc_find_next_repeat(s);
-                                                s = abc_find_start_repeat(repeat);
-                                                pass++;
-                                                continue;
-                                        } else {
-                                                struct abc_symbol* r = abc_find_next_repeat(s);
-                                                if (r) {
-                                                        if (abc_is_start(r)) {
-                                                                pass = 1;
-                                                        }
-                                                        s = r->next;
-                                                        continue;
-                                                } else if (abc_is_start(s)) {
-                                                        pass = 1;
-                                                }
-                                        }
-                                }
-                        }
                         break;
                 }
                 case ABC_INST: {
@@ -412,10 +347,11 @@ void AbcSmf::onSMFWriteTrack(int track) {
                         }
                         break;
                 }
-                } /* OE case */
+                } /* EO case */
                 s = s->next;
         }
         writeMetaEvent(getCurrentTime(), 0x2F);
+        abc_release_voice(v);
 }
 
 /* text must be %d/%d */

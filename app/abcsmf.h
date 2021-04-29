@@ -24,6 +24,8 @@ private:
 #define SHORTEN_DEFAULT 10 /* divider */
 #define EXPRESSION_DEFAULT 0
 
+    void manageDecoration(struct abc_symbol* s);
+    void writeSingleNote(int track, struct abc_symbol* s);
     void abcGetNumDen(char* text, long* num, long* den);
     int getSMFKeySignature(char* text, int* mode);
     unsigned char pitch_diff_0x3c(const char* ks, int note);
@@ -47,6 +49,7 @@ private:
 
     int expr;      /* expression */
     long z_tick;   /* ticks to wait */
+    long dur;      /* note duration */
     bool in_tie;
     bool in_chord;
     int in_slur;
@@ -62,6 +65,9 @@ private:
     char noteon;
     char program;
     char control;
+
+    /* measure accidentals context */
+    int measure_accid['h']; /* 'g' + 1 */
 
 static constexpr
 const char _pitch_diff_CMaj_0x3c[] = {

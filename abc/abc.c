@@ -687,6 +687,8 @@ struct abc_voice* abc_unfold_voice(struct abc_voice* v) {
                                 pass++;
                                 continue;
                             }
+                        } else if (abc_is_start(s)) {
+                                pass = 1;
                         }
                         break;
                 }

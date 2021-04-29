@@ -245,6 +245,7 @@ void abc_duration_num_set(struct abc* yy, const char* yytext)
 	struct abc_voice* voice = tune->voices[tune->count-1];
 
 	voice->last->dur_num = num? num: 1;
+	voice->last->dur_den = 1;
 }
 
 void abc_duration_den_set(struct abc* yy, const char* yytext)
@@ -321,6 +322,7 @@ void abc_tie_append(struct abc* yy, const char* yytext)
 	struct abc_symbol* new = abc_new_symbol(yy);
 	new->kind = ABC_TIE;
 	new->text = strdup(yytext);
+	new->prev->prev->tied = 1;
 }
 
 void abc_slur_append(struct abc* yy, const char* yytext)
@@ -444,16 +446,18 @@ struct abc_header* abc_find_header(struct abc_tune* t, char h) {
     return header;
 }
 
+/* rewind and return the first symbol just after start repeat */
 struct abc_symbol* abc_find_start_repeat(struct abc_symbol* s) {
 	while (s->prev) {
-        s = s->prev;
+		s = s->prev;
 		if (s->kind == ABC_BAR && strstr(s->text, "|:"))
-            return s->next;
+			return s->next;
 	}
 
 	return s;
 }
 
+/* return the next repeat bar */
 struct abc_symbol* abc_find_next_repeat(struct abc_symbol* s) {
     while (s->next) {
         s = s->next;
@@ -464,13 +468,14 @@ struct abc_symbol* abc_find_next_repeat(struct abc_symbol* s) {
     return s;
 }
 
+/* return a bar symbol matching next alternation in pass of alt */
 struct abc_symbol* abc_find_next_alt(struct abc_symbol* s, int alt) {
     while (s->next) {
         s = s->next;
-
+/*
         if (s->kind == ABC_BAR && abc_is_repeat(s))
             return NULL;
-
+*/
         if (s->kind == ABC_BAR && abc_is_endbar(s)) {
             return s;
         }
@@ -499,6 +504,9 @@ struct abc_symbol* abc_find_next_segno(struct abc_symbol* s) {
 }
 
 int abc_has_tie(struct abc_symbol* s, int chord) {
+    if (s->tied)
+        return 1;
+
     while (s->next) {
         s = s->next;
         if (chord) {
@@ -622,4 +630,108 @@ void abc_compute_pqr(int* p, int* q, int* r, struct abc_tune* t) {
                 }
 
         }
+}
+
+struct abc_symbol* abc_dup_symbol(struct abc_symbol* from) {
+	struct abc_symbol* to = calloc(1, sizeof (struct abc_symbol));
+    to = memcpy(to, from, sizeof (*from));
+    if (from->text)
+            to->text = strdup(from->text);
+    if (from->lyric)
+            to->lyric = strdup(from->lyric);
+	return to;
+}
+
+void abc_voice_append_symbol(struct abc_voice* voice, struct abc_symbol* s) {
+        if (s) {
+                if (voice->last == NULL) {
+                        voice->last = s;
+                        voice->first = voice->last;
+                } else {
+                        struct abc_symbol* l = voice->last;
+                        voice->last = s;
+                        l->next = s;
+                        s->prev = l;
+                        s->index = l->index + 1;
+                }
+        }
+}
+
+struct abc_voice* abc_unfold_voice(struct abc_voice* v) {
+        int pass = 1;
+        struct abc_symbol* cur_repeat = NULL;
+
+        struct abc_voice* voice = calloc(1, sizeof (struct abc_voice));
+        voice->v = strdup(v->v);
+
+        struct abc_symbol* s = v->first;
+        while (s) {
+                struct abc_symbol* new = calloc(1, sizeof (struct abc_symbol));
+
+                switch (s->kind) {
+                case ABC_BAR: {
+                        new->kind = ABC_BAR;
+                        new->text = strdup("|");
+
+                        if (abc_is_repeat(s)) {
+                            if (cur_repeat == s) {
+                                /* never reset cur_repeat to NULL (loops forever) */
+
+                                if (abc_is_start(s)) {
+                                    pass = 1;
+                                }
+                            } else if (!cur_repeat || (cur_repeat->index < s->index)) {
+                                cur_repeat = s;
+                                s = abc_find_start_repeat(s);
+                                abc_voice_append_symbol(voice, new);
+                                pass++;
+                                continue;
+                            }
+                        }
+                        break;
+                }
+                case ABC_ALT: {
+                        free (new);
+                        new = NULL;
+
+                        if (!abc_alt_is_of(s, pass)) {
+                                struct abc_symbol* n;
+                                if ((n = abc_find_next_alt(s, pass))) {
+                                        s = n; /* s is a BAR */
+                                        continue;
+                                }
+                        }
+
+                        break;
+                }
+                default: {
+                        new = abc_dup_symbol(s);
+                }
+                }
+
+                if (new) {
+                        abc_voice_append_symbol(voice, new);
+                }
+                s = s->next;
+        }
+
+        return voice;
+}
+
+void abc_release_voice(struct abc_voice* v) {
+        struct abc_symbol* s = v->first;
+        while (s != v->last) {
+                struct abc_symbol* sn = s->next;
+                free(s->lyric);
+                free(s->text);
+                free(s);
+                s = sn;
+        }
+
+        free(v->last->lyric);
+        free(v->last->text);
+        free(v->last);
+
+        free(v->v);
+        free(v);
 }

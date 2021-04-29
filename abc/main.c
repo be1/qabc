@@ -12,25 +12,25 @@ int main() {
 		buf[count -1] = c;
 	}
 	
-	struct abc* yy = abc_parse(buf, count);
+	struct abc* yy = abc_parse_buffer(buf, count);
 	if (yy->error)
 		puts("Parse error");
 
 	printf("tunes: %d\n", yy->count);
 	for (int i = 0; i < yy->count; i++) {
-		struct tune* t = yy->tunes[i];
+		struct abc_tune* t = yy->tunes[i];
 		printf("tune %d\n", t->x);
 
-		struct header* h = t->headers;
+		struct abc_header* h = t->headers;
 		if (h)
 			while (h && h->h != 'T')
 				h = h->next;
 
 		printf("title: %s\n", h? h->text: "");
 		for (int j = 0; j < t->count; j++) {
-			struct voice* v = t->voices[j];
+			struct abc_voice* v = t->voices[j];
 			printf("tune %d, voice %s\n", t->x, v->v);
-			struct symbol* s;
+			struct abc_symbol* s;
 			for (s = v->first; s; s = s->next) {
 				printf("%d %d/%d ", s->kind, s->dur_num, s->dur_den);
 				if (s->text) puts(s->text);

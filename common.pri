@@ -1,5 +1,5 @@
 VERSION = 2.1
-REVISION = $$system(svnversion|grep '[[:digit:]]' || git describe --long --tags 2>/dev/null || echo "stable")
+REVISION = $$system(git describe --long --tags 2>/dev/null || echo "stable")
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 isEmpty(PREFIX): PREFIX = /usr/local
 isEmpty(BINDIR): BINDIR = $$PREFIX/bin

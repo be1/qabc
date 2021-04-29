@@ -55,6 +55,7 @@ struct abc_symbol {
 	int dur_den;
 	int index;
 	int in_alt;
+	int tied;
 	struct abc_symbol* next;
 	struct abc_symbol* prev;
 };
@@ -144,6 +145,12 @@ long abc_tempo(struct abc_tune* t);
 void abc_compute_pqr(int* p, int* q, int* r, struct abc_tune* t);
 
 struct abc* abc_parse_buffer(const char* buffer, int size);
+
+struct abc_voice* abc_unfold_voice(struct abc_voice* v);
+
+void abc_release_voice(struct abc_voice* v);
+
+struct abc_symbol* abc_dup_symbol(struct abc_symbol* from);
 
 #ifdef __cplusplus
 }

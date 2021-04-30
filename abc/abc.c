@@ -322,7 +322,7 @@ void abc_tie_append(struct abc* yy, const char* yytext)
 	struct abc_symbol* new = abc_new_symbol(yy);
 	new->kind = ABC_TIE;
 	new->text = strdup(yytext);
-	new->prev->prev->tied = 1;
+    new->prev->tied = 1;
 }
 
 void abc_slur_append(struct abc* yy, const char* yytext)

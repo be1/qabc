@@ -65,6 +65,8 @@ private:
     char noteon;
     char program;
     char control;
+    long vnum;
+    long vden;
 
     /* measure accidentals context */
     int measure_accid['h']; /* 'g' + 1 */

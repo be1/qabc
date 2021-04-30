@@ -23,7 +23,9 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         grace_tick(0),
         noteon(0x90),
         program(0xc0),
-        control(0xb0)
+        control(0xb0),
+	vnum(1),
+	vden(8)
 {
         connect(this, &QSmf::signalSMFWriteTempoTrack, this, &AbcSmf::onSMFWriteTempoTrack);
         connect(this, &QSmf::signalSMFWriteTrack, this, &AbcSmf::onSMFWriteTrack);
@@ -37,14 +39,13 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         setFileFormat(1);
         setTracks(t->count);
 
-        long num, den;
         struct abc_header* lh = abc_find_header(t, 'L');
         if (!lh)
-                num = 1, den = 8;
+               vnum = 1, vden = 8;
         else
-                abcGetNumDen(lh->text, &num, &den);
+                abcGetNumDen(lh->text, &vnum, &vden);
 
-        tpu = (num * 4 * DPQN) / (den);
+        tpu = (vnum * 4 * DPQN) / (vden);
         qWarning() << "ticks per unit" << tpu;
 
         kh = abc_find_header(t, 'K');

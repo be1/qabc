@@ -30,6 +30,7 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
 
 AbcPlainTextEdit::~AbcPlainTextEdit()
 {
+    completer()->model()->deleteLater();
 }
 
 void AbcPlainTextEdit::setCompleter(QCompleter *completer)

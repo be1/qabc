@@ -254,9 +254,9 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                                 unsigned char n = note2midi(ks, s->text, measure_accid);
                                                 if (abc_has_tie(s, 1)) {
                                                     z_tick = dur;
-                                                } else {
+                                                } else { /* !in_tie */
                                                         writeMidiEvent(dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
-                                                        z_tick = dur / shorten;
+                                                        z_tick = dur? (dur / shorten) : z_tick;
                                                         shorten = in_slur;
                                                         dur = 0;
                                                 }
@@ -281,44 +281,16 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                                     unsigned char n = note2midi(ks, s->text, measure_accid);
 
                                                     writeMidiEvent(z_tick + dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
-                                                    z_tick = dur / shorten;
+                                                    z_tick = dur? (dur / shorten) : 0;
                                                     shorten = in_slur;
                                                     dur = 0;
 
                                                 }
                                                 s = s->next;
                                         }
-
-                                        in_tie = 0;
-                                } else { /* chord is ']' */
-                                    /* play notes off */
-                                    /* back to '[' and feed notes off, optionnaly */
-                                    s = s->prev;
-                                    while (s->kind != ABC_CHORD) { /* back until '[' */
-                                            s = s->prev;
-                                    }
-                                    s = s->next;
-                                    dur = duration(s); /* take first note of chord for duration */
-                                    while (s->kind != ABC_CHORD) { /* until ']' */
-                                            if (s->kind == ABC_NOTE) {
-                                                /* prepend with expression pedal if any */
-                                                writeExpression(track);
-
-                                                /* set note lyrics if any */
-                                                writeLyric(s->lyric);
-
-                                                /* find MIDI pitch */
-                                                const char* ks = kh ? kh->text : NULL;
-                                                unsigned char n = note2midi(ks, s->text, measure_accid);
-
-                                                writeMidiEvent(z_tick + dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
-                                                z_tick = dur / shorten;
-                                                shorten = in_slur;
-                                                in_tie = 0;
-                                            }
-                                            s = s->next;
-                                    }
                                 }
+
+                                in_tie = 0;
                         }
                         shorten = in_slur;
                         expr = EXPRESSION_DEFAULT;

@@ -115,11 +115,11 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                         z_tick = dur;
                 } else {
                     if (in_grace) {
-                        writeMidiEvent(dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
-                        z_tick = dur / shorten;
+                        writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */
+                        z_tick = 0;
                     } else {
-                        writeMidiEvent(dur - (dur / shorten) - grace_tick, noteon, track, n, 0x00); /* note off */
-                        z_tick = (dur / shorten) - grace_tick;
+                        writeMidiEvent(dur /* - grace_tick */, noteon, track, n, 0x00); /* note off */
+                        z_tick = 0; /* - grace_tick */
                         grace_tick = 0;
                     }
                     shorten = in_slur;
@@ -137,8 +137,8 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 const char* ks = kh ? kh->text : NULL;
                 unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                writeMidiEvent(z_tick + dur - (dur /shorten), noteon, track, n, 0x00); /* note off */
-                z_tick = dur / shorten;
+                writeMidiEvent(z_tick + dur, noteon, track, n, 0x00); /* note off */
+                z_tick = 0;
                 shorten = in_slur;
                 in_tie = 0;
         }
@@ -252,8 +252,8 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                                 if (abc_has_tie(s, 1)) {
                                                     z_tick = dur;
                                                 } else { /* !in_tie */
-                                                        writeMidiEvent(dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
-                                                        z_tick = dur? (dur / shorten) : z_tick;
+                                                        writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */
+                                                        z_tick = 0;
                                                         shorten = in_slur;
                                                         dur = 0;
                                                 }
@@ -276,8 +276,8 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                                 const char* ks = kh ? kh->text : NULL;
                                                 unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                                                writeMidiEvent(z_tick + dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
-                                                z_tick = dur? (dur / shorten) : 0;
+                                                writeMidiEvent(z_tick + dur, noteon, track, n, 0x00); /* note off */
+                                                z_tick = 0;
                                                 shorten = in_slur;
                                                 dur = 0;
 

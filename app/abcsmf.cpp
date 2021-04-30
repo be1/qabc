@@ -113,13 +113,15 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 writeMidiEvent(wait_ticks, noteon, track, n, cur_dyn); /* note on */
                 if (abc_has_tie(s, 0)) {
                         wait_ticks = dur;
-                } else {
+                } else { /* !in_tie */
                     if (in_grace) {
                         writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */
                         wait_ticks = 0;
                     } else {
-                        writeMidiEvent(dur /* - grace_tick */, noteon, track, n, 0x00); /* note off */
-                        wait_ticks = 0; /* - grace_tick */
+                        long small = tpu * upm / 8;
+                        small = (dur > small) ? small : dur;
+                        writeMidiEvent(dur - (small / shorten) /* - grace_tick */, noteon, track, n, 0x00); /* note off */
+                        wait_ticks = small / shorten; /* - grace_tick */
                         grace_tick = 0;
                     }
                     shorten = in_slur;

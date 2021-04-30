@@ -110,13 +110,19 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 const char* ks = kh ? kh->text : NULL;
                 unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                writeMidiEvent(getCurrentTime() + z_tick, noteon, track, n, cur_dyn); /* note on */
+                writeMidiEvent(z_tick, noteon, track, n, cur_dyn); /* note on */
                 if (abc_has_tie(s, 0)) {
                         z_tick = dur;
                 } else {
-                        writeMidiEvent(getCurrentTime() + dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
+                    if (in_grace) {
+                        writeMidiEvent(dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
                         z_tick = dur / shorten;
-                        shorten = in_slur;
+                    } else {
+                        writeMidiEvent(dur - (dur / shorten) - grace_tick, noteon, track, n, 0x00); /* note off */
+                        z_tick = (dur / shorten) - grace_tick;
+                        grace_tick = 0;
+                    }
+                    shorten = in_slur;
                 }
         } else if (in_tie) {
                 /* do not play note on */
@@ -131,7 +137,7 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 const char* ks = kh ? kh->text : NULL;
                 unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                writeMidiEvent(getCurrentTime() + z_tick + dur - (dur /shorten), noteon, track, n, 0x00); /* note off */
+                writeMidiEvent(z_tick + dur - (dur /shorten), noteon, track, n, 0x00); /* note off */
                 z_tick = dur / shorten;
                 shorten = in_slur;
                 in_tie = 0;
@@ -167,7 +173,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
         int p, q, r = 0; /* n-uplet definition */
         dur_mod = 1.0; /* duration modified for n-uplets */
         nuplets = 0; /* number of notes in n-uplets */
-        grace_mod = 1; /* duration modified for graces */
+        grace_mod = 1.0; /* duration modified for graces */
         expr = EXPRESSION_DEFAULT;
         in_slur = SHORTEN_DEFAULT;
         shorten = in_slur; /* dur will be shortened of 10% of a unit */
@@ -199,11 +205,9 @@ void AbcSmf::onSMFWriteTrack(int track) {
                 case ABC_GRACE: {
                         in_grace = strchr(s->text, '{') ? 1 : 0;
                         if (in_grace) {
-                                double gd = abc_grace_duration(s); /* in units L */
-                                grace_mod = tpu / (4 * gd); /* play 'fourth' faster */
-                                grace_tick = (gd * 4.0) / tpu;
-                        } else {
-                                grace_tick = 0;
+                                double gd = abc_grace_duration(s); /* in units */
+                                grace_mod = vden / (8.0 * gd * vnum); /* play in time of 1/8 */
+                                grace_tick = tpu * upm / 8; /* a 1/8 in ticks */
                         }
                         break;
                 }
@@ -229,7 +233,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                                         const char* ks = kh ? kh->text : NULL;
                                                         unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                                                        writeMidiEvent(getCurrentTime() + z_tick, noteon, track, n, cur_dyn); /* note on */
+                                                        writeMidiEvent(z_tick, noteon, track, n, cur_dyn); /* note on */
                                                         z_tick = 0;
                                                 }
                                                 s = s->next;
@@ -251,7 +255,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                                 if (abc_has_tie(s, 1)) {
                                                     z_tick = dur;
                                                 } else {
-                                                        writeMidiEvent(getCurrentTime() + dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
+                                                        writeMidiEvent(dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
                                                         z_tick = dur / shorten;
                                                         shorten = in_slur;
                                                         dur = 0;
@@ -276,7 +280,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                                     const char* ks = kh ? kh->text : NULL;
                                                     unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                                                    writeMidiEvent(getCurrentTime() + z_tick + dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
+                                                    writeMidiEvent(z_tick + dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
                                                     z_tick = dur / shorten;
                                                     shorten = in_slur;
                                                     dur = 0;
@@ -307,7 +311,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                                 const char* ks = kh ? kh->text : NULL;
                                                 unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                                                writeMidiEvent(getCurrentTime() + z_tick + dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
+                                                writeMidiEvent(z_tick + dur - (dur / shorten), noteon, track, n, 0x00); /* note off */
                                                 z_tick = dur / shorten;
                                                 shorten = in_slur;
                                                 in_tie = 0;
@@ -538,7 +542,7 @@ long AbcSmf::duration(struct abc_symbol* s) {
 
     /* grace note duration */
     if (in_grace)
-            dur /= grace_mod;
+            dur *= grace_mod;
 
     return dur;
 }

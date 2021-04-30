@@ -56,7 +56,7 @@ private:
     int shorten;
     double dur_mod; /* duration modified for n-uplets */
     int nuplets;
-    long grace_mod; /* duration modified for grace notes */
+    double grace_mod; /* duration modified for grace notes */
     bool in_grace;
     int in_cresc;
     unsigned char mark_dyn;

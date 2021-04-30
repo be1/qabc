@@ -12,7 +12,7 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         upm(0),
         tempo(0),
         expr(EXPRESSION_DEFAULT),
-        z_tick(0),
+        wait_ticks(0),
         dur(0),
         in_tie(false),
         in_slur(SHORTEN_DEFAULT),
@@ -93,12 +93,12 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
 
         if (s->text[0] == 'Z') {
                 dur = upm * tpu;
-                z_tick += dur;
+                wait_ticks += dur;
         } else if (s->text[0] == 'z') {
-                z_tick += dur;
+                wait_ticks += dur;
         } else if (abc_has_tie(s, 0) && in_tie) {
                 /* do not replay note at all */
-                z_tick += dur; /* add durations as they follow */
+                wait_ticks += dur; /* add durations as they follow */
         } else if (abc_has_tie(s, 0) || !in_tie) {
                 /* prepend with expression pedal if any */
                 writeExpression(track);
@@ -110,16 +110,16 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 const char* ks = kh ? kh->text : NULL;
                 unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                writeMidiEvent(z_tick, noteon, track, n, cur_dyn); /* note on */
+                writeMidiEvent(wait_ticks, noteon, track, n, cur_dyn); /* note on */
                 if (abc_has_tie(s, 0)) {
-                        z_tick = dur;
+                        wait_ticks = dur;
                 } else {
                     if (in_grace) {
                         writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */
-                        z_tick = 0;
+                        wait_ticks = 0;
                     } else {
                         writeMidiEvent(dur /* - grace_tick */, noteon, track, n, 0x00); /* note off */
-                        z_tick = 0; /* - grace_tick */
+                        wait_ticks = 0; /* - grace_tick */
                         grace_tick = 0;
                     }
                     shorten = in_slur;
@@ -137,8 +137,8 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 const char* ks = kh ? kh->text : NULL;
                 unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                writeMidiEvent(z_tick + dur, noteon, track, n, 0x00); /* note off */
-                z_tick = 0;
+                writeMidiEvent(wait_ticks + dur, noteon, track, n, 0x00); /* note off */
+                wait_ticks = 0;
                 shorten = in_slur;
                 in_tie = 0;
         }
@@ -177,7 +177,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
         expr = EXPRESSION_DEFAULT;
         in_slur = SHORTEN_DEFAULT;
         shorten = in_slur; /* dur will be shortened of 10% of a unit */
-        z_tick = 0;
+        wait_ticks = 0;
 
         writeMetaEvent(getCurrentTime(), 0x03, QString(v->v)); /* textual voice name */
 
@@ -215,7 +215,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
                         if (abc_has_tie(s, 1) && in_tie) {
                             /* just take duration of first note and wait */
                             dur = duration(abc_chord_first_note(s));
-                            z_tick += dur;
+                            wait_ticks += dur;
                             s = abc_chord_forward(s);
                         } else if (abc_has_tie(s, 1) || !in_tie) {
                                 /* align starts */
@@ -234,8 +234,8 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                                 const char* ks = kh ? kh->text : NULL;
                                                 unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                                                writeMidiEvent(z_tick, noteon, track, n, cur_dyn); /* note on */
-                                                z_tick = 0;
+                                                writeMidiEvent(wait_ticks, noteon, track, n, cur_dyn); /* note on */
+                                                wait_ticks = 0;
                                         }
                                         s = s->next;
                                 }
@@ -250,10 +250,10 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                                 const char* ks = kh ? kh->text : NULL;
                                                 unsigned char n = note2midi(ks, s->text, measure_accid);
                                                 if (abc_has_tie(s, 1)) {
-                                                    z_tick = dur;
+                                                    wait_ticks = dur;
                                                 } else { /* !in_tie */
                                                         writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */
-                                                        z_tick = 0;
+                                                        wait_ticks = 0;
                                                         shorten = in_slur;
                                                         dur = 0;
                                                 }
@@ -276,8 +276,8 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                                 const char* ks = kh ? kh->text : NULL;
                                                 unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                                                writeMidiEvent(z_tick + dur, noteon, track, n, 0x00); /* note off */
-                                                z_tick = 0;
+                                                writeMidiEvent(wait_ticks + dur, noteon, track, n, 0x00); /* note off */
+                                                wait_ticks = 0;
                                                 shorten = in_slur;
                                                 dur = 0;
 
@@ -527,15 +527,15 @@ void AbcSmf::setDynamic(long dur) {
 
 void AbcSmf::writeExpression(int track) {
         if (expr) {
-                writeMidiEvent(getCurrentTime() + z_tick, control, track, 0x0b, expr);
+                writeMidiEvent(wait_ticks, control, track, 0x0b, expr);
                 expr = EXPRESSION_DEFAULT;
-                z_tick = 0;
+                wait_ticks = 0;
         }
 }
 
 void AbcSmf::writeLyric(const char* lyric) {
         if (lyric) {
-                writeMetaEvent(getCurrentTime() + z_tick, 0x05, QString(lyric));
-                z_tick = 0;
+                writeMetaEvent(wait_ticks, 0x05, QString(lyric));
+                wait_ticks = 0;
         }
 }

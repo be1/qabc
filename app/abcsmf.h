@@ -21,7 +21,7 @@ private slots:
 private:
 #define DPQN 96
 #define DYN_DEFAULT 80
-#define SHORTEN_DEFAULT 10 /* divider */
+#define SHORTEN_DEFAULT 10
 #define EXPRESSION_DEFAULT 0
 
     void manageDecoration(struct abc_symbol* s);
@@ -48,7 +48,7 @@ private:
     long tempo;    /* quarter per minute */
 
     int expr;      /* expression */
-    long z_tick;   /* ticks to wait */
+    long wait_ticks;
     long dur;      /* note duration */
     bool in_tie;
     bool in_chord;

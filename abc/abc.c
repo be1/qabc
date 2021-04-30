@@ -720,6 +720,38 @@ struct abc_voice* abc_unfold_voice(struct abc_voice* v) {
         return voice;
 }
 
+struct abc_symbol* abc_chord_first_note(struct abc_symbol* s) {
+    if (s->kind == ABC_CHORD) {
+        while (s->next) {
+            s = s->next;
+            if (s->kind == ABC_NOTE)
+                return s;
+        }
+    }
+
+    return NULL;
+}
+
+struct abc_symbol* abc_chord_rewind(struct abc_symbol* s) {
+    while (s->prev) {
+        s = s->prev;
+        if ((s->kind == ABC_CHORD) && (s->text[0] == '['))
+            return s;
+    }
+
+    return NULL;
+}
+
+struct abc_symbol* abc_chord_forward(struct abc_symbol* s) {
+    while (s->next) {
+        s = s->next;
+        if ((s->kind == ABC_CHORD) && (s->text[0] == ']'))
+            return s;
+    }
+
+    return NULL;
+}
+
 void abc_release_voice(struct abc_voice* v) {
         struct abc_symbol* s = v->first;
         while (s != v->last) {

@@ -148,6 +148,12 @@ struct abc* abc_parse_buffer(const char* buffer, int size);
 
 struct abc_voice* abc_unfold_voice(struct abc_voice* v);
 
+struct abc_symbol* abc_chord_first_note(struct abc_symbol* s);
+
+struct abc_symbol* abc_chord_rewind(struct abc_symbol* s);
+
+struct abc_symbol* abc_chord_forward(struct abc_symbol* s);
+
 void abc_release_voice(struct abc_voice* v);
 
 struct abc_symbol* abc_dup_symbol(struct abc_symbol* from);

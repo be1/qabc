@@ -132,6 +132,8 @@ struct abc_symbol* abc_find_next_alt(struct abc_symbol* s, int alt);
 
 struct abc_symbol* abc_find_next_repeat(struct abc_symbol* s);
 
+int abc_has_pair(struct abc_symbol* s, int chord);
+
 int abc_has_tie(struct abc_symbol* s, int chord);
 
 double abc_grace_duration(struct abc_symbol* s);

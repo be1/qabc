@@ -111,7 +111,7 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 unsigned char n = note2midi(ks, s->text, measure_accid);
 
                 writeMidiEvent(wait_ticks, noteon, track, n, cur_dyn); /* note on */
-                if (abc_has_tie(s, 0)) {
+                if (abc_has_tie(s, 0) && abc_has_pair(s, 0)) {
                         wait_ticks = dur;
                 } else { /* !in_tie */
                     if (in_grace) {
@@ -220,7 +220,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
                             wait_ticks += dur;
                             s = abc_chord_forward(s);
                         } else if (abc_has_tie(s, 1) || !in_tie) {
-                                /* align starts */
+                                /* align noteon */
                                 s = abc_chord_first_note(s);
                                 while (s->kind != ABC_CHORD) { /* until ']' */
                                         if (s->kind == ABC_NOTE) {
@@ -241,9 +241,8 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                         }
                                         s = s->next;
                                 }
-                                /* now s is a  ']' chord symbol */
-                                /* back to '[' and feed notes off, optionnaly */
                                 s = abc_chord_rewind(s);
+                                /* align noteoff */
                                 s = abc_chord_first_note(s);
                                 dur = duration(s); /* take first note of chord for duration */
                                 while (s->kind != ABC_CHORD) { /* until ']' */
@@ -251,7 +250,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                                 /* find MIDI pitch */
                                                 const char* ks = kh ? kh->text : NULL;
                                                 unsigned char n = note2midi(ks, s->text, measure_accid);
-                                                if (abc_has_tie(s, 1)) {
+                                                if (abc_has_tie(s, 1) && abc_has_pair(s, 1)) {
                                                     wait_ticks = dur;
                                                 } else { /* !in_tie */
                                                         writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */

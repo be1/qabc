@@ -503,6 +503,38 @@ struct abc_symbol* abc_find_next_segno(struct abc_symbol* s) {
 	return s;
 }
 
+int abc_has_pair(struct abc_symbol* s, int chord) {
+    const char* note = s->text;
+    if (chord) {
+            int in = 0;
+            s = abc_chord_forward(s);
+            s = s->next; /* '-' */
+            while (s->next && s->next->text[0] != ']') {
+                    s = s->next;
+                    if (!in && (s->kind == ABC_NOTE))
+                        return 0;
+
+                    if (in && (s->kind == ABC_NOTE)) {
+                            if (!strcmp(note, s->text))
+                                    return 1;
+                    }
+                    if (s->text[0] == '[')
+                            in = 1;
+            }
+    } else {
+            while (s->next) {
+                    s = s->next; /* '-' */
+                    if (s->kind == ABC_NOTE) {
+                            if (!strcmp(note, s->text))
+                                    return 1;
+                            return 0;
+                    }
+            }
+    }
+
+    return 0;
+}
+
 int abc_has_tie(struct abc_symbol* s, int chord) {
     if (s->tied)
         return 1;

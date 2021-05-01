@@ -174,6 +174,14 @@ void abc_chord_append(struct abc* yy, const char* yytext)
 	struct abc_symbol* new = abc_new_symbol(yy);
 	new->kind = ABC_CHORD;
 	new->text = strdup(yytext);
+	if (new->text[0] == ']') {
+		struct abc_symbol* s = abc_chord_rewind(new);
+		while (s->next && s->next->text != ']') {
+			s = s->next;
+			if (s->kind == ABC_NOTE)
+				s->in_chord = 1;
+		}
+	}
 }
 
 int abc_chord_parse_num(const char* chord)
@@ -322,7 +330,7 @@ void abc_tie_append(struct abc* yy, const char* yytext)
 	struct abc_symbol* new = abc_new_symbol(yy);
 	new->kind = ABC_TIE;
 	new->text = strdup(yytext);
-    new->prev->tied = 1;
+	new->prev->in_tie = 1;
 }
 
 void abc_slur_append(struct abc* yy, const char* yytext)
@@ -536,7 +544,7 @@ int abc_has_pair(struct abc_symbol* s, int chord) {
 }
 
 int abc_has_tie(struct abc_symbol* s, int chord) {
-    if (s->tied)
+    if (s->in_tie)
         return 1;
 
     while (s->next) {

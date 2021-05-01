@@ -55,7 +55,8 @@ struct abc_symbol {
 	int dur_den;
 	int index;
 	int in_alt;
-	int tied;
+	int in_tie;
+	int in_chord;
 	struct abc_symbol* next;
 	struct abc_symbol* prev;
 };

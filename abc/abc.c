@@ -734,15 +734,16 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v) {
                                    new = abc_dup_symbol(s);
                                } else {
                                    if (!in_chord) {
+                                       int prev_chord = 0;
                                        /* prev note just lasts longer */
                                        struct abc_symbol* p = voice->last;
                                        while (p->kind != ABC_NOTE) {
                                            if (p->kind == ABC_CHORD)
-                                               in_chord = 1;
+                                               prev_chord = 1;
                                            p = p->prev;
                                        }
                                        /* prev note could be in a chord! */
-                                       if (in_chord) {
+                                       if (prev_chord) {
                                            while (strcmp(p->text, s->text)) {
                                                p = p->prev;
                                                if (p->kind == ABC_CHORD)
@@ -754,7 +755,6 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v) {
                                            abc_duration_add(p, s);
                                        } 
                                        in_tie = 0;
-                                       in_chord = 0;
                                    } else {
                                        /* look if previous note is in a chord or a single note */
                                        struct abc_symbol* p = voice->last;

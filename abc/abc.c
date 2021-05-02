@@ -175,7 +175,7 @@ void abc_chord_append(struct abc* yy, const char* yytext)
     new->kind = ABC_CHORD;
     new->text = strdup(yytext);
     if (new->text[0] == ']') {
-        struct abc_symbol* s = abc_chord_rewind(new);
+        struct abc_symbol* s = abc_chord_rewind(new->prev);
         while (s->next && s->next->text[0] != ']') {
             s = s->next;
             if (s->kind == ABC_NOTE)
@@ -756,20 +756,30 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v) {
                                        in_tie = 0;
                                        in_chord = 0;
                                    } else {
-                                       /* find same note in previous chord */
-                                       struct abc_symbol* p = abc_chord_rewind(voice->last->prev);
-                                       /* start of previous chord */
-                                       p = abc_chord_first_note(p);
-                                       while (strcmp(p->text, s->text)) {
-                                           p = p->next;
-                                           if (p->kind == ABC_CHORD)
-                                               break;
-                                       }
+                                       /* look if previous note is in a chord or a single note */
+                                       struct abc_symbol* p = voice->last;
+                                       while (p->kind != ABC_CHORD && p->kind != ABC_NOTE)
+                                               p = p->prev;
 
-                                       if (p->kind == ABC_NOTE) {
-                                           abc_duration_add(p, s);
+                                       if (p->kind == ABC_CHORD) {
+                                               p = abc_chord_rewind(p->prev);
+                                               p = abc_chord_first_note(p);
+                                               while (strcmp(p->text, s->text)) {
+                                                       p = p->next;
+                                                       if (p->kind == ABC_CHORD)
+                                                               break;
+                                               }
+
+                                               if (p->kind == ABC_NOTE) {
+                                                       /* found a note of same pitch */
+                                                       abc_duration_add(p, s);
+                                               } else {
+                                                       /* not supported */
+                                                       new = abc_dup_symbol(s);
+                                               }
                                        } else {
-                                           new = abc_dup_symbol(s);
+                                               /* not supoprted */
+                                               new = abc_dup_symbol(s);
                                        }
                                    }
                                }

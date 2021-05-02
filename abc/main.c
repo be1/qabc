@@ -28,8 +28,8 @@ int main() {
 
 		printf("title: %s\n", h? h->text: "");
 		for (int j = 0; j < t->count; j++) {
-			//struct abc_voice* v = abc_untie_voice(abc_unfold_voice(t->voices[j]));
-			struct abc_voice* v = t->voices[j];
+			struct abc_voice* v = abc_untie_voice(abc_unfold_voice(t->voices[j]));
+			//struct abc_voice* v = t->voices[j];
 			printf("tune %d, voice %s\n", t->x, v->v);
 			struct abc_symbol* s;
 			for (s = v->first; s; s = s->next) {

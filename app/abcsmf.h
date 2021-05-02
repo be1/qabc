@@ -12,7 +12,6 @@ class AbcSmf : public QSmf
     Q_OBJECT
 public:
     explicit AbcSmf(struct abc* yy, int x = 1, QObject *parent = nullptr);
-    static AbcSmf* fromABC(const char* abc, int x, QObject *parent = nullptr);
 
 private slots:
     void onSMFWriteTempoTrack(void);
@@ -26,7 +25,7 @@ private:
 
     void manageDecoration(struct abc_symbol* s);
     void writeSingleNote(int track, struct abc_symbol* s);
-    void abcGetNumDen(char* text, long* num, long* den);
+    void getNumDen(char* text, long* num, long* den);
     int getSMFKeySignature(char* text, int* mode);
     unsigned char pitch_diff_0x3c(const char* ks, int note);
     unsigned char note2midi (const char* keysig, const char* note, int* measure_accid);

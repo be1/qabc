@@ -42,7 +42,7 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         if (!lh)
                vnum = 1, vden = 8;
         else
-                abcGetNumDen(lh->text, &vnum, &vden);
+                getNumDen(lh->text, &vnum, &vden);
 
         tpu = (vnum * 4 * DPQN) / (vden);
         qWarning() << "ticks per unit" << tpu;
@@ -214,7 +214,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
                                 }
                                 s = s->next;
                         }
-                        s = abc_chord_rewind(s);
+                        s = abc_chord_rewind(s->prev);
                         /* align noteoff */
                         s = abc_chord_first_note(s);
                         dur = duration(s); /* take first note of chord for duration */
@@ -266,7 +266,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
 }
 
 /* text must be %d/%d */
-void AbcSmf::abcGetNumDen(char* text, long* num, long* den) {
+void AbcSmf::getNumDen(char* text, long* num, long* den) {
         bool ok;
         QString str(text);
         QStringList sl = str.split('/');
@@ -331,12 +331,6 @@ int AbcSmf::getSMFKeySignature(char* text, int* mode) {
                 return -7;
 
         return 0;
-}
-
-AbcSmf* AbcSmf::fromABC(const char* abc, int x, QObject *parent) {
-        struct abc* yy = abc_parse_buffer(abc, strlen(abc));
-        AbcSmf* smf = new AbcSmf(yy, x, parent);
-        return smf;
 }
 
 /* semitones between note over C or c. */

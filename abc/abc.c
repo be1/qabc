@@ -757,7 +757,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v) {
                                        in_chord = 0;
                                    } else {
                                        /* find same note in previous chord */
-                                       struct abc_symbol* p = abc_chord_rewind(voice->last);
+                                       struct abc_symbol* p = abc_chord_rewind(voice->last->prev);
                                        /* start of previous chord */
                                        p = abc_chord_first_note(p);
                                        while (strcmp(p->text, s->text)) {
@@ -872,6 +872,9 @@ struct abc_symbol* abc_chord_first_note(struct abc_symbol* s) {
 
 struct abc_symbol* abc_chord_rewind(struct abc_symbol* s) {
     while (s) {
+        if (s->kind == ABC_CHORD && s->text[0] == ']')
+            return NULL;
+
         if ((s->kind == ABC_CHORD) && (s->text[0] == '['))
             return s;
         s = s->prev;

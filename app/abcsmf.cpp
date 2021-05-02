@@ -14,7 +14,6 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         expr(EXPRESSION_DEFAULT),
         wait_ticks(0),
         dur(0),
-        in_tie(false),
         in_slur(SHORTEN_DEFAULT),
         in_grace(false),
         in_cresc(0),
@@ -96,10 +95,7 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 wait_ticks += dur;
         } else if (s->text[0] == 'z') {
                 wait_ticks += dur;
-        } else if (abc_has_tie(s, 0) && in_tie) {
-                /* do not replay note at all */
-                wait_ticks += dur; /* add durations as they follow */
-        } else if (abc_has_tie(s, 0) || !in_tie) {
+        } else {
                 /* prepend with expression pedal if any */
                 writeExpression(track);
 
@@ -111,39 +107,18 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 unsigned char n = note2midi(ks, s->text, measure_accid);
 
                 writeMidiEvent(wait_ticks, noteon, track, n, cur_dyn); /* note on */
-                if (abc_has_tie(s, 0) && abc_has_pair(s, 0)) {
-                        wait_ticks = dur;
-                } else { /* !in_tie */
-                    if (in_grace) {
-                        writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */
-                        wait_ticks = 0;
-                    } else {
-                        long small = tpu * upm / 8;
-                        small = (dur > small) ? small : dur;
-                        writeMidiEvent(dur - (small / shorten) /* - grace_tick */, noteon, track, n, 0x00); /* note off */
-                        wait_ticks = small / shorten; /* - grace_tick */
-                        grace_tick = 0;
-                    }
-                    shorten = in_slur;
-                }
-        } else if (in_tie) {
-                /* do not play note on */
-
-                /* prepend with expression pedal if any */
-                writeExpression(track);
-
-                /* set note lyrics if any */
-                writeLyric(s->lyric);
-
-                /* find MIDI pitch */
-                const char* ks = kh ? kh->text : NULL;
-                unsigned char n = note2midi(ks, s->text, measure_accid);
-
-                writeMidiEvent(wait_ticks + dur, noteon, track, n, 0x00); /* note off */
-                wait_ticks = 0;
-                shorten = in_slur;
-                in_tie = 0;
-        }
+		if (in_grace) {
+			writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */
+			wait_ticks = 0;
+		} else {
+			long small = tpu * upm / 8;
+			small = (dur > small) ? small : dur;
+			writeMidiEvent(dur - (small / shorten) /* - grace_tick */, noteon, track, n, 0x00); /* note off */
+			wait_ticks = small / shorten; /* - grace_tick */
+			grace_tick = 0;
+		}
+		shorten = in_slur;
+	}
 }
 
 
@@ -158,14 +133,16 @@ void AbcSmf::onSMFWriteTrack(int track) {
         writeBpmTempo(getCurrentTime(), tempo);
         writeKeySignature(getCurrentTime(), mks, mode);
 
-        struct abc_voice* v = abc_unfold_voice(t->voices[track]);
+        struct abc_voice* f = abc_unfold_voice(t->voices[track]);
+        struct abc_voice* v = abc_untie_voice(f);
+        abc_release_voice(f);
+
         struct abc_symbol* s = v->first;
 
         noteon = 0x90;
         program = 0xc0;
         control = 0xb0;
 
-        in_tie = 0; /* inside a tie */
         in_grace = 0; /* inside a grace */
         in_cresc = 0;
         mark_dyn = DYN_DEFAULT;
@@ -187,6 +164,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
                 long dur = 0;
 
                 switch (s->kind) {
+                case ABC_TIE: /* untying has been already done */
                 case ABC_ALT: /* unfolding is already done */
                 case ABC_GCHORD:
                 case ABC_EOL:
@@ -214,90 +192,50 @@ void AbcSmf::onSMFWriteTrack(int track) {
                         break;
                 }
                 case ABC_CHORD: {
-                        if (abc_has_tie(s, 1) && in_tie) {
-                            /* just take duration of first note and wait */
-                            dur = duration(abc_chord_first_note(s));
-                            wait_ticks += dur;
-                            s = abc_chord_forward(s);
-                        } else if (abc_has_tie(s, 1) || !in_tie) {
-                                /* align noteon */
-                                s = abc_chord_first_note(s);
-                                while (s->kind != ABC_CHORD) { /* until ']' */
-                                        if (s->kind == ABC_NOTE) {
-                                                setDynamic(dur);
+                        /* chords have been untied */
+                        /* align noteon */
+                        s = abc_chord_first_note(s);
+                        while (s->kind != ABC_CHORD) { /* until ']' */
+                                if (s->kind == ABC_NOTE) {
+                                        setDynamic(dur);
 
-                                                /* prepend with expression pedal if any */
-                                                writeExpression(track);
+                                        /* prepend with expression pedal if any */
+                                        writeExpression(track);
 
-                                                /* set note lyrics if any */
-                                                writeLyric(s->lyric);
+                                        /* set note lyrics if any */
+                                        writeLyric(s->lyric);
 
-                                                /* find MIDI pitch */
-                                                const char* ks = kh ? kh->text : NULL;
-                                                unsigned char n = note2midi(ks, s->text, measure_accid);
+                                        /* find MIDI pitch */
+                                        const char* ks = kh ? kh->text : NULL;
+                                        unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                                                writeMidiEvent(wait_ticks, noteon, track, n, cur_dyn); /* note on */
-                                                wait_ticks = 0;
-                                        }
-                                        s = s->next;
+                                        writeMidiEvent(wait_ticks, noteon, track, n, cur_dyn); /* note on */
+                                        wait_ticks = 0;
                                 }
-                                s = abc_chord_rewind(s);
-                                /* align noteoff */
-                                s = abc_chord_first_note(s);
-                                dur = duration(s); /* take first note of chord for duration */
-                                while (s->kind != ABC_CHORD) { /* until ']' */
-                                        if (s->kind == ABC_NOTE) {
-                                                /* find MIDI pitch */
-                                                const char* ks = kh ? kh->text : NULL;
-                                                unsigned char n = note2midi(ks, s->text, measure_accid);
-                                                if (abc_has_tie(s, 1) && abc_has_pair(s, 1)) {
-                                                    wait_ticks = dur;
-                                                } else { /* !in_tie */
-                                                        writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */
-                                                        wait_ticks = 0;
-                                                        shorten = in_slur;
-                                                        dur = 0;
-                                                }
-                                        }
-                                        s = s->next;
+                                s = s->next;
+                        }
+                        s = abc_chord_rewind(s);
+                        /* align noteoff */
+                        s = abc_chord_first_note(s);
+                        dur = duration(s); /* take first note of chord for duration */
+                        while (s->kind != ABC_CHORD) { /* until ']' */
+                                if (s->kind == ABC_NOTE) {
+                                        /* find MIDI pitch */
+                                        const char* ks = kh ? kh->text : NULL;
+                                        unsigned char n = note2midi(ks, s->text, measure_accid);
+                                        writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */
+                                        wait_ticks = 0;
+                                        shorten = in_slur;
+                                        dur = 0;
                                 }
-                        } else if (in_tie) {
-                                /* do not play note on */
-                                s = abc_chord_first_note(s);
-                                dur = duration(s); /* take first note of chord for duration */
-                                while (s->kind != ABC_CHORD) { /* until ']' */
-                                        if (s->kind == ABC_NOTE) {
-                                                /* prepend with expression pedal if any */
-                                                writeExpression(track);
-
-                                                /* set note lyrics if any */
-                                                writeLyric(s->lyric);
-
-                                                /* find MIDI pitch */
-                                                const char* ks = kh ? kh->text : NULL;
-                                                unsigned char n = note2midi(ks, s->text, measure_accid);
-
-                                                writeMidiEvent(wait_ticks + dur, noteon, track, n, 0x00); /* note off */
-                                                wait_ticks = 0;
-                                                shorten = in_slur;
-                                                dur = 0;
-
-                                        }
-                                        s = s->next;
-                                }
-
-                                in_tie = 0;
+                                s = s->next;
                         }
                         shorten = in_slur;
                         expr = EXPRESSION_DEFAULT;
                         break;
                 }
                 case ABC_DECO: {
-                    manageDecoration(s);
-                    break;
-                }
-                case ABC_TIE: {
-                        in_tie = 1;
+                        manageDecoration(s);
                         break;
                 }
                 case ABC_SLUR: {

@@ -12,7 +12,7 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         upm(0),
         tempo(0),
         expr(EXPRESSION_DEFAULT),
-        wait_ticks(0),
+        last_tick(0),
         dur(0),
         in_slur(SHORTEN_DEFAULT),
         in_grace(false),
@@ -23,14 +23,15 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         noteon(0x90),
         program(0xc0),
         control(0xb0),
-	vnum(1),
-	vden(8)
+        num(1),
+        den(8)
 {
         connect(this, &QSmf::signalSMFWriteTempoTrack, this, &AbcSmf::onSMFWriteTempoTrack);
         connect(this, &QSmf::signalSMFWriteTrack, this, &AbcSmf::onSMFWriteTrack);
 
         t = abc_find_tune(yy, x);
         upm = abc_unit_per_measure(t);
+        qWarning() << "unit per measure" << upm;
         tempo = abc_tempo(t);
 
         setDivision(DPQN);
@@ -40,11 +41,11 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
 
         struct abc_header* lh = abc_find_header(t, 'L');
         if (!lh)
-               vnum = 1, vden = 8;
+               num = 1, den = 8;
         else
-                getNumDen(lh->text, &vnum, &vden);
+                getNumDen(lh->text, &num, &den);
 
-        tpu = (vnum * 4 * DPQN) / (vden);
+        tpu = (num * 4 * DPQN) / (den);
         qWarning() << "ticks per unit" << tpu;
 
         kh = abc_find_header(t, 'K');
@@ -87,15 +88,17 @@ void AbcSmf::manageDecoration(struct abc_symbol* s) {
 }
 
 void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
-        dur = duration(s);
-        setDynamic(dur);
+        long delta_tick;
 
-        if (s->text[0] == 'Z') {
-                dur = upm * tpu;
-                wait_ticks += dur;
-        } else if (s->text[0] == 'z') {
-                wait_ticks += dur;
+        if (s->text[0] == 'Z' || s->text[0] == 'z') {
+            /* no event */
         } else {
+                delta_tick = (tpu * s->start_num / s->start_den) - last_tick;
+                last_tick += delta_tick;
+
+                /* modify cur_dyn from context */
+                setDynamic(delta_tick);
+
                 /* prepend with expression pedal if any */
                 writeExpression(track);
 
@@ -106,21 +109,23 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 const char* ks = kh ? kh->text : NULL;
                 unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                writeMidiEvent(wait_ticks, noteon, track, n, cur_dyn); /* note on */
-		if (in_grace) {
-			writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */
-			wait_ticks = 0;
-		} else {
-			long small = tpu * upm / 8;
-			small = (dur > small) ? small : dur;
-			writeMidiEvent(dur - (small / shorten) /* - grace_tick */, noteon, track, n, 0x00); /* note off */
-			wait_ticks = small / shorten; /* - grace_tick */
-			grace_tick = 0;
-		}
-		shorten = in_slur;
-	}
+                writeMidiEvent(delta_tick, noteon, track, n, cur_dyn * s->value);
+#if 0
+                long dur = tpu * s->dur_num / s->dur_den;
+                if (in_grace) {
+                        writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */
+                        last_tick += dur;
+                } else {
+                        long small = tpu * upm / 8;
+                        small = (dur > small) ? small : dur;
+                        writeMidiEvent(dur - (small / shorten) /* - grace_tick */, noteon, track, n, 0x00); /* note off */
+                        last_tick += dur;
+                        grace_tick = 0;
+                }
+                shorten = in_slur;
+#endif
+        }
 }
-
 
 void AbcSmf::onSMFWriteTempoTrack(void) {
     qWarning() << __func__;
@@ -130,18 +135,18 @@ void AbcSmf::onSMFWriteTrack(int track) {
         qWarning() << __func__ << track;
         long mspqn = 60000 / tempo;
         writeTempo(0, mspqn);
-        writeBpmTempo(getCurrentTime(), tempo);
-        writeKeySignature(getCurrentTime(), mks, mode);
+        writeBpmTempo(0, tempo);
+        writeKeySignature(0, mks, mode);
 
         struct abc_voice* f = abc_unfold_voice(t->voices[track]);
-        struct abc_voice* v = abc_untie_voice(f);
+        struct abc_voice* u = abc_untie_voice(f, t);
         abc_release_voice(f);
+        struct abc_voice* v = abc_eventy_voice(u);
+        abc_release_voice(u);
 
         struct abc_symbol* s = v->first;
 
-        noteon = 0x90;
-        program = 0xc0;
-        control = 0xb0;
+        last_tick = 0;
 
         in_grace = 0; /* inside a grace */
         in_cresc = 0;
@@ -149,21 +154,17 @@ void AbcSmf::onSMFWriteTrack(int track) {
         cur_dyn = mark_dyn; /* current dynamic in the tune */
         grace_tick = 0; /* grace group duration */
 
-        int p, q, r = 0; /* n-uplet definition */
-        dur_mod = 1.0; /* duration modified for n-uplets */
-        nuplets = 0; /* number of notes in n-uplets */
         grace_mod = 1.0; /* duration modified for graces */
         expr = EXPRESSION_DEFAULT;
         in_slur = SHORTEN_DEFAULT;
         shorten = in_slur; /* dur will be shortened of 10% of a unit */
-        wait_ticks = 0;
 
-        writeMetaEvent(getCurrentTime(), 0x03, QString(v->v)); /* textual voice name */
+        writeMetaEvent(0, 0x03, QString(v->v)); /* textual voice name */
 
         while (s) {
-                long dur = 0;
-
                 switch (s->kind) {
+                case ABC_NUP:
+                case ABC_CHORD: /* eventing is already done */
                 case ABC_TIE: /* untying has been already done */
                 case ABC_ALT: /* unfolding is already done */
                 case ABC_GCHORD:
@@ -175,63 +176,15 @@ void AbcSmf::onSMFWriteTrack(int track) {
                         writeSingleNote(track, s);
                         break;
                 }
-                case ABC_NUP: {
-                        if(3 != sscanf(s->text, "%d:%d:%d", &p, &q, &r)) { /* should not happen */;}
-                        abc_compute_pqr(&p, &q, &r, t);
-                        nuplets = r;
-                        dur_mod = (double) q / (double) p;
-                        break;
-                }
                 case ABC_GRACE: {
+#if 0
                         in_grace = strchr(s->text, '{') ? 1 : 0;
                         if (in_grace) {
                                 double gd = abc_grace_duration(s); /* in units */
-                                grace_mod = vden / (8.0 * gd * vnum); /* play in time of 1/8 */
+                                grace_mod = den / (8.0 * gd * num); /* play in time of 1/8 */
                                 grace_tick = tpu * upm / 8; /* a 1/8 in ticks */
                         }
-                        break;
-                }
-                case ABC_CHORD: {
-                        /* chords have been untied */
-                        /* align noteon */
-                        s = abc_chord_first_note(s);
-                        while (s->kind != ABC_CHORD) { /* until ']' */
-                                if (s->kind == ABC_NOTE) {
-                                        setDynamic(dur);
-
-                                        /* prepend with expression pedal if any */
-                                        writeExpression(track);
-
-                                        /* set note lyrics if any */
-                                        writeLyric(s->lyric);
-
-                                        /* find MIDI pitch */
-                                        const char* ks = kh ? kh->text : NULL;
-                                        unsigned char n = note2midi(ks, s->text, measure_accid);
-
-                                        writeMidiEvent(wait_ticks, noteon, track, n, cur_dyn); /* note on */
-                                        wait_ticks = 0;
-                                }
-                                s = s->next;
-                        }
-                        s = abc_chord_rewind(s->prev);
-                        /* align noteoff */
-                        s = abc_chord_first_note(s);
-                        dur = duration(s); /* take first note of chord for duration */
-                        while (s->kind != ABC_CHORD) { /* until ']' */
-                                if (s->kind == ABC_NOTE) {
-                                        /* find MIDI pitch */
-                                        const char* ks = kh ? kh->text : NULL;
-                                        unsigned char n = note2midi(ks, s->text, measure_accid);
-                                        writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */
-                                        wait_ticks = 0;
-                                        shorten = in_slur;
-                                        dur = 0;
-                                }
-                                s = s->next;
-                        }
-                        shorten = in_slur;
-                        expr = EXPRESSION_DEFAULT;
+#endif
                         break;
                 }
                 case ABC_DECO: {
@@ -254,14 +207,14 @@ void AbcSmf::onSMFWriteTrack(int track) {
                 case ABC_INST: {
                         int prog;
                         if (sscanf(s->text, "MIDI program %d", &prog)) {
-                                writeMidiEvent(getCurrentTime(), program, track, prog);
+                                writeMidiEvent(0, program, track, prog);
                         }
                         break;
                 }
                 } /* EO case */
                 s = s->next;
         }
-        writeMetaEvent(getCurrentTime(), 0x2F);
+        writeMetaEvent(0, 0x2F);
         abc_release_voice(v);
 }
 
@@ -428,25 +381,6 @@ unsigned char AbcSmf::note2midi (const char* keysig, const char* note, int* meas
     return pitch;
 }
 
-long AbcSmf::duration(struct abc_symbol* s) {
-    long dur;
-
-    /* note duration */
-    dur = s->dur_num * tpu / s->dur_den;
-
-    /* n-uplet duration */
-    if (nuplets > 0) {
-            dur *= dur_mod;
-            nuplets--;
-    }
-
-    /* grace note duration */
-    if (in_grace)
-            dur *= grace_mod;
-
-    return dur;
-}
-
 void AbcSmf::setDynamic(long dur) {
     /* dynamics */
     long d = (dur > 4 * tpu ? 4 : dur > 2 * tpu ? 2 : 1);
@@ -460,15 +394,13 @@ void AbcSmf::setDynamic(long dur) {
 
 void AbcSmf::writeExpression(int track) {
         if (expr) {
-                writeMidiEvent(wait_ticks, control, track, 0x0b, expr);
+                writeMidiEvent(0, control, track, 0x0b, expr);
                 expr = EXPRESSION_DEFAULT;
-                wait_ticks = 0;
         }
 }
 
 void AbcSmf::writeLyric(const char* lyric) {
         if (lyric) {
-                writeMetaEvent(wait_ticks, 0x05, QString(lyric));
-                wait_ticks = 0;
+                writeMetaEvent(0, 0x05, QString(lyric));
         }
 }

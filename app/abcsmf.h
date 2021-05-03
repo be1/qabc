@@ -18,13 +18,14 @@ private slots:
     void onSMFWriteTrack(int track);
 
 private:
-#define DPQN 96
+#define DPQN 960
 #define DYN_DEFAULT 80
 #define SHORTEN_DEFAULT 10
 #define EXPRESSION_DEFAULT 0
 
     void manageDecoration(struct abc_symbol* s);
     void writeSingleNote(int track, struct abc_symbol* s);
+    struct abc_symbol* writeChord(int track, struct abc_symbol* s);
     void getNumDen(char* text, long* num, long* den);
     int getSMFKeySignature(char* text, int* mode);
     unsigned char pitch_diff_0x3c(const char* ks, int note);
@@ -47,14 +48,10 @@ private:
     long tempo;    /* quarter per minute */
 
     int expr;      /* expression */
-    long wait_ticks;
+    long last_tick;
     long dur;      /* note duration */
-    bool in_tie;
-    bool in_chord;
     int in_slur;
     int shorten;
-    double dur_mod; /* duration modified for n-uplets */
-    int nuplets;
     double grace_mod; /* duration modified for grace notes */
     bool in_grace;
     int in_cresc;
@@ -64,8 +61,8 @@ private:
     char noteon;
     char program;
     char control;
-    long vnum;
-    long vden;
+    long num; /* tune L numerator */
+    long den; /* tune L denominator */
 
     /* measure accidentals context */
     int measure_accid['h']; /* 'g' + 1 */

@@ -48,12 +48,15 @@ struct abc_voice {
 };
 
 struct abc_symbol {
-    enum abc_type kind;
+	enum abc_type kind;
 	char* lyric;
 	char* text;
-	int dur_num;
-	int dur_den;
-	int index;
+	long dur_num; /* duration */
+	long dur_den;
+	int index; /* symbol index in parser */
+	long start_num; /* delay for starting (used for midifying) */
+	long start_den;
+	int value; /* used for midifying */
 	int in_alt;
 	int in_tie;
 	int in_chord;
@@ -123,7 +126,7 @@ int abc_is_endbar(const struct abc_symbol* s);
 
 struct abc_tune* abc_find_tune(struct abc* yy, int x);
 
-struct abc_header* abc_find_header(struct abc_tune* t, char h);
+struct abc_header* abc_find_header(const struct abc_tune* t, char h);
 
 struct abc_symbol* abc_find_start_repeat(struct abc_symbol* s);
 
@@ -145,13 +148,15 @@ double abc_time_per_unit(struct abc_tune* t, long base);
 
 long abc_tempo(struct abc_tune* t);
 
-void abc_compute_pqr(int* p, int* q, int* r, struct abc_tune* t);
+void abc_compute_pqr(int* p, int* q, int* r, const struct abc_tune* t);
 
 struct abc* abc_parse_buffer(const char* buffer, int size);
 
 void abc_duration_add(struct abc_symbol* to, struct abc_symbol* with);
 
-struct abc_voice* abc_untie_voice(struct abc_voice* v);
+struct abc_voice* abc_eventy_voice(const struct abc_voice* v);
+
+struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t);
 
 struct abc_voice* abc_unfold_voice(struct abc_voice* v);
 

@@ -25,12 +25,10 @@ private:
 
     void manageDecoration(struct abc_symbol* s);
     void writeSingleNote(int track, struct abc_symbol* s);
-    struct abc_symbol* writeChord(int track, struct abc_symbol* s);
     void getNumDen(char* text, long* num, long* den);
     int getSMFKeySignature(char* text, int* mode);
     unsigned char pitch_diff_0x3c(const char* ks, int note);
     unsigned char note2midi (const char* keysig, const char* note, int* measure_accid);
-    long duration(struct abc_symbol* s);
     void setDynamic(long dur);
     void writeExpression(int track);
     void writeLyric(const char* lyric);
@@ -68,7 +66,7 @@ private:
     int measure_accid['h']; /* 'g' + 1 */
 
 static constexpr
-const char _pitch_diff_CMaj_0x3c[] = {
+const signed char _pitch_diff_CMaj_0x3c[] = {
     ['A'] = 9,
     ['B'] = 11,
     ['C'] = 0,
@@ -87,7 +85,7 @@ const char _pitch_diff_CMaj_0x3c[] = {
 };
 
 static constexpr
-const char _pitch_diff_GMaj_0x3c[] = {
+const signed char _pitch_diff_GMaj_0x3c[] = {
     ['A'] = 9,
     ['B'] = 11,
     ['C'] = 0,
@@ -106,7 +104,7 @@ const char _pitch_diff_GMaj_0x3c[] = {
 };
 
 static constexpr
-const char _pitch_diff_DMaj_0x3c[] = {
+const signed char _pitch_diff_DMaj_0x3c[] = {
     ['A'] = 9,
     ['B'] = 11,
     ['C'] = 1,
@@ -125,7 +123,7 @@ const char _pitch_diff_DMaj_0x3c[] = {
 };
 
 static constexpr
-const char _pitch_diff_AMaj_0x3c[] = {
+const signed char _pitch_diff_AMaj_0x3c[] = {
     ['A'] = 9,
     ['B'] = 11,
     ['C'] = 1,
@@ -144,7 +142,7 @@ const char _pitch_diff_AMaj_0x3c[] = {
 };
 
 static constexpr
-const char _pitch_diff_EMaj_0x3c[] = {
+const signed char _pitch_diff_EMaj_0x3c[] = {
     ['A'] = 9,
     ['B'] = 11,
     ['C'] = 1,
@@ -163,7 +161,7 @@ const char _pitch_diff_EMaj_0x3c[] = {
 };
 
 static constexpr
-const char _pitch_diff_BMaj_0x3c[] = {
+const signed char _pitch_diff_BMaj_0x3c[] = {
     ['A'] = 10,
     ['B'] = 11,
     ['C'] = 1,
@@ -182,7 +180,7 @@ const char _pitch_diff_BMaj_0x3c[] = {
 };
 
 static constexpr
-const char _pitch_diff_FSharpMaj_0x3c[] = {
+const signed char _pitch_diff_FSharpMaj_0x3c[] = {
     ['A'] = 10,
     ['B'] = 11,
     ['C'] = 1,
@@ -201,7 +199,7 @@ const char _pitch_diff_FSharpMaj_0x3c[] = {
 };
 
 static constexpr
-const char _pitch_diff_GFlatMaj_0x3c[] = {
+const signed char _pitch_diff_GFlatMaj_0x3c[] = {
     ['A'] = 8,
     ['B'] = 10,
     ['C'] = -1,
@@ -220,7 +218,7 @@ const char _pitch_diff_GFlatMaj_0x3c[] = {
 };
 
 static constexpr
-const char _pitch_diff_CSharpMaj_0x3c[] = {
+const signed char _pitch_diff_CSharpMaj_0x3c[] = {
     ['A'] = 10,
     ['B'] = 12,
     ['C'] = 1,
@@ -239,7 +237,7 @@ const char _pitch_diff_CSharpMaj_0x3c[] = {
 };
 
 static constexpr
-const char _pitch_diff_DFlatMaj_0x3c[] = {
+const signed char _pitch_diff_DFlatMaj_0x3c[] = {
     ['A'] = 8,
     ['B'] = 10,
     ['C'] = 0,
@@ -259,7 +257,7 @@ const char _pitch_diff_DFlatMaj_0x3c[] = {
 
 
 static constexpr
-const char _pitch_diff_AFlatMaj_0x3c[] = {
+const signed char _pitch_diff_AFlatMaj_0x3c[] = {
     ['A'] = 8,
     ['B'] = 10,
     ['C'] = 0,
@@ -278,7 +276,7 @@ const char _pitch_diff_AFlatMaj_0x3c[] = {
 };
 
 static constexpr
-const char _pitch_diff_EFlatMaj_0x3c[] = {
+const signed char _pitch_diff_EFlatMaj_0x3c[] = {
     ['A'] = 8,
     ['B'] = 10,
     ['C'] = 0,
@@ -297,7 +295,7 @@ const char _pitch_diff_EFlatMaj_0x3c[] = {
 };
 
 static constexpr
-const char _pitch_diff_BFlatMaj_0x3c[] = {
+const signed char _pitch_diff_BFlatMaj_0x3c[] = {
     ['A'] = 9,
     ['B'] = 10,
     ['C'] = 0,
@@ -316,7 +314,7 @@ const char _pitch_diff_BFlatMaj_0x3c[] = {
 };
 
 static constexpr
-const char _pitch_diff_FMaj_0x3c[] = {
+const signed char _pitch_diff_FMaj_0x3c[] = {
     ['A'] = 9,
     ['B'] = 10,
     ['C'] = 0,

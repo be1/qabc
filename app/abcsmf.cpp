@@ -109,7 +109,15 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 const char* ks = kh ? kh->text : NULL;
                 unsigned char n = note2midi(ks, s->text, measure_accid);
 
-                writeMidiEvent(delta_tick, noteon, track, n, cur_dyn * s->value);
+                if (s->value) {
+                        writeMidiEvent(delta_tick, noteon, track, n, cur_dyn * s->value);
+                } else {
+                    long small = tpu * upm / 8;
+                    small = (delta_tick > small) ? small : delta_tick;
+                    writeMidiEvent(delta_tick - (small / shorten), noteon, track, n, 0x00); /* note off */
+                    last_tick -= (small / shorten);
+                    shorten = in_slur;
+                }
 #if 0
                 long dur = tpu * s->dur_num / s->dur_den;
                 if (in_grace) {

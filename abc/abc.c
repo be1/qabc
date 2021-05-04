@@ -984,28 +984,56 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                            p = p->prev;
 
                                        if (p->kind == ABC_CHORD) {
-                                           p = abc_chord_rewind(p->prev);
-                                           p = abc_chord_first_note(p);
-                                           while (strcmp(p->text, s->text)) {
-                                               p = p->next;
-                                               if (p->kind == ABC_CHORD)
-                                                   break;
+                                           /* for each s note, find the p note if any */
+                                           while (s ->kind != ABC_CHORD) {
+                                               if (s->kind == ABC_NOTE) {
+                                                   p = abc_chord_rewind(p->prev);
+                                                   p = abc_chord_first_note(p);
+
+                                                   while (p->kind != ABC_CHORD) {
+                                                       if (p->kind == ABC_NOTE && !strcmp(p->text, s->text)) {
+                                                           abc_duration_add(p, s);
+                                                           /* we use the first note of this chord to add to chord duration! */
+                                                           if (chord_num == 0) {
+                                                               abc_frac_add(&chord_num, &chord_den, s->dur_num, s->dur_den);
+                                                           }
+                                                           break;
+                                                       }
+
+                                                       p = p->next;
+                                                   }
+
+                                                   /* corresponding p note to s was not found? */
+                                                   if (p->kind == ABC_CHORD) {
+                                                           struct abc_symbol* n = abc_dup_symbol(s);
+                                                           abc_frac_add(&n->start_num, &n->start_den, tick_num, tick_den);
+                                                           /* do not append this note after the ']' chord, instert it! */
+                                                           p = p->prev;
+
+                                                           n->next = p->next;
+                                                           p->next = n;
+                                                           n->prev = p;
+                                                           n->next->prev = n;
+
+                                                           /* we use the first note of this chord to add to chord duration! */
+                                                           if (chord_num == 0) {
+                                                                   abc_frac_add(&chord_num, &chord_den, s->dur_num, s->dur_den);
+                                                           }
+                                                   }
+                                               } else {
+                                                   struct abc_symbol* u = abc_dup_symbol(s);
+                                                   abc_voice_append_symbol(voice, u);
+                                               }
+
+                                               s = s->next;
                                            }
 
-                                           if (p->kind == ABC_NOTE) {
-                                               /* found a note of same pitch */
-                                               abc_duration_add(p, s);
-                                               /* we use the first note of this chord to add to chord duration! */
-                                               if (chord_num == 0) {
-                                                   abc_frac_add(&chord_num, &chord_den, s->dur_num, s->dur_den);
-                                               }
-                                           } else {
-                                               /* previous chord had not that same note */
-                                               /* not supported */
-                                               new = abc_dup_symbol(s);
-                                               abc_frac_add(&new->start_num, &new->start_den, tick_num, tick_den);
-                                               abc_frac_add(&tick_num, &tick_den, s->dur_num, s->dur_den);
-                                           }
+                                           new = NULL;
+                                           in_tie = 0;
+                                           /* do not pass by CHORD token, but manage it here: */
+                                           abc_frac_add(&tick_num, &tick_den, chord_num, chord_den);
+                                           chord_num = 0, chord_den = 1;
+                                           in_chord = 0;
                                        } else {
                                            /* instert chord while we are in tie
                                             * and play some of its notes later
@@ -1043,7 +1071,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                            /* use the first note modified duration to add to main tick */
                                            abc_frac_add(&tick_num, &tick_den, num, den);
 
-                                           s = s->prev;
+                                           s = s->prev; /* this will allow chord closing */
                                            new = NULL;
                                            in_tie = 0;
                                        }

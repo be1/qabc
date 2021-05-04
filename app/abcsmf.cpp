@@ -30,6 +30,9 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         connect(this, &QSmf::signalSMFWriteTrack, this, &AbcSmf::onSMFWriteTrack);
 
         t = abc_find_tune(yy, x);
+        if (!t)
+            return;
+
         upm = abc_unit_per_measure(t);
         qWarning() << "unit per measure" << upm;
         tempo = abc_tempo(t);

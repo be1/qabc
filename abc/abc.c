@@ -3,6 +3,7 @@
 #include <stdlib.h>	/* atoi, qsort */
 #include <stdio.h>	/* asprintf */
 #include <string.h>
+#include <math.h>
 #include "abc.h"
 #include "parser.h"
 
@@ -60,6 +61,7 @@ struct abc_symbol* abc_new_symbol(struct abc* yy)
 {
     struct abc_symbol* new = calloc(1, sizeof (struct abc_symbol));
     new->start_den = 1;
+    new->dur_den = 1;
 
     struct abc_tune* tune = yy->tunes[yy->count-1];
     if (tune->count == 0) /* voice 1 can be implicit */
@@ -168,6 +170,36 @@ void abc_note_append(struct abc* yy, const char* yytext)
     }
 }
 
+void abc_notepunct_set(struct abc* yy, const char* yytext)
+{
+	int count = strlen(yytext);
+
+	struct abc_tune* tune = yy->tunes[yy->count-1];
+	struct abc_voice* voice = tune->voices[tune->count-1];
+
+	if (yytext[0] == '>') {
+		voice->last->dur_den *= pow(2, count);
+
+		int num, den;
+		num = voice->last->prev->dur_num;
+		den = voice->last->prev->dur_den;
+		while (count) {
+			abc_frac_add(&voice->last->prev->dur_num, &voice->last->prev->dur_den, num, den * pow(2, count));
+			count--;
+		}
+	} else if (yytext[0] == '<') {
+		voice->last->prev->dur_den *= pow(2, count);
+
+		int num, den;
+		num = voice->last->dur_num;
+		den = voice->last->dur_den;
+		while (count) {
+			abc_frac_add(&voice->last->dur_num, &voice->last->dur_den, num, den * pow(2, count));
+			count--;
+		}
+	}
+}
+
 void abc_grace_append(struct abc* yy, const char* yytext)
 {
     struct abc_symbol* new = abc_new_symbol(yy);
@@ -267,7 +299,10 @@ void abc_duration_den_set(struct abc* yy, const char* yytext)
     struct abc_tune* tune = yy->tunes[yy->count-1];
     struct abc_voice* voice = tune->voices[tune->count-1];
 
-    voice->last->dur_den = atoi(yytext);
+    if (yytext[0] == '/')
+	    voice->last->dur_den = pow(2, strlen(yytext));
+    else
+	    voice->last->dur_den = atoi(yytext);
 }
 
 int abc_is_endbar(const struct abc_symbol* s) {
@@ -743,7 +778,15 @@ static int event_cmp(const void* a, const void* b) {
 	s1_v = (double) s1->start_num / (double) s1->start_den;
 	s2_v = (double) s2->start_num / (double) s2->start_den;
 
-	return s1_v - s2_v;
+	if (s1_v > s2_v)
+		return 1;
+	if (s1_v < s2_v)
+		return -1;
+
+	if (!strcmp(s1->text, s2->text))
+		return 0;
+
+	return  -1;
 }
 
 struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
@@ -872,7 +915,7 @@ struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
 				   }
 				   break;
 		    default: {
-				     /* ABC_BAR */
+				     /* and ABC_BAR */
 				     struct abc_symbol* new = NULL;
 				     new = abc_dup_symbol(s);
 				     abc_voice_append_symbol(voice, new);
@@ -1021,6 +1064,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                                            }
                                                    }
                                                } else {
+                                                   /* any other symbol goes here */
                                                    struct abc_symbol* u = abc_dup_symbol(s);
                                                    abc_voice_append_symbol(voice, u);
                                                }
@@ -1041,6 +1085,8 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                            struct abc_symbol* new = calloc(1, sizeof (struct abc_symbol));
                                            new->kind = ABC_CHORD;
                                            new->text = strdup("[");
+					   new->start_den = 1;
+					   new->dur_den = 1;
 
                                            /* insert new virtual chord just before the previously accepted note */
                                            p->prev->next = new;
@@ -1062,6 +1108,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                                        abc_voice_append_symbol(voice, n);
                                                    }
                                                } else {
+                                                   /* any other symbol goes here */
                                                    struct abc_symbol* u = abc_dup_symbol(s);
                                                    abc_voice_append_symbol(voice, u);
                                                }
@@ -1116,6 +1163,8 @@ struct abc_voice* abc_unfold_voice(struct abc_voice* v) {
                               new = calloc(1, sizeof (struct abc_symbol));
                               new->kind = ABC_BAR;
                               new->text = strdup("|");
+			      new->start_den = 1;
+			      new->dur_den = 1;
 
                               if (abc_is_repeat(s)) {
                                   if (cur_repeat == s) {

@@ -74,17 +74,19 @@ Score <- Fragment+
 Fragment <- _ / "y"
 	/ "%%" Instruction EOL
 	/ "%" ( !EOL . )* EOL
-	/ NoteConstruct
+	/ NotePunct Tie*
+	/ NoteConstruct Tie*
 	/ '"' Gchord '"'
 	/ Chord Tie*
 	/ Grace
 	/ "!" ExDecoration "!"
-	/ "(" Nuplet _* NoteConstruct+ _*
+	/ "(" Nuplet
 	/ SlurStart
 	/ SlurEnd
 	/ Bar SimpleAlter
 	/ Bar
 	/ Alternative
+	/ LineCont
 	/ LineBreak
 	/ "w:" Lyrics EOL
 
@@ -94,7 +96,9 @@ Vheader <- "V:" Vvalue EOL
 
 Vvalue <- < (!EOL .)* > { abc_voice_append(auxil, $0); }
 
-NoteConstruct <- Decoration* _* Note Duration* Tie*
+NotePunct <- NoteConstruct _* < (">" / "<")+ > _* NoteConstruct { abc_notepunct_set(auxil, $1); }
+
+NoteConstruct <- Decoration* _* Note Duration*
 
 Instruction <- < (!EOL .)* > { abc_instruction_append(auxil, $0); }
 
@@ -133,10 +137,13 @@ Bar <- < "["?[:|\]]+ > { abc_bar_append(auxil, $0); }
 
 Duration <- < [0-9]* > "/" { abc_duration_num_set(auxil, $0); } < [1-9][0-9]* > { abc_duration_den_set(auxil, $2); }
 	/ < [0-9]+ > { abc_duration_num_set(auxil, $3); }
+	/ < "/"+ > { abc_duration_den_set(auxil, $4); }
 
-Note <- < [_=^]*[A-Ha-hZz][,']* > { abc_note_append(auxil, $0); }
+Note <- < [_=^]*[A-Ga-gZz][,']* > { abc_note_append(auxil, $0); }
 
 EOL <- "\r\n" / "\r" / "\n"
+
+LineCont <- "\\" _* EOL
 
 LineBreak <- "\r\n" / "\r" / "\n" { abc_eol_append(auxil, $0); }
 

@@ -38,8 +38,8 @@ static void print_error(struct abc* auxil) {
 }
 }
 
-TuneBook <- Tune EOF
-	/ Tune TuneBook
+TuneBook <- (Comment EOL+)* Tune EOF
+	/ (Comment EOL+)* Tune TuneBook
 
 Tune <- Xheader (Oheader EOL)+ Score
 	/ Xheader Score
@@ -67,13 +67,14 @@ Oheader <- "A:" < [^\r\n]+ > { abc_header_append(auxil, $1, 'A'); }
 	/ "S:" < [^\r\n]+ > { abc_header_append(auxil, $17, 'S'); }
 	/ "T:" < [^\r\n]+ > { abc_header_append(auxil, $18, 'T'); }
 	/ "U:" < [^\r\n]+ > { abc_header_append(auxil, $19, 'U'); }
+	/ Comment
 
 Score <- Fragment+
 	/ VoiceScore
 
 Fragment <- _ / "y"
 	/ "%%" Instruction EOL
-	/ "%" ( !EOL . )* EOL
+	/ Comment
 	/ NotePunct Tie*
 	/ NoteConstruct Tie*
 	/ '"' Gchord '"'
@@ -89,6 +90,16 @@ Fragment <- _ / "y"
 	/ LineCont
 	/ LineBreak
 	/ "w:" Lyrics EOL
+#	/ Change
+
+#Change <- Keysig / Unit / TimeSig / Tempo
+
+#KeySig <- "K:" < (!EOL .)* > { abc_keysig_change(auxil, $1); }
+#Unit <- "L:" < (!EOL .)* > { abc_unit_change(auxil, $1); }
+#TimeSig <- "M:" < (!EOL .)* > { abc_timesig_change(auxil, $1); }
+#Tempo <- "Q:" < (!EOL .)* > { abc_tempo_change(auxil, $1); }
+
+Comment <- "%" (!EOL .)*
 
 VoiceScore <- Vheader Fragment+ VoiceScore*
 

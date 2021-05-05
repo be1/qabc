@@ -250,7 +250,7 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
     highlightingRules.append(rule);
 
     singleLineCommentFormat.setForeground(Qt::blue);
-    rule.pattern = QRegularExpression(QStringLiteral("^%[^%\n]*"));
+    rule.pattern = QRegularExpression(QStringLiteral("%[^%\n]*"));
     rule.format = singleLineCommentFormat;
     highlightingRules.append(rule);
 

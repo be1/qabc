@@ -1,5 +1,6 @@
 accent
 alto
+bank
 barlines
 bass
 beat
@@ -7,6 +8,7 @@ beatstring
 breath
 channel
 chordname
+chordprog
 coda
 control
 crescendo
@@ -22,6 +24,7 @@ gchord
 gchordoff
 gchordon
 grace
+instrument
 invertedfermata
 longphrase
 lowermordent
@@ -54,6 +57,7 @@ trill
 turn
 upbow
 uppermordent
+voice
 voicecolor
 vskip
 wedge

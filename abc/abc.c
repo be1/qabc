@@ -941,6 +941,10 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
     int in_tie = 0;
     int next_tie = 0;
     int in_chord = 0;
+    int in_grace = 0;
+    long grace_num = 0;
+    long grace_den = 1;
+#define GRACE_DEN 4
     long chord_num = 0, chord_den = 1; /* chord duration */
     struct abc_voice* voice = calloc(1, sizeof (struct abc_voice));
     voice->v = strdup(v->v);
@@ -956,28 +960,45 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                               }
                           }
                           break;
+            case ABC_GRACE: {
+                                if (s->text[0] == '{') {
+                                    in_grace = 1;
+                                } else {
+                                    in_grace = 0;
+                                }
+                            }
+                            break;
             case ABC_CHORD: {
                                 if (!in_tie)
                                     new = abc_dup_symbol(s);
 
                                 if (s->text[0] == '[') {
                                     in_chord = 1;
-				    next_tie = 0;
+                                    next_tie = 0;
                                 } else {
                                     in_chord = 0;
                                     in_tie = next_tie;
                                     abc_frac_add(&tick_num, &tick_den, chord_num, chord_den);
                                     chord_num = 0, chord_den = 1;
-				    if (nup_r)
-					    nup_r--;
-				}
-			    }
+                                    if (nup_r)
+                                        nup_r--;
+                                }
+                            }
                             break;
             case ABC_NOTE: {
                                if (!in_tie) {
                                    if (!in_chord) {
                                        /* produce simple note */
                                        new = abc_dup_symbol(s);
+
+                                       if (in_grace) {
+                                           new->dur_den *= GRACE_DEN;
+                                           abc_frac_add(&grace_num, &grace_den, new->dur_num, new->dur_den);
+                                       } else {
+                                           abc_frac_add(&new->dur_num, &new->dur_den, -grace_num, grace_den);
+                                           grace_num = 0;
+                                           grace_den = 1;
+                                       }
 
                                        if (nup_r) {
                                            new->dur_num *= nup_q;

@@ -51,7 +51,6 @@ private:
     int in_slur;
     int shorten;
     double grace_mod; /* duration modified for grace notes */
-    bool in_grace;
     int in_cresc;
     unsigned char mark_dyn;
     unsigned char cur_dyn;

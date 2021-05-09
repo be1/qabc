@@ -16,7 +16,6 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         last_tick(0),
         dur(0),
         in_slur(SHORTEN_DEFAULT),
-        in_grace(false),
         in_cresc(0),
         mark_dyn(DYN_DEFAULT),
         cur_dyn(DYN_DEFAULT),
@@ -130,20 +129,6 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                     last_tick -= (small / shorten);
                     shorten = in_slur;
                 }
-#if 0
-                long dur = tpu * s->dur_num / s->dur_den;
-                if (in_grace) {
-                        writeMidiEvent(dur, noteon, track, n, 0x00); /* note off */
-                        last_tick += dur;
-                } else {
-                        long small = tpu * upm / 8;
-                        small = (dur > small) ? small : dur;
-                        writeMidiEvent(dur - (small / shorten) /* - grace_tick */, noteon, track, n, 0x00); /* note off */
-                        last_tick += dur;
-                        grace_tick = 0;
-                }
-                shorten = in_slur;
-#endif
         }
 }
 
@@ -168,7 +153,6 @@ void AbcSmf::onSMFWriteTrack(int track) {
 
         last_tick = 0;
 
-        in_grace = 0; /* inside a grace */
         in_cresc = 0;
         mark_dyn = DYN_DEFAULT;
         cur_dyn = mark_dyn; /* current dynamic in the tune */
@@ -185,6 +169,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
                 switch (s->kind) {
                 case ABC_NUP:
                 case ABC_CHORD: /* eventing is already done */
+                case ABC_GRACE:
                 case ABC_TIE: /* untying has been already done */
                 case ABC_ALT: /* unfolding is already done */
                 case ABC_GCHORD:
@@ -199,17 +184,6 @@ void AbcSmf::onSMFWriteTrack(int track) {
                 }
                 case ABC_NOTE: {
                         writeSingleNote(track, s);
-                        break;
-                }
-                case ABC_GRACE: {
-#if 0
-                        in_grace = strchr(s->text, '{') ? 1 : 0;
-                        if (in_grace) {
-                                double gd = abc_grace_duration(s); /* in units */
-                                grace_mod = den / (8.0 * gd * num); /* play in time of 1/8 */
-                                grace_tick = tpu * upm / 8; /* a 1/8 in ticks */
-                        }
-#endif
                         break;
                 }
                 case ABC_DECO: {

@@ -968,10 +968,10 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                     in_tie = next_tie;
                                     abc_frac_add(&tick_num, &tick_den, chord_num, chord_den);
                                     chord_num = 0, chord_den = 1;
-                    if (nup_r)
-                        nup_r--;
-                                }
-                            }
+				    if (nup_r)
+					    nup_r--;
+				}
+			    }
                             break;
             case ABC_NOTE: {
                                if (!in_tie) {
@@ -1049,10 +1049,18 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
 
                                                    while (p->kind != ABC_CHORD) {
                                                        if (p->kind == ABC_NOTE && !strcmp(p->text, s->text)) {
-                                                           abc_duration_add(p, s);
+							   long dur_num = s->dur_num;
+							   long dur_den = s->dur_den;
+
+							   if (nup_r) {
+								   dur_num *= nup_q;
+								   dur_den *= nup_p;
+							   }
+
+							   abc_frac_add(&p->dur_num, &p->dur_den, dur_num, dur_den);
                                                            /* we use the first note of this chord to add to chord duration! */
                                                            if (chord_num == 0) {
-                                                               abc_frac_add(&chord_num, &chord_den, s->dur_num, s->dur_den);
+                                                               abc_frac_add(&chord_num, &chord_den, dur_num, dur_den);
                                                            }
                                                            break;
                                                        }
@@ -1063,6 +1071,10 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                                    /* corresponding p note to s was not found? */
                                                    if (p->kind == ABC_CHORD) {
                                                            struct abc_symbol* n = abc_dup_symbol(s);
+							   if (nup_r) {
+								   n->dur_num *= nup_q;
+								   n->dur_den *= nup_p;
+							   }
                                                            abc_frac_add(&n->start_num, &n->start_den, tick_num, tick_den);
                                                            /* do not append this note after the ']' chord, instert it! */
                                                            p = p->prev;
@@ -1074,7 +1086,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
 
                                                            /* we use the first note of this chord to add to chord duration! */
                                                            if (chord_num == 0) {
-                                                                   abc_frac_add(&chord_num, &chord_den, s->dur_num, s->dur_den);
+                                                                   abc_frac_add(&chord_num, &chord_den, n->dur_num, n->dur_den);
                                                            }
                                                    }
 					       } else if (s->kind == ABC_TIE) { /* in-chord tie */
@@ -1115,11 +1127,22 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                            while (s->kind != ABC_CHORD) {
                                                if (s->kind  == ABC_NOTE) {
                                                    if (!strcmp(p->text, s->text)) { /* same note */
-                                                       abc_duration_add(p, s);
                                                        num = s->dur_num; 
                                                        den = s->dur_den;
+
+                                                       if (nup_r) {
+                                                               num *= nup_q;
+                                                               den *= nup_p;
+                                                       }
+
+                                                       abc_frac_add(&p->dur_num, &p->dur_den, num, den);
                                                    } else {
-                                                       struct abc_symbol* n = abc_dup_symbol(s);
+                                                           struct abc_symbol* n = abc_dup_symbol(s);
+                                                           if (nup_r) {
+                                                                   n->dur_num *= nup_q;
+                                                                   n->dur_den *= nup_p;
+                                                           }
+
                                                        abc_frac_add(&n->start_num, &n->start_den, tick_num, tick_den);
                                                        abc_voice_append_symbol(voice, n);
                                                    }

@@ -172,8 +172,10 @@ void abc_note_append(struct abc* yy, const char* yytext)
     new->text = strdup(yytext);
     if (new->text[0] == 'Z') {
 	    /* fix numerator */
-	    struct abc_tune* tune = yy->tunes[yy->count-1];
-	    new->dur_num = abc_unit_per_measure(tune);
+        struct abc_tune* tune = yy->tunes[yy->count-1];
+        struct abc_header* lh = abc_find_header(tune, 'L');
+        struct abc_header* mh = abc_find_header(tune, 'M');
+        new->dur_num = abc_unit_per_measure(lh->text, mh->text);
     }
 }
 
@@ -634,18 +636,20 @@ double abc_apply_divide(const char* div) {
     return (double) num / (double) den;
 }
 
-int abc_unit_per_measure(struct abc_tune* t) {
-    struct abc_header* lh = abc_find_header(t, 'L');
-    struct abc_header* mh = abc_find_header(t, 'M');
+int abc_unit_per_measure(const char* l, const char* m) {
+    if (!l)
+        l = "1/8";
+    if (!m)
+        m = "4/4";
 
     int ln, ld, mn, md;
-    if (lh && (2 == sscanf(lh->text, "%d/%d", &ln, &ld))) {;}
+    if (2 == sscanf(l, "%d/%d", &ln, &ld)) {;}
     else { ln = 1; ld = 8; }
 
-    if (mh && (2 == sscanf(mh->text, "%d/%d", &mn, &md))) {;}
+    if (2 == sscanf(m, "%d/%d", &mn, &md)) {;}
     else { mn = 4; md = 4; }
 
-    return ld * mn / md;
+    return (ld * mn) / (md * ln);
 }
 
 /* tempo in quarter note per minute */

@@ -34,7 +34,20 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         if (!t)
             return;
 
-        upm = abc_unit_per_measure(t);
+	const char* l;
+	const char* m;
+	struct abc_header* lh = abc_find_header(t, 'L');
+	if (lh)
+		l = lh->text;
+	else
+		l = "1/8";
+	struct abc_header* mh = abc_find_header(t, 'M');
+	if (mh)
+		m = mh->text;
+	else
+		m = "4/4";
+
+        upm = abc_unit_per_measure(l, m);
         qWarning() << "unit per measure" << upm;
         tempo = abc_tempo(t);
 
@@ -43,11 +56,7 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         setFileFormat(1);
         setTracks(t->count);
 
-        struct abc_header* lh = abc_find_header(t, 'L');
-        if (!lh)
-               num = 1, den = 8;
-        else
-                getNumDen(lh->text, &num, &den);
+        getNumDen(l, &num, &den);
 
         tpu = (num * 4 * DPQN) / (den);
         qWarning() << "ticks per unit" << tpu;
@@ -91,7 +100,7 @@ void AbcSmf::manageDecoration(struct abc_symbol* s) {
     else if (!strcmp(s->text, ">)")) in_cresc = 0;
 }
 
-void AbcSmf::writeSingleNote(int track, struct abc_symbol* s, struct abc_voice* v) {
+void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
         long delta_tick;
 
         if (s->text[0] == 'Z' || s->text[0] == 'z') {
@@ -188,7 +197,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
                     break;
                 }
                 case ABC_NOTE: {
-                        writeSingleNote(track, s, v);
+                        writeSingleNote(track, s);
                         break;
                 }
                 case ABC_GRACE: {
@@ -235,7 +244,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
 }
 
 /* text must be %d/%d */
-void AbcSmf::getNumDen(char* text, long* num, long* den) {
+void AbcSmf::getNumDen(const char* text, long* num, long* den) {
         bool ok;
         QString str(text);
         QStringList sl = str.split('/');

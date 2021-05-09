@@ -148,7 +148,7 @@ int abc_has_tie(struct abc_symbol* s, int chord);
 
 double abc_grace_duration(struct abc_symbol* s);
 
-int abc_unit_per_measure(struct abc_tune* t);
+int abc_unit_per_measure(const char* l, const char* m);
 
 double abc_time_per_unit(struct abc_tune* t, long base);
 

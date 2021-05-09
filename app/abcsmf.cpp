@@ -193,7 +193,8 @@ void AbcSmf::onSMFWriteTrack(int track) {
                         break;
                 }
                 case ABC_CHANGE: {
-                    curks = &s->text[2]; /* remove "K:" */
+                    if (s->text[0] == 'K')
+                            curks = &s->text[2]; /* remove "K:" */
                     break;
                 }
                 case ABC_NOTE: {

@@ -968,6 +968,8 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                     in_tie = next_tie;
                                     abc_frac_add(&tick_num, &tick_den, chord_num, chord_den);
                                     chord_num = 0, chord_den = 1;
+                    if (nup_r)
+                        nup_r--;
                                 }
                             }
                             break;
@@ -987,11 +989,17 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                        abc_frac_add(&tick_num, &tick_den, new->dur_num, new->dur_den);
                                    } else {
                                        new = abc_dup_symbol(s);
+
+                                       if (nup_r) {
+                                           new->dur_num *= nup_q;
+                                           new->dur_den *= nup_p;
+				       }
+
                                        abc_frac_add(&new->start_num, &new->start_den, tick_num, tick_den);
                                        /* we use the first note of chord as chord duration! */
                                        if (chord_num == 0) {
-                                           chord_num = s->dur_num;
-                                           chord_den = s->dur_den;
+                                           chord_num = new->dur_num;
+                                           chord_den = new->dur_den;
                                        }
                                    }
                                } else {

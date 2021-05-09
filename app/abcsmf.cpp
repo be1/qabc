@@ -7,7 +7,8 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         yy(yy),
         x(x),
         t(nullptr),
-        kh(nullptr),
+        ks(nullptr),
+        curks(nullptr),
         tpu(0),
         upm(0),
         tempo(0),
@@ -51,9 +52,9 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         tpu = (num * 4 * DPQN) / (den);
         qWarning() << "ticks per unit" << tpu;
 
-        kh = abc_find_header(t, 'K');
+        struct abc_header* kh = abc_find_header(t, 'K');
         if (!kh) {
-                mode = 0, ks = NULL;
+                ks = nullptr, mode = 0;
         } else {
             ks = kh->text;
             mks = getSMFKeySignature(ks, &mode);
@@ -90,7 +91,7 @@ void AbcSmf::manageDecoration(struct abc_symbol* s) {
     else if (!strcmp(s->text, ">)")) in_cresc = 0;
 }
 
-void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
+void AbcSmf::writeSingleNote(int track, struct abc_symbol* s, struct abc_voice* v) {
         long delta_tick;
 
         if (s->text[0] == 'Z' || s->text[0] == 'z') {
@@ -109,8 +110,7 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 writeLyric(s->lyric);
 
                 /* find MIDI pitch */
-                const char* ks = kh ? kh->text : NULL;
-                unsigned char n = note2midi(ks, s->text, measure_accid);
+                unsigned char n = note2midi(curks ? curks : ks, s->text, measure_accid);
 
                 if (s->value) {
                         writeMidiEvent(delta_tick, noteon, track, n, cur_dyn * s->value);
@@ -183,8 +183,12 @@ void AbcSmf::onSMFWriteTrack(int track) {
                 case ABC_SPACE: {
                         break;
                 }
+                case ABC_CHANGE: {
+                    curks = &s->text[2]; /* remove "K:" */
+                    break;
+                }
                 case ABC_NOTE: {
-                        writeSingleNote(track, s);
+                        writeSingleNote(track, s, v);
                         break;
                 }
                 case ABC_GRACE: {
@@ -227,6 +231,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
         }
         writeMetaEvent(0, 0x2F);
         abc_release_voice(v);
+	curks = nullptr;
 }
 
 /* text must be %d/%d */

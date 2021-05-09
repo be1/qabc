@@ -10,7 +10,7 @@ extern "C" {
 #endif
 
 
-enum abc_type { ABC_EOL, ABC_SPACE, ABC_NOTE, ABC_NUP, ABC_GRACE, ABC_CHORD, ABC_DECO, ABC_GCHORD, ABC_TIE, ABC_SLUR, ABC_BAR, ABC_ALT, ABC_INST };
+enum abc_type { ABC_EOL, ABC_SPACE, ABC_NOTE, ABC_NUP, ABC_GRACE, ABC_CHORD, ABC_DECO, ABC_GCHORD, ABC_TIE, ABC_SLUR, ABC_BAR, ABC_ALT, ABC_INST, ABC_CHANGE };
 
 struct abc_buffer {
 	char* buf;
@@ -113,6 +113,8 @@ void abc_gchord_append(struct abc* yy, const char* yytext);
 void abc_tie_append(struct abc* yy, const char* yytext);
 
 void abc_slur_append(struct abc* yy, const char* yytext);
+
+void abc_change_append(struct abc* yy, const char* yytext);
 
 void abc_delete_symbols(struct abc_symbol* s);
 

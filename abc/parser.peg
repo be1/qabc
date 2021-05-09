@@ -48,39 +48,43 @@ Xheader <- "X:" Xvalue EOL
 
 Xvalue <- < [1-9][0-9]* > { abc_tune_append(auxil, $0); }
 
-Oheader <- "A:" < [^\r\n]+ > { abc_header_append(auxil, $1, 'A'); }
-	/ "B:" < [^\r\n]+ > { abc_header_append(auxil, $2, 'B'); }
-	/ "C:" < [^\r\n]+ > { abc_header_append(auxil, $3, 'C'); }
-	/ "D:" < [^\r\n]+ > { abc_header_append(auxil, $4, 'D'); }
-	/ "F:" < [^\r\n]+ > { abc_header_append(auxil, $5, 'F'); }
-	/ "G:" < [^\r\n]+ > { abc_header_append(auxil, $6, 'G'); }
-	/ "H:" < [^\r\n]+ > { abc_header_append(auxil, $7, 'H'); }
-	/ "I:" < [^\r\n]+ > { abc_header_append(auxil, $8, 'I'); }
-	/ "K:" < [^\r\n]+ > { abc_header_append(auxil, $9, 'K'); }
-	/ "L:" < [^\r\n]+ > { abc_header_append(auxil, $10, 'L'); }
-	/ "M:" < [^\r\n]+ > { abc_header_append(auxil, $11, 'M'); }
-	/ "N:" < [^\r\n]+ > { abc_header_append(auxil, $12, 'N'); }
-	/ "O:" < [^\r\n]+ > { abc_header_append(auxil, $13, 'O'); }
-	/ "P:" < [^\r\n]+ > { abc_header_append(auxil, $14, 'P'); }
-	/ "Q:" < [^\r\n]+ > { abc_header_append(auxil, $15, 'Q'); }
-	/ "R:" < [^\r\n]+ > { abc_header_append(auxil, $16, 'R'); }
-	/ "S:" < [^\r\n]+ > { abc_header_append(auxil, $17, 'S'); }
-	/ "T:" < [^\r\n]+ > { abc_header_append(auxil, $18, 'T'); }
-	/ "U:" < [^\r\n]+ > { abc_header_append(auxil, $19, 'U'); }
+Oheader <- "A:" < (!EOL .)+ > { abc_header_append(auxil, $1, 'A'); }
+	/ "B:" < (!EOL .)+ > { abc_header_append(auxil, $2, 'B'); }
+	/ "C:" < (!EOL .)+ > { abc_header_append(auxil, $3, 'C'); }
+	/ "D:" < (!EOL .)+ > { abc_header_append(auxil, $4, 'D'); }
+	/ "F:" < (!EOL .)+ > { abc_header_append(auxil, $5, 'F'); }
+	/ "G:" < (!EOL .)+ > { abc_header_append(auxil, $6, 'G'); }
+	/ "H:" < (!EOL .)+ > { abc_header_append(auxil, $7, 'H'); }
+	/ "I:" < (!EOL .)+ > { abc_header_append(auxil, $8, 'I'); }
+	/ "K:" < (!EOL .)+ > { abc_header_append(auxil, $9, 'K'); }
+	/ "L:" < (!EOL .)+ > { abc_header_append(auxil, $10, 'L'); }
+	/ "M:" < (!EOL .)+ > { abc_header_append(auxil, $11, 'M'); }
+	/ "N:" < (!EOL .)+ > { abc_header_append(auxil, $12, 'N'); }
+	/ "O:" < (!EOL .)+ > { abc_header_append(auxil, $13, 'O'); }
+	/ "P:" < (!EOL .)+ > { abc_header_append(auxil, $14, 'P'); }
+	/ "Q:" < (!EOL .)+ > { abc_header_append(auxil, $15, 'Q'); }
+	/ "R:" < (!EOL .)+ > { abc_header_append(auxil, $16, 'R'); }
+	/ "S:" < (!EOL .)+ > { abc_header_append(auxil, $17, 'S'); }
+	/ "T:" < (!EOL .)+ > { abc_header_append(auxil, $18, 'T'); }
+	/ "U:" < (!EOL .)+ > { abc_header_append(auxil, $19, 'U'); }
 	/ Comment
 
 Score <- Fragment+
-	/ VoiceScore
+	/ VoiceDef* (Comment EOL)* VoiceScore
+
+VoiceDef <- Vheader EOL (Comment EOL)* (Vheader EOL)+
 
 Fragment <- _ / "y"
-	/ "%%" Instruction EOL
+	/ "%%" Instruction
+	/ Change
 	/ Comment
-	/ NotePunct Tie*
-	/ NoteConstruct Tie*
+	/ NotePunct
+	/ NoteConstruct
 	/ '"' Gchord '"'
+	/ "!" ExDecoration "!"
+	/ Decoration
 	/ Chord Tie*
 	/ Grace
-	/ "!" ExDecoration "!"
 	/ "(" Nuplet
 	/ SlurStart
 	/ SlurEnd
@@ -89,29 +93,28 @@ Fragment <- _ / "y"
 	/ Alternative
 	/ LineCont
 	/ LineBreak
-	/ "w:" Lyrics EOL
-#	/ Change
+	/ "w:" Lyrics
 
-#Change <- Keysig / Unit / TimeSig / Tempo
+Change <- KeySig / Unit / TimeSig / Tempo
 
-#KeySig <- "K:" < (!EOL .)* > { abc_keysig_change(auxil, $1); }
-#Unit <- "L:" < (!EOL .)* > { abc_unit_change(auxil, $1); }
-#TimeSig <- "M:" < (!EOL .)* > { abc_timesig_change(auxil, $1); }
-#Tempo <- "Q:" < (!EOL .)* > { abc_tempo_change(auxil, $1); }
+KeySig <- < "K:" (!EOL .)+ > { abc_change_append(auxil, $1); }
+Unit <- < "L:" (!EOL .)+ > { abc_change_append(auxil, $1); }
+TimeSig <- < "M:" (!EOL .)+ > { abc_change_append(auxil, $1); }
+Tempo <- < "Q:" (!EOL .)+ > { abc_change_append(auxil, $1); }
 
 Comment <- "%" (!EOL .)*
 
-VoiceScore <- Vheader Fragment+ VoiceScore*
+VoiceScore <- Vheader EOL Fragment+ VoiceScore*
 
-Vheader <- "V:" Vvalue EOL
+Vheader <- "V:" Vvalue
 
-Vvalue <- < (!EOL .)* > { abc_voice_append(auxil, $0); }
+Vvalue <- < (!EOL .)+ > { abc_voice_append(auxil, $0); }
 
 NotePunct <- NoteConstruct _* < (">" / "<")+ > _* NoteConstruct { abc_notepunct_set(auxil, $1); }
 
-NoteConstruct <- Decoration* _* Note Duration*
+NoteConstruct <- Note Duration* Tie*
 
-Instruction <- < (!EOL .)* > { abc_instruction_append(auxil, $0); }
+Instruction <- < !"%" (!EOL .)* > { abc_instruction_append(auxil, $0); }
 
 Lyrics <- < (!EOL .)* > { abc_lyrics_append(auxil, $0); }
 

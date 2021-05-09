@@ -124,13 +124,20 @@ void abc_lyrics_append(struct abc* yy, const char* yytext)
     }
 
     struct abc_symbol* s =  abc_last_symbol(yy);
+    /* rewind to last note */
     while (s->kind != ABC_NOTE && s->prev)
         s = s->prev;
 
-    while (s->kind != ABC_EOL && s->prev)
+    int nc = 1;
+    /* rewind to first symbol of this line */
+    while (s->kind != ABC_EOL && s->prev) {
         s = s->prev;
+        if (s->kind == ABC_NOTE)
+            nc++;
+    }
 
-    for (i = 0; i < count; i++) {
+    int min = nc < count ? nc : count;
+    for (i = 0; i < min; i++) {
         while (s->kind != ABC_NOTE && s->next)
             s = s->next;
 
@@ -393,6 +400,13 @@ void abc_delete_symbols(struct abc_symbol* s) {
     }
 }
 
+void abc_change_append(struct abc* yy, const char* yytext)
+{
+	struct abc_symbol* new = abc_new_symbol(yy);
+	new->kind = ABC_CHANGE;
+	new->text = strdup(yytext);
+}
+
 struct abc* abc_alloc_yy(void)
 {
 
@@ -418,21 +432,7 @@ void abc_release_yy(struct abc* yy)
 
         for (int j = 0; j < t->count; j++) {
             struct abc_voice* v = t->voices[j];
-            struct abc_symbol* s = v->first;
-            while (s != v->last) {
-                struct abc_symbol* sn = s->next;
-                free(s->lyric);
-                free(s->text);
-                free(s);
-                s = sn;
-            }
-
-            free(v->last->lyric);
-            free(v->last->text);
-            free(v->last);
-
-            free(v->v);
-            free(v);
+            abc_release_voice(v);
         }
 
         free(t->voices);
@@ -935,6 +935,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
 
     int nup_p, nup_q, nup_r = 0;
     int in_tie = 0;
+    int next_tie = 0;
     int in_chord = 0;
     long chord_num = 0, chord_den = 1; /* chord duration */
     struct abc_voice* voice = calloc(1, sizeof (struct abc_voice));
@@ -957,9 +958,10 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
 
                                 if (s->text[0] == '[') {
                                     in_chord = 1;
+				    next_tie = 0;
                                 } else {
                                     in_chord = 0;
-                                    in_tie = 0;
+                                    in_tie = next_tie;
                                     abc_frac_add(&tick_num, &tick_den, chord_num, chord_den);
                                     chord_num = 0, chord_den = 1;
                                 }
@@ -1063,6 +1065,8 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                                                    abc_frac_add(&chord_num, &chord_den, s->dur_num, s->dur_den);
                                                            }
                                                    }
+					       } else if (s->kind == ABC_TIE) { /* in-chord tie */
+						       next_tie = 1; /* we manage the tie globally */
                                                } else {
                                                    /* any other symbol goes here */
                                                    struct abc_symbol* u = abc_dup_symbol(s);
@@ -1127,12 +1131,14 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                            }
                            break;
             case ABC_TIE: {
-                              in_tie = 1;
+				  if (in_chord)
+					  next_tie = 1;
+				  else
+					  in_tie = 1;
                           }
                           break;
-            case ABC_BAR:
-                          /* don't break, use bars for accidentals context */
             default: {
+			 /* and ABC_BAR */
                          new = abc_dup_symbol(s);
                      }
         }
@@ -1257,9 +1263,11 @@ void abc_release_voice(struct abc_voice* v) {
         s = sn;
     }
 
-    free(v->last->lyric);
-    free(v->last->text);
-    free(v->last);
+    if (v->last) {
+            free(v->last->lyric);
+            free(v->last->text);
+            free(v->last);
+    }
 
     free(v->v);
     free(v);

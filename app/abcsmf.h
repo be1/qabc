@@ -24,7 +24,7 @@ private:
 #define EXPRESSION_DEFAULT 0
 
     void manageDecoration(struct abc_symbol* s);
-    void writeSingleNote(int track, struct abc_symbol* s);
+    void writeSingleNote(int track, struct abc_symbol* s, struct abc_voice* v);
     void getNumDen(char* text, long* num, long* den);
     int getSMFKeySignature(char* text, int* mode);
     unsigned char pitch_diff_0x3c(const char* ks, int note);
@@ -36,8 +36,8 @@ private:
     struct abc* yy; /* takes ownership of yy */
     int x;
     struct abc_tune* t;     /* tune selected by X */
-    struct abc_header* kh;  /* 'K' header */
-    char* ks;               /* kh->text */
+    char* ks;               /* tune's kh->text */
+    char* curks;            /* voice's kh->text change */
     int mks;                /* MIDI smf key signature */
     int mode;               /* MIDI smf mode (maj/min) */
 

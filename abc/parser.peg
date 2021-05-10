@@ -113,7 +113,7 @@ Vvalue <- < (!EOL .)+ > { abc_voice_append(auxil, $0); }
 
 NotePunct <- NoteConstruct _* < (">" / "<")+ > _* NoteConstruct { abc_notepunct_set(auxil, $1); }
 
-NoteConstruct <- Note Duration* Tie*
+NoteConstruct <- ("!" ExDecoration "!")* Decoration* Note Duration* Tie*
 
 Instruction <- < !"%" (!EOL .)* > { abc_instruction_append(auxil, $0); }
 

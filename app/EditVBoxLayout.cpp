@@ -60,6 +60,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 
     connect(this, &EditVBoxLayout::generateMIDIFinished, this, &EditVBoxLayout::onGenerateMIDIFinished);
     connect(this, &EditVBoxLayout::compilerFinished, this, &EditVBoxLayout::onCompileFinished);
+    connect(this, &EditVBoxLayout::doExportMIDI, this, &EditVBoxLayout::exportMIDI);
 
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
     QByteArray ba;
@@ -292,7 +293,9 @@ void EditVBoxLayout::onPlayClicked()
         a->mainWindow()->statusBar()->showMessage(tr("Generating MIDI for playing."));
         playpushbutton.flip();
         xspinbox.setEnabled(false);
-        exportMIDI(QString());
+        playpushbutton.setEnabled(false);
+        QApplication::processEvents();
+        emit doExportMIDI(QString());
       } else { /* stop */
         if (fluid_player && ((sfloader && sfloader->isFinished()) || !sfloader)) {
             dot.clear();
@@ -414,6 +417,7 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
         QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Cannot generate MIDI: Please check settings."));
         playpushbutton.flip();
         xspinbox.setEnabled(true);
+        playpushbutton.setEnabled(true);
         return;
     }
 
@@ -428,6 +432,7 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
 
 void EditVBoxLayout::onGenerateMIDIFinished(int exitCode, int cont)
 {
+    playpushbutton.setEnabled(true);
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     if (a->isQuit())
         return;

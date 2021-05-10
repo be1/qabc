@@ -41,6 +41,7 @@ public:
 signals:
     void compilerFinished(int exitCode, int cont);
     void generateMIDIFinished(int exitCode, int cont);
+    void doExportMIDI(const QString& outfilename);
 
 protected:
     void spawnProgram(const QString& prog, const QStringList &args, AbcProcess::ProcessType which, const QDir &wrk, int cont);

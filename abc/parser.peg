@@ -41,12 +41,17 @@ static void print_error(struct abc* auxil) {
 TuneBook <- (Comment EOL+)* Tune EOF
 	/ (Comment EOL+)* Tune TuneBook
 
-Tune <- Xheader (Oheader EOL)+ Score
-	/ Xheader Score
+Tune <- Xheader (Header EOL)* Score
+
+Header <- Oheader
+	/ Comment
+#	/ VoiceDef
 
 Xheader <- "X:" Xvalue EOL
 
 Xvalue <- < [1-9][0-9]* > { abc_tune_append(auxil, $0); }
+
+#VoiceDef <- "V:" (!EOL .)+
 
 Oheader <- "A:" < (!EOL .)+ > { abc_header_append(auxil, $1, 'A'); }
 	/ "B:" < (!EOL .)+ > { abc_header_append(auxil, $2, 'B'); }
@@ -69,10 +74,8 @@ Oheader <- "A:" < (!EOL .)+ > { abc_header_append(auxil, $1, 'A'); }
 	/ "U:" < (!EOL .)+ > { abc_header_append(auxil, $19, 'U'); }
 	/ Comment
 
-Score <- Fragment+
-	/ VoiceDef* (Comment EOL)* VoiceScore
-
-VoiceDef <- Vheader EOL (Comment EOL)* (Vheader EOL)+
+Score <- Vheader EOL Fragment+ Score*
+	/ Fragment+
 
 Fragment <- _ / "y"
 	/ "%%" Instruction
@@ -103,8 +106,6 @@ TimeSig <- < "M:" (!EOL .)+ > { abc_change_append(auxil, $1); }
 Tempo <- < "Q:" (!EOL .)+ > { abc_change_append(auxil, $1); }
 
 Comment <- "%" (!EOL .)*
-
-VoiceScore <- Vheader EOL Fragment+ VoiceScore*
 
 Vheader <- "V:" Vvalue
 

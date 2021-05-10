@@ -58,6 +58,7 @@ private:
     char noteon;
     char program;
     char control;
+    int transpose;
     long num; /* tune L numerator */
     long den; /* tune L denominator */
 

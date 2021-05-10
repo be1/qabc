@@ -23,6 +23,7 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         noteon(0x90),
         program(0xc0),
         control(0xb0),
+        transpose(0),
         num(1),
         den(8)
 {
@@ -125,11 +126,11 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 unsigned char n = note2midi(curks ? curks : ks, s->text, measure_accid);
 
                 if (s->value) {
-                        writeMidiEvent(delta_tick, noteon, track, n, cur_dyn * s->value);
+                        writeMidiEvent(delta_tick, noteon, track, n + transpose, cur_dyn * s->value);
                 } else {
                     long small = tpu * upm / 8;
                     small = (delta_tick > small) ? small : delta_tick;
-                    writeMidiEvent(delta_tick - (small / shorten), noteon, track, n, 0x00); /* note off */
+                    writeMidiEvent(delta_tick - (small / shorten), noteon, track, n + transpose, 0x00); /* note off */
                     last_tick -= (small / shorten);
                     shorten = in_slur;
                 }
@@ -156,6 +157,7 @@ void AbcSmf::onSMFWriteTrack(int track) {
         struct abc_symbol* s = v->first;
 
         last_tick = 0;
+        transpose = 0;
 
         in_cresc = 0;
         mark_dyn = DYN_DEFAULT;
@@ -217,9 +219,11 @@ void AbcSmf::onSMFWriteTrack(int track) {
                         break;
                 }
                 case ABC_INST: {
-                        int prog;
-                        if (sscanf(s->text, "MIDI program %d", &prog)) {
-                                writeMidiEvent(0, program, track, prog);
+                        int val;
+                        if (sscanf(s->text, "MIDI program %d", &val)) {
+                            writeMidiEvent(0, program, track, val);
+                        } else if (sscanf(s->text, "MIDI transpose %d", &val)) {
+                            transpose = val;
                         }
                         break;
                 }

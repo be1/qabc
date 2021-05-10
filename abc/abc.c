@@ -941,19 +941,38 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
     int in_tie = 0;
     int next_tie = 0;
     int in_chord = 0;
+#define GRACE_DEN 4
     int in_grace = 0;
     long grace_num = 0;
     long grace_den = 1;
-#define GRACE_DEN 4
+    long l_num = 0;
+    long l_den = 1;
+    long l_mul = 1, l_div = 1; /* for L change */
     long chord_num = 0, chord_den = 1; /* chord duration */
     struct abc_voice* voice = calloc(1, sizeof (struct abc_voice));
     voice->v = strdup(v->v);
+    struct abc_header* h = abc_find_header(t, 'L');
+    if (h && (2 == sscanf(h->text, "%ld/%ld", &l_num, &l_den))) {;}
+    else {
+        l_num = 1;
+        l_den = 8;
+    }
 
     struct abc_symbol* s = v->first;
     while (s) {
         struct abc_symbol* new = NULL;
 
         switch (s->kind) {
+            case ABC_CHANGE: {
+                                 if (s->text[0]== 'L') {
+                                     long l_n, l_d;
+                                     if (2 == sscanf(&s->text[2], "%ld/%ld", &l_n, &l_d)) {
+                                         l_mul = l_n / l_num;
+                                         l_div = l_d / l_den;
+                                     }
+                                 }
+                             }
+                             break;
             case ABC_NUP: {
                               if (3 == sscanf(s->text, "%d:%d:%d", &nup_p, &nup_q, &nup_r)) {
                                   abc_compute_pqr(&nup_p, &nup_q, &nup_r, t);
@@ -990,6 +1009,8 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                    if (!in_chord) {
                                        /* produce simple note */
                                        new = abc_dup_symbol(s);
+				       new->dur_num *= l_mul;
+				       new->dur_den *= l_div;
 
                                        if (in_grace) {
                                            new->dur_den *= GRACE_DEN;
@@ -1010,6 +1031,8 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                        abc_frac_add(&tick_num, &tick_den, new->dur_num, new->dur_den);
                                    } else {
                                        new = abc_dup_symbol(s);
+				       new->dur_num *= l_mul;
+				       new->dur_den *= l_div;
 
                                        if (nup_r) {
                                            new->dur_num *= nup_q;
@@ -1042,8 +1065,8 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                            }
                                        }
 
-                                       int nup_num = s->dur_num;
-                                       int nup_den = s->dur_den;
+                                       int nup_num = l_mul * s->dur_num;
+                                       int nup_den = l_div * s->dur_den;
                                        if (nup_r) {
                                            nup_num *= nup_q;
                                            nup_den *= nup_p;
@@ -1053,7 +1076,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                        if (p->kind == ABC_NOTE) {
                                            abc_frac_add(&p->dur_num, &p->dur_den, nup_num, nup_den);
                                            abc_frac_add(&tick_num, &tick_den, nup_num, nup_den);
-                                       } 
+                                       }
                                        in_tie = 0;
                                    } else {
                                        /* look if previous note is in a chord or a single note */
@@ -1070,8 +1093,8 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
 
                                                    while (p->kind != ABC_CHORD) {
                                                        if (p->kind == ABC_NOTE && !strcmp(p->text, s->text)) {
-							   long dur_num = s->dur_num;
-							   long dur_den = s->dur_den;
+							   long dur_num = l_mul * s->dur_num;
+							   long dur_den = l_div * s->dur_den;
 
 							   if (nup_r) {
 								   dur_num *= nup_q;
@@ -1092,6 +1115,8 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                                    /* corresponding p note to s was not found? */
                                                    if (p->kind == ABC_CHORD) {
                                                            struct abc_symbol* n = abc_dup_symbol(s);
+							   n->dur_num *= l_mul;
+							   n->dur_den *= l_div;
 							   if (nup_r) {
 								   n->dur_num *= nup_q;
 								   n->dur_den *= nup_p;
@@ -1148,8 +1173,8 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                            while (s->kind != ABC_CHORD) {
                                                if (s->kind  == ABC_NOTE) {
                                                    if (!strcmp(p->text, s->text)) { /* same note */
-                                                       num = s->dur_num; 
-                                                       den = s->dur_den;
+                                                       num = l_mul * s->dur_num;
+                                                       den = l_div * s->dur_den;
 
                                                        if (nup_r) {
                                                                num *= nup_q;
@@ -1159,6 +1184,8 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                                        abc_frac_add(&p->dur_num, &p->dur_den, num, den);
                                                    } else {
                                                            struct abc_symbol* n = abc_dup_symbol(s);
+							   n->dur_num *= l_num;
+							   n->dur_den *= l_div;
                                                            if (nup_r) {
                                                                    n->dur_num *= nup_q;
                                                                    n->dur_den *= nup_p;

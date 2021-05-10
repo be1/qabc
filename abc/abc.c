@@ -1184,7 +1184,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                                        abc_frac_add(&p->dur_num, &p->dur_den, num, den);
                                                    } else {
                                                            struct abc_symbol* n = abc_dup_symbol(s);
-							   n->dur_num *= l_num;
+							   n->dur_num *= l_mul;
 							   n->dur_den *= l_div;
                                                            if (nup_r) {
                                                                    n->dur_num *= nup_q;

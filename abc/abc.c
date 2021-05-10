@@ -835,9 +835,12 @@ struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
 						   while (s->kind != ABC_CHORD) { /* got to ']' */
 							   if (s->kind == ABC_NOTE) {
 								   starts = realloc(starts, ++start_count * sizeof (*starts));
-								   starts[start_count - 1] = *abc_dup_symbol(s);
-
+								   struct abc_symbol* dup = abc_dup_symbol(s);
+								   starts[start_count - 1] = *dup;
 								   starts[start_count - 1].value = 1;
+
+								   free(dup);
+
 							   }
 							   s = s->next;
 						   }
@@ -847,8 +850,11 @@ struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
 						   int stop_count = start_count;
 						   stops = realloc(stops, stop_count * sizeof (*stops));
 						   for (int i = 0; i < stop_count; i++) {
-							   stops[i] = *abc_dup_symbol(&starts[i]);
+							   struct abc_symbol* dup = abc_dup_symbol(&starts[i]);
+							   stops[i] = *dup;
 							   stops[i].value = 0;
+
+							   free(dup);
 						   }
 
 						   /* reorganize note off members */
@@ -864,7 +870,10 @@ struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
 						   int event_count = start_count + stop_count;
 						   events = realloc(events, event_count * sizeof (*events));
 						   for (int i = 0; i < start_count; i++) {
-							   events[i] = *abc_dup_symbol(&starts[i]);
+							   struct abc_symbol* dup = abc_dup_symbol(&starts[i]);
+							   events[i] = *dup;
+
+							   free(dup);
 						   }
 
 						   /* free garbage */
@@ -876,7 +885,10 @@ struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
 						   free(starts);
 
 						   for (int i = 0; i < stop_count; i++) {
-							   events[i + start_count] = *abc_dup_symbol(&stops[i]);
+							   struct abc_symbol* dup = abc_dup_symbol(&stops[i]);
+							   events[i + start_count] = *dup;
+
+							   free(dup);
 						   }
 
 						   /* free garbage */

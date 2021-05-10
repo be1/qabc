@@ -28,7 +28,11 @@ int main() {
 
 		printf("title: %s\n", h? h->text: "");
 		for (int j = 0; j < t->count; j++) {
-			struct abc_voice* v = abc_eventy_voice(abc_untie_voice(abc_unfold_voice(t->voices[j]), t));
+			struct abc_voice* u = abc_unfold_voice(t->voices[j]);
+			struct abc_voice* u2 = abc_untie_voice(u, t);
+			abc_release_voice(u);
+			struct abc_voice* v = abc_eventy_voice(u2);
+			abc_release_voice(u2);
 			//struct abc_voice* v = t->voices[j];
 			printf("tune %d, voice %s\n", t->x, v->v);
 			struct abc_symbol* s;
@@ -37,6 +41,8 @@ int main() {
 				if (s->text) puts(s->text);
 				if (s->lyric) puts(s->lyric);
 			}
+
+			abc_release_voice(v);
 		}
 	}
 

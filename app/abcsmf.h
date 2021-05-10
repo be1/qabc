@@ -26,7 +26,7 @@ private:
     void manageDecoration(struct abc_symbol* s);
     void writeSingleNote(int track, struct abc_symbol* s);
     void getNumDen(const char* text, long* num, long* den);
-    int getSMFKeySignature(char* text, int* mode);
+    int getSMFKeySignature(const char* text, int* mode);
     unsigned char pitch_diff_0x3c(const char* ks, int note);
     unsigned char note2midi (const char* keysig, const char* note, int* measure_accid);
     void setDynamic(long dur);

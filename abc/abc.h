@@ -152,9 +152,9 @@ int abc_unit_per_measure(const char* l, const char* m);
 
 double abc_time_per_unit(struct abc_tune* t, long base);
 
-long abc_tempo(struct abc_tune* t);
+long abc_tempo(const char* t);
 
-void abc_compute_pqr(int* p, int* q, int* r, const struct abc_tune* t);
+void abc_compute_pqr(int* p, int* q, int* r, const char* m);
 
 struct abc* abc_parse_buffer(const char* buffer, int size);
 

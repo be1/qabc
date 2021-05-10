@@ -48,7 +48,11 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
 
         upm = abc_unit_per_measure(l, m);
         qWarning() << "unit per measure" << upm;
-        tempo = abc_tempo(t);
+        struct abc_header* qh = abc_find_header(t, 'Q');
+        if (qh)
+                tempo = abc_tempo(qh->text);
+        else
+                tempo = 120;
 
         setDivision(DPQN);
         setTextCodec(QTextCodec::codecForName("UTF-8"));
@@ -178,8 +182,17 @@ void AbcSmf::onSMFWriteTrack(int track) {
                         break;
                 }
                 case ABC_CHANGE: {
-                    if (s->text[0] == 'K')
-                            curks = &s->text[2]; /* remove "K:" */
+                    if (s->text[0] == 'Q') {
+                            tempo = abc_tempo(&s->text[2]); /* pass Q: */
+                            long mspqn = 60000 / tempo;
+                            writeTempo(0, mspqn);
+                            writeBpmTempo(0, tempo);
+                    } else if (s->text[0] == 'K') {
+                            curks = &s->text[2]; /* pass "K:" */
+                            int mode = 0;
+                            int mks = getSMFKeySignature(curks, &mode);
+                            writeKeySignature(0, mks, mode);
+                    }
                     break;
                 }
                 case ABC_NOTE: {
@@ -230,7 +243,7 @@ void AbcSmf::getNumDen(const char* text, long* num, long* den) {
         if (!ok) *den = 8;
 }
 
-int AbcSmf::getSMFKeySignature(char* text, int* mode) {
+int AbcSmf::getSMFKeySignature(const char* text, int* mode) {
         QString str(text);
 
         *mode = 0;

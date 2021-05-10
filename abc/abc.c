@@ -653,33 +653,32 @@ int abc_unit_per_measure(const char* l, const char* m) {
 }
 
 /* tempo in quarter note per minute */
-long abc_tempo(struct abc_tune* t) {
+long abc_tempo(const char* t) {
     long tempo = 120;
-    struct abc_header* qh = abc_find_header(t, 'Q');
-    if (qh) {
+    if (t) {
         int q = 0;
         int num, den;
-        if (3 == sscanf(qh->text, "%d/%d=%d", &num, &den, &q))
+        if (3 == sscanf(t, "%d/%d=%d", &num, &den, &q))
             tempo = (q * 4 * num) / den;
-        else if (1 == sscanf(qh->text, "%d", &q))
+        else if (1 == sscanf(t, "%d", &q))
             tempo = q;
-        else if (!strncasecmp(qh->text, "\"Largo\"", 5))
+        else if (!strncasecmp(t, "\"Largo\"", 5))
             tempo = 40;
-        else if (!strncasecmp(qh->text, "\"Larghetto\"", 9))
+        else if (!strncasecmp(t, "\"Larghetto\"", 9))
             tempo = 60;
-        else if (!strncasecmp(qh->text, "\"Lento\"", 5))
+        else if (!strncasecmp(t, "\"Lento\"", 5))
             tempo = 50;
-        else if (!strncasecmp(qh->text, "\"Adagio\"", 6))
+        else if (!strncasecmp(t, "\"Adagio\"", 6))
             tempo = 60;
-        else if (!strncasecmp(qh->text, "\"Andante\"", 7))
+        else if (!strncasecmp(t, "\"Andante\"", 7))
             tempo = 80;
-        else if (!strncasecmp(qh->text, "\"Moderato\"", 8))
+        else if (!strncasecmp(t, "\"Moderato\"", 8))
             tempo = 90;
-        else if (!strncasecmp(qh->text, "\"Allegro\"", 7))
+        else if (!strncasecmp(t, "\"Allegro\"", 7))
             tempo = 120;
-        else if (!strncasecmp(qh->text, "\"Presto\"", 6))
+        else if (!strncasecmp(t, "\"Presto\"", 6))
             tempo = 140;
-        else if (!strncasecmp(qh->text, "\"Vivace\"", 6))
+        else if (!strncasecmp(t, "\"Vivace\"", 6))
             tempo = 160;
         else
             tempo = 120;
@@ -688,15 +687,13 @@ long abc_tempo(struct abc_tune* t) {
     return tempo;
 }
 
-void abc_compute_pqr(int* p, int* q, int* r, const struct abc_tune* t) {
+/* m must be the measure metric */
+void abc_compute_pqr(int* p, int* q, int* r, const char* m) {
     int num, den;
-    struct abc_header* mh = abc_find_header(t, 'M');
 
-    if (!mh)
-        num = den = 4;
-    if (mh->text[0] == 'C')
-        num = den = 4;
-    else if (2 != sscanf(mh->text, "%d/%d", &num, &den))
+    if (!m || m[0] == 'C')
+	    m = "4/4";
+    else if (2 != sscanf(m, "%d/%d", &num, &den))
         num = den = 4;
 
     if (!*r)
@@ -948,9 +945,17 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
     long l_num = 0;
     long l_den = 1;
     long l_mul = 1, l_div = 1; /* for L change */
+    const char* m;
     long chord_num = 0, chord_den = 1; /* chord duration */
     struct abc_voice* voice = calloc(1, sizeof (struct abc_voice));
     voice->v = strdup(v->v);
+
+    struct abc_header* mh = abc_find_header(t, 'M');
+    if (!mh || mh->text[0] == 'C')
+            m = "4/4";
+    else
+            m = mh->text;
+
     struct abc_header* h = abc_find_header(t, 'L');
     if (h && (2 == sscanf(h->text, "%ld/%ld", &l_num, &l_den))) {;}
     else {
@@ -964,18 +969,22 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
 
         switch (s->kind) {
             case ABC_CHANGE: {
-                                 if (s->text[0]== 'L') {
+                                 if (s->text[0]== 'M') {
+                                         m = &s->text[2];
+                                 } else if (s->text[0]== 'L') {
                                      long l_n, l_d;
                                      if (2 == sscanf(&s->text[2], "%ld/%ld", &l_n, &l_d)) {
                                          l_mul = l_n / l_num;
                                          l_div = l_d / l_den;
                                      }
+                                 } else {
+                                     new = abc_dup_symbol(s);
                                  }
                              }
                              break;
             case ABC_NUP: {
                               if (3 == sscanf(s->text, "%d:%d:%d", &nup_p, &nup_q, &nup_r)) {
-                                  abc_compute_pqr(&nup_p, &nup_q, &nup_r, t);
+                                  abc_compute_pqr(&nup_p, &nup_q, &nup_r, m);
                               }
                           }
                           break;

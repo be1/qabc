@@ -5,6 +5,8 @@
 EditTabWidget::EditTabWidget(QWidget* parent)
 	: QTabWidget(parent)
 {
+    setTabsClosable(true);
+    connect(this, &QTabWidget::tabCloseRequested, this, &EditTabWidget::removeTab);
     connect(this, &QTabWidget::currentChanged, this, &EditTabWidget::onCurrentChanged);
 }
 

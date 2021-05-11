@@ -452,7 +452,7 @@ void EditVBoxLayout::onGenerateMIDIFinished(int exitCode, int cont)
     a->mainWindow()->statusBar()->showMessage(tr("MIDI generation finished."));
 
     if (!cont) {
-        /* move to export file name; */
+        /* move to export file name */
         QString midifile(tempFile.fileName());
         midifile.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid");
 

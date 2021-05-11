@@ -1,3 +1,4 @@
+#include "AbcApplication.h"
 #include "EditTabWidget.h"
 #include <QFileInfo>
 #include <QDebug>
@@ -41,10 +42,17 @@ int EditTabWidget::addTab(EditWidget *swidget)
 
 void EditTabWidget::removeTab(int index)
 {
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcMainWindow* m = a->mainWindow();
+
     EditWidget *w = editwidgetlist.at(index);
+    w->editVBoxLayout()->cleanupProcesses();
+    w->editVBoxLayout()->cleanupThreads();
     editwidgetlist.removeAt(index);
     QTabWidget::removeTab(index);
     delete w;
+
+    m->mainHSplitter()->viewWidget()->cleanup();
 }
 
 void EditTabWidget::onCurrentChanged(int index)

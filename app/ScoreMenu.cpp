@@ -41,15 +41,12 @@ void ScoreMenu::onQuitActionTriggered()
     if (QMessageBox::StandardButton::No == QMessageBox::question(a->mainWindow(), tr("Really quit?"), tr("Do you really want to quit?")))
         return;
 
-#if 1
     EditTabWidget* tabs = a->mainWindow()->mainHSplitter()->editTabWidget();
     int len = tabs->editWidgetList()->length();
-    for (int i = 0; i < len; i++ ) {
-        EditWidget *w = tabs->editWidgetList()->at(i);
-        w->editVBoxLayout()->cleanupProcesses();
-        w->editVBoxLayout()->cleanupThreads();
+    for (int i = len -1; i >= 0; i-- ) {
+        tabs->removeTab(i);
     }
-#endif
+
     a->quit();
 }
 
@@ -157,13 +154,8 @@ void ScoreMenu::onCloseActionTriggered()
     EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
     int cur = edittabs->currentIndex();
 
-    if (cur >= 0) {
-        EditWidget* ew = edittabs->editWidgetList()->at(cur);
-        ew->editVBoxLayout()->cleanupThreads();
+    if (cur >= 0)
         edittabs->removeTab(cur);
-    }
-
-    w->mainHSplitter()->viewWidget()->cleanup();
 }
 
 void ScoreMenu::onNewActionTriggered()

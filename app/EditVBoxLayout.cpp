@@ -448,11 +448,13 @@ void EditVBoxLayout::exportPostscript(const QString &filename)
     QString program("abcm2ps");
     QStringList argv = program.split(" ");
 
-    if (param == TUNES_ALL) {
+    if (param.toString() == TUNES_ALL) {
         argv << "-N1" << "-O" << filename << tempFile.fileName();
     } else {
         argv << "-N1" << "-e" << QString::number(xspinbox.value()) << "-O" << filename << tempFile.fileName();
     }
+
+    qWarning() << argv;
 
     QFileInfo info(tempFile.fileName());
     QDir dir = info.absoluteDir();

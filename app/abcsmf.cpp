@@ -27,6 +27,7 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         num(1),
         den(8)
 {
+    feedPitchDiff();
         connect(this, &QSmf::signalSMFWriteTempoTrack, this, &AbcSmf::onSMFWriteTempoTrack);
         connect(this, &QSmf::signalSMFWriteTrack, this, &AbcSmf::onSMFWriteTrack);
 
@@ -420,4 +421,245 @@ void AbcSmf::writeLyric(const char* lyric) {
         if (lyric) {
                 writeMetaEvent(0, 0x05, QString(lyric));
         }
+}
+
+void AbcSmf::feedPitchDiff()
+{
+    /* CMaj */
+    _pitch_diff_CMaj_0x3c[(int)'A'] = 9;
+    _pitch_diff_CMaj_0x3c[(int)'B'] = 11;
+    _pitch_diff_CMaj_0x3c[(int)'C'] = 0;
+    _pitch_diff_CMaj_0x3c[(int)'D'] = 2;
+    _pitch_diff_CMaj_0x3c[(int)'E'] = 4;
+    _pitch_diff_CMaj_0x3c[(int)'F'] = 5;
+    _pitch_diff_CMaj_0x3c[(int)'G'] = 7;
+
+    _pitch_diff_CMaj_0x3c[(int)'a'] = 9 + 12;
+    _pitch_diff_CMaj_0x3c[(int)'b'] = 11 + 12;
+    _pitch_diff_CMaj_0x3c[(int)'c'] = 0 + 12;
+    _pitch_diff_CMaj_0x3c[(int)'d'] = 2 + 12;
+    _pitch_diff_CMaj_0x3c[(int)'e'] = 4 + 12;
+    _pitch_diff_CMaj_0x3c[(int)'f'] = 5 + 12;
+    _pitch_diff_CMaj_0x3c[(int)'g'] = 7 + 12;
+
+    /* GMaj */
+    _pitch_diff_GMaj_0x3c[(int)'A'] = 9;
+    _pitch_diff_GMaj_0x3c[(int)'B'] = 11;
+    _pitch_diff_GMaj_0x3c[(int)'C'] = 0;
+    _pitch_diff_GMaj_0x3c[(int)'D'] = 2;
+    _pitch_diff_GMaj_0x3c[(int)'E'] = 4;
+    _pitch_diff_GMaj_0x3c[(int)'F'] = 6;
+    _pitch_diff_GMaj_0x3c[(int)'G'] = 7;
+
+    _pitch_diff_GMaj_0x3c[(int)'a'] = 9 + 12;
+    _pitch_diff_GMaj_0x3c[(int)'b'] = 11 + 12;
+    _pitch_diff_GMaj_0x3c[(int)'c'] = 0 + 12;
+    _pitch_diff_GMaj_0x3c[(int)'d'] = 2 + 12;
+    _pitch_diff_GMaj_0x3c[(int)'e'] = 4 + 12;
+    _pitch_diff_GMaj_0x3c[(int)'f'] = 6 + 12;
+    _pitch_diff_GMaj_0x3c[(int)'g'] = 7 + 12;
+
+    /* DMaj */
+    _pitch_diff_DMaj_0x3c[(int)'A'] = 9;
+    _pitch_diff_DMaj_0x3c[(int)'B'] = 11;
+    _pitch_diff_DMaj_0x3c[(int)'C'] = 1;
+    _pitch_diff_DMaj_0x3c[(int)'D'] = 2;
+    _pitch_diff_DMaj_0x3c[(int)'E'] = 4;
+    _pitch_diff_DMaj_0x3c[(int)'F'] = 6;
+    _pitch_diff_DMaj_0x3c[(int)'G'] = 7;
+
+    _pitch_diff_DMaj_0x3c[(int)'a'] = 9 + 12;
+    _pitch_diff_DMaj_0x3c[(int)'b'] = 11 + 12;
+    _pitch_diff_DMaj_0x3c[(int)'c'] = 1 + 12;
+    _pitch_diff_DMaj_0x3c[(int)'d'] = 2 + 12;
+    _pitch_diff_DMaj_0x3c[(int)'e'] = 4 + 12;
+    _pitch_diff_DMaj_0x3c[(int)'f'] = 6 + 12;
+    _pitch_diff_DMaj_0x3c[(int)'g'] = 7 + 12;
+
+    /* AMaj */
+    _pitch_diff_AMaj_0x3c[(int)'A'] = 9;
+    _pitch_diff_AMaj_0x3c[(int)'B'] = 11;
+    _pitch_diff_AMaj_0x3c[(int)'C'] = 1;
+    _pitch_diff_AMaj_0x3c[(int)'D'] = 2;
+    _pitch_diff_AMaj_0x3c[(int)'E'] = 4;
+    _pitch_diff_AMaj_0x3c[(int)'F'] = 6;
+    _pitch_diff_AMaj_0x3c[(int)'G'] = 8;
+
+    _pitch_diff_AMaj_0x3c[(int)'a'] = 9 + 12;
+    _pitch_diff_AMaj_0x3c[(int)'b'] = 11 + 12;
+    _pitch_diff_AMaj_0x3c[(int)'c'] = 1 + 12;
+    _pitch_diff_AMaj_0x3c[(int)'d'] = 2 + 12;
+    _pitch_diff_AMaj_0x3c[(int)'e'] = 4 + 12;
+    _pitch_diff_AMaj_0x3c[(int)'f'] = 6 + 12;
+    _pitch_diff_AMaj_0x3c[(int)'g'] = 8 + 12;
+
+    /* EMaj */
+    _pitch_diff_EMaj_0x3c[(int)'A'] = 9;
+    _pitch_diff_EMaj_0x3c[(int)'B'] = 11;
+    _pitch_diff_EMaj_0x3c[(int)'C'] = 1;
+    _pitch_diff_EMaj_0x3c[(int)'D'] = 3;
+    _pitch_diff_EMaj_0x3c[(int)'E'] = 4;
+    _pitch_diff_EMaj_0x3c[(int)'F'] = 6;
+    _pitch_diff_EMaj_0x3c[(int)'G'] = 8;
+
+    _pitch_diff_EMaj_0x3c[(int)'a'] = 9 + 12;
+    _pitch_diff_EMaj_0x3c[(int)'b'] = 11 + 12;
+    _pitch_diff_EMaj_0x3c[(int)'c'] = 1 + 12;
+    _pitch_diff_EMaj_0x3c[(int)'d'] = 3 + 12;
+    _pitch_diff_EMaj_0x3c[(int)'e'] = 4 + 12;
+    _pitch_diff_EMaj_0x3c[(int)'f'] = 6 + 12;
+    _pitch_diff_EMaj_0x3c[(int)'g'] = 8 + 12;
+
+    /* BMaj */
+    _pitch_diff_BMaj_0x3c[(int)'A'] = 10;
+    _pitch_diff_BMaj_0x3c[(int)'B'] = 11;
+    _pitch_diff_BMaj_0x3c[(int)'C'] = 1;
+    _pitch_diff_BMaj_0x3c[(int)'D'] = 3;
+    _pitch_diff_BMaj_0x3c[(int)'E'] = 4;
+    _pitch_diff_BMaj_0x3c[(int)'F'] = 6;
+    _pitch_diff_BMaj_0x3c[(int)'G'] = 8;
+
+    _pitch_diff_BMaj_0x3c[(int)'a'] = 10 + 12;
+    _pitch_diff_BMaj_0x3c[(int)'b'] = 11 + 12;
+    _pitch_diff_BMaj_0x3c[(int)'c'] = 1 + 12;
+    _pitch_diff_BMaj_0x3c[(int)'d'] = 3 + 12;
+    _pitch_diff_BMaj_0x3c[(int)'e'] = 4 + 12;
+    _pitch_diff_BMaj_0x3c[(int)'f'] = 6 + 12;
+    _pitch_diff_BMaj_0x3c[(int)'g'] = 8 + 12;
+
+    /* FSharpMaj */
+    _pitch_diff_FSharpMaj_0x3c[(int)'A'] = 10;
+    _pitch_diff_FSharpMaj_0x3c[(int)'B'] = 11;
+    _pitch_diff_FSharpMaj_0x3c[(int)'C'] = 1;
+    _pitch_diff_FSharpMaj_0x3c[(int)'D'] = 3;
+    _pitch_diff_FSharpMaj_0x3c[(int)'E'] = 5;
+    _pitch_diff_FSharpMaj_0x3c[(int)'F'] = 6;
+    _pitch_diff_FSharpMaj_0x3c[(int)'G'] = 8;
+
+    _pitch_diff_FSharpMaj_0x3c[(int)'a'] = 10 + 12;
+    _pitch_diff_FSharpMaj_0x3c[(int)'b'] = 11 + 12;
+    _pitch_diff_FSharpMaj_0x3c[(int)'c'] = 1 + 12;
+    _pitch_diff_FSharpMaj_0x3c[(int)'d'] = 3 + 12;
+    _pitch_diff_FSharpMaj_0x3c[(int)'e'] = 5 + 12;
+    _pitch_diff_FSharpMaj_0x3c[(int)'f'] = 6 + 12;
+    _pitch_diff_FSharpMaj_0x3c[(int)'g'] = 8 + 12;
+
+    /* GFlatMaj */
+    _pitch_diff_GFlatMaj_0x3c[(int)'A'] = 8;
+    _pitch_diff_GFlatMaj_0x3c[(int)'B'] = 10;
+    _pitch_diff_GFlatMaj_0x3c[(int)'C'] = -1;
+    _pitch_diff_GFlatMaj_0x3c[(int)'D'] = 1;
+    _pitch_diff_GFlatMaj_0x3c[(int)'E'] = 3;
+    _pitch_diff_GFlatMaj_0x3c[(int)'F'] = 5;
+    _pitch_diff_GFlatMaj_0x3c[(int)'G'] = 6;
+
+    _pitch_diff_GFlatMaj_0x3c[(int)'a'] = 8 + 12;
+    _pitch_diff_GFlatMaj_0x3c[(int)'b'] = 10 + 12;
+    _pitch_diff_GFlatMaj_0x3c[(int)'c'] = -1 + 12;
+    _pitch_diff_GFlatMaj_0x3c[(int)'d'] = 1 + 12;
+    _pitch_diff_GFlatMaj_0x3c[(int)'e'] = 3 + 12;
+    _pitch_diff_GFlatMaj_0x3c[(int)'f'] = 5 + 12;
+    _pitch_diff_GFlatMaj_0x3c[(int)'g'] = 6 + 12;
+
+    /* CSharpMaj */
+    _pitch_diff_CSharpMaj_0x3c[(int)'A'] = 10;
+    _pitch_diff_CSharpMaj_0x3c[(int)'B'] = 12;
+    _pitch_diff_CSharpMaj_0x3c[(int)'C'] = 1;
+    _pitch_diff_CSharpMaj_0x3c[(int)'D'] = 3;
+    _pitch_diff_CSharpMaj_0x3c[(int)'E'] = 5;
+    _pitch_diff_CSharpMaj_0x3c[(int)'F'] = 6;
+    _pitch_diff_CSharpMaj_0x3c[(int)'G'] = 8;
+
+    _pitch_diff_CSharpMaj_0x3c[(int)'a'] = 10 + 12;
+    _pitch_diff_CSharpMaj_0x3c[(int)'b'] = 12 + 12;
+    _pitch_diff_CSharpMaj_0x3c[(int)'c'] = 1 + 12;
+    _pitch_diff_CSharpMaj_0x3c[(int)'d'] = 3 + 12;
+    _pitch_diff_CSharpMaj_0x3c[(int)'e'] = 5 + 12;
+    _pitch_diff_CSharpMaj_0x3c[(int)'f'] = 6 + 12;
+    _pitch_diff_CSharpMaj_0x3c[(int)'g'] = 8 + 12;
+
+    /* DFlatMaj */
+    _pitch_diff_DFlatMaj_0x3c[(int)'A'] = 8;
+    _pitch_diff_DFlatMaj_0x3c[(int)'B'] = 10;
+    _pitch_diff_DFlatMaj_0x3c[(int)'C'] = 0;
+    _pitch_diff_DFlatMaj_0x3c[(int)'D'] = 1;
+    _pitch_diff_DFlatMaj_0x3c[(int)'E'] = 3;
+    _pitch_diff_DFlatMaj_0x3c[(int)'F'] = 5;
+    _pitch_diff_DFlatMaj_0x3c[(int)'G'] = 6;
+
+    _pitch_diff_DFlatMaj_0x3c[(int)'a'] = 8 + 12;
+    _pitch_diff_DFlatMaj_0x3c[(int)'b'] = 10 + 12;
+    _pitch_diff_DFlatMaj_0x3c[(int)'c'] = 0 + 12;
+    _pitch_diff_DFlatMaj_0x3c[(int)'d'] = 1 + 12;
+    _pitch_diff_DFlatMaj_0x3c[(int)'e'] = 3 + 12;
+    _pitch_diff_DFlatMaj_0x3c[(int)'f'] = 5 + 12;
+    _pitch_diff_DFlatMaj_0x3c[(int)'g'] = 6 + 12;
+
+    /* AFlatMaj */
+    _pitch_diff_AFlatMaj_0x3c[(int)'A'] = 8;
+    _pitch_diff_AFlatMaj_0x3c[(int)'B'] = 10;
+    _pitch_diff_AFlatMaj_0x3c[(int)'C'] = 0;
+    _pitch_diff_AFlatMaj_0x3c[(int)'D'] = 1;
+    _pitch_diff_AFlatMaj_0x3c[(int)'E'] = 3;
+    _pitch_diff_AFlatMaj_0x3c[(int)'F'] = 5;
+    _pitch_diff_AFlatMaj_0x3c[(int)'G'] = 7;
+
+    _pitch_diff_AFlatMaj_0x3c[(int)'a'] = 8 + 12;
+    _pitch_diff_AFlatMaj_0x3c[(int)'b'] = 10 + 12;
+    _pitch_diff_AFlatMaj_0x3c[(int)'c'] = 0 + 12;
+    _pitch_diff_AFlatMaj_0x3c[(int)'d'] = 1 + 12;
+    _pitch_diff_AFlatMaj_0x3c[(int)'e'] = 3 + 12;
+    _pitch_diff_AFlatMaj_0x3c[(int)'f'] = 5 + 12;
+    _pitch_diff_AFlatMaj_0x3c[(int)'g'] = 7 + 12;
+
+    /* EFlatMaj */
+    _pitch_diff_EFlatMaj_0x3c[(int)'A'] = 8;
+    _pitch_diff_EFlatMaj_0x3c[(int)'B'] = 10;
+    _pitch_diff_EFlatMaj_0x3c[(int)'C'] = 0;
+    _pitch_diff_EFlatMaj_0x3c[(int)'D'] = 2;
+    _pitch_diff_EFlatMaj_0x3c[(int)'E'] = 3;
+    _pitch_diff_EFlatMaj_0x3c[(int)'F'] = 5;
+    _pitch_diff_EFlatMaj_0x3c[(int)'G'] = 7;
+
+    _pitch_diff_EFlatMaj_0x3c[(int)'a'] = 8 + 12;
+    _pitch_diff_EFlatMaj_0x3c[(int)'b'] = 10 + 12;
+    _pitch_diff_EFlatMaj_0x3c[(int)'c'] = 0 + 12;
+    _pitch_diff_EFlatMaj_0x3c[(int)'d'] = 2 + 12;
+    _pitch_diff_EFlatMaj_0x3c[(int)'e'] = 3 + 12;
+    _pitch_diff_EFlatMaj_0x3c[(int)'f'] = 5 + 12;
+    _pitch_diff_EFlatMaj_0x3c[(int)'g'] = 7 + 12;
+
+    /* BFlatMaj */
+    _pitch_diff_BFlatMaj_0x3c[(int)'A'] = 9;
+    _pitch_diff_BFlatMaj_0x3c[(int)'B'] = 10;
+    _pitch_diff_BFlatMaj_0x3c[(int)'C'] = 0;
+    _pitch_diff_BFlatMaj_0x3c[(int)'D'] = 2;
+    _pitch_diff_BFlatMaj_0x3c[(int)'E'] = 3;
+    _pitch_diff_BFlatMaj_0x3c[(int)'F'] = 5;
+    _pitch_diff_BFlatMaj_0x3c[(int)'G'] = 7;
+
+    _pitch_diff_BFlatMaj_0x3c[(int)'a'] = 9 + 12;
+    _pitch_diff_BFlatMaj_0x3c[(int)'b'] = 10 + 12;
+    _pitch_diff_BFlatMaj_0x3c[(int)'c'] = 0 + 12;
+    _pitch_diff_BFlatMaj_0x3c[(int)'d'] = 2 + 12;
+    _pitch_diff_BFlatMaj_0x3c[(int)'e'] = 3 + 12;
+    _pitch_diff_BFlatMaj_0x3c[(int)'f'] = 5 + 12;
+    _pitch_diff_BFlatMaj_0x3c[(int)'g'] = 7 + 12;
+
+    /* FMaj */
+    _pitch_diff_FMaj_0x3c[(int)'A'] = 9;
+    _pitch_diff_FMaj_0x3c[(int)'B'] = 10;
+    _pitch_diff_FMaj_0x3c[(int)'C'] = 0;
+    _pitch_diff_FMaj_0x3c[(int)'D'] = 2;
+    _pitch_diff_FMaj_0x3c[(int)'E'] = 4;
+    _pitch_diff_FMaj_0x3c[(int)'F'] = 5;
+    _pitch_diff_FMaj_0x3c[(int)'G'] = 7;
+
+    _pitch_diff_FMaj_0x3c[(int)'a'] = 9 + 12;
+    _pitch_diff_FMaj_0x3c[(int)'b'] = 10 + 12;
+    _pitch_diff_FMaj_0x3c[(int)'c'] = 0 + 12;
+    _pitch_diff_FMaj_0x3c[(int)'d'] = 2 + 12;
+    _pitch_diff_FMaj_0x3c[(int)'e'] = 4 + 12;
+    _pitch_diff_FMaj_0x3c[(int)'f'] = 5 + 12;
+    _pitch_diff_FMaj_0x3c[(int)'g'] = 7 + 12;
 }

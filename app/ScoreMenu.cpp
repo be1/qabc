@@ -147,15 +147,17 @@ void ScoreMenu::onExportActionTriggered()
 void ScoreMenu::onCloseActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcMainWindow* w = a->mainWindow();
+    EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
+
+    int cur = edittabs->currentIndex();
+    if (cur < 0)
+        return;
+
     if (QMessageBox::StandardButton::No == QMessageBox::question(a->mainWindow(), tr("Really close?"), tr("Do you really want to close this score?")))
         return;
 
-    AbcMainWindow* w = a->mainWindow();
-    EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
-    int cur = edittabs->currentIndex();
-
-    if (cur >= 0)
-        edittabs->removeTab(cur);
+    edittabs->removeTab(cur);
 }
 
 void ScoreMenu::onNewActionTriggered()

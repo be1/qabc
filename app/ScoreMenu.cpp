@@ -19,6 +19,8 @@ ScoreMenu::ScoreMenu(QWidget* parent)
     addAction(&saveasaction);
     exportaction.setText(tr("Export to MIDI"));
     addAction(&exportaction);
+    exppsaction.setText(tr("Export to Postscript"));
+    addAction(&exppsaction);
     addAction(&closeaction);
 	addAction(&quitaction);
 
@@ -29,6 +31,7 @@ ScoreMenu::ScoreMenu(QWidget* parent)
     connect(&closeaction, SIGNAL(triggered()), this, SLOT(onCloseActionTriggered()));
     connect(&newaction, SIGNAL(triggered()), this, SLOT(onNewActionTriggered()));
     connect(&exportaction, SIGNAL(triggered()), this, SLOT(onExportActionTriggered()));
+    connect(&exppsaction, SIGNAL(triggered()), this, SLOT(onExportPsActionTriggered()));
 }
 
 ScoreMenu::~ScoreMenu()
@@ -142,6 +145,24 @@ void ScoreMenu::onExportActionTriggered()
 
     EditWidget* ew = edittabs->editWidgetList()->at(cur);
     ew->editVBoxLayout()->exportMIDI(fileName);
+}
+
+void ScoreMenu::onExportPsActionTriggered()
+{
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcMainWindow* w = a->mainWindow();
+    EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
+    int cur = edittabs->currentIndex();
+    if (cur < 0)
+        return;
+
+    QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Export Postscript file"), home, tr("Postscript file (*.ps)"));
+    if (fileName.isEmpty())
+        return; /* cancelled */
+
+    EditWidget* ew = edittabs->editWidgetList()->at(cur);
+    ew->editVBoxLayout()->exportPostscript(fileName);
 }
 
 void ScoreMenu::onCloseActionTriggered()

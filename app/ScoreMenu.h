@@ -23,6 +23,7 @@ protected slots:
     void onSaveActionTriggered();
     void onSaveAsActionTriggered();
     void onExportActionTriggered();
+    void onExportPsActionTriggered();
     void onCloseActionTriggered();
     void onNewActionTriggered();
 
@@ -32,6 +33,7 @@ private:
 	SaveAction saveaction;
     SaveasAction saveasaction;
     QAction exportaction;
+    QAction exppsaction;
 	CloseAction closeaction;
     QuitAction quitaction;
 };

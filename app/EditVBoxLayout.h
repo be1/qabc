@@ -35,8 +35,7 @@ public:
     void spawnSVGCompiler(const QString &prog, const QStringList &args, const QDir& wrk, int cont);
     void spawnMIDIGenerator(const QString &prog, const QStringList& args, const QDir& wrk, int cont);
     void exportMIDI(const QString& filename);
-
-    //static int handle_midi_event(void* data, fluid_midi_event_t *ev);
+    void exportPostscript(const QString& filename);
 
 signals:
     void compilerFinished(int exitCode, int cont);

@@ -20,6 +20,7 @@ protected slots:
     void onPlayerActionTriggered();
     void onAdriverActionTriggered();
     void onSfontActionTriggered();
+    void onPsActionTriggered();
     void onResetActionTriggered();
 
 private:
@@ -27,5 +28,6 @@ private:
     AdriverPrefAction adriveraction;
     ResetAction resetaction;
     SfontPrefAction sfontaction;
+    QAction psaction;
 };
 #endif

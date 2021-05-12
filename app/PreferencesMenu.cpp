@@ -15,11 +15,14 @@ PreferencesMenu::PreferencesMenu(QWidget* parent)
     addAction(&playeraction);
     addAction(&adriveraction);
     addAction(&sfontaction);
+    psaction.setText(tr("Postscript export"));
+    addAction(&psaction);
     addAction(&resetaction);
 
     connect(&playeraction, &QAction::triggered, this, &PreferencesMenu::onPlayerActionTriggered);
     connect(&adriveraction, &QAction::triggered, this, &PreferencesMenu::onAdriverActionTriggered);
     connect(&sfontaction, &QAction::triggered, this, &PreferencesMenu::onSfontActionTriggered);
+    connect(&psaction, &QAction::triggered, this, &PreferencesMenu::onPsActionTriggered);
     connect(&resetaction, &QAction::triggered, this, &PreferencesMenu::onResetActionTriggered);
 }
 
@@ -60,7 +63,7 @@ void PreferencesMenu::onPlayerActionTriggered()
     if (!player.isNull())
         command = QInputDialog::getText(a->mainWindow(), tr("Player preference"), tr("Player:"), QLineEdit::Normal, player.toString(), &ok);
     else
-        command = QInputDialog::getText(a->mainWindow(), tr("Player preference"), tr("Player:"), QLineEdit::Normal, LIBABC2SMF, &ok);
+        command = QInputDialog::getText(a->mainWindow(), tr("Player preference"), tr("Player:"), QLineEdit::Normal, ABC2MIDI, &ok);
 
     if (!ok)
         return;
@@ -79,7 +82,7 @@ void PreferencesMenu::onSfontActionTriggered()
     QString sf;
     if (!soundfont.isNull()) {
         QFileInfo info(soundfont.toString());
-        sf = QFileDialog::getOpenFileName(a->mainWindow(), tr("Audio sound font preference"),info.absolutePath(), tr("Soundfont (*.sf[23])"));
+        sf = QFileDialog::getOpenFileName(a->mainWindow(), tr("Audio sound font preference"), info.absolutePath(), tr("Soundfont (*.sf[23])"));
     } else {
         sf = QFileDialog::getOpenFileName(a->mainWindow(), tr("Audio sound font preference"), QDir::homePath(), tr("Soundfont (*.sf[23])"));
     }
@@ -89,11 +92,28 @@ void PreferencesMenu::onSfontActionTriggered()
 
     settings.setValue(SOUNDFONT_KEY, sf);
     settings.sync();
-    /* FIXME
+}
+
+void PreferencesMenu::onPsActionTriggered()
+{
+    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    QVariant ps = settings.value(PSTUNES_KEY);
+
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
-    AbcMainWindow* w =  a->mainWindow();
-    w->mainHSplitter()->editTabWidget()->currentEditWidget()->editVBoxLayout()
-    */
+
+    bool ok;
+    QString param;
+    if (!ps.isNull())
+        param = QInputDialog::getText(a->mainWindow(), tr("Postscript export preference"), tr("Tunes:"), QLineEdit::Normal, ps.toString(), &ok);
+    else
+        param = QInputDialog::getText(a->mainWindow(), tr("Postscript export preference"), tr("Tunes:"), QLineEdit::Normal, TUNES_SELECTED, &ok);
+
+    if (!ok)
+        return;
+
+    settings.setValue(PSTUNES_KEY, param);
+    settings.sync();
+
 }
 
 void PreferencesMenu::onResetActionTriggered()
@@ -107,11 +127,13 @@ void PreferencesMenu::onResetActionTriggered()
 #ifndef USE_LIBABCM2PS
 	settings.setValue(COMPILER_KEY, ABCM2PS);
 #endif
-    settings.setValue(PLAYER_KEY, LIBABC2SMF);
+    settings.setValue(PLAYER_KEY, ABC2MIDI);
 
     settings.setValue(DRIVER_KEY, ALSA);
 
     settings.setValue(SOUNDFONT_KEY, DEB_SF2_GM);
+
+    settings.setValue(PSTUNES_KEY, TUNES_SELECTED);
 
     settings.sync();
 }

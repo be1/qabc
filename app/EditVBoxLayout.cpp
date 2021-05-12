@@ -430,6 +430,57 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
     spawnMIDIGenerator(program, argv, dir, cont);
 }
 
+void EditVBoxLayout::exportPostscript(const QString &filename)
+{
+    AbcApplication *a = static_cast<AbcApplication*>(qApp);
+    if (a->isQuit())
+        return;
+
+    a->mainWindow()->statusBar()->showMessage(tr("Exporting score..."));
+    QString tosave = abcPlainTextEdit()->toPlainText();
+    tempFile.open();
+    tempFile.write(tosave.toUtf8());
+    tempFile.close();
+
+    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    QVariant param = settings.value(PSTUNES_KEY);
+
+    QString program("abcm2ps");
+    QStringList argv = program.split(" ");
+
+    if (param == TUNES_ALL) {
+        argv << "-N1" << "-O" << filename << tempFile.fileName();
+    } else {
+        argv << "-N1" << "-e" << QString::number(xspinbox.value()) << "-O" << filename << tempFile.fileName();
+    }
+
+    QFileInfo info(tempFile.fileName());
+    QDir dir = info.absoluteDir();
+#ifdef USE_LIBABCM2PS
+    QString s;
+    QByteArray ba;
+    char **av = (char**)malloc(argv.length() * sizeof (char*));
+    for (int i = 0; i < argv.length(); i++) {
+        s = argv.at(i);
+        ba = s.toUtf8();
+        av[i] = (char*)malloc((ba.length() + 1) * sizeof (char));
+        strncpy(av[i], ba.constData(), ba.length());
+        av[i][ba.length()] = '\0';
+    }
+
+    int ret = abcm2ps(argv.length(), av);
+
+    for (int i = 0; i < argv.length(); i++) {
+        free(av[i]);
+    }
+    free(av);
+    emit compilerFinished(ret, 0);
+#else
+    argv.removeAt(0);
+    spawnSVGCompiler(program, argv, dir, 0);
+#endif
+}
+
 void EditVBoxLayout::onGenerateMIDIFinished(int exitCode, int cont)
 {
     playpushbutton.setEnabled(true);
@@ -649,7 +700,7 @@ void EditVBoxLayout::onRunClicked()
 	free(av);
     emit compilerFinished(ret, 1);
 #else
-    spawnCompiler(program, argv, dir, 1);
+    spawnSVGCompiler(program, argv, dir, 1);
 #endif
 }
 
@@ -707,8 +758,10 @@ void EditVBoxLayout::onCompileFinished(int exitCode, int cont)
 
     a->mainWindow()->statusBar()->showMessage(tr("Score generated."));
 
-    if (!cont)
+    if (!cont) {
+        runpushbutton.setEnabled(true);
         return;
+    }
 
     QFileInfo info(tempFile);
     QString b(info.baseName());

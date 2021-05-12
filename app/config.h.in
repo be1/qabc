@@ -14,6 +14,11 @@
 #define ABC2MIDI \"/usr/bin/abc2midi\"
 #define LIBABC2SMF \"internal\"
 
+#define PSTUNES_KEY \"ABC/pstunes\"
+#define TUNES_ALL \"all\"
+#define TUNES_SELECTED \"selected\"
+
+/* external compiler not used anymore */
 #define COMPILER_KEY \"ABC/compiler\"
 #define ABCM2PS \"$$DATADIR\" \"/$$TARGET/\" \"abcm2ps/abcm2ps\"
 

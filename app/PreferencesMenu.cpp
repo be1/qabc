@@ -37,12 +37,17 @@ void PreferencesMenu::onAdriverActionTriggered()
 
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
 
+    QStringList items;
+    if (!driver.isNull()) {
+        items << driver.toString();
+    }
+
+    items << ALSA << PULSEAUDIO << JACK;
+    items.removeDuplicates();
+
     bool ok;
     QString drv;
-    if (!driver.isNull())
-        drv = QInputDialog::getText(a->mainWindow(), tr("Audio driver preference"), tr("Audio driver:"), QLineEdit::Normal, driver.toString(), &ok);
-    else
-        drv = QInputDialog::getText(a->mainWindow(), tr("Audio driver preference"), tr("Audio driver:"), QLineEdit::Normal, ALSA, &ok);
+    drv = QInputDialog::getItem(a->mainWindow(), tr("Audio driver preference"), tr("Audio driver:"), items, 0, false, &ok);
 
     if (!ok)
         return;
@@ -58,12 +63,17 @@ void PreferencesMenu::onPlayerActionTriggered()
 
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
 
+    QStringList items;
+    if (!player.isNull()) {
+        items << player.toString();
+    }
+
+    items << ABC2MIDI << LIBABC2SMF;
+    items.removeDuplicates();
+
     bool ok;
     QString command;
-    if (!player.isNull())
-        command = QInputDialog::getText(a->mainWindow(), tr("Player preference"), tr("Player:"), QLineEdit::Normal, player.toString(), &ok);
-    else
-        command = QInputDialog::getText(a->mainWindow(), tr("Player preference"), tr("Player:"), QLineEdit::Normal, ABC2MIDI, &ok);
+    command = QInputDialog::getItem(a->mainWindow(), tr("MIDI Generator preference"), tr("MIDI generator:"), items, 0, true, &ok);
 
     if (!ok)
         return;
@@ -101,12 +111,17 @@ void PreferencesMenu::onPsActionTriggered()
 
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
 
+    QStringList items;
+    if (!ps.isNull()) {
+        items << ps.toString();
+    }
+
+    items << TUNES_SELECTED << TUNES_ALL;
+    items.removeDuplicates();
+
     bool ok;
     QString param;
-    if (!ps.isNull())
-        param = QInputDialog::getText(a->mainWindow(), tr("Postscript export preference"), tr("Tunes:"), QLineEdit::Normal, ps.toString(), &ok);
-    else
-        param = QInputDialog::getText(a->mainWindow(), tr("Postscript export preference"), tr("Tunes:"), QLineEdit::Normal, TUNES_SELECTED, &ok);
+    param = QInputDialog::getItem(a->mainWindow(), tr("Postscript export preference"), tr("Tunes:"), items, 0, false, &ok);
 
     if (!ok)
         return;

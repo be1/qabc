@@ -235,60 +235,55 @@ QAbc version </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="43"/>
-        <location filename="PreferencesMenu.cpp" line="45"/>
+        <location filename="PreferencesMenu.cpp" line="50"/>
         <source>Audio driver preference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="43"/>
-        <location filename="PreferencesMenu.cpp" line="45"/>
+        <location filename="PreferencesMenu.cpp" line="50"/>
         <source>Audio driver:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="64"/>
-        <location filename="PreferencesMenu.cpp" line="66"/>
-        <source>Player preference</source>
+        <location filename="PreferencesMenu.cpp" line="76"/>
+        <source>MIDI Generator preference</source>
+        <oldsource>Player preference</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="64"/>
-        <location filename="PreferencesMenu.cpp" line="66"/>
-        <source>Player:</source>
+        <location filename="PreferencesMenu.cpp" line="76"/>
+        <source>MIDI generator:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="85"/>
-        <location filename="PreferencesMenu.cpp" line="87"/>
+        <location filename="PreferencesMenu.cpp" line="95"/>
+        <location filename="PreferencesMenu.cpp" line="97"/>
         <source>Soundfont (*.sf[23])</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="107"/>
-        <location filename="PreferencesMenu.cpp" line="109"/>
+        <location filename="PreferencesMenu.cpp" line="124"/>
         <source>Postscript export preference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="107"/>
-        <location filename="PreferencesMenu.cpp" line="109"/>
+        <location filename="PreferencesMenu.cpp" line="124"/>
         <source>Tunes:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="123"/>
+        <location filename="PreferencesMenu.cpp" line="138"/>
         <source>Reset prefrences?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="123"/>
+        <location filename="PreferencesMenu.cpp" line="138"/>
         <source>Do you really want to reset preferences?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="85"/>
-        <location filename="PreferencesMenu.cpp" line="87"/>
+        <location filename="PreferencesMenu.cpp" line="95"/>
+        <location filename="PreferencesMenu.cpp" line="97"/>
         <source>Audio sound font preference</source>
         <translation type="unfinished"></translation>
     </message>

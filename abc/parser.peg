@@ -41,7 +41,7 @@ static void print_error(struct abc* auxil) {
 TuneBook <- (Comment EOL+)* Tune EOF
 	/ (Comment EOL+)* Tune TuneBook
 
-Tune <- Xheader (Header EOL)* Score
+Tune <- Xheader (Header EOL)* (Kheader EOL)? (Comment EOL)* Score
 
 Header <- Oheader
 	/ Comment
@@ -53,6 +53,8 @@ Xvalue <- < [1-9][0-9]* > { abc_tune_append(auxil, $0); }
 
 #VoiceDef <- "V:" (!EOL .)+
 
+Kheader <- "K:" < (!EOL .)+ > { abc_header_append(auxil, $1, 'K'); }
+
 Oheader <- "A:" < (!EOL .)+ > { abc_header_append(auxil, $1, 'A'); }
 	/ "B:" < (!EOL .)+ > { abc_header_append(auxil, $2, 'B'); }
 	/ "C:" < (!EOL .)+ > { abc_header_append(auxil, $3, 'C'); }
@@ -61,26 +63,24 @@ Oheader <- "A:" < (!EOL .)+ > { abc_header_append(auxil, $1, 'A'); }
 	/ "G:" < (!EOL .)+ > { abc_header_append(auxil, $6, 'G'); }
 	/ "H:" < (!EOL .)+ > { abc_header_append(auxil, $7, 'H'); }
 	/ "I:" < (!EOL .)+ > { abc_header_append(auxil, $8, 'I'); }
-	/ "K:" < (!EOL .)+ > { abc_header_append(auxil, $9, 'K'); }
-	/ "L:" < (!EOL .)+ > { abc_header_append(auxil, $10, 'L'); }
-	/ "M:" < (!EOL .)+ > { abc_header_append(auxil, $11, 'M'); }
-	/ "N:" < (!EOL .)+ > { abc_header_append(auxil, $12, 'N'); }
-	/ "O:" < (!EOL .)+ > { abc_header_append(auxil, $13, 'O'); }
-	/ "P:" < (!EOL .)+ > { abc_header_append(auxil, $14, 'P'); }
-	/ "Q:" < (!EOL .)+ > { abc_header_append(auxil, $15, 'Q'); }
-	/ "R:" < (!EOL .)+ > { abc_header_append(auxil, $16, 'R'); }
-	/ "S:" < (!EOL .)+ > { abc_header_append(auxil, $17, 'S'); }
-	/ "T:" < (!EOL .)+ > { abc_header_append(auxil, $18, 'T'); }
-	/ "U:" < (!EOL .)+ > { abc_header_append(auxil, $19, 'U'); }
-	/ Comment
+	/ "L:" < (!EOL .)+ > { abc_header_append(auxil, $9, 'L'); }
+	/ "M:" < (!EOL .)+ > { abc_header_append(auxil, $10, 'M'); }
+	/ "N:" < (!EOL .)+ > { abc_header_append(auxil, $11, 'N'); }
+	/ "O:" < (!EOL .)+ > { abc_header_append(auxil, $12, 'O'); }
+	/ "P:" < (!EOL .)+ > { abc_header_append(auxil, $13, 'P'); }
+	/ "Q:" < (!EOL .)+ > { abc_header_append(auxil, $14, 'Q'); }
+	/ "R:" < (!EOL .)+ > { abc_header_append(auxil, $15, 'R'); }
+	/ "S:" < (!EOL .)+ > { abc_header_append(auxil, $16, 'S'); }
+	/ "T:" < (!EOL .)+ > { abc_header_append(auxil, $17, 'T'); }
+	/ "U:" < (!EOL .)+ > { abc_header_append(auxil, $18, 'U'); }
 
 Score <- Vheader EOL Fragment+ Score*
 	/ Fragment+
 
 Fragment <- _ / "y"
-	/ "%%" Instruction
-	/ Change
-	/ Comment
+	/ "%%" Instruction EOL
+	/ Change EOL
+	/ Comment EOL
 	/ NotePunct
 	/ NoteConstruct
 	/ '"' Gchord '"'
@@ -105,7 +105,8 @@ Unit <- < "L:" (!EOL .)+ > { abc_change_append(auxil, $1); }
 TimeSig <- < "M:" (!EOL .)+ > { abc_change_append(auxil, $1); }
 Tempo <- < "Q:" (!EOL .)+ > { abc_change_append(auxil, $1); }
 
-Comment <- "%" (!EOL .)*
+Comment <- "%" !"%" (!EOL .)*
+	/ "%" "%" ![a-zA-Z] (!EOL .)*
 
 Vheader <- "V:" Vvalue
 

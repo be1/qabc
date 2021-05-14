@@ -23,10 +23,10 @@
 #define ABCM2PS \"$$DATADIR\" \"/$$TARGET/\" \"abcm2ps/abcm2ps\"
 
 #define DRIVER_KEY	\"ABC/driver\"
-#define ALSA	\"alsa\"
-#define PULSEAUDIO	\"pulseaudio\"
-#define JACK	\"jack\"
-#define PORTAUDIO	\"portaudio\"
+#define DRIVER_ALSA	\"alsa\"
+#define DRIVER_PULSEAUDIO	\"pulseaudio\"
+#define DRIVER_JACK	\"jack\"
+#define DRIVER_PORTAUDIO	\"portaudio\"
 
 #define SOUNDFONT_KEY \"ABC/soundfont\"
 #define DEB_SF2_GM	\"/usr/share/sounds/sf2/default-GM.sf2\"

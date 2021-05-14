@@ -1,3 +1,4 @@
+#include "config.h"
 #include "EditVBoxLayout.h"
 #include "AbcApplication.h"
 #include "PreferencesMenu.h"

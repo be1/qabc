@@ -7,6 +7,369 @@
 #include "abc.h"
 #include "parser.h"
 
+signed char _pitch_diff_CMaj_0x3c['h'] = {
+    /* CMaj */
+    ['A'] = 9,
+    ['B'] = 11,
+    ['C'] = 0,
+    ['D'] = 2,
+    ['E'] = 4,
+    ['F'] = 5,
+    ['G'] = 7,
+
+    ['a'] = 9 + 12,
+    ['b'] = 11 + 12,
+    ['c'] = 0 + 12,
+    ['d'] = 2 + 12,
+    ['e'] = 4 + 12,
+    ['f'] = 5 + 12,
+    ['g'] = 7 + 12
+};
+
+signed char _pitch_diff_GMaj_0x3c['h'] = {
+    /* GMaj */
+    ['A'] = 9,
+    ['B'] = 11,
+    ['C'] = 0,
+    ['D'] = 2,
+    ['E'] = 4,
+    ['F'] = 6,
+    ['G'] = 7,
+
+    ['a'] = 9 + 12,
+    ['b'] = 11 + 12,
+    ['c'] = 0 + 12,
+    ['d'] = 2 + 12,
+    ['e'] = 4 + 12,
+    ['f'] = 6 + 12,
+    ['g'] = 7 + 12
+};
+
+signed char _pitch_diff_DMaj_0x3c['h'] = {
+    /* DMaj */
+    ['A'] = 9,
+    ['B'] = 11,
+    ['C'] = 1,
+    ['D'] = 2,
+    ['E'] = 4,
+    ['F'] = 6,
+    ['G'] = 7,
+
+    ['a'] = 9 + 12,
+    ['b'] = 11 + 12,
+    ['c'] = 1 + 12,
+    ['d'] = 2 + 12,
+    ['e'] = 4 + 12,
+    ['f'] = 6 + 12,
+    ['g'] = 7 + 12
+};
+
+signed char _pitch_diff_AMaj_0x3c['h'] = {
+    /* AMaj */
+    ['A'] = 9,
+    ['B'] = 11,
+    ['C'] = 1,
+    ['D'] = 2,
+    ['E'] = 4,
+    ['F'] = 6,
+    ['G'] = 8,
+
+    ['a'] = 9 + 12,
+    ['b'] = 11 + 12,
+    ['c'] = 1 + 12,
+    ['d'] = 2 + 12,
+    ['e'] = 4 + 12,
+    ['f'] = 6 + 12,
+    ['g'] = 8 + 12
+};
+
+signed char _pitch_diff_EMaj_0x3c['h'] = {
+    /* EMaj */
+    ['A'] = 9,
+    ['B'] = 11,
+    ['C'] = 1,
+    ['D'] = 3,
+    ['E'] = 4,
+    ['F'] = 6,
+    ['G'] = 8,
+
+    ['a'] = 9 + 12,
+    ['b'] = 11 + 12,
+    ['c'] = 1 + 12,
+    ['d'] = 3 + 12,
+    ['e'] = 4 + 12,
+    ['f'] = 6 + 12,
+    ['g'] = 8 + 12
+};
+
+signed char _pitch_diff_BMaj_0x3c['h'] = {
+    /* BMaj */
+    ['A'] = 10,
+    ['B'] = 11,
+    ['C'] = 1,
+    ['D'] = 3,
+    ['E'] = 4,
+    ['F'] = 6,
+    ['G'] = 8,
+
+    ['a'] = 10 + 12,
+    ['b'] = 11 + 12,
+    ['c'] = 1 + 12,
+    ['d'] = 3 + 12,
+    ['e'] = 4 + 12,
+    ['f'] = 6 + 12,
+    ['g'] = 8 + 12
+};
+
+signed char _pitch_diff_FSharpMaj_0x3c['h'] = {
+    /* FSharpMaj */
+    ['A'] = 10,
+    ['B'] = 11,
+    ['C'] = 1,
+    ['D'] = 3,
+    ['E'] = 5,
+    ['F'] = 6,
+    ['G'] = 8,
+
+    ['a'] = 10 + 12,
+    ['b'] = 11 + 12,
+    ['c'] = 1 + 12,
+    ['d'] = 3 + 12,
+    ['e'] = 5 + 12,
+    ['f'] = 6 + 12,
+    ['g'] = 8 + 12
+};
+
+signed char _pitch_diff_GFlatMaj_0x3c['h'] = {
+    /* GFlatMaj */
+    ['A'] = 8,
+    ['B'] = 10,
+    ['C'] = -1,
+    ['D'] = 1,
+    ['E'] = 3,
+    ['F'] = 5,
+    ['G'] = 6,
+
+    ['a'] = 8 + 12,
+    ['b'] = 10 + 12,
+    ['c'] = -1 + 12,
+    ['d'] = 1 + 12,
+    ['e'] = 3 + 12,
+    ['f'] = 5 + 12,
+    ['g'] = 6 + 12
+};
+
+signed char _pitch_diff_CSharpMaj_0x3c['h'] = {
+    /* CSharpMaj */
+    ['A'] = 10,
+    ['B'] = 12,
+    ['C'] = 1,
+    ['D'] = 3,
+    ['E'] = 5,
+    ['F'] = 6,
+    ['G'] = 8,
+
+    ['a'] = 10 + 12,
+    ['b'] = 12 + 12,
+    ['c'] = 1 + 12,
+    ['d'] = 3 + 12,
+    ['e'] = 5 + 12,
+    ['f'] = 6 + 12,
+    ['g'] = 8 + 12
+};
+
+signed char _pitch_diff_DFlatMaj_0x3c['h'] = {
+    /* DFlatMaj */
+    ['A'] = 8,
+    ['B'] = 10,
+    ['C'] = 0,
+    ['D'] = 1,
+    ['E'] = 3,
+    ['F'] = 5,
+    ['G'] = 6,
+
+    ['a'] = 8 + 12,
+    ['b'] = 10 + 12,
+    ['c'] = 0 + 12,
+    ['d'] = 1 + 12,
+    ['e'] = 3 + 12,
+    ['f'] = 5 + 12,
+    ['g'] = 6 + 12
+};
+
+signed char _pitch_diff_AFlatMaj_0x3c['h'] = {
+    /* AFlatMaj */
+    ['A'] = 8,
+    ['B'] = 10,
+    ['C'] = 0,
+    ['D'] = 1,
+    ['E'] = 3,
+    ['F'] = 5,
+    ['G'] = 7,
+
+    ['a'] = 8 + 12,
+    ['b'] = 10 + 12,
+    ['c'] = 0 + 12,
+    ['d'] = 1 + 12,
+    ['e'] = 3 + 12,
+    ['f'] = 5 + 12,
+    ['g'] = 7 + 12
+};
+
+signed char _pitch_diff_EFlatMaj_0x3c['h'] = {
+    /* EFlatMaj */
+    ['A'] = 8,
+    ['B'] = 10,
+    ['C'] = 0,
+    ['D'] = 2,
+    ['E'] = 3,
+    ['F'] = 5,
+    ['G'] = 7,
+
+    ['a'] = 8 + 12,
+    ['b'] = 10 + 12,
+    ['c'] = 0 + 12,
+    ['d'] = 2 + 12,
+    ['e'] = 3 + 12,
+    ['f'] = 5 + 12,
+    ['g'] = 7 + 12
+};
+
+signed char _pitch_diff_BFlatMaj_0x3c['h'] = {
+    /* BFlatMaj */
+    ['A'] = 9,
+    ['B'] = 10,
+    ['C'] = 0,
+    ['D'] = 2,
+    ['E'] = 3,
+    ['F'] = 5,
+    ['G'] = 7,
+
+    ['a'] = 9 + 12,
+    ['b'] = 10 + 12,
+    ['c'] = 0 + 12,
+    ['d'] = 2 + 12,
+    ['e'] = 3 + 12,
+    ['f'] = 5 + 12,
+    ['g'] = 7 + 12
+};
+
+signed char _pitch_diff_FMaj_0x3c['h'] = {
+    /* FMaj */
+    ['A'] = 9,
+    ['B'] = 10,
+    ['C'] = 0,
+    ['D'] = 2,
+    ['E'] = 4,
+    ['F'] = 5,
+    ['G'] = 7,
+
+    ['a'] = 9 + 12,
+    ['b'] = 10 + 12,
+    ['c'] = 0 + 12,
+    ['d'] = 2 + 12,
+    ['e'] = 4 + 12,
+    ['f'] = 5 + 12,
+    ['g'] = 7 + 12
+};
+
+/* semitones between note over C or c. */
+unsigned char pitch_diff_0x3c(const char* ks, int note) {
+    if (!ks || !strcasecmp(ks, "") || !strcasecmp(ks, "C") || !strcasecmp(ks, "Cmaj") || !strcasecmp(ks, "Amin") /* || !strcasecmp(ks, "Ddor") ... */ )
+        return _pitch_diff_CMaj_0x3c[note];
+
+    if (!strcasecmp(ks, "G") || !strcasecmp(ks, "Gmaj") || !strcasecmp(ks, "Emin"))
+        return _pitch_diff_GMaj_0x3c[note];
+
+    if (!strcasecmp(ks, "D") || !strcasecmp(ks, "Dmaj") || !strcasecmp(ks, "Bmin"))
+        return _pitch_diff_DMaj_0x3c[note];
+
+    if (!strcasecmp(ks, "A") || !strcasecmp(ks, "Amaj") || !strcasecmp(ks, "F#min"))
+        return _pitch_diff_AMaj_0x3c[note];
+
+    if (!strcasecmp(ks, "E") || !strcasecmp(ks, "Emaj") || !strcasecmp(ks, "C#min"))
+        return _pitch_diff_EMaj_0x3c[note];
+
+    if (!strcasecmp(ks, "B") || !strcasecmp(ks, "Bmaj") || !strcasecmp(ks, "G#min"))
+        return _pitch_diff_BMaj_0x3c[note];
+
+    if (!strcasecmp(ks, "F#") || !strcasecmp(ks, "F#maj") || !strcasecmp(ks, "D#min"))
+        return _pitch_diff_FSharpMaj_0x3c[note];
+
+    if (!strcasecmp(ks, "Gb") || !strcasecmp(ks, "Gbmaj") || !strcasecmp(ks, "Ebmin"))
+        return _pitch_diff_GFlatMaj_0x3c[note];
+
+    if (!strcasecmp(ks, "C#") || !strcasecmp(ks, "C#maj") || !strcasecmp(ks, "A#min"))
+        return _pitch_diff_CSharpMaj_0x3c[note];
+
+    if (!strcasecmp(ks, "C#") || !strcasecmp(ks, "Dbmaj") || !strcasecmp(ks, "Bbmin"))
+        return _pitch_diff_DFlatMaj_0x3c[note];
+
+    if (!strcasecmp(ks, "Ab") || !strcasecmp(ks, "Abmaj") || !strcasecmp(ks, "Fmin"))
+        return _pitch_diff_AFlatMaj_0x3c[note];
+
+    if (!strcasecmp(ks, "Eb") || !strcasecmp(ks, "Ebmaj") || !strcasecmp(ks, "Cmin"))
+        return _pitch_diff_EFlatMaj_0x3c[note];
+
+    if (!strcasecmp(ks, "Bb") || !strcasecmp(ks, "Bbmaj") || !strcasecmp(ks, "Gmin"))
+        return _pitch_diff_BFlatMaj_0x3c[note];
+
+    if (!strcasecmp(ks, "F") || !strcasecmp(ks, "Fmaj") || !strcasecmp(ks, "Dmin"))
+        return _pitch_diff_FMaj_0x3c[note];
+
+    /* default */
+    return _pitch_diff_CMaj_0x3c[note];
+}
+
+/* converts a note text to a MIDI key */
+unsigned char note2key(const char* keysig, const char* note, int* measure_accid) {
+    int octava = 0;
+    for (const char* c = note; *c; c++) {
+        if (*c == ',')
+            octava--;
+        else if (*c == '\'')
+            octava++;
+    }
+
+#define ACCID_NATURAL 0xff
+
+    int accid = 0;
+    for (const char* c = note; *c && !isalpha(*c); c++) {
+        if (*c == '_')
+            accid--;
+        else if (*c == '^')
+            accid++;
+        else if (*c == '=')
+            accid = ACCID_NATURAL;
+    }
+
+    unsigned char pitch = 0;
+    const char *c;
+
+    for (c = note; *c && !isalpha(*c); c++) {;}
+
+    if ((*c >= 'A' && *c <= 'G') || (*c >= 'a' && *c <= 'g')) {
+        if (accid) {
+            measure_accid[(int)tolower(*c)] = accid;
+            measure_accid[(int)toupper(*c)] = accid;
+	}
+
+        if (accid == ACCID_NATURAL)
+            pitch = pitch_diff_0x3c("Cmaj", *c) + 0 + (octava * 12);
+        else if (!accid) {
+            if (measure_accid[(int)*c] == ACCID_NATURAL)
+                pitch = pitch_diff_0x3c("Cmaj", *c) + 0 + (octava * 12);
+            else
+                pitch = pitch_diff_0x3c(keysig, *c) + measure_accid[(int)*c] + (octava * 12);
+        } else
+            pitch = pitch_diff_0x3c("Cmaj", *c) + accid + (octava * 12);
+
+        pitch += 0x3c; /* MIDI key for C */
+    }
+
+    return pitch;
+}
+
 void abc_tune_append(struct abc* yy, const char* yytext)
 {
     struct abc_tune* new = calloc(1, sizeof (struct abc_tune));
@@ -33,6 +396,9 @@ void abc_header_append(struct abc* yy, const char* yytext, const char which)
 
     new->h = which;
     new->text = strdup(yytext);
+
+    if (which == 'K')
+	    yy->ks = new->text;
 }
 
 void abc_voice_append(struct abc* yy, const char* yytext)
@@ -60,7 +426,7 @@ struct abc_symbol* abc_last_symbol(struct abc* yy)
 struct abc_symbol* abc_new_symbol(struct abc* yy)
 {
     struct abc_symbol* new = calloc(1, sizeof (struct abc_symbol));
-    new->start_den = 1;
+    new->ev.start_den = 1;
     new->dur_den = 1;
 
     struct abc_tune* tune = yy->tunes[yy->count-1];
@@ -170,6 +536,7 @@ void abc_note_append(struct abc* yy, const char* yytext)
     new->dur_num = 1;
     new->dur_den = 1;
     new->text = strdup(yytext);
+    new->ev.key = note2key(yy->ks, new->text, yy->measure_accid);
     if (new->text[0] == 'Z') {
 	    /* fix numerator */
         struct abc_tune* tune = yy->tunes[yy->count-1];
@@ -338,6 +705,7 @@ void abc_bar_append(struct abc* yy, const char* yytext)
     }
     // for now, only bars and have 'in_alt' field set.
     new->in_alt = v->in_alt;
+    memset(yy->measure_accid, 0, 'h' * sizeof(int));
 }
 
 int abc_alt_is_of(const struct abc_symbol* s, int alt) {
@@ -407,6 +775,8 @@ void abc_change_append(struct abc* yy, const char* yytext)
 	struct abc_symbol* new = abc_new_symbol(yy);
 	new->kind = ABC_CHANGE;
 	new->text = strdup(yytext);
+	if (new->text[0] == 'K')
+		yy->ks = &new->text[2];
 }
 
 struct abc* abc_alloc_yy(void)
@@ -776,18 +1146,15 @@ static int event_cmp(const void* a, const void* b) {
 	const struct abc_symbol* s2 = b;
 	double s1_v, s2_v;
 
-	s1_v = (double) s1->start_num / (double) s1->start_den;
-	s2_v = (double) s2->start_num / (double) s2->start_den;
+	s1_v = (double) s1->ev.start_num / (double) s1->ev.start_den;
+	s2_v = (double) s2->ev.start_num / (double) s2->ev.start_den;
 
 	if (s1_v > s2_v)
 		return 1;
 	if (s1_v < s2_v)
 		return -1;
 
-	if (!strcmp(s1->text, s2->text))
-		return 0;
-
-	return  -1;
+	return  a - b;
 }
 
 struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
@@ -815,16 +1182,16 @@ struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
 						   struct abc_symbol* off = NULL;
 
 						   on = abc_dup_symbol(s);
-						   on->value = 1;
+						   on->ev.value = 1;
 
 						   abc_frac_add(&tick_num, &tick_den, on->dur_num, on->dur_den);
 
 						   off = abc_dup_symbol(on);
-						   off->start_num = tick_num;
-						   off->start_den = tick_den;
+						   off->ev.start_num = tick_num;
+						   off->ev.start_den = tick_den;
 						   off->dur_num = 0;
 						   off->dur_den = 1;
-						   off->value = 0;
+						   off->ev.value = 0;
 
 						   abc_voice_append_symbol(voice, on);
 						   abc_voice_append_symbol(voice, off);
@@ -837,10 +1204,15 @@ struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
 								   starts = realloc(starts, ++start_count * sizeof (*starts));
 								   struct abc_symbol* dup = abc_dup_symbol(s);
 								   starts[start_count - 1] = *dup;
-								   starts[start_count - 1].value = 1;
+								   starts[start_count - 1].ev.value = 1;
 
 								   free(dup);
 
+							   } else {
+								   /* if we have a BAR, instert it before chord */
+								   struct abc_symbol* new = NULL;
+								   new = abc_dup_symbol(s);
+								   abc_voice_append_symbol(voice, new);
 							   }
 							   s = s->next;
 						   }
@@ -852,7 +1224,7 @@ struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
 						   for (int i = 0; i < stop_count; i++) {
 							   struct abc_symbol* dup = abc_dup_symbol(&starts[i]);
 							   stops[i] = *dup;
-							   stops[i].value = 0;
+							   stops[i].ev.value = 0;
 
 							   free(dup);
 						   }
@@ -860,7 +1232,7 @@ struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
 						   /* reorganize note off members */
 						   for (int i = 0; i < stop_count; i++) {
 							   struct abc_symbol* e = &stops[i];
-							   abc_frac_add(&e->start_num, &e->start_den, e->dur_num, e->dur_den);
+							   abc_frac_add(&e->ev.start_num, &e->ev.start_den, e->dur_num, e->dur_den);
 
 							   e->dur_num = 0;
 							   e->dur_den = 1;
@@ -907,10 +1279,10 @@ struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
 						   }
 
 						   /* we must use the complete chord duration as duration to add to main tick! */
-						   int first_start_num = events[0].start_num;
-						   int first_start_den = events[0].start_den;
-						   int last_stop_num = events[event_count -1].start_num;
-						   int last_stop_den = events[event_count - 1].start_den;
+						   int first_start_num = events[0].ev.start_num;
+						   int first_start_den = events[0].ev.start_den;
+						   int last_stop_num = events[event_count -1].ev.start_num;
+						   int last_stop_den = events[event_count - 1].ev.start_den;
 						   abc_frac_add(&tick_num, &tick_den, last_stop_num, last_stop_den);
 						   abc_frac_add(&tick_num, &tick_den, -first_start_num, first_start_den);
 
@@ -1048,7 +1420,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                            nup_r--;
                                        }
 
-                                       abc_frac_add(&new->start_num, &new->start_den, tick_num, tick_den);
+                                       abc_frac_add(&new->ev.start_num, &new->ev.start_den, tick_num, tick_den);
                                        abc_frac_add(&tick_num, &tick_den, new->dur_num, new->dur_den);
                                    } else {
                                        new = abc_dup_symbol(s);
@@ -1060,7 +1432,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                            new->dur_den *= nup_p;
 				       }
 
-                                       abc_frac_add(&new->start_num, &new->start_den, tick_num, tick_den);
+                                       abc_frac_add(&new->ev.start_num, &new->ev.start_den, tick_num, tick_den);
                                        /* we use the first note of chord as chord duration! */
                                        if (chord_num == 0) {
                                            chord_num = new->dur_num;
@@ -1099,7 +1471,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                            abc_frac_add(&tick_num, &tick_den, nup_num, nup_den);
                                        }
                                        in_tie = 0;
-                                   } else {
+                                   } else { /* in_tie and in_ chord */
                                        /* look if previous note is in a chord or a single note */
                                        struct abc_symbol* p = voice->last;
                                        while (p->kind != ABC_CHORD && p->kind != ABC_NOTE)
@@ -1107,7 +1479,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
 
                                        if (p->kind == ABC_CHORD) {
                                            /* for each s note, find the p note if any */
-                                           while (s ->kind != ABC_CHORD) {
+                                           while (s->kind != ABC_CHORD) {
                                                if (s->kind == ABC_NOTE) {
                                                    p = abc_chord_rewind(p->prev);
                                                    p = abc_chord_first_note(p);
@@ -1142,7 +1514,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
 								   n->dur_num *= nup_q;
 								   n->dur_den *= nup_p;
 							   }
-                                                           abc_frac_add(&n->start_num, &n->start_den, tick_num, tick_den);
+                                                           abc_frac_add(&n->ev.start_num, &n->ev.start_den, tick_num, tick_den);
                                                            /* do not append this note after the ']' chord, instert it! */
                                                            p = p->prev;
 
@@ -1174,13 +1546,13 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                            chord_num = 0, chord_den = 1;
                                            in_chord = 0;
                                        } else {
-                                           /* instert chord while we are in tie
+                                           /* insert chord while we are in tie
                                             * and play some of its notes later
                                             */
                                            struct abc_symbol* new = calloc(1, sizeof (struct abc_symbol));
                                            new->kind = ABC_CHORD;
                                            new->text = strdup("[");
-					   new->start_den = 1;
+					   new->ev.start_den = 1;
 					   new->dur_den = 1;
 
                                            /* insert new virtual chord just before the previously accepted note */
@@ -1212,7 +1584,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                                                    n->dur_den *= nup_p;
                                                            }
 
-                                                       abc_frac_add(&n->start_num, &n->start_den, tick_num, tick_den);
+                                                       abc_frac_add(&n->ev.start_num, &n->ev.start_den, tick_num, tick_den);
                                                        abc_voice_append_symbol(voice, n);
                                                    }
                                                } else {
@@ -1273,7 +1645,7 @@ struct abc_voice* abc_unfold_voice(struct abc_voice* v) {
                               new = calloc(1, sizeof (struct abc_symbol));
                               new->kind = ABC_BAR;
                               new->text = strdup("|");
-			      new->start_den = 1;
+			      new->ev.start_den = 1;
 			      new->dur_den = 1;
 
                               if (abc_is_repeat(s)) {

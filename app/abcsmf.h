@@ -27,8 +27,6 @@ private:
     void writeSingleNote(int track, struct abc_symbol* s);
     void getNumDen(const char* text, long* num, long* den);
     int getSMFKeySignature(const char* text, int* mode);
-    unsigned char pitch_diff_0x3c(const char* ks, int note);
-    unsigned char note2midi (const char* keysig, const char* note, int* measure_accid);
     void setDynamic(long dur);
     void writeExpression(int track);
     void writeLyric(const char* lyric);
@@ -38,7 +36,6 @@ private:
     int x;
     struct abc_tune* t;     /* tune selected by X */
     char* ks;               /* tune's kh->text */
-    char* curks;            /* voice's kh->text change */
     int mks;                /* MIDI smf key signature */
     int mode;               /* MIDI smf mode (maj/min) */
 
@@ -62,24 +59,6 @@ private:
     int transpose;
     long num; /* tune L numerator */
     long den; /* tune L denominator */
-
-    /* measure accidentals context */
-    int measure_accid['h']; /* 'g' + 1 */
-
-    signed char _pitch_diff_CMaj_0x3c['h'] = {0};
-    signed char _pitch_diff_GMaj_0x3c['h'] = {0};
-    signed char _pitch_diff_DMaj_0x3c['h'] = {0};
-    signed char _pitch_diff_AMaj_0x3c['h'] = {0};
-    signed char _pitch_diff_EMaj_0x3c['h'] = {0};
-    signed char _pitch_diff_BMaj_0x3c['h'] = {0};
-    signed char _pitch_diff_FSharpMaj_0x3c['h'] = {0};
-    signed char _pitch_diff_GFlatMaj_0x3c['h'] = {0};
-    signed char _pitch_diff_CSharpMaj_0x3c['h'] = {0};
-    signed char _pitch_diff_DFlatMaj_0x3c['h'] = {0};
-    signed char _pitch_diff_AFlatMaj_0x3c['h'] = {0};
-    signed char _pitch_diff_EFlatMaj_0x3c['h'] = {0};
-    signed char _pitch_diff_BFlatMaj_0x3c['h'] = {0};
-    signed char _pitch_diff_FMaj_0x3c['h'] = {0};
 };
 
 #endif // ABCSMF_H

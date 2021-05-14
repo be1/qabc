@@ -9,7 +9,6 @@
 extern "C" {
 #endif
 
-
 enum abc_type { ABC_EOL, ABC_SPACE, ABC_NOTE, ABC_NUP, ABC_GRACE, ABC_CHORD, ABC_DECO, ABC_GCHORD, ABC_TIE, ABC_SLUR, ABC_BAR, ABC_ALT, ABC_INST, ABC_CHANGE };
 
 struct abc_buffer {
@@ -19,12 +18,14 @@ struct abc_buffer {
 };
 
 struct abc {
-    struct abc_tune** tunes;
+	struct abc_tune** tunes;
 	int count;
 	struct abc_buffer* buffer;
 	int error;
 	int error_line;
 	int error_char;
+	char* ks; /* current key signature */
+	int measure_accid['h']; /* 'g' + 1 */
 };
 
 struct abc_header {
@@ -47,6 +48,13 @@ struct abc_voice {
 	int in_alt;
 };
 
+struct abc_event {
+	long start_num;
+	long start_den;
+	int key;
+	int value;
+};
+
 struct abc_symbol {
 	enum abc_type kind;
 	char* lyric;
@@ -54,9 +62,10 @@ struct abc_symbol {
 	long dur_num; /* duration */
 	long dur_den;
 	int index; /* symbol index in parser */
-	long start_num; /* delay for starting (used for midifying) */
-	long start_den;
-	int value; /* used for midifying */
+	struct abc_event ev;
+//	long start_num; /* delay for starting (used for midifying) */
+//	long start_den;
+//	int value; /* used for midifying */
 	int in_alt;
 	int in_tie;
 	int in_chord;

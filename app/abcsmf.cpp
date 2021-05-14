@@ -8,7 +8,6 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         x(x),
         t(nullptr),
         ks(nullptr),
-        curks(nullptr),
         tpu(0),
         upm(0),
         tempo(0),
@@ -27,7 +26,6 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         num(1),
         den(8)
 {
-    feedPitchDiff();
         connect(this, &QSmf::signalSMFWriteTempoTrack, this, &AbcSmf::onSMFWriteTempoTrack);
         connect(this, &QSmf::signalSMFWriteTrack, this, &AbcSmf::onSMFWriteTrack);
 
@@ -73,8 +71,6 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
             ks = kh->text;
             mks = getSMFKeySignature(ks, &mode);
         }
-
-        memset(measure_accid, 0, sizeof (measure_accid));
 }
 
 void AbcSmf::manageDecoration(struct abc_symbol* s) {
@@ -111,7 +107,7 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
         if (s->text[0] == 'Z' || s->text[0] == 'z') {
             /* no event */
         } else {
-                delta_tick = (tpu * s->start_num / s->start_den) - last_tick;
+                delta_tick = (tpu * s->ev.start_num / s->ev.start_den) - last_tick;
                 last_tick += delta_tick;
 
                 /* modify cur_dyn from context */
@@ -123,15 +119,13 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 /* set note lyrics if any */
                 writeLyric(s->lyric);
 
-                /* find MIDI pitch */
-                unsigned char n = note2midi(curks ? curks : ks, s->text, measure_accid);
 
-                if (s->value) {
-                        writeMidiEvent(delta_tick, noteon, track, n + transpose, cur_dyn * s->value);
+                if (s->ev.value) {
+                        writeMidiEvent(delta_tick, noteon, track, s->ev.key + transpose, cur_dyn * s->ev.value);
                 } else {
                     long small = tpu * upm / 8;
                     small = (delta_tick > small) ? small : delta_tick;
-                    writeMidiEvent(delta_tick - (small / shorten), noteon, track, n + transpose, 0x00); /* note off */
+                    writeMidiEvent(delta_tick - (small / shorten), noteon, track, s->ev.key + transpose, 0x00); /* note off */
                     last_tick -= (small / shorten);
                     shorten = in_slur;
                 }
@@ -191,9 +185,8 @@ void AbcSmf::onSMFWriteTrack(int track) {
                             writeTempo(0, mspqn);
                             writeBpmTempo(0, tempo);
                     } else if (s->text[0] == 'K') {
-                            curks = &s->text[2]; /* pass "K:" */
                             int mode = 0;
-                            int mks = getSMFKeySignature(curks, &mode);
+                            int mks = getSMFKeySignature(&s->text[2], &mode);
                             writeKeySignature(0, mks, mode);
                     }
                     break;
@@ -216,7 +209,6 @@ void AbcSmf::onSMFWriteTrack(int track) {
                 }
                 case ABC_BAR: {
                         /* reset measure accidentals */
-                        memset(measure_accid, 0, sizeof measure_accid);
                         break;
                 }
                 case ABC_INST: {
@@ -233,7 +225,6 @@ void AbcSmf::onSMFWriteTrack(int track) {
         }
         writeMetaEvent(0, 0x2F);
         abc_release_voice(v);
-	curks = nullptr;
 }
 
 /* text must be %d/%d */
@@ -304,101 +295,6 @@ int AbcSmf::getSMFKeySignature(const char* text, int* mode) {
         return 0;
 }
 
-/* semitones between note over C or c. */
-unsigned char AbcSmf::pitch_diff_0x3c(const char* ks, int note) {
-    if (!ks || !strcasecmp(ks, "") || !strcasecmp(ks, "C") || !strcasecmp(ks, "Cmaj") || !strcasecmp(ks, "Amin") /* || !strcasecmp(ks, "Ddor") ... */ )
-        return _pitch_diff_CMaj_0x3c[note];
-
-    if (!strcasecmp(ks, "G") || !strcasecmp(ks, "Gmaj") || !strcasecmp(ks, "Emin"))
-        return _pitch_diff_GMaj_0x3c[note];
-
-    if (!strcasecmp(ks, "D") || !strcasecmp(ks, "Dmaj") || !strcasecmp(ks, "Bmin"))
-        return _pitch_diff_DMaj_0x3c[note];
-
-    if (!strcasecmp(ks, "A") || !strcasecmp(ks, "Amaj") || !strcasecmp(ks, "F#min"))
-        return _pitch_diff_AMaj_0x3c[note];
-
-    if (!strcasecmp(ks, "E") || !strcasecmp(ks, "Emaj") || !strcasecmp(ks, "C#min"))
-        return _pitch_diff_EMaj_0x3c[note];
-
-    if (!strcasecmp(ks, "B") || !strcasecmp(ks, "Bmaj") || !strcasecmp(ks, "G#min"))
-        return _pitch_diff_BMaj_0x3c[note];
-
-    if (!strcasecmp(ks, "F#") || !strcasecmp(ks, "F#maj") || !strcasecmp(ks, "D#min"))
-        return _pitch_diff_FSharpMaj_0x3c[note];
-
-    if (!strcasecmp(ks, "Gb") || !strcasecmp(ks, "Gbmaj") || !strcasecmp(ks, "Ebmin"))
-        return _pitch_diff_GFlatMaj_0x3c[note];
-
-    if (!strcasecmp(ks, "C#") || !strcasecmp(ks, "C#maj") || !strcasecmp(ks, "A#min"))
-        return _pitch_diff_CSharpMaj_0x3c[note];
-
-    if (!strcasecmp(ks, "C#") || !strcasecmp(ks, "Dbmaj") || !strcasecmp(ks, "Bbmin"))
-        return _pitch_diff_DFlatMaj_0x3c[note];
-
-    if (!strcasecmp(ks, "Ab") || !strcasecmp(ks, "Abmaj") || !strcasecmp(ks, "Fmin"))
-        return _pitch_diff_AFlatMaj_0x3c[note];
-
-    if (!strcasecmp(ks, "Eb") || !strcasecmp(ks, "Ebmaj") || !strcasecmp(ks, "Cmin"))
-        return _pitch_diff_EFlatMaj_0x3c[note];
-
-    if (!strcasecmp(ks, "Bb") || !strcasecmp(ks, "Bbmaj") || !strcasecmp(ks, "Gmin"))
-        return _pitch_diff_BFlatMaj_0x3c[note];
-
-    if (!strcasecmp(ks, "F") || !strcasecmp(ks, "Fmaj") || !strcasecmp(ks, "Dmin"))
-        return _pitch_diff_FMaj_0x3c[note];
-
-    /* default */
-    return _pitch_diff_CMaj_0x3c[note];
-}
-
-/* converts a note text to a MIDI pitch */
-unsigned char AbcSmf::note2midi (const char* keysig, const char* note, int* measure_accid) {
-    int octava = 0;
-    for (const char* c = note; *c; c++) {
-        if (*c == ',')
-            octava--;
-        else if (*c == '\'')
-            octava++;
-    }
-
-#define ACCID_NATURAL 0xff
-
-    int accid = 0;
-    for (const char* c = note; *c && !isalpha(*c); c++) {
-        if (*c == '_')
-            accid--;
-        else if (*c == '^')
-            accid++;
-        else if (*c == '=')
-            accid = ACCID_NATURAL;
-    }
-
-    unsigned char pitch = 0;
-    const char *c;
-
-    for (c = note; *c && !isalpha(*c); c++) {;}
-
-    if ((*c >= 'A' && *c <= 'G') || (*c >= 'a' && *c <= 'g')) {
-        if (accid)
-            measure_accid[(int)*c] = accid;
-
-        if (accid == ACCID_NATURAL)
-            pitch = pitch_diff_0x3c("Cmaj", *c) + 0 + (octava * 12);
-        else if (!accid) {
-            if (measure_accid[(int)*c] == ACCID_NATURAL)
-                pitch = pitch_diff_0x3c("Cmaj", *c) + 0 + (octava * 12);
-            else
-                pitch = pitch_diff_0x3c(keysig, *c) + measure_accid[(int)*c] + (octava * 12);
-        } else
-            pitch = pitch_diff_0x3c("Cmaj", *c) + accid + (octava * 12);
-
-        pitch += 0x3c; /* MIDI key for C */
-    }
-
-    return pitch;
-}
-
 void AbcSmf::setDynamic(long dur) {
     /* dynamics */
     long d = (dur > 4 * tpu ? 4 : dur > 2 * tpu ? 2 : 1);
@@ -421,245 +317,4 @@ void AbcSmf::writeLyric(const char* lyric) {
         if (lyric) {
                 writeMetaEvent(0, 0x05, QString(lyric));
         }
-}
-
-void AbcSmf::feedPitchDiff()
-{
-    /* CMaj */
-    _pitch_diff_CMaj_0x3c[(int)'A'] = 9;
-    _pitch_diff_CMaj_0x3c[(int)'B'] = 11;
-    _pitch_diff_CMaj_0x3c[(int)'C'] = 0;
-    _pitch_diff_CMaj_0x3c[(int)'D'] = 2;
-    _pitch_diff_CMaj_0x3c[(int)'E'] = 4;
-    _pitch_diff_CMaj_0x3c[(int)'F'] = 5;
-    _pitch_diff_CMaj_0x3c[(int)'G'] = 7;
-
-    _pitch_diff_CMaj_0x3c[(int)'a'] = 9 + 12;
-    _pitch_diff_CMaj_0x3c[(int)'b'] = 11 + 12;
-    _pitch_diff_CMaj_0x3c[(int)'c'] = 0 + 12;
-    _pitch_diff_CMaj_0x3c[(int)'d'] = 2 + 12;
-    _pitch_diff_CMaj_0x3c[(int)'e'] = 4 + 12;
-    _pitch_diff_CMaj_0x3c[(int)'f'] = 5 + 12;
-    _pitch_diff_CMaj_0x3c[(int)'g'] = 7 + 12;
-
-    /* GMaj */
-    _pitch_diff_GMaj_0x3c[(int)'A'] = 9;
-    _pitch_diff_GMaj_0x3c[(int)'B'] = 11;
-    _pitch_diff_GMaj_0x3c[(int)'C'] = 0;
-    _pitch_diff_GMaj_0x3c[(int)'D'] = 2;
-    _pitch_diff_GMaj_0x3c[(int)'E'] = 4;
-    _pitch_diff_GMaj_0x3c[(int)'F'] = 6;
-    _pitch_diff_GMaj_0x3c[(int)'G'] = 7;
-
-    _pitch_diff_GMaj_0x3c[(int)'a'] = 9 + 12;
-    _pitch_diff_GMaj_0x3c[(int)'b'] = 11 + 12;
-    _pitch_diff_GMaj_0x3c[(int)'c'] = 0 + 12;
-    _pitch_diff_GMaj_0x3c[(int)'d'] = 2 + 12;
-    _pitch_diff_GMaj_0x3c[(int)'e'] = 4 + 12;
-    _pitch_diff_GMaj_0x3c[(int)'f'] = 6 + 12;
-    _pitch_diff_GMaj_0x3c[(int)'g'] = 7 + 12;
-
-    /* DMaj */
-    _pitch_diff_DMaj_0x3c[(int)'A'] = 9;
-    _pitch_diff_DMaj_0x3c[(int)'B'] = 11;
-    _pitch_diff_DMaj_0x3c[(int)'C'] = 1;
-    _pitch_diff_DMaj_0x3c[(int)'D'] = 2;
-    _pitch_diff_DMaj_0x3c[(int)'E'] = 4;
-    _pitch_diff_DMaj_0x3c[(int)'F'] = 6;
-    _pitch_diff_DMaj_0x3c[(int)'G'] = 7;
-
-    _pitch_diff_DMaj_0x3c[(int)'a'] = 9 + 12;
-    _pitch_diff_DMaj_0x3c[(int)'b'] = 11 + 12;
-    _pitch_diff_DMaj_0x3c[(int)'c'] = 1 + 12;
-    _pitch_diff_DMaj_0x3c[(int)'d'] = 2 + 12;
-    _pitch_diff_DMaj_0x3c[(int)'e'] = 4 + 12;
-    _pitch_diff_DMaj_0x3c[(int)'f'] = 6 + 12;
-    _pitch_diff_DMaj_0x3c[(int)'g'] = 7 + 12;
-
-    /* AMaj */
-    _pitch_diff_AMaj_0x3c[(int)'A'] = 9;
-    _pitch_diff_AMaj_0x3c[(int)'B'] = 11;
-    _pitch_diff_AMaj_0x3c[(int)'C'] = 1;
-    _pitch_diff_AMaj_0x3c[(int)'D'] = 2;
-    _pitch_diff_AMaj_0x3c[(int)'E'] = 4;
-    _pitch_diff_AMaj_0x3c[(int)'F'] = 6;
-    _pitch_diff_AMaj_0x3c[(int)'G'] = 8;
-
-    _pitch_diff_AMaj_0x3c[(int)'a'] = 9 + 12;
-    _pitch_diff_AMaj_0x3c[(int)'b'] = 11 + 12;
-    _pitch_diff_AMaj_0x3c[(int)'c'] = 1 + 12;
-    _pitch_diff_AMaj_0x3c[(int)'d'] = 2 + 12;
-    _pitch_diff_AMaj_0x3c[(int)'e'] = 4 + 12;
-    _pitch_diff_AMaj_0x3c[(int)'f'] = 6 + 12;
-    _pitch_diff_AMaj_0x3c[(int)'g'] = 8 + 12;
-
-    /* EMaj */
-    _pitch_diff_EMaj_0x3c[(int)'A'] = 9;
-    _pitch_diff_EMaj_0x3c[(int)'B'] = 11;
-    _pitch_diff_EMaj_0x3c[(int)'C'] = 1;
-    _pitch_diff_EMaj_0x3c[(int)'D'] = 3;
-    _pitch_diff_EMaj_0x3c[(int)'E'] = 4;
-    _pitch_diff_EMaj_0x3c[(int)'F'] = 6;
-    _pitch_diff_EMaj_0x3c[(int)'G'] = 8;
-
-    _pitch_diff_EMaj_0x3c[(int)'a'] = 9 + 12;
-    _pitch_diff_EMaj_0x3c[(int)'b'] = 11 + 12;
-    _pitch_diff_EMaj_0x3c[(int)'c'] = 1 + 12;
-    _pitch_diff_EMaj_0x3c[(int)'d'] = 3 + 12;
-    _pitch_diff_EMaj_0x3c[(int)'e'] = 4 + 12;
-    _pitch_diff_EMaj_0x3c[(int)'f'] = 6 + 12;
-    _pitch_diff_EMaj_0x3c[(int)'g'] = 8 + 12;
-
-    /* BMaj */
-    _pitch_diff_BMaj_0x3c[(int)'A'] = 10;
-    _pitch_diff_BMaj_0x3c[(int)'B'] = 11;
-    _pitch_diff_BMaj_0x3c[(int)'C'] = 1;
-    _pitch_diff_BMaj_0x3c[(int)'D'] = 3;
-    _pitch_diff_BMaj_0x3c[(int)'E'] = 4;
-    _pitch_diff_BMaj_0x3c[(int)'F'] = 6;
-    _pitch_diff_BMaj_0x3c[(int)'G'] = 8;
-
-    _pitch_diff_BMaj_0x3c[(int)'a'] = 10 + 12;
-    _pitch_diff_BMaj_0x3c[(int)'b'] = 11 + 12;
-    _pitch_diff_BMaj_0x3c[(int)'c'] = 1 + 12;
-    _pitch_diff_BMaj_0x3c[(int)'d'] = 3 + 12;
-    _pitch_diff_BMaj_0x3c[(int)'e'] = 4 + 12;
-    _pitch_diff_BMaj_0x3c[(int)'f'] = 6 + 12;
-    _pitch_diff_BMaj_0x3c[(int)'g'] = 8 + 12;
-
-    /* FSharpMaj */
-    _pitch_diff_FSharpMaj_0x3c[(int)'A'] = 10;
-    _pitch_diff_FSharpMaj_0x3c[(int)'B'] = 11;
-    _pitch_diff_FSharpMaj_0x3c[(int)'C'] = 1;
-    _pitch_diff_FSharpMaj_0x3c[(int)'D'] = 3;
-    _pitch_diff_FSharpMaj_0x3c[(int)'E'] = 5;
-    _pitch_diff_FSharpMaj_0x3c[(int)'F'] = 6;
-    _pitch_diff_FSharpMaj_0x3c[(int)'G'] = 8;
-
-    _pitch_diff_FSharpMaj_0x3c[(int)'a'] = 10 + 12;
-    _pitch_diff_FSharpMaj_0x3c[(int)'b'] = 11 + 12;
-    _pitch_diff_FSharpMaj_0x3c[(int)'c'] = 1 + 12;
-    _pitch_diff_FSharpMaj_0x3c[(int)'d'] = 3 + 12;
-    _pitch_diff_FSharpMaj_0x3c[(int)'e'] = 5 + 12;
-    _pitch_diff_FSharpMaj_0x3c[(int)'f'] = 6 + 12;
-    _pitch_diff_FSharpMaj_0x3c[(int)'g'] = 8 + 12;
-
-    /* GFlatMaj */
-    _pitch_diff_GFlatMaj_0x3c[(int)'A'] = 8;
-    _pitch_diff_GFlatMaj_0x3c[(int)'B'] = 10;
-    _pitch_diff_GFlatMaj_0x3c[(int)'C'] = -1;
-    _pitch_diff_GFlatMaj_0x3c[(int)'D'] = 1;
-    _pitch_diff_GFlatMaj_0x3c[(int)'E'] = 3;
-    _pitch_diff_GFlatMaj_0x3c[(int)'F'] = 5;
-    _pitch_diff_GFlatMaj_0x3c[(int)'G'] = 6;
-
-    _pitch_diff_GFlatMaj_0x3c[(int)'a'] = 8 + 12;
-    _pitch_diff_GFlatMaj_0x3c[(int)'b'] = 10 + 12;
-    _pitch_diff_GFlatMaj_0x3c[(int)'c'] = -1 + 12;
-    _pitch_diff_GFlatMaj_0x3c[(int)'d'] = 1 + 12;
-    _pitch_diff_GFlatMaj_0x3c[(int)'e'] = 3 + 12;
-    _pitch_diff_GFlatMaj_0x3c[(int)'f'] = 5 + 12;
-    _pitch_diff_GFlatMaj_0x3c[(int)'g'] = 6 + 12;
-
-    /* CSharpMaj */
-    _pitch_diff_CSharpMaj_0x3c[(int)'A'] = 10;
-    _pitch_diff_CSharpMaj_0x3c[(int)'B'] = 12;
-    _pitch_diff_CSharpMaj_0x3c[(int)'C'] = 1;
-    _pitch_diff_CSharpMaj_0x3c[(int)'D'] = 3;
-    _pitch_diff_CSharpMaj_0x3c[(int)'E'] = 5;
-    _pitch_diff_CSharpMaj_0x3c[(int)'F'] = 6;
-    _pitch_diff_CSharpMaj_0x3c[(int)'G'] = 8;
-
-    _pitch_diff_CSharpMaj_0x3c[(int)'a'] = 10 + 12;
-    _pitch_diff_CSharpMaj_0x3c[(int)'b'] = 12 + 12;
-    _pitch_diff_CSharpMaj_0x3c[(int)'c'] = 1 + 12;
-    _pitch_diff_CSharpMaj_0x3c[(int)'d'] = 3 + 12;
-    _pitch_diff_CSharpMaj_0x3c[(int)'e'] = 5 + 12;
-    _pitch_diff_CSharpMaj_0x3c[(int)'f'] = 6 + 12;
-    _pitch_diff_CSharpMaj_0x3c[(int)'g'] = 8 + 12;
-
-    /* DFlatMaj */
-    _pitch_diff_DFlatMaj_0x3c[(int)'A'] = 8;
-    _pitch_diff_DFlatMaj_0x3c[(int)'B'] = 10;
-    _pitch_diff_DFlatMaj_0x3c[(int)'C'] = 0;
-    _pitch_diff_DFlatMaj_0x3c[(int)'D'] = 1;
-    _pitch_diff_DFlatMaj_0x3c[(int)'E'] = 3;
-    _pitch_diff_DFlatMaj_0x3c[(int)'F'] = 5;
-    _pitch_diff_DFlatMaj_0x3c[(int)'G'] = 6;
-
-    _pitch_diff_DFlatMaj_0x3c[(int)'a'] = 8 + 12;
-    _pitch_diff_DFlatMaj_0x3c[(int)'b'] = 10 + 12;
-    _pitch_diff_DFlatMaj_0x3c[(int)'c'] = 0 + 12;
-    _pitch_diff_DFlatMaj_0x3c[(int)'d'] = 1 + 12;
-    _pitch_diff_DFlatMaj_0x3c[(int)'e'] = 3 + 12;
-    _pitch_diff_DFlatMaj_0x3c[(int)'f'] = 5 + 12;
-    _pitch_diff_DFlatMaj_0x3c[(int)'g'] = 6 + 12;
-
-    /* AFlatMaj */
-    _pitch_diff_AFlatMaj_0x3c[(int)'A'] = 8;
-    _pitch_diff_AFlatMaj_0x3c[(int)'B'] = 10;
-    _pitch_diff_AFlatMaj_0x3c[(int)'C'] = 0;
-    _pitch_diff_AFlatMaj_0x3c[(int)'D'] = 1;
-    _pitch_diff_AFlatMaj_0x3c[(int)'E'] = 3;
-    _pitch_diff_AFlatMaj_0x3c[(int)'F'] = 5;
-    _pitch_diff_AFlatMaj_0x3c[(int)'G'] = 7;
-
-    _pitch_diff_AFlatMaj_0x3c[(int)'a'] = 8 + 12;
-    _pitch_diff_AFlatMaj_0x3c[(int)'b'] = 10 + 12;
-    _pitch_diff_AFlatMaj_0x3c[(int)'c'] = 0 + 12;
-    _pitch_diff_AFlatMaj_0x3c[(int)'d'] = 1 + 12;
-    _pitch_diff_AFlatMaj_0x3c[(int)'e'] = 3 + 12;
-    _pitch_diff_AFlatMaj_0x3c[(int)'f'] = 5 + 12;
-    _pitch_diff_AFlatMaj_0x3c[(int)'g'] = 7 + 12;
-
-    /* EFlatMaj */
-    _pitch_diff_EFlatMaj_0x3c[(int)'A'] = 8;
-    _pitch_diff_EFlatMaj_0x3c[(int)'B'] = 10;
-    _pitch_diff_EFlatMaj_0x3c[(int)'C'] = 0;
-    _pitch_diff_EFlatMaj_0x3c[(int)'D'] = 2;
-    _pitch_diff_EFlatMaj_0x3c[(int)'E'] = 3;
-    _pitch_diff_EFlatMaj_0x3c[(int)'F'] = 5;
-    _pitch_diff_EFlatMaj_0x3c[(int)'G'] = 7;
-
-    _pitch_diff_EFlatMaj_0x3c[(int)'a'] = 8 + 12;
-    _pitch_diff_EFlatMaj_0x3c[(int)'b'] = 10 + 12;
-    _pitch_diff_EFlatMaj_0x3c[(int)'c'] = 0 + 12;
-    _pitch_diff_EFlatMaj_0x3c[(int)'d'] = 2 + 12;
-    _pitch_diff_EFlatMaj_0x3c[(int)'e'] = 3 + 12;
-    _pitch_diff_EFlatMaj_0x3c[(int)'f'] = 5 + 12;
-    _pitch_diff_EFlatMaj_0x3c[(int)'g'] = 7 + 12;
-
-    /* BFlatMaj */
-    _pitch_diff_BFlatMaj_0x3c[(int)'A'] = 9;
-    _pitch_diff_BFlatMaj_0x3c[(int)'B'] = 10;
-    _pitch_diff_BFlatMaj_0x3c[(int)'C'] = 0;
-    _pitch_diff_BFlatMaj_0x3c[(int)'D'] = 2;
-    _pitch_diff_BFlatMaj_0x3c[(int)'E'] = 3;
-    _pitch_diff_BFlatMaj_0x3c[(int)'F'] = 5;
-    _pitch_diff_BFlatMaj_0x3c[(int)'G'] = 7;
-
-    _pitch_diff_BFlatMaj_0x3c[(int)'a'] = 9 + 12;
-    _pitch_diff_BFlatMaj_0x3c[(int)'b'] = 10 + 12;
-    _pitch_diff_BFlatMaj_0x3c[(int)'c'] = 0 + 12;
-    _pitch_diff_BFlatMaj_0x3c[(int)'d'] = 2 + 12;
-    _pitch_diff_BFlatMaj_0x3c[(int)'e'] = 3 + 12;
-    _pitch_diff_BFlatMaj_0x3c[(int)'f'] = 5 + 12;
-    _pitch_diff_BFlatMaj_0x3c[(int)'g'] = 7 + 12;
-
-    /* FMaj */
-    _pitch_diff_FMaj_0x3c[(int)'A'] = 9;
-    _pitch_diff_FMaj_0x3c[(int)'B'] = 10;
-    _pitch_diff_FMaj_0x3c[(int)'C'] = 0;
-    _pitch_diff_FMaj_0x3c[(int)'D'] = 2;
-    _pitch_diff_FMaj_0x3c[(int)'E'] = 4;
-    _pitch_diff_FMaj_0x3c[(int)'F'] = 5;
-    _pitch_diff_FMaj_0x3c[(int)'G'] = 7;
-
-    _pitch_diff_FMaj_0x3c[(int)'a'] = 9 + 12;
-    _pitch_diff_FMaj_0x3c[(int)'b'] = 10 + 12;
-    _pitch_diff_FMaj_0x3c[(int)'c'] = 0 + 12;
-    _pitch_diff_FMaj_0x3c[(int)'d'] = 2 + 12;
-    _pitch_diff_FMaj_0x3c[(int)'e'] = 4 + 12;
-    _pitch_diff_FMaj_0x3c[(int)'f'] = 5 + 12;
-    _pitch_diff_FMaj_0x3c[(int)'g'] = 7 + 12;
 }

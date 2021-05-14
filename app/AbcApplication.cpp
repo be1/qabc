@@ -30,8 +30,11 @@ AbcApplication::AbcApplication(int& argc, char **argv)
 	if (!compiler.isValid())
 		settings.setValue(COMPILER_KEY, ABCM2PS);
 #endif
-    settings.sync();
+    QVariant pstunes = settings.value(PSTUNES_KEY);
+    if (!pstunes.isValid())
+        settings.setValue(PSTUNES_KEY, TUNES_SELECTED);
 
+    settings.sync();
 	abcminit();
 }
 

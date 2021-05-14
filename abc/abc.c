@@ -370,6 +370,61 @@ unsigned char note2key(const char* keysig, const char* note, int* measure_accid)
     return pitch;
 }
 
+static
+int smf_key_signature(const char* text, int* mode) {
+        *mode = 0;
+        if (strstr(text, "min"))
+                *mode = 1;
+
+        if (!text || !strcmp(text, "C") || !strcmp(text, "Cmaj") || !strcmp(text, "Amin"))
+                return 0;
+
+        if (!strcmp(text, "G") || !strcmp(text, "Gmaj") || !strcmp(text, "Emin"))
+                return 1;
+
+        if (!strcmp(text, "D") || !strcmp(text, "Dmaj") || !strcmp(text, "Bmin"))
+                return 2;
+
+        if (!strcmp(text, "A") || !strcmp(text, "Amaj") || !strcmp(text, "F#min"))
+                return 3;
+
+        if (!strcmp(text, "E") || !strcmp(text, "Emaj") || !strcmp(text, "C#min"))
+                return 4;
+
+        if (!strcmp(text, "B") || !strcmp(text, "Bmaj") || !strcmp(text, "G#min"))
+                return 5;
+
+        if (!strcmp(text, "F#") || !strcmp(text, "F#maj") || !strcmp(text, "D#min"))
+                return 6;
+
+        if (!strcmp(text, "C#") || !strcmp(text, "C#maj") || !strcmp(text, "A#min"))
+                return 7;
+
+
+        if (!strcmp(text, "F") || !strcmp(text, "Fmaj") || !strcmp(text, "Dmin"))
+                return -1;
+
+        if (!strcmp(text, "Bb") || !strcmp(text, "Bbmaj") || !strcmp(text, "Gmin"))
+                return -2;
+
+        if (!strcmp(text, "Eb") || !strcmp(text, "Ebmaj") || !strcmp(text, "Cmin"))
+                return -3;
+
+        if (!strcmp(text, "Ab") || !strcmp(text, "Abmaj") || !strcmp(text, "Fmin"))
+                return -4;
+
+        if (!strcmp(text, "Db") || !strcmp(text, "Dbmaj") || !strcmp(text, "Bbmin"))
+                return -5;
+
+        if (!strcmp(text, "Gb") || !strcmp(text, "Gbmaj") || !strcmp(text, "Ebmin"))
+                return -6;
+
+        if (!strcmp(text, "Cb") || !strcmp(text, "Cbmaj") || !strcmp(text, "Abmin"))
+                return -7;
+
+        return 0;
+}
+
 void abc_tune_append(struct abc* yy, const char* yytext)
 {
     struct abc_tune* new = calloc(1, sizeof (struct abc_tune));
@@ -398,7 +453,11 @@ void abc_header_append(struct abc* yy, const char* yytext, const char which)
     new->text = strdup(yytext);
 
     if (which == 'K')
-	    yy->ks = new->text;
+        yy->ks = new->text;
+    else if (which == 'L')
+        yy->ul = new->text;
+    else if (which == 'M')
+        yy->mm = new->text;
 }
 
 void abc_voice_append(struct abc* yy, const char* yytext)
@@ -539,10 +598,7 @@ void abc_note_append(struct abc* yy, const char* yytext)
     new->ev.key = note2key(yy->ks, new->text, yy->measure_accid);
     if (new->text[0] == 'Z') {
 	    /* fix numerator */
-        struct abc_tune* tune = yy->tunes[yy->count-1];
-        struct abc_header* lh = abc_find_header(tune, 'L');
-        struct abc_header* mh = abc_find_header(tune, 'M');
-        new->dur_num = abc_unit_per_measure(lh->text, mh->text);
+        new->dur_num = abc_unit_per_measure(yy->ul, yy->mm);
     }
 }
 
@@ -698,6 +754,8 @@ void abc_bar_append(struct abc* yy, const char* yytext)
     struct abc_symbol* new = abc_new_symbol(yy);
     new->kind = ABC_BAR;
     new->text = strdup(yytext);
+    memset(yy->measure_accid, 0, sizeof(yy->measure_accid));
+
     struct abc_tune* t = yy->tunes[yy->count-1];
     struct abc_voice* v = t->voices[t->count-1];
     if (abc_is_endbar(new) || abc_is_repeat(new)) {
@@ -705,7 +763,6 @@ void abc_bar_append(struct abc* yy, const char* yytext)
     }
     // for now, only bars and have 'in_alt' field set.
     new->in_alt = v->in_alt;
-    memset(yy->measure_accid, 0, 'h' * sizeof(int));
 }
 
 int abc_alt_is_of(const struct abc_symbol* s, int alt) {
@@ -774,9 +831,28 @@ void abc_change_append(struct abc* yy, const char* yytext)
 {
 	struct abc_symbol* new = abc_new_symbol(yy);
 	new->kind = ABC_CHANGE;
-	new->text = strdup(yytext);
-	if (new->text[0] == 'K')
-		yy->ks = &new->text[2];
+    new->text = strdup(yytext);
+    new->ev.start_den = 1;
+    if (new->text[0] == 'K') {
+        yy->ks = &new->text[2];
+        new->ev.type = EV_KEYSIG;
+        int mode;
+        new->ev.key = smf_key_signature(yy->ks, &mode);
+        new->ev.value = mode;
+    } else if (new->text[0] == 'Q') {
+        new->ev.type = EV_TEMPO;
+        new->ev.value = abc_tempo(&new->text[2]);
+    } else if (new->text[0] == 'M') {
+        new->ev.type = EV_METRIC;
+        yy->mm = &new->text[2];
+        if (2 != sscanf(yy->mm, "%d/%d", &new->ev.key, &new->ev.value))
+                new->ev.key = 4, new->ev.value = 4;
+    } else if (new->text[0] == 'L') {
+        new->ev.type = EV_UNIT;
+        yy->ul = &new->text[2];
+        if (2 != sscanf(yy->ul, "%d/%d", &new->ev.key, &new->ev.value))
+                new->ev.key = 1, new->ev.value = 8;
+    }
 }
 
 struct abc* abc_alloc_yy(void)

@@ -24,7 +24,9 @@ struct abc {
 	int error;
 	int error_line;
 	int error_char;
-	char* ks; /* current key signature */
+    char* ks; /* current key signature */
+    char* ul;  /* current unit length */
+    char* mm;  /* current measure metric */
 	int measure_accid['h']; /* 'g' + 1 */
 };
 
@@ -37,7 +39,7 @@ struct abc_header {
 struct abc_tune {
 	int x;
 	struct abc_header* headers;
-	struct abc_voice** voices;
+    struct abc_voice** voices;
 	int count;
 };
 
@@ -48,11 +50,14 @@ struct abc_voice {
 	int in_alt;
 };
 
+enum abc_event_type { EV_NOTE, EV_KEYSIG, EV_TEMPO, EV_METRIC, EV_UNIT };
+
 struct abc_event {
 	long start_num;
 	long start_den;
-	int key;
-	int value;
+    int key; /* note key, or keysignature sharps/flags numbers */
+    int value; /* note velocity, or kesysignature maj/min mode, or tempo in quarter per measure */
+    enum abc_event_type type;
 };
 
 struct abc_symbol {
@@ -62,13 +67,12 @@ struct abc_symbol {
 	long dur_num; /* duration */
 	long dur_den;
 	int index; /* symbol index in parser */
-	struct abc_event ev;
-//	long start_num; /* delay for starting (used for midifying) */
-//	long start_den;
-//	int value; /* used for midifying */
+    struct abc_event ev;
+
 	int in_alt;
 	int in_tie;
-	int in_chord;
+    int in_chord;
+
 	struct abc_symbol* next;
 	struct abc_symbol* prev;
 };

@@ -39,6 +39,8 @@ private:
     int mks;                /* MIDI smf key signature */
     int mode;               /* MIDI smf mode (maj/min) */
 
+    const char* l; /* L header text */
+    const char* m; /* M header text */
     long tpu;      /* ticks per unit */
     long upm;      /* units per measure */
     long tempo;    /* quarter per minute */
@@ -57,8 +59,6 @@ private:
     char program;
     char control;
     int transpose;
-    long num; /* tune L numerator */
-    long den; /* tune L denominator */
 };
 
 #endif // ABCSMF_H

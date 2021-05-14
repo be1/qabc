@@ -4310,7 +4310,6 @@ static pcc_thunk_chunk_t *pcc_evaluate_rule_Comment(pcc_context_t *ctx) {
                 const size_t n = pcc_get_char_as_utf32(ctx, &u);
                 if (n == 0) goto L0007;
                 if (!(
-                    (u >= 0x000061 && u <= 0x00007a) ||
                     (u >= 0x000041 && u <= 0x00005a)
                 )) goto L0007;
                 ctx->cur += n;

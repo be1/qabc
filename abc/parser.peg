@@ -106,7 +106,7 @@ TimeSig <- < "M:" (!EOL .)+ > { abc_change_append(auxil, $1); }
 Tempo <- < "Q:" (!EOL .)+ > { abc_change_append(auxil, $1); }
 
 Comment <- "%" !"%" (!EOL .)*
-	/ "%" "%" ![a-zA-Z] (!EOL .)*
+	/ "%" "%" ![A-Z] (!EOL .)*
 
 Vheader <- "V:" Vvalue
 

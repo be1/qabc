@@ -8,6 +8,8 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         x(x),
         t(nullptr),
         ks(nullptr),
+        l(nullptr),
+        m(nullptr),
         tpu(0),
         upm(0),
         tempo(0),
@@ -22,9 +24,7 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         noteon(0x90),
         program(0xc0),
         control(0xb0),
-        transpose(0),
-        num(1),
-        den(8)
+        transpose(0)
 {
         connect(this, &QSmf::signalSMFWriteTempoTrack, this, &AbcSmf::onSMFWriteTempoTrack);
         connect(this, &QSmf::signalSMFWriteTrack, this, &AbcSmf::onSMFWriteTrack);
@@ -33,8 +33,6 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         if (!t)
             return;
 
-	const char* l;
-	const char* m;
 	struct abc_header* lh = abc_find_header(t, 'L');
 	if (lh)
 		l = lh->text;
@@ -59,6 +57,7 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
         setFileFormat(1);
         setTracks(t->count);
 
+        long num = 1, den = 8;
         getNumDen(l, &num, &den);
 
         tpu = (num * 4 * DPQN) / (den);
@@ -179,15 +178,21 @@ void AbcSmf::onSMFWriteTrack(int track) {
                         break;
                 }
                 case ABC_CHANGE: {
-                    if (s->text[0] == 'Q') {
-                            tempo = abc_tempo(&s->text[2]); /* pass Q: */
+                    if (s->ev.type == EV_KEYSIG) {
+                       writeKeySignature(0, s->ev.key, s->ev.value);
+                    } else if (s->ev.type == EV_TEMPO) {
+                            tempo = s->ev.value;
                             long mspqn = 60000 / tempo;
                             writeTempo(0, mspqn);
                             writeBpmTempo(0, tempo);
-                    } else if (s->text[0] == 'K') {
-                            int mode = 0;
-                            int mks = getSMFKeySignature(&s->text[2], &mode);
-                            writeKeySignature(0, mks, mode);
+                    } else if (s->ev.type == EV_METRIC) {
+                        m = &s->text[2];
+                        upm = abc_unit_per_measure(l, m);
+                    } else if (s->ev.type == EV_UNIT) {
+                        l = &s->text[2];
+                        /* 'key' = numerator, 'value' = denominator */
+                        tpu = (s->ev.key * 4 * DPQN) / (s->ev.value);
+                        upm = abc_unit_per_measure(l, m);
                     }
                     break;
                 }

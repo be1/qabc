@@ -62,7 +62,7 @@ struct abc_event {
 
 struct abc_symbol {
 	enum abc_type kind;
-	char* lyric;
+	char* lyr;
 	char* text;
 	long dur_num; /* duration */
 	long dur_den;

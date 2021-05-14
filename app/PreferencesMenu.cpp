@@ -42,7 +42,7 @@ void PreferencesMenu::onAdriverActionTriggered()
         items << driver.toString();
     }
 
-    items << ALSA << PULSEAUDIO << JACK;
+    items << DRIVER_ALSA << DRIVER_PULSEAUDIO << DRIVER_JACK << DRIVER_PORTAUDIO;
     items.removeDuplicates();
 
     bool ok;
@@ -144,7 +144,7 @@ void PreferencesMenu::onResetActionTriggered()
 #endif
     settings.setValue(PLAYER_KEY, ABC2MIDI);
 
-    settings.setValue(DRIVER_KEY, ALSA);
+    settings.setValue(DRIVER_KEY, DRIVER_ALSA);
 
     settings.setValue(SOUNDFONT_KEY, DEB_SF2_GM);
 

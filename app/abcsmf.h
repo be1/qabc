@@ -2,12 +2,10 @@
 #define ABCSMF_H
 
 #include <QObject>
-#include <drumstick/qsmf.h>
+#include <drumstick.h>
 #include "../abc/abc.h"
 
-using namespace drumstick::File;
-
-class AbcSmf : public QSmf
+class AbcSmf : public drumstick::File::QSmf
 {
     Q_OBJECT
 public:
@@ -29,7 +27,7 @@ private:
     int getSMFKeySignature(const char* text, int* mode);
     void setDynamic(long dur);
     void writeExpression(int track);
-    void writeLyric(const char* lyric);
+    void writeLyric(const char* l);
     void feedPitchDiff(void);
 
     struct abc* yy; /* takes ownership of yy */

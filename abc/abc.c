@@ -566,7 +566,7 @@ void abc_lyrics_append(struct abc* yy, const char* yytext)
         while (s->kind != ABC_NOTE && s->next)
             s = s->next;
 
-        s->lyric = syllables[i];
+        s->lyr = syllables[i];
         if (s->next)
             s = s->next;
     }
@@ -820,7 +820,7 @@ void abc_delete_symbols(struct abc_symbol* s) {
 
     while (s) {
         free(s->text);
-        free(s->lyric);
+        free(s->lyr);
         next = s->next;
         free(s);
         s = next;
@@ -1167,8 +1167,8 @@ struct abc_symbol* abc_dup_symbol(struct abc_symbol* from) {
     to->next = NULL;
     if (from->text)
         to->text = strdup(from->text);
-    if (from->lyric)
-        to->lyric = strdup(from->lyric);
+    if (from->lyr)
+        to->lyr = strdup(from->lyr);
     return to;
 }
 
@@ -1327,7 +1327,7 @@ struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
 						   /* free garbage */
 						   for (int i = 0; i < start_count; i++) {
 							   free(starts[i].text);
-							   free(starts[i].lyric);
+							   free(starts[i].lyr);
 						   }
 
 						   free(starts);
@@ -1342,7 +1342,7 @@ struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
 						   /* free garbage */
 						   for (int i = 0; i < stop_count; i++) {
 							   free(stops[i].text);
-							   free(stops[i].lyric);
+							   free(stops[i].lyr);
 						   }
 
 						   free(stops);
@@ -1365,7 +1365,7 @@ struct abc_voice* abc_eventy_voice(const struct abc_voice* v) {
 						   /* free garbage */
 						   for (int i = 0; i < event_count; i++) {
 							   free(events[i].text);
-							   free(events[i].lyric);
+							   free(events[i].lyr);
 						   }
 
 						   free(events);
@@ -1809,14 +1809,14 @@ void abc_release_voice(struct abc_voice* v) {
     struct abc_symbol* s = v->first;
     while (s != v->last) {
         struct abc_symbol* sn = s->next;
-        free(s->lyric);
+        free(s->lyr);
         free(s->text);
         free(s);
         s = sn;
     }
 
     if (v->last) {
-            free(v->last->lyric);
+            free(v->last->lyr);
             free(v->last->text);
             free(v->last);
     }

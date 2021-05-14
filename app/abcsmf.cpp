@@ -1,9 +1,9 @@
 #include <QDebug>
 #include <QTextCodec>
 #include "abcsmf.h"
-#include <drumstick/qsmf.h>
+#include <drumstick.h>
 
-AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : QSmf(parent),
+AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : drumstick::File::QSmf(parent),
         yy(yy),
         x(x),
         t(nullptr),
@@ -116,7 +116,7 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
                 writeExpression(track);
 
                 /* set note lyrics if any */
-                writeLyric(s->lyric);
+                writeLyric(s->lyr);
 
 
                 if (s->ev.value) {
@@ -318,8 +318,8 @@ void AbcSmf::writeExpression(int track) {
         }
 }
 
-void AbcSmf::writeLyric(const char* lyric) {
-        if (lyric) {
-                writeMetaEvent(0, 0x05, QString(lyric));
+void AbcSmf::writeLyric(const char* l) {
+        if (l) {
+                writeMetaEvent(0, 0x05, QString(l));
         }
 }

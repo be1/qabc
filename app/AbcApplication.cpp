@@ -20,7 +20,7 @@ AbcApplication::AbcApplication(int& argc, char **argv)
 
     QVariant driver = settings.value(DRIVER_KEY);
     if (!sfont.isValid())
-        settings.setValue(DRIVER_KEY, ALSA);
+        settings.setValue(DRIVER_KEY, DRIVER_ALSA);
 
     QVariant player = settings.value(PLAYER_KEY);
 	if (!player.isValid())

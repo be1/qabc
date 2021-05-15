@@ -119,6 +119,8 @@ void ScoreMenu::onSaveAsActionTriggered()
         return;
 
     QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    home += QDir::separator();
+    home += "score.abc";
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save ABC score"), home, tr("ABC score (*.abc)"));
     if (fileName.isEmpty())
         return; /* cancelled */
@@ -138,8 +140,9 @@ void ScoreMenu::onExportActionTriggered()
     if (cur < 0)
         return;
 
-    QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export MIDI file"), home, tr("MIDI file (*.mid)"));
+    QString exp = *edittabs->currentEditWidget()->fileName();
+    exp.replace(QRegularExpression("\\.abc$"), ".mid");
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Export MIDI file"), exp, tr("MIDI file (*.mid)"));
     if (fileName.isEmpty())
         return; /* cancelled */
 
@@ -156,8 +159,9 @@ void ScoreMenu::onExportPsActionTriggered()
     if (cur < 0)
         return;
 
-    QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export Postscript file"), home, tr("Postscript file (*.ps)"));
+    QString exp = *edittabs->currentEditWidget()->fileName();
+    exp.replace(QRegularExpression("\\.abc$"), ".ps");
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Export Postscript file"), exp, tr("Postscript file (*.ps)"));
     if (fileName.isEmpty())
         return; /* cancelled */
 

@@ -10,6 +10,40 @@
     </message>
 </context>
 <context>
+    <name>AbcSynth</name>
+    <message>
+        <location filename="abcsynth.cpp" line="56"/>
+        <source>Loading sound font: </source>
+        <translation>Chargement de la fonte sonore : </translation>
+    </message>
+    <message>
+        <location filename="abcsynth.cpp" line="90"/>
+        <source>Cannot load sound font: </source>
+        <translation>Impossible de charger la fonte sonore : </translation>
+    </message>
+    <message>
+        <location filename="abcsynth.cpp" line="125"/>
+        <source>Cannot load MIDI file: </source>
+        <translation>Impossible de charger le fichier MIDI : </translation>
+    </message>
+    <message>
+        <location filename="abcsynth.cpp" line="133"/>
+        <source>Starting synthesis...</source>
+        <translation>Démarrage de la synthèse...</translation>
+    </message>
+    <message>
+        <location filename="abcsynth.cpp" line="136"/>
+        <source>Synthesis playing...</source>
+        <translation>Synthèse en cours...</translation>
+    </message>
+    <message>
+        <location filename="abcsynth.cpp" line="139"/>
+        <location filename="abcsynth.cpp" line="176"/>
+        <source>Synthesis done.</source>
+        <translation>Synthèse terminée.</translation>
+    </message>
+</context>
+<context>
     <name>AboutAction</name>
     <message>
         <location filename="AboutAction.cpp" line="6"/>
@@ -44,115 +78,93 @@
 <context>
     <name>EditVBoxLayout</name>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="41"/>
+        <location filename="EditVBoxLayout.cpp" line="37"/>
         <source>X:</source>
         <translation>X :</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="109"/>
-        <location filename="EditVBoxLayout.cpp" line="567"/>
-        <source>Loading sound font: </source>
-        <translation>Chargement de la fonte sonore : </translation>
-    </message>
-    <message>
-        <location filename="EditVBoxLayout.cpp" line="143"/>
-        <location filename="EditVBoxLayout.cpp" line="577"/>
-        <source>Cannot load sound font: </source>
-        <translation>Impossible de charger la fonte sonore : </translation>
-    </message>
-    <message>
-        <location filename="EditVBoxLayout.cpp" line="293"/>
+        <location filename="EditVBoxLayout.cpp" line="235"/>
         <source>Generating MIDI for playing.</source>
         <translation>Génération du MIDI pour jouer.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="382"/>
-        <location filename="EditVBoxLayout.cpp" line="417"/>
-        <location filename="EditVBoxLayout.cpp" line="499"/>
-        <location filename="EditVBoxLayout.cpp" line="515"/>
-        <location filename="EditVBoxLayout.cpp" line="755"/>
+        <location filename="EditVBoxLayout.cpp" line="324"/>
+        <location filename="EditVBoxLayout.cpp" line="354"/>
+        <location filename="EditVBoxLayout.cpp" line="436"/>
+        <location filename="EditVBoxLayout.cpp" line="452"/>
+        <location filename="EditVBoxLayout.cpp" line="597"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="382"/>
+        <location filename="EditVBoxLayout.cpp" line="324"/>
         <source>Parse error line: </source>
         <translation>Erreur d&apos;analyse ligne : </translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="417"/>
+        <location filename="EditVBoxLayout.cpp" line="354"/>
         <source>Cannot generate MIDI: Please check settings.</source>
         <translation>Impossible de générer le MIDI : Veuillez vérifier les paramètres.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="302"/>
+        <location filename="EditVBoxLayout.cpp" line="244"/>
         <source>Stopping synthesis...</source>
         <translation>Arrêt de la synthèse...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="305"/>
+        <location filename="EditVBoxLayout.cpp" line="90"/>
+        <source>Cannot load sound font.</source>
+        <translation>Impossible de charger la fonte sonore.</translation>
+    </message>
+    <message>
+        <location filename="EditVBoxLayout.cpp" line="247"/>
         <source>Please wait...</source>
         <translation>Veuillez patienter...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="439"/>
+        <location filename="EditVBoxLayout.cpp" line="376"/>
         <source>Exporting score...</source>
         <translation>Exportation de la partition...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="494"/>
-        <location filename="EditVBoxLayout.cpp" line="499"/>
+        <location filename="EditVBoxLayout.cpp" line="431"/>
+        <location filename="EditVBoxLayout.cpp" line="436"/>
         <source>Error during MIDI generation.</source>
         <translation>Erreur pendant la génération du MIDI.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="505"/>
+        <location filename="EditVBoxLayout.cpp" line="442"/>
         <source>MIDI generation finished.</source>
         <translation>Génération du MIDI terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="515"/>
+        <location filename="EditVBoxLayout.cpp" line="452"/>
         <source>Cannot rename MIDI file.</source>
         <translation>Impossible de renommer le fichier MIDI.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="608"/>
-        <source>Cannot load MIDI file: </source>
-        <translation>Impossible de charger le fichier MIDI : </translation>
+        <location filename="EditVBoxLayout.cpp" line="473"/>
+        <source>Synthesis error.</source>
+        <translation>Erreur durant la synthèse.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="616"/>
-        <source>Starting synthesis...</source>
-        <translation>Démarrage de la synthèse...</translation>
-    </message>
-    <message>
-        <location filename="EditVBoxLayout.cpp" line="619"/>
-        <source>Synthesis playing...</source>
-        <translation>Synthèse en cours...</translation>
-    </message>
-    <message>
-        <location filename="EditVBoxLayout.cpp" line="622"/>
-        <source>Synthesis done.</source>
-        <translation>Synthèse terminée.</translation>
-    </message>
-    <message>
-        <location filename="EditVBoxLayout.cpp" line="634"/>
+        <location filename="EditVBoxLayout.cpp" line="475"/>
         <source>Synthesis finished.</source>
         <translation>Synthèse terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="658"/>
+        <location filename="EditVBoxLayout.cpp" line="500"/>
         <source>Generating score...</source>
         <translation>Génération de la partition...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="753"/>
-        <location filename="EditVBoxLayout.cpp" line="755"/>
+        <location filename="EditVBoxLayout.cpp" line="595"/>
+        <location filename="EditVBoxLayout.cpp" line="597"/>
         <source>Error during score generation.</source>
         <translation>Erreur pendant la génération de la partition.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="761"/>
+        <location filename="EditVBoxLayout.cpp" line="603"/>
         <source>Score generated.</source>
         <translation>Partition générée.</translation>
     </message>
@@ -359,34 +371,34 @@ QAbc version </translation>
         <translation>Voulez-vous vraiment quitter ?</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="59"/>
+        <location filename="ScoreMenu.cpp" line="55"/>
         <source>Open ABC Score</source>
         <translation>Ouvrir une partition ABC</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="59"/>
-        <location filename="ScoreMenu.cpp" line="122"/>
+        <location filename="ScoreMenu.cpp" line="55"/>
+        <location filename="ScoreMenu.cpp" line="120"/>
         <source>ABC score (*.abc)</source>
         <translation>Partition ABC (*.abc)</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="93"/>
-        <location filename="ScoreMenu.cpp" line="108"/>
+        <location filename="ScoreMenu.cpp" line="89"/>
+        <location filename="ScoreMenu.cpp" line="104"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="93"/>
+        <location filename="ScoreMenu.cpp" line="89"/>
         <source>Could not save an untitled ABC file!</source>
         <translation>Impossible de sauvegarder un fichier ABC sans nom !</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="142"/>
+        <location filename="ScoreMenu.cpp" line="141"/>
         <source>Export MIDI file</source>
         <translation>Fichier d&apos;export MIDI</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="142"/>
+        <location filename="ScoreMenu.cpp" line="141"/>
         <source>MIDI file (*.mid)</source>
         <translation>Fichier MIDI (*.mid)</translation>
     </message>
@@ -411,17 +423,17 @@ QAbc version </translation>
         <translation>Voulez-vous réellement fermer cette partition ?</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="106"/>
+        <location filename="ScoreMenu.cpp" line="102"/>
         <source>Score saved.</source>
         <translation>Partition enregistrée.</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="122"/>
+        <location filename="ScoreMenu.cpp" line="120"/>
         <source>Save ABC score</source>
         <translation>Enregistrer la partition ABC</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="108"/>
+        <location filename="ScoreMenu.cpp" line="104"/>
         <source>Could not save ABC score!</source>
         <translation>Impossible d&apos;enregistrer la partition ABC !</translation>
     </message>

@@ -45,11 +45,7 @@ void ScoreMenu::onQuitActionTriggered()
         return;
 
     EditTabWidget* tabs = a->mainWindow()->mainHSplitter()->editTabWidget();
-    int len = tabs->editWidgetList()->length();
-    for (int i = len -1; i >= 0; i-- ) {
-        tabs->removeTab(i);
-    }
-
+    tabs->removeTabs();
     a->quit();
 }
 

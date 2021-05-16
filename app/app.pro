@@ -21,6 +21,7 @@ SOURCES = NewAction.cpp OpenAction.cpp SaveAction.cpp SaveasAction.cpp CloseActi
 	TuneWaiter.cpp \
 	ViewVSplitter.cpp \
 	abcsmf.cpp \
+	abcsynth.cpp \
 	sfloader.cpp \
 	QProgressIndicator.cpp
 HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h QuitAction.h ScoreMenu.h PreferencesMenu.h AboutAction.h AboutqtAction.h HelpMenu.h AbcPlainTextEdit.h PlayPushButton.h EditVBoxLayout.h EditWidget.h EditTabWidget.h RunPushButton.h AbcMainWindow.h AbcApplication.h \
@@ -36,6 +37,7 @@ HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h Qui
 	TuneWaiter.h \
 	ViewVSplitter.h \
 	abcsmf.h \
+	abcsynth.h \
 	config.h \
 	sfloader.h \
 	QProgressIndicator.h

@@ -11,7 +11,7 @@ AbcMainWindow::AbcMainWindow(QWidget* parent)
     statusBar()->show();
     setMinimumWidth(1280);
     setMinimumHeight(720);
-	show();
+    show();
 }
 
 AbcMainWindow::~AbcMainWindow()
@@ -20,5 +20,11 @@ AbcMainWindow::~AbcMainWindow()
 
 MainHSplitter *AbcMainWindow::mainHSplitter()
 {
-   return &mainhsplitter;
+    return &mainhsplitter;
+}
+
+void AbcMainWindow::closeEvent(QCloseEvent *event)
+{
+   mainHSplitter()->editTabWidget()->removeTabs();
+   QMainWindow::closeEvent(event);
 }

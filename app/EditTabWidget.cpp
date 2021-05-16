@@ -55,6 +55,14 @@ void EditTabWidget::removeTab(int index)
     m->mainHSplitter()->viewWidget()->cleanup();
 }
 
+void EditTabWidget::removeTabs()
+{
+    int len = editWidgetList()->length();
+    for (int i = len -1; i >= 0; i-- ) {
+        removeTab(i);
+    }
+}
+
 void EditTabWidget::onCurrentChanged(int index)
 {
     EditWidget* swidget = static_cast<EditWidget*>(currentWidget());

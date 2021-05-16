@@ -19,6 +19,7 @@ public:
 
     int addTab(EditWidget *swidget);
     void removeTab(int index);
+    void removeTabs(void);
 
 protected slots:
     void onCurrentChanged(int index);

@@ -5,9 +5,8 @@
 #include "PlayPushButton.h"
 #include "AbcPlainTextEdit.h"
 #include "AbcProcess.h"
-#include "TuneWaiter.h"
 #include "AbcTemporaryFile.h"
-#include "sfloader.h"
+#include "abcsynth.h"
 #include "QProgressIndicator.h"
 #include <QVBoxLayout>
 #include <QSpinBox>
@@ -15,7 +14,6 @@
 #include <QDir>
 #include <QTemporaryFile>
 #include <QThread>
-#include <fluidsynth.h>
 
 class EditVBoxLayout: public QVBoxLayout
 {
@@ -61,9 +59,8 @@ protected slots:
     void onProgramErrorText(const QByteArray& text);
     void onCompileFinished(int exitCode, int cont);
     void onGenerateMIDIFinished(int exitCode, int cont);
-    void onSynthFinished(int exitCode);
-    void onEarlySFLoadFinished(int fid);
-    void onSFLoadFinished(int fid);
+    void onSynthInited(bool err);
+    void onSynthFinished(bool err);
 
 private:
 	AbcPlainTextEdit abcplaintextedit;
@@ -76,21 +73,10 @@ private:
     QString exportpath;
     AbcTemporaryFile tempFile;
     QList<AbcProcess*> processlist;
-    TuneWaiter *waiter;
-    SFLoader *sfloader;
     QProgressIndicator* progress;
     QString selection;
     int selectionIndex;
 
-    fluid_settings_t* fluid_settings = NULL;
-    fluid_synth_t* fluid_synth = NULL;
-    fluid_player_t* fluid_player = NULL;
-    fluid_audio_driver_t* fluid_adriver = NULL;
-    QString curSFont;
-    int sfid = 0;
-    char *id = NULL; /* jack identifier */
-    char *drv = NULL; /* "alsa" or "pulseaudi"o or "jack" */
-    char *sf = NULL; /* soundfont file name */
-    char *mf = NULL; /* current midi file name */
+    AbcSynth* synth;
 };
 #endif

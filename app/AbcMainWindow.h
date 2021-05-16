@@ -22,6 +22,9 @@ public:
 
     MainHSplitter *mainHSplitter();
 
+protected:
+     void closeEvent(QCloseEvent *event);
+
 private:
 	ScoreMenu scoremenu;
 	PreferencesMenu preferencesmenu;

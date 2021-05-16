@@ -122,6 +122,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="EditVBoxLayout.cpp" line="324"/>
+        <source>, char: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="EditVBoxLayout.cpp" line="376"/>
         <source>Exporting score...</source>
         <translation type="unfinished"></translation>
@@ -144,7 +149,8 @@
     </message>
     <message>
         <location filename="EditVBoxLayout.cpp" line="473"/>
-        <source>Synthesis error.</source>
+        <source>Error during synthesis.</source>
+        <oldsource>Synthesis error.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>

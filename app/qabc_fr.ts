@@ -122,6 +122,11 @@
         <translation>Veuillez patienter...</translation>
     </message>
     <message>
+        <location filename="EditVBoxLayout.cpp" line="324"/>
+        <source>, char: </source>
+        <translation>, caractère : </translation>
+    </message>
+    <message>
         <location filename="EditVBoxLayout.cpp" line="376"/>
         <source>Exporting score...</source>
         <translation>Exportation de la partition...</translation>
@@ -144,7 +149,8 @@
     </message>
     <message>
         <location filename="EditVBoxLayout.cpp" line="473"/>
-        <source>Synthesis error.</source>
+        <source>Error during synthesis.</source>
+        <oldsource>Synthesis error.</oldsource>
         <translation>Erreur durant la synthèse.</translation>
     </message>
     <message>

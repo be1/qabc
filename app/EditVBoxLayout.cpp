@@ -321,7 +321,7 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
             } else {
                 l = yy->error_line;
             }
-            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Parse error line: ") + QString::number(l) + ", char: " + QString::number(yy->error_char));
+            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Parse error line: ") + QString::number(l) + tr(", char: ") + QString::number(yy->error_char));
             emit generateMIDIFinished(1, cont);
         } else {
             AbcSmf *smf = new AbcSmf(yy, xspinbox.value(), this);
@@ -470,7 +470,7 @@ void EditVBoxLayout::onSynthFinished(bool err)
 {
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     if (err) {
-        a->mainWindow()->statusBar()->showMessage(tr("Synthesis error."));
+        a->mainWindow()->statusBar()->showMessage(tr("Error during synthesis."));
     } else {
         a->mainWindow()->statusBar()->showMessage(tr("Synthesis finished."));
     }

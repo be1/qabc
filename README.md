@@ -6,8 +6,6 @@ QAbc uses third-party software to generate MIDI, AUDIO, and SVG files. Without t
 - abc2midi (program, not mandatory)
 - drumstick-file (library and headers)
 - fluidsynth (library and headers)
-- pangocairo (library and headers)
-- pangoft2 (library and headers)
 
 Note that this version of QAbc uses a *modified* version of the open source abcm2ps code, maintained in a specific submodule for QAbc.
 Original `abcm2ps` code is Copyright © 2014-2016 Jean-Francois Moine. 

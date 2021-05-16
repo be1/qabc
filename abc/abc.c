@@ -1547,7 +1547,7 @@ struct abc_voice* abc_untie_voice(struct abc_voice* v, struct abc_tune* t) {
                                            abc_frac_add(&tick_num, &tick_den, nup_num, nup_den);
                                        }
                                        in_tie = 0;
-                                   } else { /* in_tie and in_ chord */
+                                   } else { /* in_tie and in_chord */
                                        /* look if previous note is in a chord or a single note */
                                        struct abc_symbol* p = voice->last;
                                        while (p->kind != ABC_CHORD && p->kind != ABC_NOTE)

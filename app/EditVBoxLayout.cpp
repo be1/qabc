@@ -62,7 +62,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 
     connect(&psgen, &PsGenerator::generated, this, &EditVBoxLayout::onCompileFinished);
     connect(&svggen, &SvgGenerator::generated, this, &EditVBoxLayout::onCompileFinished);
-    connect(&midigen, &SvgGenerator::generated, this, &EditVBoxLayout::onGenerateMIDIFinished);
+    connect(&midigen, &MidiGenerator::generated, this, &EditVBoxLayout::onGenerateMIDIFinished);
 
     QFileInfo info(fileName);
     synth = new AbcSynth(info.baseName(), this);
@@ -192,7 +192,7 @@ void EditVBoxLayout::onPlayClicked()
     }
 }
 
-void EditVBoxLayout::exportMIDI(const QString& outfilename) {
+void EditVBoxLayout::exportMIDI(QString filename) {
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     QString tosave;
 
@@ -237,12 +237,10 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
     tempFile.close();
 
     int cont;
-    if (outfilename.isEmpty()) {
+    if (filename.isEmpty()) {
         cont = 1; /* continue to playback */
-        exportpath.clear();
     } else {
-        cont = 0; /* will move to exportpath */
-        exportpath = outfilename;
+        cont = 0; /* will not play, it's just an export */
     }
 
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
@@ -267,10 +265,12 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
                 return;
             }
 
-            QString midi(tempFile.fileName());
-            midi.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value()) + ".mid");
+            if (filename.isEmpty()) {
+                filename = tempFile.fileName();
+                filename.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value()) + ".mid");
+            }
 
-            smf->writeToFile(midi);
+            smf->writeToFile(filename);
 
             delete smf;
             emit generateMIDIFinished(0, cont);
@@ -281,10 +281,10 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
     }
 
     /* or abc2midi executable */
-    midigen.generate(tempFile.fileName(), xspinbox.value(), QString(), cont);
+    midigen.generate(tempFile.fileName(), xspinbox.value(), filename, cont);
 }
 
-void EditVBoxLayout::exportPostscript(const QString &filename)
+void EditVBoxLayout::exportPostscript(QString filename)
 {
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     if (a->isQuit())
@@ -319,19 +319,8 @@ void EditVBoxLayout::onGenerateMIDIFinished(int exitCode, int cont)
 
     a->mainWindow()->statusBar()->showMessage(tr("MIDI generation finished."));
 
-    if (!cont) {
-        /* move to export file name */
-        QString midifile(tempFile.fileName());
-        midifile.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid");
-
-        QDir dir(tempFile.fileName());
-        dir.remove(exportpath);
-        if (!dir.rename(midifile, exportpath)) {
-            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Cannot rename MIDI file."));
-        }
-    } else {
+    if (cont)
             playMIDI();
-    }
 }
 
 void EditVBoxLayout::playMIDI() {

@@ -11,7 +11,7 @@ PsGenerator::PsGenerator(QObject* parent)
 {
 }
 
-void PsGenerator::generate(const QString &input, int xopt, const QString& output, int cont)
+void PsGenerator::generate(const QString &input, int xopt, QString output, int cont)
 {
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
     QVariant param = settings.value(PSTUNES_KEY);
@@ -19,13 +19,16 @@ void PsGenerator::generate(const QString &input, int xopt, const QString& output
     QString program("abcm2ps");
     QStringList argv = program.split(" ");
 
+    if (output.isEmpty()) {
+        output = input;
+        output.replace(QRegularExpression("\\.abc$"), ".ps");
+    }
+
     if (param.toString() == TUNES_ALL) {
         argv << "-N1" << "-O" << output << input;
     } else {
         argv << "-N1" << "-e" << QString::number(xopt) << "-O" << output << input;
     }
-
-    qDebug() << argv;
 
 #ifdef USE_LIBABCM2PS
     QString s;

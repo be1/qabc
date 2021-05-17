@@ -11,9 +11,8 @@ SvgGenerator::SvgGenerator(QObject* parent)
 
 }
 
-void SvgGenerator::generate(const QString &input, int xopt, const QString& output, int cont)
+void SvgGenerator::generate(const QString &input, int xopt, QString output, int cont)
 {
-    qDebug() << output; /* unused */
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
 #ifndef USE_LIBABCM2PS
     QVariant compiler = settings.value(COMPILER_KEY);
@@ -27,9 +26,11 @@ void SvgGenerator::generate(const QString &input, int xopt, const QString& outpu
     argv << "-v"; /* SVG output*/
     argv << "-e" << QString::number(xopt); /* one tune to consider */
     argv << "-N1"; /* numbering pages on  the up-left */
-    QString temp(input);
-    temp.replace(QRegularExpression("\\.abc$"), ".svg"); /* but remind, output will be tempNNN.svg */
-    argv << "-O" << temp; /* output filename */
+    if (output.isEmpty()) {
+        output = input;
+        output.replace(QRegularExpression("\\.abc$"), ".svg"); /* but remind, output will be tempNNN.svg */
+    }
+    argv << "-O" << output; /* output filename */
     argv << input; /* input ABC */
 
     QFileInfo info(input);

@@ -14,10 +14,10 @@ public:
      * @brief generate
      * @param input filename to process.
      * @param xopt X tune to process.
-     * @param output filename to output to.
+     * @param output filename to output to. If empty, has defaults.
      * @param cont play/display flag, unused, forwarded.
      */
-    virtual void generate(const QString& input, int xopt, const QString& output, int cont) = 0;
+    virtual void generate(const QString& input, int xopt, QString output, int cont) = 0;
 
 signals:
     void generated(bool err, int cont);

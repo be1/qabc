@@ -9,7 +9,7 @@ class PsGenerator : public Generator
     Q_OBJECT
 public:
     explicit PsGenerator(QObject* parent = nullptr);
-    void generate(const QString& input, int xopt, const QString& output, int cont) override;
+    void generate(const QString& input, int xopt, QString output, int cont) override;
 
 protected:
     void spawnPsCompiler(const QString &prog, const QStringList& args, const QDir &wrk, int cont);

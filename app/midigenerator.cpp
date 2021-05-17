@@ -11,10 +11,8 @@ MidiGenerator::MidiGenerator(QObject* parent)
 
 }
 
-void MidiGenerator::generate(const QString &input, int xopt, const QString &output, int cont)
+void MidiGenerator::generate(const QString &input, int xopt, QString output, int cont)
 {
-    qDebug() << output; /* unused */
-
     QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
     QVariant player = settings.value(PLAYER_KEY);
 
@@ -27,9 +25,15 @@ void MidiGenerator::generate(const QString &input, int xopt, const QString &outp
         return;
     }
 
+    if (output.isEmpty())
+        output = input;
+        output.replace(QRegularExpression("\\.abc$"), QString::number(xopt) + ".mid");
+
     argv.removeAt(0);
     argv << input;
     argv << QString::number(xopt);
+    argv << "-v";
+    argv << "-o" << output;
     QFileInfo info(input);
     QDir dir = info.absoluteDir();
 

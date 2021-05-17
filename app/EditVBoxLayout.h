@@ -32,11 +32,18 @@ public:
     RunPushButton *runPushButton();
     void setFileName(const QString& fn);
 
-    void exportPostscript(const QString& filename);
-    void exportMIDI(const QString& filename);
+    /**
+     * @brief exportPostscript
+     * @param filename Output file path. Can be empty (has defaults).
+     */
+    void exportPostscript(QString filename);
+    /**
+     * @brief exportMIDI
+     * @param filename Output file path. Can be emtpy (has defaults).
+     */
+    void exportMIDI(QString filename);
 
 signals:
-    void compilerFinished(int exitCode, int cont);
     void generateMIDIFinished(int exitCode, int cont);
     void doExportMIDI(const QString& outfilename);
 
@@ -69,7 +76,6 @@ private:
     QSpinBox xspinbox;
     QLabel xlabel;
     QString fileName;
-    QString exportpath;
     AbcTemporaryFile tempFile;
     QList<AbcProcess*> processlist;
     QProgressIndicator* progress;

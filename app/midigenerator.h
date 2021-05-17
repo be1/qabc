@@ -9,7 +9,7 @@ class MidiGenerator : public Generator
     Q_OBJECT
 public:
     MidiGenerator(QObject* parent = nullptr);
-    void generate(const QString& input, int xopt, const QString& output, int cont) override;
+    void generate(const QString& input, int xopt, QString output, int cont) override;
 protected:
     void spawnMidiCompiler(const QString &prog, const QStringList& args, const QDir &wrk, int cont);
 

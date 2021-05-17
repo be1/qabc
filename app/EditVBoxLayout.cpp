@@ -196,8 +196,6 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     QString tosave;
 
-    int virtualLineCount = 0;
-
     if (selection.isEmpty()) {
         tosave = abcPlainTextEdit()->toPlainText();
     } else {
@@ -205,20 +203,19 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
         int i = 0, xl = 0;
         QStringList lines = all.split('\n');
 
-        int l;
         /* find last X: before selectionIndex */
-        for (l = 0; l < lines.count() && i < selectionIndex; l++) {
+        for (int l = 0; l < lines.count() && i < selectionIndex; l++) {
             i += lines.at(l).count() +1; /* count \n */
             if (lines.at(l).startsWith("X:")) {
                 xspinbox.setValue(lines.at(l).rightRef(1).toInt());
                 xl = l;
+                break;
             }
         }
 
-        int j;
         /* construct headers */
-        for (j = xl;  j < lines.count(); j++) {
-            if (lines.at(j).contains(QRegularExpression("^((%[^\n]*)|([A-Z]:[^\n]+))$"))) {
+        for (int j = xl;  j < lines.count(); j++) {
+            if (lines.at(j).contains(QRegularExpression("^((%[^\n]*)|([A-Z]:[^|\n]+))$"))) {
                 if (lines.at(j).startsWith("V:")) /* ignore voice number */
                     continue;
 
@@ -230,14 +227,13 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
                 break;
         }
 
-        virtualLineCount = l;
-        tosave += selection;
+        /* when coming from QTextCursor::selectedText(), LF is replaced by U+2029! */
+        tosave += selection.replace(QChar::ParagraphSeparator, "\n");
     }
 
-    /* early opening of tempfile to set a random name */
-    /* when coming from QTextCursor::selectedText(), LF is replaced by U+2029 */
+    /* early opening of tempfile to set a random name, tempFile is used by abc2midi */
     tempFile.open();
-    tempFile.write(tosave.replace(QChar::ParagraphSeparator, "\n").toUtf8());
+    tempFile.write(tosave.toUtf8());
     tempFile.close();
 
     int cont;
@@ -245,7 +241,7 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
         cont = 1; /* continue to playback */
         exportpath.clear();
     } else {
-        cont = 0; /* move to exported midi file */
+        cont = 0; /* will move to exportpath */
         exportpath = outfilename;
     }
 
@@ -253,17 +249,14 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
     QVariant player = settings.value(PLAYER_KEY);
 
     if (player == LIBABC2SMF) {
-        QByteArray ba = tosave.replace(QChar::ParagraphSeparator, "\n").toUtf8();
+        QByteArray ba = tosave.toUtf8();
         struct abc* yy = abc_parse_buffer(ba.constData(), ba.count());
 
         if (yy->error) {
-            int l;
-            if (virtualLineCount) {
-                l = virtualLineCount;
-            } else {
-                l = yy->error_line;
-            }
-            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Parse error line: ") + QString::number(l) + tr(", char: ") + QString::number(yy->error_char));
+            if (selection.isEmpty())
+                QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Parse error line: ") + QString::number(yy->error_line) + tr(", char: ") + QString::number(yy->error_char));
+            else
+                QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Parse error in selected notes"));
             emit generateMIDIFinished(1, cont);
         } else {
             AbcSmf *smf = new AbcSmf(yy, xspinbox.value(), this);

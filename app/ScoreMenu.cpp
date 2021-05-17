@@ -51,8 +51,11 @@ void ScoreMenu::onQuitActionTriggered()
 
 void ScoreMenu::onOpenActionTriggered()
 {
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcMainWindow* w = a->mainWindow();
+
     QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open ABC Score"), home, tr("ABC score (*.abc)"));
+    QString fileName = QFileDialog::getOpenFileName(w, tr("Open ABC Score"), home, tr("ABC score (*.abc)"));
 
     /* user cancelled */
     if (fileName.isEmpty())
@@ -60,8 +63,6 @@ void ScoreMenu::onOpenActionTriggered()
 
     QFile file(fileName);
     if (file.open(QFile::ReadOnly | QFile::Text)) {
-        AbcApplication* a = static_cast<AbcApplication*>(qApp);
-        AbcMainWindow* w = a->mainWindow();
         EditTabWidget *edittabs = w->mainHSplitter()->editTabWidget();
 
         EditWidget* widget = new EditWidget(fileName, nullptr);
@@ -117,7 +118,7 @@ void ScoreMenu::onSaveAsActionTriggered()
     QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     home += QDir::separator();
     home += "score.abc";
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save ABC score"), home, tr("ABC score (*.abc)"));
+    QString fileName = QFileDialog::getSaveFileName(w, tr("Save ABC score"), home, tr("ABC score (*.abc)"));
     if (fileName.isEmpty())
         return; /* cancelled */
 
@@ -138,7 +139,7 @@ void ScoreMenu::onExportActionTriggered()
 
     QString exp = *edittabs->currentEditWidget()->fileName();
     exp.replace(QRegularExpression("\\.abc$"), ".mid");
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export MIDI file"), exp, tr("MIDI file (*.mid)"));
+    QString fileName = QFileDialog::getSaveFileName(w, tr("Export MIDI file"), exp, tr("MIDI file (*.mid)"));
     if (fileName.isEmpty())
         return; /* cancelled */
 
@@ -157,7 +158,7 @@ void ScoreMenu::onExportPsActionTriggered()
 
     QString exp = *edittabs->currentEditWidget()->fileName();
     exp.replace(QRegularExpression("\\.abc$"), ".ps");
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export Postscript file"), exp, tr("Postscript file (*.ps)"));
+    QString fileName = QFileDialog::getSaveFileName(w, tr("Export Postscript file"), exp, tr("Postscript file (*.ps)"));
     if (fileName.isEmpty())
         return; /* cancelled */
 

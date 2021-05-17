@@ -7,6 +7,9 @@
 #include "AbcProcess.h"
 #include "AbcTemporaryFile.h"
 #include "abcsynth.h"
+#include "psgenerator.h"
+#include "svggenerator.h"
+#include "midigenerator.h"
 #include "QProgressIndicator.h"
 #include <QVBoxLayout>
 #include <QSpinBox>
@@ -23,17 +26,14 @@ public:
     explicit EditVBoxLayout(const QString& fileName, QWidget* parent = nullptr);
 	~EditVBoxLayout();
 
+    void finalize(void);
     AbcPlainTextEdit *abcPlainTextEdit();
     PlayPushButton *playPushButton();
     RunPushButton *runPushButton();
     void setFileName(const QString& fn);
-    void cleanupProcesses();
-    void cleanupThreads();
 
-    void spawnSVGCompiler(const QString &prog, const QStringList &args, const QDir& wrk, int cont);
-    void spawnMIDIGenerator(const QString &prog, const QStringList& args, const QDir& wrk, int cont);
-    void exportMIDI(const QString& filename);
     void exportPostscript(const QString& filename);
+    void exportMIDI(const QString& filename);
 
 signals:
     void compilerFinished(int exitCode, int cont);
@@ -46,6 +46,8 @@ protected:
     void removeMIDIFile();
     void playMIDI();
     int xOfCursor(const QTextCursor& c);
+    void cleanupProcesses();
+    void cleanupThreads();
 
 public slots:
     void onXChanged(int value);
@@ -54,9 +56,6 @@ public slots:
     void onSelectionChanged();
 
 protected slots:
-    void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType, int cont);
-    void onProgramOutputText(const QByteArray& text);
-    void onProgramErrorText(const QByteArray& text);
     void onCompileFinished(int exitCode, int cont);
     void onGenerateMIDIFinished(int exitCode, int cont);
     void onSynthInited(bool err);
@@ -78,5 +77,8 @@ private:
     int selectionIndex;
 
     AbcSynth* synth;
+    PsGenerator psgen;
+    SvgGenerator svggen;
+    MidiGenerator midigen;
 };
 #endif

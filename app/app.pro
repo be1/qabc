@@ -22,8 +22,12 @@ SOURCES = NewAction.cpp OpenAction.cpp SaveAction.cpp SaveasAction.cpp CloseActi
 	ViewVSplitter.cpp \
 	abcsmf.cpp \
 	abcsynth.cpp \
+	generator.cpp \
+	midigenerator.cpp \
+	psgenerator.cpp \
 	sfloader.cpp \
-	QProgressIndicator.cpp
+	QProgressIndicator.cpp \
+	svggenerator.cpp
 HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h QuitAction.h ScoreMenu.h PreferencesMenu.h AboutAction.h AboutqtAction.h HelpMenu.h AbcPlainTextEdit.h PlayPushButton.h EditVBoxLayout.h EditWidget.h EditTabWidget.h RunPushButton.h AbcMainWindow.h AbcApplication.h \
 	AbcProcess.h \
 	AbcTemporaryFile.h \
@@ -39,8 +43,12 @@ HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h Qui
 	abcsmf.h \
 	abcsynth.h \
 	config.h \
+	generator.h \
+	midigenerator.h \
+	psgenerator.h \
 	sfloader.h \
-	QProgressIndicator.h
+	QProgressIndicator.h \
+	svggenerator.h
 config.input = config.h.in
 config.output = config.h
 QMAKE_SUBSTITUTES += config

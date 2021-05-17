@@ -27,7 +27,10 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	xlabel(parent),
     fileName(fileName),
     progress(nullptr),
-    synth(nullptr)
+    synth(nullptr),
+    psgen(this),
+    svggen(this),
+    midigen(this)
 {
     setObjectName("EditVBoxLayout:" + fileName);
 
@@ -55,8 +58,11 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	connect(&runpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onRunClicked);
 
     connect(this, &EditVBoxLayout::generateMIDIFinished, this, &EditVBoxLayout::onGenerateMIDIFinished);
-    connect(this, &EditVBoxLayout::compilerFinished, this, &EditVBoxLayout::onCompileFinished);
     connect(this, &EditVBoxLayout::doExportMIDI, this, &EditVBoxLayout::exportMIDI);
+
+    connect(&psgen, &PsGenerator::generated, this, &EditVBoxLayout::onCompileFinished);
+    connect(&svggen, &SvgGenerator::generated, this, &EditVBoxLayout::onCompileFinished);
+    connect(&midigen, &SvgGenerator::generated, this, &EditVBoxLayout::onGenerateMIDIFinished);
 
     QFileInfo info(fileName);
     synth = new AbcSynth(info.baseName(), this);
@@ -78,6 +84,12 @@ EditVBoxLayout::~EditVBoxLayout()
 
     removeMIDIFile();
     removeSvgFiles();
+}
+
+void EditVBoxLayout::finalize()
+{
+   cleanupThreads();
+   cleanupProcesses();
 }
 
 void EditVBoxLayout::onSynthInited(bool err) {
@@ -152,76 +164,6 @@ void EditVBoxLayout::cleanupThreads()
 void EditVBoxLayout::onXChanged(int value)
 {
     qDebug() << value;
-}
-
-void EditVBoxLayout::spawnSVGCompiler(const QString &prog, const QStringList& args, const QDir &wrk, int cont)
-{
-	AbcApplication* a = static_cast<AbcApplication*>(qApp);
-    AbcMainWindow* w =  a->mainWindow();
-    w->mainHSplitter()->viewWidget()->logView()->clear();
-    return spawnProgram(prog, args, AbcProcess::ProcessCompiler, wrk, cont);
-}
-
-void EditVBoxLayout::spawnMIDIGenerator(const QString& prog, const QStringList &args, const QDir &wrk, int cont)
-{
-	AbcApplication* a = static_cast<AbcApplication*>(qApp);
-    AbcMainWindow *w = a->mainWindow();
-    w->mainHSplitter()->viewWidget()->logView()->clear();
-    return spawnProgram(prog, args, AbcProcess::ProcessPlayer, wrk, cont);
-}
-
-void EditVBoxLayout::spawnProgram(const QString& prog, const QStringList& args, AbcProcess::ProcessType which, const QDir& wrk, int cont)
-{
-    AbcProcess *process = new AbcProcess(which, this, cont);
-    process->setWorkingDirectory(wrk.absolutePath());
-    connect(process, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType, int>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
-    connect(process, &AbcProcess::outputText, this, &EditVBoxLayout::onProgramOutputText);
-    connect(process, &AbcProcess::errorText, this, &EditVBoxLayout::onProgramErrorText);
-    processlist.append(process);
-	qDebug() << prog << args;
-	process->start(prog, args);
-}
-
-void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType which, int cont)
-{
-    switch (which) {
-    case AbcProcess::ProcessPlayer:
-        emit generateMIDIFinished(exitCode, cont); break;
-    case AbcProcess::ProcessCompiler:
-        emit compilerFinished(exitCode, cont); break;
-    case AbcProcess::ProcessUnknown:
-    default:
-        break;
-    }
-
-	/* delete garbage */
-	for (int i = 0; i < processlist.length(); i++) {
-		AbcProcess* proc = processlist.at(i);
-		if (proc->state() == QProcess::NotRunning
-				&& proc->exitCode() == exitCode
-				&& proc->exitStatus() == exitStatus
-				&& proc->which() == which) {
-            disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType, int>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
-			delete proc;
-			processlist.removeAt(i);
-		}
-    }
-}
-
-void EditVBoxLayout::onProgramOutputText(const QByteArray &text)
-{
-    AbcApplication* a = static_cast<AbcApplication*>(qApp);
-    AbcMainWindow* w =  a->mainWindow();
-    LogView* lv = w->mainHSplitter()->viewWidget()->logView();
-    lv->appendHtml("<em>" + QString::fromUtf8(text).replace("\n", "<br />") + "</em>");
-}
-
-void EditVBoxLayout::onProgramErrorText(const QByteArray &text)
-{
-    AbcApplication* a = static_cast<AbcApplication*>(qApp);
-    AbcMainWindow* w =  a->mainWindow();
-    LogView* lv = w->mainHSplitter()->viewWidget()->logView();
-    lv->appendHtml("<b style=\"color: red\">" + QString::fromUtf8(text).replace("\n", "<br />") + "</b>");
 }
 
 void EditVBoxLayout::onPlayClicked()
@@ -346,25 +288,7 @@ void EditVBoxLayout::exportMIDI(const QString& outfilename) {
     }
 
     /* or abc2midi executable */
-    QString program = player.toString();
-    QStringList argv = program.split(" ");
-    program = argv.at(0);
-
-    if (!QFileInfo::exists(program)) {
-        QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Cannot generate MIDI: Please check settings."));
-        playpushbutton.flip();
-        xspinbox.setEnabled(true);
-        playpushbutton.setEnabled(true);
-        return;
-    }
-
-    argv.removeAt(0);
-    argv << tempFile.fileName();
-    argv << QString::number(xspinbox.value());
-    QFileInfo info(tempFile.fileName());
-    QDir dir = info.absoluteDir();
-
-    spawnMIDIGenerator(program, argv, dir, cont);
+    midigen.generate(tempFile.fileName(), xspinbox.value(), QString(), cont);
 }
 
 void EditVBoxLayout::exportPostscript(const QString &filename)
@@ -378,46 +302,7 @@ void EditVBoxLayout::exportPostscript(const QString &filename)
     tempFile.open();
     tempFile.write(tosave.toUtf8());
     tempFile.close();
-
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
-    QVariant param = settings.value(PSTUNES_KEY);
-
-    QString program("abcm2ps");
-    QStringList argv = program.split(" ");
-
-    if (param.toString() == TUNES_ALL) {
-        argv << "-N1" << "-O" << filename << tempFile.fileName();
-    } else {
-        argv << "-N1" << "-e" << QString::number(xspinbox.value()) << "-O" << filename << tempFile.fileName();
-    }
-
-    qWarning() << argv;
-
-    QFileInfo info(tempFile.fileName());
-    QDir dir = info.absoluteDir();
-#ifdef USE_LIBABCM2PS
-    QString s;
-    QByteArray ba;
-    char **av = (char**)malloc(argv.length() * sizeof (char*));
-    for (int i = 0; i < argv.length(); i++) {
-        s = argv.at(i);
-        ba = s.toUtf8();
-        av[i] = (char*)malloc((ba.length() + 1) * sizeof (char));
-        strncpy(av[i], ba.constData(), ba.length());
-        av[i][ba.length()] = '\0';
-    }
-
-    int ret = abcm2ps(argv.length(), av);
-
-    for (int i = 0; i < argv.length(); i++) {
-        free(av[i]);
-    }
-    free(av);
-    emit compilerFinished(ret, 0);
-#else
-    argv.removeAt(0);
-    spawnSVGCompiler(program, argv, dir, 0);
-#endif
+    psgen.generate(tempFile.fileName(), xspinbox.value(), filename, 0);
 }
 
 void EditVBoxLayout::onGenerateMIDIFinished(int exitCode, int cont)
@@ -502,50 +387,7 @@ void EditVBoxLayout::onRunClicked()
     tempFile.open();
     tempFile.write(tosave.toUtf8());
     tempFile.close();
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
-#ifndef USE_LIBABCM2PS
-    QVariant compiler = settings.value(COMPILER_KEY);
-    QString program = compiler.toString();
-#else
-	QString program("abcm2ps");
-#endif
-    QStringList argv = program.split(" ");
-    program = argv.at(0);
-#ifndef USE_LIBABCM2PS
-    argv.removeAt(0);
-#endif
-    argv << "-v"; /* SVG output*/
-    argv << "-e" << QString::number(xspinbox.value()); /* one tune to consider */
-    argv << "-N1"; /* numbering pages on  the up-left */
-    QString temp(tempFile.fileName());
-    temp.replace(QRegularExpression("\\.abc$"), ".svg"); /* but remind, output will be tempNNN.svg */
-    argv << "-O" << temp; /* output filename */
-    argv << tempFile.fileName(); /* input ABC */
-
-    QFileInfo info(tempFile.fileName());
-    QDir dir = info.absoluteDir();
-#ifdef USE_LIBABCM2PS
-	QString s;
-	QByteArray ba;
-    char **av = (char**)malloc(argv.length() * sizeof (char*));
-    for (int i = 0; i < argv.length(); i++) {
-        s = argv.at(i);
-        ba = s.toUtf8();
-        av[i] = (char*)malloc((ba.length() + 1) * sizeof (char));
-        strncpy(av[i], ba.constData(), ba.length());
-        av[i][ba.length()] = '\0';
-    }
-
-    int ret = abcm2ps(argv.length(), av);
-
-	for (int i = 0; i < argv.length(); i++) {
-		free(av[i]);
-	}
-	free(av);
-    emit compilerFinished(ret, 1);
-#else
-    spawnSVGCompiler(program, argv, dir, 1);
-#endif
+    svggen.generate(tempFile.fileName(), xspinbox.value(), QString(), 1);
 }
 
 int EditVBoxLayout::xOfCursor(const QTextCursor& c) {

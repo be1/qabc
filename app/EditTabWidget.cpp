@@ -46,8 +46,7 @@ void EditTabWidget::removeTab(int index)
     AbcMainWindow* m = a->mainWindow();
 
     EditWidget *w = editwidgetlist.at(index);
-    w->editVBoxLayout()->cleanupProcesses();
-    w->editVBoxLayout()->cleanupThreads();
+    w->editVBoxLayout()->finalize();
     editwidgetlist.removeAt(index);
     QTabWidget::removeTab(index);
     delete w;

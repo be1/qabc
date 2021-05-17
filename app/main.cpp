@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 	AbcMainWindow w;
 	abcapplication.setMainWindow(&w);
 
-    QString iconpath = QString(DATADIR "/icons/hicolor/128x128/apps/" TARGET ".png");
+    QString iconpath = QString(DATADIR "/icons/hicolor/scalable/apps/" TARGET ".svg");
 	if (QFileInfo::exists(iconpath))
 		abcapplication.setWindowIcon(QIcon(iconpath));
 

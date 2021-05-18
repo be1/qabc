@@ -197,14 +197,7 @@ void ScoreMenu::onCloseActionTriggered()
     if (cur < 0)
         return;
 
-    EditWidget *e = edittabs->currentEditWidget();
-    AbcPlainTextEdit *pte = e->editVBoxLayout()->abcPlainTextEdit();
-    if (!pte->isSaved() &&
-            (QMessageBox::StandardButton::No == QMessageBox::question(a->mainWindow(), tr("Really close?"),
-                                                                      tr("Current score not saved!\nClose this score anyway?"))))
-                    return;
-
-    edittabs->removeTab(cur);
+    edittabs->askRemoveTab(cur);
 }
 
 void ScoreMenu::onNewActionTriggered()

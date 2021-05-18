@@ -180,7 +180,7 @@ void AbcPlainTextEdit::highlightCurrentLine()
     if (!isReadOnly()) {
         QTextEdit::ExtraSelection selection;
 
-        QColor lineColor = QColor(Qt::yellow).lighter(160);
+        QColor lineColor = qApp->palette().color(QPalette::Light).darker(110);
 
         selection.format.setBackground(lineColor);
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
@@ -220,42 +220,50 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
 {
     AbcHighlightingRule rule;
 
-    barFormat.setFontWeight(QFont::Bold);
-    barFormat.setForeground(Qt::darkRed);
+    barFormat.setFontWeight(QFont::ExtraBold);
+    barFormat.setForeground(qApp->palette().color(QPalette::Text).darker());
     rule.pattern = QRegularExpression(QStringLiteral("(::|[:\\|\\[]?\\|[:\\|\\]]?)"));
     rule.format = barFormat;
     highlightingRules.append(rule);
 
-    noteFormat.setFontWeight(QFont::Bold);
-    noteFormat.setForeground(Qt::darkGray);
+    noteFormat.setFontWeight(QFont::Normal);
+    noteFormat.setForeground(qApp->palette().color(QPalette::Text));
     rule.pattern = QRegularExpression(QStringLiteral("[_=^]*[A-HZa-hz][,']*/*[1-9]*"));
     rule.format = noteFormat;
     highlightingRules.append(rule);
 
     indicFormat.setFontWeight(QFont::Normal);
-    indicFormat.setForeground(Qt::black);
+    indicFormat.setForeground(qApp->palette().color(QPalette::Link));
     rule.pattern = QRegularExpression(QStringLiteral("![^!]*!"));
     rule.format = indicFormat;
     highlightingRules.append(rule);
 
-    chordFormat.setForeground(Qt::darkGreen);
+    chordFormat.setFontWeight(QFont::Normal);
+    chordFormat.setForeground(qApp->palette().color(QPalette::LinkVisited));
     rule.pattern = QRegularExpression(QStringLiteral("\"[A-H][^\"]*\""));
     rule.format = chordFormat;
     highlightingRules.append(rule);
 
-    extraInstructionFormat.setFontItalic(true);
-    extraInstructionFormat.setForeground(Qt::blue);
-    rule.pattern = QRegularExpression(QStringLiteral("^%%[^\n]*"));
-    rule.format = extraInstructionFormat;
-    highlightingRules.append(rule);
-
-    singleLineCommentFormat.setForeground(Qt::blue);
-    rule.pattern = QRegularExpression(QStringLiteral("%[^%\n]*"));
+    singleLineCommentFormat.setFontWeight(QFont::Normal);
+    singleLineCommentFormat.setForeground(qApp->palette().color(QPalette::PlaceholderText));
+    rule.pattern = QRegularExpression(QStringLiteral("%[^\n]*"));
     rule.format = singleLineCommentFormat;
     highlightingRules.append(rule);
 
-    keywordFormat.setForeground(Qt::darkMagenta);
-    keywordFormat.setFontWeight(QFont::Thin);
+    extraInstructionFormat.setFontWeight(QFont::Bold);
+    extraInstructionFormat.setForeground(qApp->palette().color(QPalette::PlaceholderText));
+    rule.pattern = QRegularExpression(QStringLiteral("^%%[^%\n]+"));
+    rule.format = extraInstructionFormat;
+    highlightingRules.append(rule);
+
+    lyricFormat.setFontWeight(QFont::Normal);
+    lyricFormat.setForeground(qApp->palette().color(QPalette::LinkVisited));
+    rule.pattern = QRegularExpression(QStringLiteral("^w:[^\n]+"));
+    rule.format = lyricFormat;
+    highlightingRules.append(rule);
+
+    keywordFormat.setFontWeight(QFont::Bold);
+    keywordFormat.setForeground(qApp->palette().color(QPalette::Link));
     const QString keywordPatterns[] = {
         QStringLiteral("^A:[^\n]+"), QStringLiteral("^B:[^\n]+"), QStringLiteral("^C:[^\n]+"),
         QStringLiteral("^D:[^\n]+"), QStringLiteral("^E:[^\n]+"), QStringLiteral("^F:[^\n]+"),
@@ -264,7 +272,7 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
         QStringLiteral("^N:[^\n]+"), QStringLiteral("^O:[^\n]+"), QStringLiteral("^P:[^\n]+"),
         QStringLiteral("^Q:[^\n]+"), QStringLiteral("^R:[^\n]+"), QStringLiteral("^S:[^\n]+"),
         QStringLiteral("^T:[^\n]+"), QStringLiteral("^V:[^\n]+"), QStringLiteral("^W:|^\n]+"),
-        QStringLiteral("^w:[^\n]+"), QStringLiteral("^X:[^\n]+"), QStringLiteral("^Z:[^\n]+")
+        QStringLiteral("^X:[^\n]+"), QStringLiteral("^Z:[^\n]+")
     };
 
     for (const QString &pattern : keywordPatterns) {

@@ -36,6 +36,7 @@ private:
     QTextCharFormat indicFormat;
     QTextCharFormat chordFormat;
     QTextCharFormat barFormat;
+    QTextCharFormat lyricFormat;
 #if 0
     QTextCharFormat multiLineHeaderFormat;
 #endif

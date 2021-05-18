@@ -74,7 +74,7 @@ void ScoreMenu::onOpenActionTriggered()
     AbcMainWindow* w = a->mainWindow();
 
     QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QString fileName = QFileDialog::getOpenFileName(w, tr("Open ABC Score"), home, tr("ABC score (*.abc)"));
+    QString fileName = QFileDialog::getOpenFileName(w, tr("Open ABC score"), home, tr("ABC score (*.abc)"));
 
     /* user cancelled */
     if (fileName.isEmpty())
@@ -201,7 +201,7 @@ void ScoreMenu::onCloseActionTriggered()
     AbcPlainTextEdit *pte = e->editVBoxLayout()->abcPlainTextEdit();
     if (!pte->isSaved() &&
             (QMessageBox::StandardButton::No == QMessageBox::question(a->mainWindow(), tr("Really close?"),
-                                                                      tr("Current Score not saved!\nClose this score anyway?"))))
+                                                                      tr("Current score not saved!\nClose this score anyway?"))))
                     return;
 
     edittabs->removeTab(cur);

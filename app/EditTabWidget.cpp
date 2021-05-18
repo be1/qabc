@@ -66,7 +66,7 @@ void EditTabWidget::askRemoveTab(int index)
     EditWidget *w = editwidgetlist.at(index);
     if (!w->editVBoxLayout()->abcPlainTextEdit()->isSaved() &&
             (QMessageBox::StandardButton::No == QMessageBox::question(m, tr("Really close?"),
-                                                                      tr("Current Score not saved!\nClose this score anyway?"))))
+                                                                      tr("Current score not saved!\nClose this score anyway?"))))
         return;
 
     m->mainHSplitter()->viewWidget()->cleanup();

@@ -233,13 +233,13 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
     highlightingRules.append(rule);
 
     indicFormat.setFontWeight(QFont::Normal);
-    indicFormat.setForeground(qApp->palette().color(QPalette::Link));
+    indicFormat.setForeground(QColorConstants::DarkMagenta.lighter());
     rule.pattern = QRegularExpression(QStringLiteral("![^!]*!"));
     rule.format = indicFormat;
     highlightingRules.append(rule);
 
     chordFormat.setFontWeight(QFont::Normal);
-    chordFormat.setForeground(qApp->palette().color(QPalette::LinkVisited));
+    chordFormat.setForeground(QColorConstants::DarkCyan);
     rule.pattern = QRegularExpression(QStringLiteral("\"[A-H][^\"]*\""));
     rule.format = chordFormat;
     highlightingRules.append(rule);
@@ -257,13 +257,13 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
     highlightingRules.append(rule);
 
     lyricFormat.setFontWeight(QFont::Normal);
-    lyricFormat.setForeground(qApp->palette().color(QPalette::LinkVisited));
+    lyricFormat.setForeground(QColorConstants::DarkMagenta.lighter());
     rule.pattern = QRegularExpression(QStringLiteral("^w:[^\n]+"));
     rule.format = lyricFormat;
     highlightingRules.append(rule);
 
     keywordFormat.setFontWeight(QFont::Bold);
-    keywordFormat.setForeground(qApp->palette().color(QPalette::Link));
+    keywordFormat.setForeground(QColorConstants::DarkCyan);
     const QString keywordPatterns[] = {
         QStringLiteral("^A:[^\n]+"), QStringLiteral("^B:[^\n]+"), QStringLiteral("^C:[^\n]+"),
         QStringLiteral("^D:[^\n]+"), QStringLiteral("^E:[^\n]+"), QStringLiteral("^F:[^\n]+"),

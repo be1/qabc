@@ -24,7 +24,7 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
     connect(this, &AbcPlainTextEdit::blockCountChanged, this, &AbcPlainTextEdit::updateLineNumberAreaWidth);
     connect(this, &AbcPlainTextEdit::updateRequest, this, &AbcPlainTextEdit::updateLineNumberArea);
     connect(this, &AbcPlainTextEdit::cursorPositionChanged, this, &AbcPlainTextEdit::highlightCurrentLine);
-    connect(this, &AbcPlainTextEdit::textChanged, this, &AbcPlainTextEdit::flagAsUnsaved);
+    connect(this, &AbcPlainTextEdit::modificationChanged, this, &AbcPlainTextEdit::flagModified);
 
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();
@@ -57,14 +57,20 @@ QCompleter *AbcPlainTextEdit::completer() const
     return c;
 }
 
-void AbcPlainTextEdit::flagAsSaved()
+void AbcPlainTextEdit::flagModified(bool enable)
 {
-    this->saved = true;
+    this->saved = !enable;
 }
 
 bool AbcPlainTextEdit::isSaved()
 {
-   return this->saved;
+    return this->saved;
+}
+
+void AbcPlainTextEdit::setSaved()
+{
+    this->saved = true;
+    this->document()->setModified(false);
 }
 
 void AbcPlainTextEdit::insertCompletion(const QString &completion)
@@ -77,11 +83,6 @@ void AbcPlainTextEdit::insertCompletion(const QString &completion)
     tc.movePosition(QTextCursor::EndOfWord);
     tc.insertText(completion.right(extra));
     setTextCursor(tc);
-}
-
-void AbcPlainTextEdit::flagAsUnsaved()
-{
-        this->saved = false;
 }
 
 QString AbcPlainTextEdit::textUnderCursor() const

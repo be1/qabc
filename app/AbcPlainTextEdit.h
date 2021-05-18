@@ -56,21 +56,21 @@ public:
     void setCompleter(QCompleter *c);
     QCompleter *completer() const;
 
-    void flagAsSaved();
     bool isSaved();
+    void setSaved();
 
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void keyPressEvent(QKeyEvent *e) override;
     void focusInEvent(QFocusEvent *e) override;
+    void flagModified(bool enable);
 
 private slots:
     void updateLineNumberAreaWidth(int newBlockCount);
     void highlightCurrentLine();
     void updateLineNumberArea(const QRect &rect, int dy);
     void insertCompletion(const QString &completion);
-    void flagAsUnsaved();
 
 private:
     QAbstractItemModel *modelFromFile(const QString &fileName);

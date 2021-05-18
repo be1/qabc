@@ -2,7 +2,7 @@ include(../common.pri)
 QT += core widgets gui svg printsupport
 TEMPLATE = app
 CONFIG += link_pkgconfig
-PKGCONFIG += pangocairo pangoft2 fluidsynth drumstick-file
+PKGCONFIG += fluidsynth drumstick-file
 DEFINES += USE_LIBABCM2PS _FORTIFY_SOURCE=2
 QMAKE_CXXFLAGS = -O2
 TARGET = qabc

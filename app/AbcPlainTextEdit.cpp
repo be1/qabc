@@ -237,13 +237,13 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
 {
     AbcHighlightingRule rule;
 
-    barFormat.setFontWeight(QFont::ExtraBold);
-    barFormat.setForeground(qApp->palette().color(QPalette::Text).darker());
+    barFormat.setFontWeight(QFont::Bold);
+    barFormat.setForeground(QColorConstants::DarkRed.lighter());
     rule.pattern = QRegularExpression(QStringLiteral("(::|[:\\|\\[]?\\|[:\\|\\]]?)"));
     rule.format = barFormat;
     highlightingRules.append(rule);
 
-    noteFormat.setFontWeight(QFont::Normal);
+    noteFormat.setFontWeight(QFont::Bold);
     noteFormat.setForeground(qApp->palette().color(QPalette::Text));
     rule.pattern = QRegularExpression(QStringLiteral("[_=^]*[A-HZa-hz][,']*/*[1-9]*"));
     rule.format = noteFormat;

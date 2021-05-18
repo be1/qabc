@@ -62,6 +62,7 @@ void AbcApplication::openFileNames(const QStringList &fileNames)
                         EditWidget* widget = new EditWidget(fileName, edittabs);
                         AbcPlainTextEdit *edit = widget->editVBoxLayout()->abcPlainTextEdit();
                         edit->setPlainText(file.readAll());
+                        edit->flagAsSaved();
                         edittabs->addTab(widget);
                         file.close();
                 }

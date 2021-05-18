@@ -38,15 +38,34 @@ ScoreMenu::~ScoreMenu()
 {
 }
 
+QMessageBox::StandardButton ScoreMenu::gracefulQuit()
+{
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    EditTabWidget* tabs = a->mainWindow()->mainHSplitter()->editTabWidget();
+
+    int unsaved= 0;
+    for (int i = 0; i < tabs->editWidgetList()->length(); i++) {
+        if (!tabs->editWidgetList()->at(i)->editVBoxLayout()->abcPlainTextEdit()->isSaved())
+            unsaved++;
+    }
+
+    if (unsaved && QMessageBox::StandardButton::No == QMessageBox::question(a->mainWindow(), tr("Really quit?"),
+                                                                            QString::number(unsaved) +
+                                                                            tr(" score(s) not saved.\nDo you want to quit anyway?")))
+        return QMessageBox::StandardButton::No;
+
+    return QMessageBox::StandardButton::Yes;
+
+}
+
 void ScoreMenu::onQuitActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
-    if (QMessageBox::StandardButton::No == QMessageBox::question(a->mainWindow(), tr("Really quit?"), tr("Do you really want to quit?")))
-        return;
-
     EditTabWidget* tabs = a->mainWindow()->mainHSplitter()->editTabWidget();
-    tabs->removeTabs();
-    a->quit();
+    if (QMessageBox::StandardButton::Yes == gracefulQuit()) {
+            tabs->removeTabs();
+            a->quit();
+    }
 }
 
 void ScoreMenu::onOpenActionTriggered()
@@ -69,6 +88,7 @@ void ScoreMenu::onOpenActionTriggered()
 
         AbcPlainTextEdit *edit = widget->editVBoxLayout()->abcPlainTextEdit();
         edit->setPlainText(file.readAll());
+        edit->flagAsSaved();
         file.close();
 
         edittabs->addTab(widget);
@@ -100,6 +120,7 @@ void ScoreMenu::onSaveActionTriggered()
         QString tosave = edit->toPlainText();
         file.write(tosave.toUtf8());
         file.close();
+        edit->flagAsSaved();
         w->statusBar()->showMessage(tr("Score saved."));
     } else {
         QMessageBox::warning(this, tr("Warning"), tr("Could not save ABC score!"));
@@ -176,8 +197,12 @@ void ScoreMenu::onCloseActionTriggered()
     if (cur < 0)
         return;
 
-    if (QMessageBox::StandardButton::No == QMessageBox::question(a->mainWindow(), tr("Really close?"), tr("Do you really want to close this score?")))
-        return;
+    EditWidget *e = edittabs->currentEditWidget();
+    AbcPlainTextEdit *pte = e->editVBoxLayout()->abcPlainTextEdit();
+    if (!pte->isSaved() &&
+            (QMessageBox::StandardButton::No == QMessageBox::question(a->mainWindow(), tr("Really close?"),
+                                                                      tr("Current Score not saved!\nClose this score anyway?"))))
+                    return;
 
     edittabs->removeTab(cur);
 }

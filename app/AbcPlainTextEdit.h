@@ -56,6 +56,10 @@ public:
     void setCompleter(QCompleter *c);
     QCompleter *completer() const;
 
+    void flagAsSaved();
+    bool isSaved();
+
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void keyPressEvent(QKeyEvent *e) override;
@@ -66,6 +70,7 @@ private slots:
     void highlightCurrentLine();
     void updateLineNumberArea(const QRect &rect, int dy);
     void insertCompletion(const QString &completion);
+    void flagAsUnsaved();
 
 private:
     QAbstractItemModel *modelFromFile(const QString &fileName);
@@ -75,6 +80,7 @@ private:
     QString textUnderCursor() const;
 
     QCompleter *c = nullptr;
+    bool saved;
 };
 
 class LineNumberArea : public QWidget

@@ -1,4 +1,5 @@
 #include "AbcMainWindow.h"
+#include <QMessageBox>
 
 AbcMainWindow::AbcMainWindow(QWidget* parent)
 	: QMainWindow(parent)
@@ -25,6 +26,9 @@ MainHSplitter *AbcMainWindow::mainHSplitter()
 
 void AbcMainWindow::closeEvent(QCloseEvent *event)
 {
-   mainHSplitter()->editTabWidget()->removeTabs();
-   QMainWindow::closeEvent(event);
+    if (QMessageBox::StandardButton::Yes == scoremenu.gracefulQuit()) {
+        event->accept();
+    } else {
+        event->ignore();
+    }
 }

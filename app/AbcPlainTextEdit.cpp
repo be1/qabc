@@ -9,7 +9,8 @@
 #include <QGuiApplication>
 
 AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
-	: QPlainTextEdit(parent)
+    : QPlainTextEdit(parent),
+      saved(false)
 {
     lineNumberArea = new LineNumberArea(this);
     highlighter = new AbcHighlighter(this->document());
@@ -23,6 +24,7 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
     connect(this, &AbcPlainTextEdit::blockCountChanged, this, &AbcPlainTextEdit::updateLineNumberAreaWidth);
     connect(this, &AbcPlainTextEdit::updateRequest, this, &AbcPlainTextEdit::updateLineNumberArea);
     connect(this, &AbcPlainTextEdit::cursorPositionChanged, this, &AbcPlainTextEdit::highlightCurrentLine);
+    connect(this, &AbcPlainTextEdit::textChanged, this, &AbcPlainTextEdit::flagAsUnsaved);
 
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();
@@ -55,6 +57,16 @@ QCompleter *AbcPlainTextEdit::completer() const
     return c;
 }
 
+void AbcPlainTextEdit::flagAsSaved()
+{
+    this->saved = true;
+}
+
+bool AbcPlainTextEdit::isSaved()
+{
+   return this->saved;
+}
+
 void AbcPlainTextEdit::insertCompletion(const QString &completion)
 {
     if (c->widget() != this)
@@ -65,6 +77,11 @@ void AbcPlainTextEdit::insertCompletion(const QString &completion)
     tc.movePosition(QTextCursor::EndOfWord);
     tc.insertText(completion.right(extra));
     setTextCursor(tc);
+}
+
+void AbcPlainTextEdit::flagAsUnsaved()
+{
+        this->saved = false;
 }
 
 QString AbcPlainTextEdit::textUnderCursor() const

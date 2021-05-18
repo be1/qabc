@@ -8,6 +8,7 @@
 #include "OpenAction.h"
 #include "NewAction.h"
 #include <QMenu>
+#include <QMessageBox>
 
 class ScoreMenu: public QMenu
 {
@@ -15,7 +16,8 @@ class ScoreMenu: public QMenu
 
 public:
 	ScoreMenu(QWidget* parent = nullptr);
-	~ScoreMenu();
+    ~ScoreMenu();
+    QMessageBox::StandardButton gracefulQuit();
 
 protected slots:
     void onQuitActionTriggered();

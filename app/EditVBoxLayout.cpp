@@ -57,7 +57,6 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	connect(&playpushbutton, SIGNAL(clicked()), this, SLOT(onPlayClicked()));
 	connect(&runpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onRunClicked);
 
-    connect(this, &EditVBoxLayout::generateMIDIFinished, this, &EditVBoxLayout::onGenerateMIDIFinished);
     connect(this, &EditVBoxLayout::doExportMIDI, this, &EditVBoxLayout::exportMIDI);
 
     connect(&psgen, &PsGenerator::generated, this, &EditVBoxLayout::onCompileFinished);
@@ -193,7 +192,6 @@ void EditVBoxLayout::onPlayClicked()
 }
 
 void EditVBoxLayout::exportMIDI(QString filename) {
-    AbcApplication *a = static_cast<AbcApplication*>(qApp);
     QString tosave;
 
     if (selection.isEmpty()) {
@@ -209,16 +207,13 @@ void EditVBoxLayout::exportMIDI(QString filename) {
             if (lines.at(l).startsWith("X:")) {
                 xspinbox.setValue(lines.at(l).rightRef(1).toInt());
                 xl = l;
-                break;
+                /* don't break on first X: continue until selectionIndex */
             }
         }
 
         /* construct headers */
         for (int j = xl;  j < lines.count(); j++) {
-            if (lines.at(j).contains(QRegularExpression("^((%[^\n]*)|([A-Z]:[^|\n]+))$"))) {
-                if (lines.at(j).startsWith("V:")) /* ignore voice number */
-                    continue;
-
+            if (lines.at(j).contains(QRegularExpression("^((%[^\n]*)|([A-Z]:[^\n]+))$"))) {
                 if (lines.at(j).startsWith("%%")) /* ignore MIDI instruction, use basic Piano */
                     continue;
 
@@ -231,7 +226,7 @@ void EditVBoxLayout::exportMIDI(QString filename) {
         tosave += selection.replace(QChar::ParagraphSeparator, "\n");
     }
 
-    /* early opening of tempfile to set a random name, tempFile is used by abc2midi */
+    /* open tempfile to init a name */
     tempFile.open();
     tempFile.write(tosave.toUtf8());
     tempFile.close();
@@ -248,40 +243,16 @@ void EditVBoxLayout::exportMIDI(QString filename) {
 
     if (player == LIBABC2SMF) {
         QByteArray ba = tosave.toUtf8();
-        struct abc* yy = abc_parse_buffer(ba.constData(), ba.count());
 
-        if (yy->error) {
-            if (selection.isEmpty())
-                QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Parse error line: ") + QString::number(yy->error_line) + tr(", char: ") + QString::number(yy->error_char));
-            else
-                QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Parse error in selected notes"));
-            emit generateMIDIFinished(1, cont);
-        } else {
-            AbcSmf *smf = new AbcSmf(yy, xspinbox.value(), this);
-
-            if (!smf) {
-                emit generateMIDIFinished(1, cont);
-                abc_release_yy(yy);
-                return;
-            }
-
-            if (filename.isEmpty()) {
-                filename = tempFile.fileName();
-                filename.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value()) + ".mid");
-            }
-
-            smf->writeToFile(filename);
-
-            delete smf;
-            emit generateMIDIFinished(0, cont);
+        if (filename.isEmpty()) {
+            filename = tempFile.fileName();
+            filename.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value()) + ".mid");
         }
 
-        abc_release_yy(yy);
-        return;
+        midigen.generate(ba, tempFile.fileName(), xspinbox.value(), filename, cont);
+    } else {
+        midigen.generate(tempFile.fileName(), xspinbox.value(), filename, cont);
     }
-
-    /* or abc2midi executable */
-    midigen.generate(tempFile.fileName(), xspinbox.value(), filename, cont);
 }
 
 void EditVBoxLayout::exportPostscript(QString filename)
@@ -298,7 +269,7 @@ void EditVBoxLayout::exportPostscript(QString filename)
     psgen.generate(tempFile.fileName(), xspinbox.value(), filename, 0);
 }
 
-void EditVBoxLayout::onGenerateMIDIFinished(int exitCode, int cont)
+void EditVBoxLayout::onGenerateMIDIFinished(int exitCode, const QString& errstr, int cont)
 {
     playpushbutton.setEnabled(true);
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
@@ -307,20 +278,21 @@ void EditVBoxLayout::onGenerateMIDIFinished(int exitCode, int cont)
 
     if (exitCode) {
         a->mainWindow()->statusBar()->showMessage(tr("Error during MIDI generation."));
+
+        if (selection.isEmpty())
+            QMessageBox::warning(a->mainWindow(), tr("Error"), errstr);
+        else
+            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Parse error in selected notes."));
+
         if (cont) {
             playpushbutton.flip();
             xspinbox.setEnabled(true);
-        } else {
-            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Error during MIDI generation."));
         }
-
-        return;
-    }
-
-    a->mainWindow()->statusBar()->showMessage(tr("MIDI generation finished."));
-
-    if (cont)
+    } else {
+        a->mainWindow()->statusBar()->showMessage(tr("MIDI generation finished."));
+        if (cont)
             playMIDI();
+    }
 }
 
 void EditVBoxLayout::playMIDI() {
@@ -409,7 +381,7 @@ void EditVBoxLayout::onSelectionChanged()
     }
 }
 
-void EditVBoxLayout::onCompileFinished(int exitCode, int cont)
+void EditVBoxLayout::onCompileFinished(int exitCode, const QString& errstr, int cont)
 {
     qDebug() << "compile" << exitCode;
 
@@ -418,7 +390,7 @@ void EditVBoxLayout::onCompileFinished(int exitCode, int cont)
         if (cont) {
             a->mainWindow()->statusBar()->showMessage(tr("Error during score generation."));
         } else {
-            QMessageBox::warning(a->mainWindow(), tr("Error"), tr("Error during score generation."));
+            QMessageBox::warning(a->mainWindow(), tr("Error"), errstr);
         }
 
         return;

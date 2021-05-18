@@ -21,20 +21,22 @@ void Generator::spawnProgram(const QString& prog, const QStringList& args, AbcPr
 
 void Generator::onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType which, int cont)
 {
-    emit generated(exitCode != 0, cont);
-
     /* delete garbage */
+    QString errstr;
     for (int i = 0; i < processlist.length(); i++) {
         AbcProcess* proc = processlist.at(i);
         if (proc->state() == QProcess::NotRunning
                 && proc->exitCode() == exitCode
                 && proc->exitStatus() == exitStatus
                 && proc->which() == which) {
+            errstr = proc->errorString();
             disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType, int>::of(&AbcProcess::finished), this, &Generator::onProgramFinished);
             delete proc;
             processlist.removeAt(i);
         }
     }
+
+    emit generated(exitCode != 0, errstr, cont);
 }
 
 void Generator::onProgramOutputText(const QByteArray &text)

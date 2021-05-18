@@ -53,7 +53,11 @@ void SvgGenerator::generate(const QString &input, int xopt, QString output, int 
         free(av[i]);
     }
     free(av);
-    emit generated(ret, cont);
+
+    if (ret)
+        emit generated(ret, tr("Error during score generation."), cont);
+    else
+        emit generated(ret, "", cont);
 #else
     argv.removeAt(0);
     spawnPsCompiler(program, argv, dir, cont);

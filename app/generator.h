@@ -20,7 +20,7 @@ public:
     virtual void generate(const QString& input, int xopt, QString output, int cont) = 0;
 
 signals:
-    void generated(bool err, int cont);
+    void generated(bool err, const QString& errstr, int cont);
 
 protected:
     void spawnProgram(const QString& prog, const QStringList& args, AbcProcess::ProcessType which, const QDir& wrk, int cont);

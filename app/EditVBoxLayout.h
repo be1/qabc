@@ -44,7 +44,6 @@ public:
     void exportMIDI(QString filename);
 
 signals:
-    void generateMIDIFinished(int exitCode, int cont);
     void doExportMIDI(const QString& outfilename);
 
 protected:
@@ -63,8 +62,8 @@ public slots:
     void onSelectionChanged();
 
 protected slots:
-    void onCompileFinished(int exitCode, int cont);
-    void onGenerateMIDIFinished(int exitCode, int cont);
+    void onCompileFinished(int exitCode, const QString& errstr, int cont);
+    void onGenerateMIDIFinished(int exitCode, const QString& errstr, int cont);
     void onSynthInited(bool err);
     void onSynthFinished(bool err);
 

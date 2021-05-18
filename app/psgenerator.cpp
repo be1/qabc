@@ -48,7 +48,10 @@ void PsGenerator::generate(const QString &input, int xopt, QString output, int c
         free(av[i]);
     }
     free(av);
-    emit generated(ret, cont);
+    if (ret)
+        emit generated(ret, tr("Error during score generation."), cont);
+    else
+        emit generated(ret, "", cont);
 #else
     QFileInfo info(input);
     QDir dir = info.absoluteDir();

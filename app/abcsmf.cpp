@@ -45,7 +45,6 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : drumstick::File::QSmf(p
 		m = "4/4";
 
         upm = abc_unit_per_measure(l, m);
-        qWarning() << "unit per measure" << upm;
         struct abc_header* qh = abc_find_header(t, 'Q');
         if (qh)
                 tempo = abc_tempo(qh->text);
@@ -61,7 +60,6 @@ AbcSmf::AbcSmf(struct abc* yy, int x, QObject *parent) : drumstick::File::QSmf(p
         getNumDen(l, &num, &den);
 
         tpu = (num * 4 * DPQN) / (den);
-        qWarning() << "ticks per unit" << tpu;
 
         struct abc_header* kh = abc_find_header(t, 'K');
         if (!kh) {
@@ -132,11 +130,9 @@ void AbcSmf::writeSingleNote(int track, struct abc_symbol* s) {
 }
 
 void AbcSmf::onSMFWriteTempoTrack(void) {
-    qWarning() << __func__;
 }
 
 void AbcSmf::onSMFWriteTrack(int track) {
-        qWarning() << __func__ << track;
         long mspqn = 60000 / tempo;
         writeTempo(0, mspqn);
         writeBpmTempo(0, tempo);

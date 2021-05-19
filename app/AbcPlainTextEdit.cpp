@@ -10,13 +10,15 @@
 
 AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
     : QPlainTextEdit(parent),
-      dict(NORMAL),
       saved(false)
 {
     lineNumberArea = new LineNumberArea(this);
     highlighter = new AbcHighlighter(this->document());
+    dictModel = modelFromFile(":dict.txt");
+    gmModel = modelFromFile(":gm.txt");
+
     QCompleter *com = new QCompleter(this);
-    com->setModel(modelFromFile(":dict.txt"));
+    com->setModel(dictModel);
     com->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
     com->setCaseSensitivity(Qt::CaseInsensitive);
     com->setWrapAround(false);
@@ -104,15 +106,13 @@ QString AbcPlainTextEdit::lineUnderCursor() const
 
 void AbcPlainTextEdit::checkDictionnary(void) {
     QString line = lineUnderCursor();
-    if (c && (dict == NORMAL) &&
+    if (c && (c->model() == dictModel) &&
             (line.startsWith("%%MIDI program") || line.startsWith("%%MIDI bassprog") || line.startsWith("%%MIDI chordprog"))) {
 
-        c->setModel(modelFromFile(":gm.txt"));
-        dict = GENERALMIDI;
-    } else if (c && (dict == GENERALMIDI)) {
+        c->setModel(gmModel);
+    } else if (c && (c->model() == gmModel)) {
 
-        c->setModel(modelFromFile(":dict.txt"));
-        dict = NORMAL;
+        c->setModel(dictModel);
     }
 }
 

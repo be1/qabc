@@ -75,6 +75,8 @@ private slots:
 
 private:
     QAbstractItemModel *modelFromFile(const QString &fileName);
+    QAbstractItemModel *dictModel; /* normal dictionnary */
+    QAbstractItemModel *gmModel;   /* General MIDI dictionary */
 
     QWidget *lineNumberArea;
     AbcHighlighter *highlighter;
@@ -82,7 +84,6 @@ private:
     QString lineUnderCursor() const;
 
     QCompleter *c = nullptr;
-    enum Dict { NORMAL, GENERALMIDI } dict;
     bool saved;
 };
 

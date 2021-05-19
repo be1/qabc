@@ -263,13 +263,13 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
     highlightingRules.append(rule);
 
     singleLineCommentFormat.setFontWeight(QFont::Normal);
-    singleLineCommentFormat.setForeground(qApp->palette().color(QPalette::PlaceholderText));
+    singleLineCommentFormat.setForeground(qApp->palette().color(QPalette::PlaceholderText).darker());
     rule.pattern = QRegularExpression(QStringLiteral("%[^\n]*"));
     rule.format = singleLineCommentFormat;
     highlightingRules.append(rule);
 
     extraInstructionFormat.setFontWeight(QFont::Bold);
-    extraInstructionFormat.setForeground(qApp->palette().color(QPalette::PlaceholderText));
+    extraInstructionFormat.setForeground(QColorConstants::Blue.lighter());
     rule.pattern = QRegularExpression(QStringLiteral("^%%[^%\n]+"));
     rule.format = extraInstructionFormat;
     highlightingRules.append(rule);

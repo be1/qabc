@@ -10,6 +10,7 @@
 
 AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
     : QPlainTextEdit(parent),
+      dict(NORMAL),
       saved(false)
 {
     lineNumberArea = new LineNumberArea(this);
@@ -24,6 +25,7 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
     connect(this, &AbcPlainTextEdit::blockCountChanged, this, &AbcPlainTextEdit::updateLineNumberAreaWidth);
     connect(this, &AbcPlainTextEdit::updateRequest, this, &AbcPlainTextEdit::updateLineNumberArea);
     connect(this, &AbcPlainTextEdit::cursorPositionChanged, this, &AbcPlainTextEdit::highlightCurrentLine);
+    connect(this, &AbcPlainTextEdit::cursorPositionChanged, this, &AbcPlainTextEdit::checkDictionnary);
     connect(this, &AbcPlainTextEdit::modificationChanged, this, &AbcPlainTextEdit::flagModified);
 
     updateLineNumberAreaWidth(0);
@@ -92,6 +94,27 @@ QString AbcPlainTextEdit::textUnderCursor() const
     return tc.selectedText();
 }
 
+QString AbcPlainTextEdit::lineUnderCursor() const
+{
+    QTextCursor tc = textCursor();
+    tc.select(QTextCursor::LineUnderCursor);
+    return tc.selectedText();
+}
+
+
+void AbcPlainTextEdit::checkDictionnary(void) {
+    QString line = lineUnderCursor();
+    if (c && (dict == NORMAL) &&
+            (line.startsWith("%%MIDI program") || line.startsWith("%%MIDI bassprog") || line.startsWith("%%MIDI chordprog"))) {
+
+        c->setModel(modelFromFile(":gm.txt"));
+        dict = GENERALMIDI;
+    } else if (c && (dict == GENERALMIDI)) {
+
+        c->setModel(modelFromFile(":dict.txt"));
+        dict = NORMAL;
+    }
+}
 
 void AbcPlainTextEdit::focusInEvent(QFocusEvent *e)
 {
@@ -133,10 +156,10 @@ void AbcPlainTextEdit::keyPressEvent(QKeyEvent *e)
     const bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
     QString completionPrefix = textUnderCursor();
 
-    /* no shortcut pressed, or a modifier-only key is pressed,
+   /* no shortcut pressed, or a modifier-only key is pressed,
      * or the word typed is too short, or it is a complete word:
      * then unshow popup if needed and return */
-    if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 2
+    if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 1
                       || eow.contains(e->text().right(1)))) {
         c->popup()->hide();
         return;

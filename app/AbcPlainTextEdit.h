@@ -69,6 +69,7 @@ protected:
 private slots:
     void updateLineNumberAreaWidth(int newBlockCount);
     void highlightCurrentLine();
+    void checkDictionnary();
     void updateLineNumberArea(const QRect &rect, int dy);
     void insertCompletion(const QString &completion);
 
@@ -78,8 +79,10 @@ private:
     QWidget *lineNumberArea;
     AbcHighlighter *highlighter;
     QString textUnderCursor() const;
+    QString lineUnderCursor() const;
 
     QCompleter *c = nullptr;
+    enum Dict { NORMAL, GENERALMIDI } dict;
     bool saved;
 };
 

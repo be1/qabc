@@ -12,16 +12,35 @@
 ScoreMenu::ScoreMenu(QWidget* parent)
 	: QMenu(parent)
 {
-	setTitle(tr("Score"));
-	addAction(&newaction);
-	addAction(&openaction);
-	addAction(&saveaction);
+    setTitle(tr("Score"));
+
+    newaction.setText(tr("New"));
+    newaction.setShortcut(QKeySequence(QKeySequence::New));
+    addAction(&newaction);
+
+    openaction.setText(tr("Open"));
+    openaction.setShortcut(QKeySequence(QKeySequence::Open));
+    addAction(&openaction);
+
+    saveaction.setText(tr("Save"));
+    saveaction.setShortcut(QKeySequence(QKeySequence::Save));
+    addAction(&saveaction);
+
+    saveaction.setText(tr("Save as"));
     addAction(&saveasaction);
+
     exportaction.setText(tr("Export to MIDI"));
     addAction(&exportaction);
+
     exppsaction.setText(tr("Export to Postscript"));
     addAction(&exppsaction);
+
+    closeaction.setText(tr("Close"));
+    closeaction.setShortcut(QKeySequence(QKeySequence::Close));
     addAction(&closeaction);
+
+    quitaction.setText(tr("Quit"));
+    quitaction.setShortcut(QKeySequence(QKeySequence::Quit));
 	addAction(&quitaction);
 
 	connect(&quitaction, SIGNAL(triggered()), this, SLOT(onQuitActionTriggered()));

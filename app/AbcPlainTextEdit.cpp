@@ -36,7 +36,6 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
 
 AbcPlainTextEdit::~AbcPlainTextEdit()
 {
-    completer()->model()->deleteLater();
     delete dictModel;
     delete gmModel;
 }

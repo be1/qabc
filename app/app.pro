@@ -8,16 +8,12 @@ QMAKE_CXXFLAGS = -O2
 TARGET = qabc
 RESOURCES += resources.qrc
 DISTFILES +=  dict.txt config.h.in
-SOURCES = NewAction.cpp OpenAction.cpp SaveAction.cpp SaveasAction.cpp CloseAction.cpp QuitAction.cpp ScoreMenu.cpp PreferencesMenu.cpp AboutAction.cpp AboutqtAction.cpp HelpMenu.cpp AbcPlainTextEdit.cpp PlayPushButton.cpp EditVBoxLayout.cpp EditWidget.cpp EditTabWidget.cpp RunPushButton.cpp AbcMainWindow.cpp AbcApplication.cpp main.cpp \
+SOURCES = ScoreMenu.cpp PreferencesMenu.cpp HelpMenu.cpp AbcPlainTextEdit.cpp PlayPushButton.cpp EditVBoxLayout.cpp EditWidget.cpp EditTabWidget.cpp RunPushButton.cpp AbcMainWindow.cpp AbcApplication.cpp main.cpp \
 	AbcProcess.cpp \
 	AbcTemporaryFile.cpp \
-	AdriverPrefAction.cpp \
 	LogView.cpp \
-	MIDIPrefAction.cpp \
 	MainHSplitter.cpp \
-	ResetAction.cpp \
 	ScoreSvgWidget.cpp \
-	SfontPrefAction.cpp \
 	TuneWaiter.cpp \
 	ViewVSplitter.cpp \
 	abcsmf.cpp \
@@ -28,16 +24,12 @@ SOURCES = NewAction.cpp OpenAction.cpp SaveAction.cpp SaveasAction.cpp CloseActi
 	sfloader.cpp \
 	QProgressIndicator.cpp \
 	svggenerator.cpp
-HEADERS = NewAction.h OpenAction.h SaveAction.h SaveasAction.h CloseAction.h QuitAction.h ScoreMenu.h PreferencesMenu.h AboutAction.h AboutqtAction.h HelpMenu.h AbcPlainTextEdit.h PlayPushButton.h EditVBoxLayout.h EditWidget.h EditTabWidget.h RunPushButton.h AbcMainWindow.h AbcApplication.h \
+HEADERS = ScoreMenu.h PreferencesMenu.h HelpMenu.h AbcPlainTextEdit.h PlayPushButton.h EditVBoxLayout.h EditWidget.h EditTabWidget.h RunPushButton.h AbcMainWindow.h AbcApplication.h \
 	AbcProcess.h \
 	AbcTemporaryFile.h \
-	AdriverPrefAction.h \
 	LogView.h \
-	MIDIPrefAction.h \
 	MainHSplitter.h \
-	ResetAction.h \
 	ScoreSvgWidget.h \
-	SfontPrefAction.h \
 	TuneWaiter.h \
 	ViewVSplitter.h \
 	abcsmf.h \

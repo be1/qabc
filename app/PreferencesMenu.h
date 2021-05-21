@@ -1,10 +1,6 @@
 #ifndef PREFERENCESMENU_H
 #define PREFERENCESMENU_H
 
-#include "MIDIPrefAction.h"
-#include "SfontPrefAction.h"
-#include "AdriverPrefAction.h"
-#include "ResetAction.h"
 #include "config.h"
 #include <QMenu>
 
@@ -24,10 +20,10 @@ protected slots:
     void onResetActionTriggered();
 
 private:
-    MIDIPrefAction playeraction;
-    AdriverPrefAction adriveraction;
-    ResetAction resetaction;
-    SfontPrefAction sfontaction;
+    QAction playeraction;
+    QAction adriveraction;
+    QAction resetaction;
+    QAction sfontaction;
     QAction psaction;
 };
 #endif

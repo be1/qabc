@@ -1,8 +1,6 @@
 #ifndef HELPMENU_H
 #define HELPMENU_H
 
-#include "AboutqtAction.h"
-#include "AboutAction.h"
 #include <QMenu>
 
 class HelpMenu: public QMenu
@@ -18,7 +16,7 @@ void onAboutActionTriggered();
 void onAboutQtActionTriggered();
 
 private:
-	AboutAction aboutaction;
-	AboutqtAction aboutqtaction;
+    QAction aboutaction;
+    QAction aboutqtaction;
 };
 #endif

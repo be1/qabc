@@ -11,12 +11,19 @@ PreferencesMenu::PreferencesMenu(QWidget* parent)
 {
     setTitle(tr("Preferences"));
 
-
+    playeraction.setText(tr("MIDI Generator"));
     addAction(&playeraction);
+
+    adriveraction.setText(tr("Audio output driver"));
     addAction(&adriveraction);
+
+    sfontaction.setText(tr("Audio sound font"));
     addAction(&sfontaction);
+
     psaction.setText(tr("Postscript export"));
     addAction(&psaction);
+
+    resetaction.setText(tr("Reset settings"));
     addAction(&resetaction);
 
     connect(&playeraction, &QAction::triggered, this, &PreferencesMenu::onPlayerActionTriggered);

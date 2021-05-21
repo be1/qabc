@@ -1,12 +1,6 @@
 #ifndef SCOREMENU_H
 #define SCOREMENU_H
 
-#include "QuitAction.h"
-#include "CloseAction.h"
-#include "SaveasAction.h"
-#include "SaveAction.h"
-#include "OpenAction.h"
-#include "NewAction.h"
 #include <QMenu>
 #include <QMessageBox>
 
@@ -30,14 +24,14 @@ protected slots:
     void onNewActionTriggered();
 
 private:
-	NewAction newaction;
-	OpenAction openaction;
-	SaveAction saveaction;
-    SaveasAction saveasaction;
+    QAction newaction;
+    QAction openaction;
+    QAction saveaction;
+    QAction saveasaction;
     QAction exportaction;
     QAction exppsaction;
-	CloseAction closeaction;
-    QuitAction quitaction;
+    QAction closeaction;
+    QAction quitaction;
 };
 
 #define NEW_TEMPLATE "X:1\nT:Melody from «Le lac des cygnes»\nC:Piotr Ilitch Tchaïkovski\nM:C\nL:1/4\nK:Amin\n!mf!ABcd|e3c|e3A|cAFc|A4-|AdcB|e3c|e3A|cAFc|A4|]"

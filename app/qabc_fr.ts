@@ -44,38 +44,6 @@
     </message>
 </context>
 <context>
-    <name>AboutAction</name>
-    <message>
-        <location filename="AboutAction.cpp" line="6"/>
-        <source>About</source>
-        <translation>À propos</translation>
-    </message>
-</context>
-<context>
-    <name>AboutqtAction</name>
-    <message>
-        <location filename="AboutqtAction.cpp" line="6"/>
-        <source>About Qt</source>
-        <translation>À propos de Qt</translation>
-    </message>
-</context>
-<context>
-    <name>AdriverPrefAction</name>
-    <message>
-        <location filename="AdriverPrefAction.cpp" line="6"/>
-        <source>Audio output driver</source>
-        <translation>Pilote de sortie audio</translation>
-    </message>
-</context>
-<context>
-    <name>CloseAction</name>
-    <message>
-        <location filename="CloseAction.cpp" line="7"/>
-        <source>Close</source>
-        <translation>Fermer</translation>
-    </message>
-</context>
-<context>
     <name>EditTabWidget</name>
     <message>
         <location filename="EditTabWidget.cpp" line="68"/>
@@ -181,31 +149,33 @@ Fermer cette partition quand-même ?</translation>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="HelpMenu.cpp" line="23"/>
-        <location filename="HelpMenu.cpp" line="29"/>
+        <location filename="HelpMenu.cpp" line="10"/>
+        <source>About</source>
+        <translation>À propos</translation>
+    </message>
+    <message>
+        <location filename="HelpMenu.cpp" line="14"/>
+        <source>About Qt</source>
+        <translation>À propos de Qt</translation>
+    </message>
+    <message>
+        <location filename="HelpMenu.cpp" line="26"/>
+        <location filename="HelpMenu.cpp" line="32"/>
         <source>ABC score editor</source>
         <oldsource>Abc score editor</oldsource>
         <translation>Éditeur de partition ABC</translation>
     </message>
     <message>
-        <location filename="HelpMenu.cpp" line="23"/>
+        <location filename="HelpMenu.cpp" line="26"/>
         <source>Copyright © 2020 Benoît Rouits &lt;brouits@free.fr&gt;</source>
         <translation>Copyright © 2020 Benoît Rouits &lt;brouits@free.fr&gt;</translation>
     </message>
     <message>
-        <location filename="HelpMenu.cpp" line="23"/>
+        <location filename="HelpMenu.cpp" line="26"/>
         <source>
 QAbc version </source>
         <translation>
 QAbc version </translation>
-    </message>
-</context>
-<context>
-    <name>MIDIPrefAction</name>
-    <message>
-        <location filename="MIDIPrefAction.cpp" line="6"/>
-        <source>MIDI Generator</source>
-        <translation>Générateur MIDI</translation>
     </message>
 </context>
 <context>
@@ -232,22 +202,6 @@ QAbc version </translation>
     </message>
 </context>
 <context>
-    <name>NewAction</name>
-    <message>
-        <location filename="NewAction.cpp" line="7"/>
-        <source>New</source>
-        <translation>Nouvelle</translation>
-    </message>
-</context>
-<context>
-    <name>OpenAction</name>
-    <message>
-        <location filename="OpenAction.cpp" line="7"/>
-        <source>Open</source>
-        <translation>Ouvrir</translation>
-    </message>
-</context>
-<context>
     <name>PlayPushButton</name>
     <message>
         <location filename="PlayPushButton.cpp" line="7"/>
@@ -270,60 +224,80 @@ QAbc version </translation>
         <translation>Préférences</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="18"/>
+        <location filename="PreferencesMenu.cpp" line="14"/>
+        <source>MIDI Generator</source>
+        <translation>Générateur MIDI</translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="17"/>
+        <source>Audio output driver</source>
+        <translation>Pilote de sortie audio</translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="20"/>
+        <source>Audio sound font</source>
+        <translation>Fonte d&apos;échantillons audio</translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="23"/>
         <source>Postscript export</source>
         <translation>Export Postsript</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="50"/>
+        <location filename="PreferencesMenu.cpp" line="26"/>
+        <source>Reset settings</source>
+        <translation>Remettre les préférences d&apos;origine</translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="57"/>
         <source>Audio driver preference</source>
         <translation>Préférence du pilote audio</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="50"/>
+        <location filename="PreferencesMenu.cpp" line="57"/>
         <source>Audio driver:</source>
         <translation>Pilote audio :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="76"/>
+        <location filename="PreferencesMenu.cpp" line="83"/>
         <source>MIDI Generator preference</source>
         <oldsource>Player preference</oldsource>
         <translation>Préférence du générateur MIDI</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="76"/>
+        <location filename="PreferencesMenu.cpp" line="83"/>
         <source>MIDI generator:</source>
         <translation>Générateur MIDI :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="95"/>
-        <location filename="PreferencesMenu.cpp" line="97"/>
+        <location filename="PreferencesMenu.cpp" line="102"/>
+        <location filename="PreferencesMenu.cpp" line="104"/>
         <source>Soundfont (*.sf[23])</source>
         <translation>Fonte sonore (*.sf[23])</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="124"/>
+        <location filename="PreferencesMenu.cpp" line="131"/>
         <source>Postscript export preference</source>
         <translation>Préférence de l&apos;export Postscript</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="124"/>
+        <location filename="PreferencesMenu.cpp" line="131"/>
         <source>Tunes:</source>
         <translation>Morceaux :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="138"/>
+        <location filename="PreferencesMenu.cpp" line="145"/>
         <source>Reset prefrences?</source>
         <translation>Remettre les préférences d&apos;origine ?</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="138"/>
+        <location filename="PreferencesMenu.cpp" line="145"/>
         <source>Do you really want to reset preferences?</source>
         <translation>Voulez-vous vraiment remettre les préférences d&apos;origine ?</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="95"/>
-        <location filename="PreferencesMenu.cpp" line="97"/>
+        <location filename="PreferencesMenu.cpp" line="102"/>
+        <location filename="PreferencesMenu.cpp" line="104"/>
         <source>Audio sound font preference</source>
         <translation>Préférence de la fonte d&apos;échantillons</translation>
     </message>
@@ -337,45 +311,12 @@ QAbc version </translation>
     </message>
 </context>
 <context>
-    <name>QuitAction</name>
-    <message>
-        <location filename="QuitAction.cpp" line="7"/>
-        <source>Quit</source>
-        <translation>Quitter</translation>
-    </message>
-</context>
-<context>
-    <name>ResetAction</name>
-    <message>
-        <location filename="ResetAction.cpp" line="6"/>
-        <source>Reset settings</source>
-        <oldsource>Reset</oldsource>
-        <translation>Remettre les préférences d&apos;origine</translation>
-    </message>
-</context>
-<context>
     <name>RunPushButton</name>
     <message>
         <location filename="RunPushButton.cpp" line="6"/>
         <source>&amp;View score</source>
         <oldsource>Generate score</oldsource>
         <translation>&amp;Voir la partition</translation>
-    </message>
-</context>
-<context>
-    <name>SaveAction</name>
-    <message>
-        <location filename="SaveAction.cpp" line="7"/>
-        <source>Save</source>
-        <translation>Enregistrer</translation>
-    </message>
-</context>
-<context>
-    <name>SaveasAction</name>
-    <message>
-        <location filename="SaveasAction.cpp" line="6"/>
-        <source>Save as</source>
-        <translation>Enregistrer sous</translation>
     </message>
 </context>
 <context>
@@ -386,106 +327,114 @@ QAbc version </translation>
         <translation>Partition</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="20"/>
+        <location filename="ScoreMenu.cpp" line="17"/>
+        <source>New</source>
+        <translation>Nouvelle</translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="21"/>
+        <source>Open</source>
+        <translation>Ouvrir</translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="25"/>
+        <source>Save</source>
+        <translation>Enregistrer</translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="29"/>
+        <source>Save as</source>
+        <translation>Enregistrer sous</translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="32"/>
         <source>Export to MIDI</source>
         <translation>Exporter en MIDI</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="22"/>
+        <location filename="ScoreMenu.cpp" line="35"/>
         <source>Export to Postscript</source>
         <translation>Exporter en Postscript</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="52"/>
+        <location filename="ScoreMenu.cpp" line="38"/>
+        <source>Close</source>
+        <translation>Fermer</translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="42"/>
+        <source>Quit</source>
+        <translation>Quitter</translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="71"/>
         <source>Really quit?</source>
         <translation>Quitter vraiment ?</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="54"/>
+        <location filename="ScoreMenu.cpp" line="73"/>
         <source> score(s) not saved.
 Do you want to quit anyway?</source>
         <translation> partition(s) non enregistrée(s).
 Voulez-vous quitter quand-même ?</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="77"/>
+        <location filename="ScoreMenu.cpp" line="96"/>
         <source>Open ABC score</source>
         <oldsource>Open ABC Score</oldsource>
         <translation>Ouvrir une partition ABC</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="77"/>
-        <location filename="ScoreMenu.cpp" line="142"/>
+        <location filename="ScoreMenu.cpp" line="96"/>
+        <location filename="ScoreMenu.cpp" line="160"/>
         <source>ABC score (*.abc)</source>
         <translation>Partition ABC (*.abc)</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="110"/>
-        <location filename="ScoreMenu.cpp" line="126"/>
+        <location filename="ScoreMenu.cpp" line="128"/>
+        <location filename="ScoreMenu.cpp" line="144"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="110"/>
+        <location filename="ScoreMenu.cpp" line="128"/>
         <source>Could not save an untitled ABC file!</source>
         <translation>Impossible de sauvegarder un fichier ABC sans nom !</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="163"/>
+        <location filename="ScoreMenu.cpp" line="181"/>
         <source>Export MIDI file</source>
         <translation>Fichier d&apos;export MIDI</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="163"/>
+        <location filename="ScoreMenu.cpp" line="181"/>
         <source>MIDI file (*.mid)</source>
         <translation>Fichier MIDI (*.mid)</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="182"/>
+        <location filename="ScoreMenu.cpp" line="200"/>
         <source>Export Postscript file</source>
         <translation>Fichier d&apos;export Postscript</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="182"/>
+        <location filename="ScoreMenu.cpp" line="200"/>
         <source>Postscript file (*.ps)</source>
         <translation>Fichier Postscript (*.ps)</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="203"/>
-        <source>Really close?</source>
-        <translation>Fermer réellement ?</translation>
-    </message>
-    <message>
-        <location filename="ScoreMenu.cpp" line="204"/>
-        <source>Current score not saved!
-Close this score anyway?</source>
-        <oldsource>Current Score not saved!
-Close this score anyway?</oldsource>
-        <translation>Partion courante non enregistrée !
-Fermer cette partition quand-même ?</translation>
-    </message>
-    <message>
-        <location filename="ScoreMenu.cpp" line="124"/>
+        <location filename="ScoreMenu.cpp" line="142"/>
         <source>Score saved.</source>
         <translation>Partition enregistrée.</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="142"/>
+        <location filename="ScoreMenu.cpp" line="160"/>
         <source>Save ABC score</source>
         <translation>Enregistrer la partition ABC</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="126"/>
+        <location filename="ScoreMenu.cpp" line="144"/>
         <source>Could not save ABC score!</source>
         <translation>Impossible d&apos;enregistrer la partition ABC !</translation>
-    </message>
-</context>
-<context>
-    <name>SfontPrefAction</name>
-    <message>
-        <location filename="SfontPrefAction.cpp" line="6"/>
-        <source>Audio sound font</source>
-        <translation>Fonte d&apos;échantillons audio</translation>
     </message>
 </context>
 <context>

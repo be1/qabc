@@ -27,23 +27,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="abcsynth.cpp" line="130"/>
+        <location filename="abcsynth.cpp" line="99"/>
+        <source>Sound font loaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="abcsynth.cpp" line="131"/>
         <source>Cannot load MIDI file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="abcsynth.cpp" line="138"/>
+        <location filename="abcsynth.cpp" line="139"/>
         <source>Starting synthesis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="abcsynth.cpp" line="141"/>
+        <location filename="abcsynth.cpp" line="142"/>
         <source>Synthesis playing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="abcsynth.cpp" line="144"/>
-        <location filename="abcsynth.cpp" line="181"/>
+        <location filename="abcsynth.cpp" line="145"/>
+        <location filename="abcsynth.cpp" line="182"/>
         <source>Synthesis done.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -127,11 +132,6 @@ Close this score anyway?</oldsource>
     <message>
         <location filename="EditVBoxLayout.cpp" line="311"/>
         <source>Synthesis finished.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="EditVBoxLayout.cpp" line="337"/>
-        <source>Generating score...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

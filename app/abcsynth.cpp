@@ -96,6 +96,7 @@ void AbcSynth::onSFontFinished(int fid) {
         a->mainWindow()->statusBar()->showMessage(tr("Cannot load sound font: ") + sf);
         emit initFinished(true);
     } else {
+        a->mainWindow()->statusBar()->showMessage(tr("Sound font loaded."));
         sfid = fid;
         emit initFinished(false);
     }

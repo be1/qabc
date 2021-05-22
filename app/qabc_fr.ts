@@ -27,23 +27,28 @@
         <translation>Impossible de charger la fonte sonore : </translation>
     </message>
     <message>
-        <location filename="abcsynth.cpp" line="130"/>
+        <location filename="abcsynth.cpp" line="99"/>
+        <source>Sound font loaded.</source>
+        <translation>Fonte sonore chargée.</translation>
+    </message>
+    <message>
+        <location filename="abcsynth.cpp" line="131"/>
         <source>Cannot load MIDI file: </source>
         <translation>Impossible de charger le fichier MIDI : </translation>
     </message>
     <message>
-        <location filename="abcsynth.cpp" line="138"/>
+        <location filename="abcsynth.cpp" line="139"/>
         <source>Starting synthesis...</source>
         <translation>Démarrage de la synthèse...</translation>
     </message>
     <message>
-        <location filename="abcsynth.cpp" line="141"/>
+        <location filename="abcsynth.cpp" line="142"/>
         <source>Synthesis playing...</source>
         <translation>Synthèse en cours...</translation>
     </message>
     <message>
-        <location filename="abcsynth.cpp" line="144"/>
-        <location filename="abcsynth.cpp" line="181"/>
+        <location filename="abcsynth.cpp" line="145"/>
+        <location filename="abcsynth.cpp" line="182"/>
         <source>Synthesis done.</source>
         <translation>Synthèse terminée.</translation>
     </message>
@@ -129,11 +134,6 @@ Fermer cette partition quand-même ?</translation>
         <location filename="EditVBoxLayout.cpp" line="311"/>
         <source>Synthesis finished.</source>
         <translation>Synthèse terminée.</translation>
-    </message>
-    <message>
-        <location filename="EditVBoxLayout.cpp" line="337"/>
-        <source>Generating score...</source>
-        <translation>Génération de la partition...</translation>
     </message>
     <message>
         <location filename="EditVBoxLayout.cpp" line="389"/>

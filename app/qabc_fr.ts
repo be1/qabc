@@ -144,6 +144,11 @@ Fermer cette partition quand-même ?</translation>
 <context>
     <name>EditorPrefDialog</name>
     <message>
+        <location filename="editorprefdialog.cpp" line="18"/>
+        <source>Highlight current line</source>
+        <translation>Surligner la ligne courante</translation>
+    </message>
+    <message>
         <location filename="editorprefdialog.cpp" line="29"/>
         <source>Bar color</source>
         <translation>Couleur de la barre</translation>

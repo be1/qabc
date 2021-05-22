@@ -143,6 +143,11 @@ Close this score anyway?</oldsource>
 <context>
     <name>EditorPrefDialog</name>
     <message>
+        <location filename="editorprefdialog.cpp" line="18"/>
+        <source>Highlight current line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="editorprefdialog.cpp" line="29"/>
         <source>Bar color</source>
         <translation type="unfinished"></translation>

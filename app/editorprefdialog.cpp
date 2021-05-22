@@ -15,7 +15,7 @@ EditorPrefDialog::EditorPrefDialog(QWidget *parent) : QDialog(parent)
     mainLayout = new QVBoxLayout;
 
     bool highlight = settings.value(EDITOR_HIGHLIGHT).toBool();
-    highlightLabel = new QLabel("Highlight current line");
+    highlightLabel = new QLabel(tr("Highlight current line"));
     highlightCheck = new QCheckBox;
     highlightCheck->setChecked(highlight);
     highlightLabel->setBuddy(highlightCheck);

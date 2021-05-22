@@ -7,6 +7,8 @@
 #include <QScrollBar>
 #include <QStringListModel>
 #include <QGuiApplication>
+#include <QSettings>
+#include "config.h"
 
 AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
     : QPlainTextEdit(parent),
@@ -26,12 +28,17 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
 
     connect(this, &AbcPlainTextEdit::blockCountChanged, this, &AbcPlainTextEdit::updateLineNumberAreaWidth);
     connect(this, &AbcPlainTextEdit::updateRequest, this, &AbcPlainTextEdit::updateLineNumberArea);
-    connect(this, &AbcPlainTextEdit::cursorPositionChanged, this, &AbcPlainTextEdit::highlightCurrentLine);
     connect(this, &AbcPlainTextEdit::cursorPositionChanged, this, &AbcPlainTextEdit::checkDictionnary);
     connect(this, &AbcPlainTextEdit::modificationChanged, this, &AbcPlainTextEdit::flagModified);
 
     updateLineNumberAreaWidth(0);
-    highlightCurrentLine();
+
+    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    QVariant enableHighlightCurrentLine = settings.value(EDITOR_HIGHLIGHT);
+    if (enableHighlightCurrentLine.toBool()) {
+        connect(this, &AbcPlainTextEdit::cursorPositionChanged, this, &AbcPlainTextEdit::highlightCurrentLine);
+        highlightCurrentLine();
+    }
 }
 
 AbcPlainTextEdit::~AbcPlainTextEdit()
@@ -222,7 +229,7 @@ void AbcPlainTextEdit::highlightCurrentLine()
     if (!isReadOnly()) {
         QTextEdit::ExtraSelection selection;
 
-        QColor lineColor = qApp->palette().color(QPalette::Light).darker(110);
+        QColor lineColor = qApp->palette().color(QPalette::Highlight);
 
         selection.format.setBackground(lineColor);
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
@@ -260,10 +267,12 @@ void AbcPlainTextEdit::lineNumberAreaPaintEvent(QPaintEvent *event)
 AbcHighlighter::AbcHighlighter(QTextDocument *parent)
     : QSyntaxHighlighter(parent)
 {
+    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
     AbcHighlightingRule rule;
 
+    QColor color = settings.value(EDITOR_BAR_COLOR).toString();
     barFormat.setFontWeight(QFont::Bold);
-    barFormat.setForeground(QColorConstants::DarkRed.lighter());
+    barFormat.setForeground(color);
     rule.pattern = QRegularExpression(QStringLiteral("(::|[:\\|\\[]?\\|[:\\|\\]]?)"));
     rule.format = barFormat;
     highlightingRules.append(rule);
@@ -274,38 +283,44 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
     rule.format = noteFormat;
     highlightingRules.append(rule);
 
-    indicFormat.setFontWeight(QFont::Normal);
-    indicFormat.setForeground(QColorConstants::DarkMagenta.lighter());
+    color = settings.value(EDITOR_DECORATION_COLOR).toString();
+    decorFormat.setFontWeight(QFont::Normal);
+    decorFormat.setForeground(color);
     rule.pattern = QRegularExpression(QStringLiteral("![^!]*!"));
-    rule.format = indicFormat;
+    rule.format = decorFormat;
     highlightingRules.append(rule);
 
-    chordFormat.setFontWeight(QFont::Normal);
-    chordFormat.setForeground(QColorConstants::DarkCyan);
+    color = settings.value(EDITOR_GCHORD_COLOR).toString();
+    gchordFormat.setFontWeight(QFont::Normal);
+    gchordFormat.setForeground(color);
     rule.pattern = QRegularExpression(QStringLiteral("\"[A-H][^\"]*\""));
-    rule.format = chordFormat;
+    rule.format = gchordFormat;
     highlightingRules.append(rule);
 
+    color = settings.value(EDITOR_COMMENT_COLOR).toString();
     singleLineCommentFormat.setFontWeight(QFont::Normal);
-    singleLineCommentFormat.setForeground(qApp->palette().color(QPalette::PlaceholderText).darker());
+    singleLineCommentFormat.setForeground(color);
     rule.pattern = QRegularExpression(QStringLiteral("%[^\n]*"));
     rule.format = singleLineCommentFormat;
     highlightingRules.append(rule);
 
+    color = settings.value(EDITOR_EXTRAINSTR_COLOR).toString();
     extraInstructionFormat.setFontWeight(QFont::Bold);
-    extraInstructionFormat.setForeground(QColorConstants::Blue.lighter());
+    extraInstructionFormat.setForeground(color);
     rule.pattern = QRegularExpression(QStringLiteral("^%%[^%\n]+"));
     rule.format = extraInstructionFormat;
     highlightingRules.append(rule);
 
+    color = settings.value(EDITOR_LYRIC_COLOR).toString();
     lyricFormat.setFontWeight(QFont::Normal);
-    lyricFormat.setForeground(QColorConstants::DarkMagenta.lighter());
+    lyricFormat.setForeground(color);
     rule.pattern = QRegularExpression(QStringLiteral("^w:[^\n]+"));
     rule.format = lyricFormat;
     highlightingRules.append(rule);
 
-    keywordFormat.setFontWeight(QFont::Bold);
-    keywordFormat.setForeground(QColorConstants::DarkCyan);
+    color = settings.value(EDITOR_HEADER_COLOR).toString();
+    headerFormat.setFontWeight(QFont::Bold);
+    headerFormat.setForeground(color);
     const QString keywordPatterns[] = {
         QStringLiteral("^A:[^\n]+"), QStringLiteral("^B:[^\n]+"), QStringLiteral("^C:[^\n]+"),
         QStringLiteral("^D:[^\n]+"), QStringLiteral("^E:[^\n]+"), QStringLiteral("^F:[^\n]+"),
@@ -319,7 +334,7 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
 
     for (const QString &pattern : keywordPatterns) {
         rule.pattern = QRegularExpression(pattern);
-        rule.format = keywordFormat;
+        rule.format = headerFormat;
         highlightingRules.append(rule);
     }
 

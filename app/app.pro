@@ -18,6 +18,7 @@ SOURCES = ScoreMenu.cpp PreferencesMenu.cpp HelpMenu.cpp AbcPlainTextEdit.cpp Pl
 	ViewVSplitter.cpp \
 	abcsmf.cpp \
 	abcsynth.cpp \
+	editorprefdialog.cpp \
 	generator.cpp \
 	midigenerator.cpp \
 	psgenerator.cpp \
@@ -35,6 +36,7 @@ HEADERS = ScoreMenu.h PreferencesMenu.h HelpMenu.h AbcPlainTextEdit.h PlayPushBu
 	abcsmf.h \
 	abcsynth.h \
 	config.h \
+	editorprefdialog.h \
 	generator.h \
 	midigenerator.h \
 	psgenerator.h \

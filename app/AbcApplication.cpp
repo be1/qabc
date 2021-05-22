@@ -34,6 +34,38 @@ AbcApplication::AbcApplication(int& argc, char **argv)
     if (!pstunes.isValid())
         settings.setValue(PSTUNES_KEY, TUNES_SELECTED);
 
+    QVariant highlight = settings.value(EDITOR_HIGHLIGHT);
+    if (!highlight.isValid())
+        settings.setValue(EDITOR_HIGHLIGHT, false);
+
+    QVariant color = settings.value(EDITOR_BAR_COLOR);
+    if (!color.isValid())
+        settings.setValue(EDITOR_BAR_COLOR, "red");
+
+    color = settings.value(EDITOR_COMMENT_COLOR);
+    if (!color.isValid())
+        settings.setValue(EDITOR_COMMENT_COLOR, "gray");
+
+    color = settings.value(EDITOR_DECORATION_COLOR);
+    if (!color.isValid())
+        settings.setValue(EDITOR_DECORATION_COLOR, "magenta");
+
+    color = settings.value(EDITOR_EXTRAINSTR_COLOR);
+    if (!color.isValid())
+        settings.setValue(EDITOR_EXTRAINSTR_COLOR, "darkcyan");
+
+    color = settings.value(EDITOR_GCHORD_COLOR);
+    if (!color.isValid())
+        settings.setValue(EDITOR_GCHORD_COLOR, "green");
+
+    color = settings.value(EDITOR_HEADER_COLOR);
+    if (!color.isValid())
+        settings.setValue(EDITOR_HEADER_COLOR, "darkcyan");
+
+    color = settings.value(EDITOR_LYRIC_COLOR);
+    if (!color.isValid())
+        settings.setValue(EDITOR_LYRIC_COLOR, "magenta");
+
     settings.sync();
 	abcminit();
 }

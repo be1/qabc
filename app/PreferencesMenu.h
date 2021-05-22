@@ -18,6 +18,7 @@ protected slots:
     void onSfontActionTriggered();
     void onPsActionTriggered();
     void onResetActionTriggered();
+    void onEditorActionTriggered();
 
 private:
     QAction playeraction;
@@ -25,5 +26,6 @@ private:
     QAction resetaction;
     QAction sfontaction;
     QAction psaction;
+    QAction editoraction;
 };
 #endif

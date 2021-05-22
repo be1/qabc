@@ -29,12 +29,12 @@ private:
     QRegularExpression headerStartExpression;
     QRegularExpression headerEndExpression;
 #endif
-    QTextCharFormat keywordFormat;
+    QTextCharFormat headerFormat;
     QTextCharFormat extraInstructionFormat;
     QTextCharFormat singleLineCommentFormat;
     QTextCharFormat noteFormat;
-    QTextCharFormat indicFormat;
-    QTextCharFormat chordFormat;
+    QTextCharFormat decorFormat;
+    QTextCharFormat gchordFormat;
     QTextCharFormat barFormat;
     QTextCharFormat lyricFormat;
 #if 0

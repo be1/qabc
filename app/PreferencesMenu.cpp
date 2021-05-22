@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include "AbcApplication.h"
+#include "editorprefdialog.h"
 
 PreferencesMenu::PreferencesMenu(QWidget* parent)
     : QMenu(parent)
@@ -23,6 +24,9 @@ PreferencesMenu::PreferencesMenu(QWidget* parent)
     psaction.setText(tr("Postscript export"));
     addAction(&psaction);
 
+    editoraction.setText(tr("Editor settings"));
+    addAction(&editoraction);
+
     resetaction.setText(tr("Reset settings"));
     addAction(&resetaction);
 
@@ -31,6 +35,7 @@ PreferencesMenu::PreferencesMenu(QWidget* parent)
     connect(&sfontaction, &QAction::triggered, this, &PreferencesMenu::onSfontActionTriggered);
     connect(&psaction, &QAction::triggered, this, &PreferencesMenu::onPsActionTriggered);
     connect(&resetaction, &QAction::triggered, this, &PreferencesMenu::onResetActionTriggered);
+    connect(&editoraction, &QAction::triggered, this, &PreferencesMenu::onEditorActionTriggered);
 }
 
 PreferencesMenu::~PreferencesMenu()
@@ -157,5 +162,36 @@ void PreferencesMenu::onResetActionTriggered()
 
     settings.setValue(PSTUNES_KEY, TUNES_SELECTED);
 
+    settings.setValue(EDITOR_HIGHLIGHT, false);
+    settings.setValue(EDITOR_BAR_COLOR, "red");
+    settings.setValue(EDITOR_COMMENT_COLOR, "gray");
+    settings.setValue(EDITOR_DECORATION_COLOR, "magenta");
+    settings.setValue(EDITOR_EXTRAINSTR_COLOR, "darkcyan");
+    settings.setValue(EDITOR_GCHORD_COLOR, "green");
+    settings.setValue(EDITOR_HEADER_COLOR, "darkcyan");
+    settings.setValue(EDITOR_LYRIC_COLOR, "magenta");
+
     settings.sync();
+}
+
+void PreferencesMenu::onEditorActionTriggered()
+{
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    EditorPrefDialog* dialog = new EditorPrefDialog(a->mainWindow());
+
+    if (QDialog::Accepted == dialog->exec()) {
+        QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+
+        settings.setValue(EDITOR_HIGHLIGHT, dialog->getHighlight());
+        settings.setValue(EDITOR_BAR_COLOR, dialog->getColor(EDITOR_BAR_COLOR));
+        settings.setValue(EDITOR_COMMENT_COLOR, dialog->getColor(EDITOR_COMMENT_COLOR));
+        settings.setValue(EDITOR_DECORATION_COLOR, dialog->getColor(EDITOR_DECORATION_COLOR));
+        settings.setValue(EDITOR_EXTRAINSTR_COLOR, dialog->getColor(EDITOR_EXTRAINSTR_COLOR));
+        settings.setValue(EDITOR_GCHORD_COLOR, dialog->getColor(EDITOR_GCHORD_COLOR));
+        settings.setValue(EDITOR_HEADER_COLOR, dialog->getColor(EDITOR_HEADER_COLOR));
+        settings.setValue(EDITOR_LYRIC_COLOR, dialog->getColor(EDITOR_LYRIC_COLOR));
+        settings.sync();
+    }
+
+    delete dialog;
 }

@@ -141,6 +141,44 @@ Close this score anyway?</oldsource>
     </message>
 </context>
 <context>
+    <name>EditorPrefDialog</name>
+    <message>
+        <location filename="editorprefdialog.cpp" line="29"/>
+        <source>Bar color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="30"/>
+        <source>Comment color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="31"/>
+        <source>Decoration color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="32"/>
+        <source>Extra instruction color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="33"/>
+        <source>Gchord color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="34"/>
+        <source>Header color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="35"/>
+        <source>Lyric color</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>HelpMenu</name>
     <message>
         <location filename="HelpMenu.cpp" line="9"/>
@@ -217,85 +255,90 @@ QAbc version </source>
 <context>
     <name>PreferencesMenu</name>
     <message>
-        <location filename="PreferencesMenu.cpp" line="12"/>
+        <location filename="PreferencesMenu.cpp" line="13"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="14"/>
+        <location filename="PreferencesMenu.cpp" line="15"/>
         <source>MIDI Generator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="17"/>
+        <location filename="PreferencesMenu.cpp" line="18"/>
         <source>Audio output driver</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="20"/>
+        <location filename="PreferencesMenu.cpp" line="21"/>
         <source>Audio sound font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="23"/>
+        <location filename="PreferencesMenu.cpp" line="24"/>
         <source>Postscript export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="26"/>
+        <location filename="PreferencesMenu.cpp" line="27"/>
+        <source>Editor settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="30"/>
         <source>Reset settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="57"/>
+        <location filename="PreferencesMenu.cpp" line="62"/>
         <source>Audio driver preference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="57"/>
+        <location filename="PreferencesMenu.cpp" line="62"/>
         <source>Audio driver:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="83"/>
+        <location filename="PreferencesMenu.cpp" line="88"/>
         <source>MIDI Generator preference</source>
         <oldsource>Player preference</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="83"/>
+        <location filename="PreferencesMenu.cpp" line="88"/>
         <source>MIDI generator:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="102"/>
-        <location filename="PreferencesMenu.cpp" line="104"/>
+        <location filename="PreferencesMenu.cpp" line="107"/>
+        <location filename="PreferencesMenu.cpp" line="109"/>
         <source>Soundfont (*.sf[23])</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="131"/>
+        <location filename="PreferencesMenu.cpp" line="136"/>
         <source>Postscript export preference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="131"/>
+        <location filename="PreferencesMenu.cpp" line="136"/>
         <source>Tunes:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="145"/>
+        <location filename="PreferencesMenu.cpp" line="150"/>
         <source>Reset prefrences?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="145"/>
+        <location filename="PreferencesMenu.cpp" line="150"/>
         <source>Do you really want to reset preferences?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="102"/>
-        <location filename="PreferencesMenu.cpp" line="104"/>
+        <location filename="PreferencesMenu.cpp" line="107"/>
+        <location filename="PreferencesMenu.cpp" line="109"/>
         <source>Audio sound font preference</source>
         <translation type="unfinished"></translation>
     </message>

@@ -142,6 +142,44 @@ Fermer cette partition quand-même ?</translation>
     </message>
 </context>
 <context>
+    <name>EditorPrefDialog</name>
+    <message>
+        <location filename="editorprefdialog.cpp" line="29"/>
+        <source>Bar color</source>
+        <translation>Couleur de la barre</translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="30"/>
+        <source>Comment color</source>
+        <translation>Couleur de commentaire</translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="31"/>
+        <source>Decoration color</source>
+        <translation>Couleur de décoration</translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="32"/>
+        <source>Extra instruction color</source>
+        <translation>Couleur d&apos;instruction</translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="33"/>
+        <source>Gchord color</source>
+        <translation>Couleur de Gchord</translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="34"/>
+        <source>Header color</source>
+        <translation>Couleur d&apos;entête</translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="35"/>
+        <source>Lyric color</source>
+        <translation>Couleur de parole</translation>
+    </message>
+</context>
+<context>
     <name>HelpMenu</name>
     <message>
         <location filename="HelpMenu.cpp" line="9"/>
@@ -219,85 +257,90 @@ QAbc version </translation>
 <context>
     <name>PreferencesMenu</name>
     <message>
-        <location filename="PreferencesMenu.cpp" line="12"/>
+        <location filename="PreferencesMenu.cpp" line="13"/>
         <source>Preferences</source>
         <translation>Préférences</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="14"/>
+        <location filename="PreferencesMenu.cpp" line="15"/>
         <source>MIDI Generator</source>
         <translation>Générateur MIDI</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="17"/>
+        <location filename="PreferencesMenu.cpp" line="18"/>
         <source>Audio output driver</source>
         <translation>Pilote de sortie audio</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="20"/>
+        <location filename="PreferencesMenu.cpp" line="21"/>
         <source>Audio sound font</source>
         <translation>Fonte d&apos;échantillons audio</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="23"/>
+        <location filename="PreferencesMenu.cpp" line="24"/>
         <source>Postscript export</source>
         <translation>Export Postsript</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="26"/>
+        <location filename="PreferencesMenu.cpp" line="27"/>
+        <source>Editor settings</source>
+        <translation>Préférences de l&apos;éditeur</translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="30"/>
         <source>Reset settings</source>
         <translation>Remettre les préférences d&apos;origine</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="57"/>
+        <location filename="PreferencesMenu.cpp" line="62"/>
         <source>Audio driver preference</source>
         <translation>Préférence du pilote audio</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="57"/>
+        <location filename="PreferencesMenu.cpp" line="62"/>
         <source>Audio driver:</source>
         <translation>Pilote audio :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="83"/>
+        <location filename="PreferencesMenu.cpp" line="88"/>
         <source>MIDI Generator preference</source>
         <oldsource>Player preference</oldsource>
         <translation>Préférence du générateur MIDI</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="83"/>
+        <location filename="PreferencesMenu.cpp" line="88"/>
         <source>MIDI generator:</source>
         <translation>Générateur MIDI :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="102"/>
-        <location filename="PreferencesMenu.cpp" line="104"/>
+        <location filename="PreferencesMenu.cpp" line="107"/>
+        <location filename="PreferencesMenu.cpp" line="109"/>
         <source>Soundfont (*.sf[23])</source>
         <translation>Fonte sonore (*.sf[23])</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="131"/>
+        <location filename="PreferencesMenu.cpp" line="136"/>
         <source>Postscript export preference</source>
         <translation>Préférence de l&apos;export Postscript</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="131"/>
+        <location filename="PreferencesMenu.cpp" line="136"/>
         <source>Tunes:</source>
         <translation>Morceaux :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="145"/>
+        <location filename="PreferencesMenu.cpp" line="150"/>
         <source>Reset prefrences?</source>
         <translation>Remettre les préférences d&apos;origine ?</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="145"/>
+        <location filename="PreferencesMenu.cpp" line="150"/>
         <source>Do you really want to reset preferences?</source>
         <translation>Voulez-vous vraiment remettre les préférences d&apos;origine ?</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="102"/>
-        <location filename="PreferencesMenu.cpp" line="104"/>
+        <location filename="PreferencesMenu.cpp" line="107"/>
+        <location filename="PreferencesMenu.cpp" line="109"/>
         <source>Audio sound font preference</source>
         <translation>Préférence de la fonte d&apos;échantillons</translation>
     </message>

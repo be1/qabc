@@ -46,6 +46,12 @@ AbcSynth::AbcSynth(const QString& name, QObject* parent)
 
     QVariant soundfont = settings.value(SOUNDFONT_KEY);
     curSFont = soundfont.toString();
+    QFileInfo info(curSFont);
+    if (!info.exists()) {
+        a->mainWindow()->statusBar()->showMessage(tr("No soundfont to load! Please check settings."));
+        return;
+    }
+
     ba = curSFont.toUtf8();
     sf = (char*) realloc(sf, ba.length() + 1);
     strncpy(sf, ba.constData(), ba.length());
@@ -90,7 +96,6 @@ void AbcSynth::onSFontFinished(int fid) {
         a->mainWindow()->statusBar()->showMessage(tr("Cannot load sound font: ") + sf);
         emit initFinished(true);
     } else {
-        a->mainWindow()->statusBar()->clearMessage();
         sfid = fid;
         emit initFinished(false);
     }

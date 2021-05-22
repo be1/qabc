@@ -99,9 +99,6 @@ void EditVBoxLayout::onSynthInited(bool err) {
     playpushbutton.setEnabled(true);
     if (err)
         a->mainWindow()->statusBar()->showMessage(tr("Cannot load sound font."));
-    else {
-        a->mainWindow()->statusBar()->clearMessage();
-    }
 }
 
 void EditVBoxLayout::removeMIDIFile() {
@@ -336,7 +333,8 @@ void EditVBoxLayout::onRunClicked()
      * we have to remove bruteforcely them */
     removeSvgFiles();
 
-    a->mainWindow()->statusBar()->showMessage(tr("Generating score..."));
+    if (a->mainWindow()->statusBar()->currentMessage().isEmpty())
+        a->mainWindow()->statusBar()->showMessage(tr("Generating score..."));
     QString tosave = abcPlainTextEdit()->toPlainText();
     tempFile.open();
     tempFile.write(tosave.toUtf8());
@@ -396,7 +394,8 @@ void EditVBoxLayout::onCompileFinished(int exitCode, const QString& errstr, int 
         return;
     }
 
-    a->mainWindow()->statusBar()->showMessage(tr("Score generated."));
+    if (a->mainWindow()->statusBar()->currentMessage().isEmpty())
+        a->mainWindow()->statusBar()->showMessage(tr("Score generated."));
 
     if (!cont) {
         runpushbutton.setEnabled(true);

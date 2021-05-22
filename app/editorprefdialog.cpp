@@ -9,7 +9,7 @@ EditorPrefDialog::EditorPrefDialog(QWidget *parent) : QDialog(parent)
 {
     Settings settings;
 
-    setWindowTitle("Editor settings");
+    setWindowTitle(tr("Editor settings"));
     setMinimumSize(400, 320);
 
     mainLayout = new QVBoxLayout;
@@ -26,11 +26,11 @@ EditorPrefDialog::EditorPrefDialog(QWidget *parent) : QDialog(parent)
     mainLayout->addLayout(hbox);
 
     /* WARNING: labels, keys, buttons in the same order */
-    colorLabels << tr("Bar color") \
+    colorLabels << tr("Measure bar color") \
                 << tr("Comment color") \
                 << tr("Decoration color") \
                 << tr("Extra instruction color") \
-                << tr("Gchord color") \
+                << tr("Guitar chord color") \
                 << tr("Header color") \
                 << tr("Lyric color");
 

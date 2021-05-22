@@ -1,11 +1,11 @@
 #include "PreferencesMenu.h"
 #include <QDebug>
-#include <QSettings>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QFileDialog>
 #include "AbcApplication.h"
 #include "editorprefdialog.h"
+#include "settings.h"
 
 PreferencesMenu::PreferencesMenu(QWidget* parent)
     : QMenu(parent)
@@ -44,7 +44,7 @@ PreferencesMenu::~PreferencesMenu()
 
 void PreferencesMenu::onAdriverActionTriggered()
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
     QVariant driver = settings.value(DRIVER_KEY);
 
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
@@ -70,7 +70,7 @@ void PreferencesMenu::onAdriverActionTriggered()
 
 void PreferencesMenu::onPlayerActionTriggered()
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
     QVariant player = settings.value(PLAYER_KEY);
 
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
@@ -96,7 +96,7 @@ void PreferencesMenu::onPlayerActionTriggered()
 
 void PreferencesMenu::onSfontActionTriggered()
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
     QVariant soundfont = settings.value(SOUNDFONT_KEY);
 
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
@@ -118,7 +118,7 @@ void PreferencesMenu::onSfontActionTriggered()
 
 void PreferencesMenu::onPsActionTriggered()
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
     QVariant ps = settings.value(PSTUNES_KEY);
 
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
@@ -150,28 +150,8 @@ void PreferencesMenu::onResetActionTriggered()
     if (QMessageBox::No == QMessageBox::question(a->mainWindow(), tr("Reset prefrences?"), tr("Do you really want to reset preferences?")))
         return;
 
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
-#ifndef USE_LIBABCM2PS
-	settings.setValue(COMPILER_KEY, ABCM2PS);
-#endif
-    settings.setValue(PLAYER_KEY, ABC2MIDI);
-
-    settings.setValue(DRIVER_KEY, DRIVER_ALSA);
-
-    settings.setValue(SOUNDFONT_KEY, DEB_SF2_GM);
-
-    settings.setValue(PSTUNES_KEY, TUNES_SELECTED);
-
-    settings.setValue(EDITOR_HIGHLIGHT, false);
-    settings.setValue(EDITOR_BAR_COLOR, "red");
-    settings.setValue(EDITOR_COMMENT_COLOR, "gray");
-    settings.setValue(EDITOR_DECORATION_COLOR, "magenta");
-    settings.setValue(EDITOR_EXTRAINSTR_COLOR, "darkcyan");
-    settings.setValue(EDITOR_GCHORD_COLOR, "green");
-    settings.setValue(EDITOR_HEADER_COLOR, "darkcyan");
-    settings.setValue(EDITOR_LYRIC_COLOR, "magenta");
-
-    settings.sync();
+    Settings settings;
+    settings.reset();
 }
 
 void PreferencesMenu::onEditorActionTriggered()
@@ -180,7 +160,7 @@ void PreferencesMenu::onEditorActionTriggered()
     EditorPrefDialog* dialog = new EditorPrefDialog(a->mainWindow());
 
     if (QDialog::Accepted == dialog->exec()) {
-        QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+        Settings settings;
 
         settings.setValue(EDITOR_HIGHLIGHT, dialog->getHighlight());
         settings.setValue(EDITOR_BAR_COLOR, dialog->getColor(EDITOR_BAR_COLOR));

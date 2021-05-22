@@ -7,8 +7,8 @@
 #include <QScrollBar>
 #include <QStringListModel>
 #include <QGuiApplication>
-#include <QSettings>
 #include "config.h"
+#include "settings.h"
 
 AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
     : QPlainTextEdit(parent),
@@ -33,7 +33,7 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
 
     updateLineNumberAreaWidth(0);
 
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
     QVariant enableHighlightCurrentLine = settings.value(EDITOR_HIGHLIGHT);
     if (enableHighlightCurrentLine.toBool()) {
         connect(this, &AbcPlainTextEdit::cursorPositionChanged, this, &AbcPlainTextEdit::highlightCurrentLine);
@@ -267,7 +267,7 @@ void AbcPlainTextEdit::lineNumberAreaPaintEvent(QPaintEvent *event)
 AbcHighlighter::AbcHighlighter(QTextDocument *parent)
     : QSyntaxHighlighter(parent)
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
     AbcHighlightingRule rule;
 
     QColor color = settings.value(EDITOR_BAR_COLOR).toString();

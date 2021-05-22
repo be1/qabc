@@ -1,9 +1,9 @@
 #include <QRegularExpression>
-#include <QSettings>
 #include <QDebug>
 #include "svggenerator.h"
 #include "config.h"
 #include "../abcm2ps/abcm2ps.h"
+#include "settings.h"
 
 SvgGenerator::SvgGenerator(QObject* parent)
     : PsGenerator(parent)
@@ -13,7 +13,7 @@ SvgGenerator::SvgGenerator(QObject* parent)
 
 void SvgGenerator::generate(const QString &input, int xopt, QString output, int cont)
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
 #ifndef USE_LIBABCM2PS
     QVariant compiler = settings.value(COMPILER_KEY);
     QString program = compiler.toString();

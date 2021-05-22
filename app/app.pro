@@ -22,6 +22,7 @@ SOURCES = ScoreMenu.cpp PreferencesMenu.cpp HelpMenu.cpp AbcPlainTextEdit.cpp Pl
 	generator.cpp \
 	midigenerator.cpp \
 	psgenerator.cpp \
+	settings.cpp \
 	sfloader.cpp \
 	QProgressIndicator.cpp \
 	svggenerator.cpp
@@ -40,6 +41,7 @@ HEADERS = ScoreMenu.h PreferencesMenu.h HelpMenu.h AbcPlainTextEdit.h PlayPushBu
 	generator.h \
 	midigenerator.h \
 	psgenerator.h \
+	settings.h \
 	sfloader.h \
 	QProgressIndicator.h \
 	svggenerator.h

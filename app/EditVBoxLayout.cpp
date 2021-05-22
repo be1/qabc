@@ -3,7 +3,6 @@
 #include "AbcApplication.h"
 #include "PreferencesMenu.h"
 #include "sfloader.h"
-#include <QSettings>
 #include <QFileInfo>
 #include <QDebug>
 #include <QSpinBox>
@@ -11,6 +10,7 @@
 #include <QStandardPaths>
 #include <QMessageBox>
 #include <QTimer>
+#include "settings.h"
 #include "../abc/abc.h"
 #include "abcsmf.h"
 #ifdef USE_LIBABCM2PS
@@ -238,7 +238,7 @@ void EditVBoxLayout::exportMIDI(QString filename) {
         cont = 0; /* will not play, it's just an export */
     }
 
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
     QVariant player = settings.value(PLAYER_KEY);
 
     if (player == LIBABC2SMF) {

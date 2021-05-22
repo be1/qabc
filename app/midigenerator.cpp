@@ -1,9 +1,9 @@
 #include <QDebug>
-#include <QSettings>
 #include <QMessageBox>
 #include "AbcApplication.h"
 #include "midigenerator.h"
 #include "generator.h"
+#include "settings.h"
 #include "../abc/abc.h"
 #include "abcsmf.h"
 
@@ -15,7 +15,7 @@ MidiGenerator::MidiGenerator(QObject* parent)
 
 void MidiGenerator::generate(const QString &input, int xopt, QString output, int cont)
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
     QVariant player = settings.value(PLAYER_KEY);
 
     QString program = player.toString();

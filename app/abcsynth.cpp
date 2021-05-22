@@ -1,8 +1,8 @@
 #include "abcsynth.h"
-#include <QSettings>
 #include "config.h"
 #include <QDebug>
 #include "AbcApplication.h"
+#include "settings.h"
 
 AbcSynth::AbcSynth(const QString& name, QObject* parent)
     : QObject(parent),
@@ -19,7 +19,7 @@ AbcSynth::AbcSynth(const QString& name, QObject* parent)
       mf(NULL),
       inited(false)
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
     QByteArray ba;
     ba = settings.value(DRIVER_KEY).toString().toUtf8();
     drv = (char*) realloc(drv, ba.length() + 1);

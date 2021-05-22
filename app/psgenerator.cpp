@@ -1,10 +1,10 @@
-#include <QSettings>
 #include <QDebug>
 #include "psgenerator.h"
 #include "config.h"
 #include "../abcm2ps/abcm2ps.h"
 #include "AbcApplication.h"
 #include "AbcProcess.h"
+#include "settings.h"
 
 PsGenerator::PsGenerator(QObject* parent)
     : Generator(parent)
@@ -13,7 +13,7 @@ PsGenerator::PsGenerator(QObject* parent)
 
 void PsGenerator::generate(const QString &input, int xopt, QString output, int cont)
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
     QVariant param = settings.value(PSTUNES_KEY);
 
     QString program("abcm2ps");

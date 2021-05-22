@@ -1,13 +1,13 @@
 #include "editorprefdialog.h"
 #include <QVBoxLayout>
 #include <QPushButton>
-#include <QSettings>
 #include <QColorDialog>
 #include "config.h"
+#include "settings.h"
 
 EditorPrefDialog::EditorPrefDialog(QWidget *parent) : QDialog(parent)
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
 
     setWindowTitle("Editor settings");
     setMinimumSize(400, 320);

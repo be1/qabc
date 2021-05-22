@@ -162,7 +162,7 @@ void EditVBoxLayout::cleanupThreads()
 
 void EditVBoxLayout::onXChanged(int value)
 {
-    qDebug() << value;
+    //qDebug() << value;
 }
 
 void EditVBoxLayout::onPlayClicked()

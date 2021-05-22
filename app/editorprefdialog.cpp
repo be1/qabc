@@ -99,7 +99,7 @@ void EditorPrefDialog::onColorButtonClicked()
    QPalette pal = butt->palette();
    QColor color = pal.color(QPalette::Button);
 
-   QColor choose = QColorDialog::getColor(color);
+   QColor choose = QColorDialog::getColor(color, this);
 
    if (!choose.isValid())
        return;

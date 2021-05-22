@@ -333,8 +333,8 @@ void EditVBoxLayout::onRunClicked()
      * we have to remove bruteforcely them */
     removeSvgFiles();
 
-    if (a->mainWindow()->statusBar()->currentMessage().isEmpty())
-        a->mainWindow()->statusBar()->showMessage(tr("Generating score..."));
+    //if (a->mainWindow()->statusBar()->currentMessage().isEmpty())
+    //    a->mainWindow()->statusBar()->showMessage(tr("Generating score..."));
     QString tosave = abcPlainTextEdit()->toPlainText();
     tempFile.open();
     tempFile.write(tosave.toUtf8());

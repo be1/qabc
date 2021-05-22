@@ -26,20 +26,20 @@ EditorPrefDialog::EditorPrefDialog(QWidget *parent) : QDialog(parent)
     mainLayout->addLayout(hbox);
 
     /* WARNING: labels, keys, buttons in the same order */
-    colorLabels << tr("Measure bar color") \
+    colorLabels << tr("Header color") \
                 << tr("Comment color") \
-                << tr("Decoration color") \
                 << tr("Extra instruction color") \
+                << tr("Measure bar color") \
+                << tr("Decoration color") \
                 << tr("Guitar chord color") \
-                << tr("Header color") \
                 << tr("Lyric color");
 
-    colorKeys << EDITOR_BAR_COLOR \
+    colorKeys << EDITOR_HEADER_COLOR \
               << EDITOR_COMMENT_COLOR \
-              << EDITOR_DECORATION_COLOR \
               << EDITOR_EXTRAINSTR_COLOR \
+              << EDITOR_BAR_COLOR \
+              << EDITOR_DECORATION_COLOR \
               << EDITOR_GCHORD_COLOR \
-              << EDITOR_HEADER_COLOR \
               << EDITOR_LYRIC_COLOR;
 
 
@@ -63,7 +63,6 @@ EditorPrefDialog::EditorPrefDialog(QWidget *parent) : QDialog(parent)
         connect(butt, &QPushButton::clicked, this, &EditorPrefDialog::onColorButtonClicked);
         hbox->addWidget(label);
         hbox->addWidget(butt);
-        mainLayout->addStretch(1);
         mainLayout->addLayout(hbox);
     }
 

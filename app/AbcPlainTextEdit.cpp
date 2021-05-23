@@ -60,6 +60,7 @@ void AbcPlainTextEdit::setCompleter(QCompleter *completer)
     c->setWidget(this);
     c->setCompletionMode(QCompleter::PopupCompletion);
     c->setCaseSensitivity(Qt::CaseSensitive);
+    c->setFilterMode(Qt::MatchContains);
     QObject::connect(c, QOverload<const QString &>::of(&QCompleter::activated),
                      this, &AbcPlainTextEdit::insertCompletion);
 }
@@ -90,10 +91,18 @@ void AbcPlainTextEdit::insertCompletion(const QString &completion)
     if (c->widget() != this)
         return;
     QTextCursor tc = textCursor();
+#if 0
+    /* this for startWith mode */
     int extra = completion.length() - c->completionPrefix().length();
     tc.movePosition(QTextCursor::Left);
     tc.movePosition(QTextCursor::EndOfWord);
     tc.insertText(completion.right(extra));
+#else
+    /* this for contains mode */
+    tc.select(QTextCursor::WordUnderCursor);
+    tc.removeSelectedText();
+    tc.insertText(completion);
+#endif
     setTextCursor(tc);
 }
 
@@ -164,10 +173,10 @@ void AbcPlainTextEdit::keyPressEvent(QKeyEvent *e)
     const bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
     QString completionPrefix = textUnderCursor();
 
-   /* no shortcut pressed, or a modifier-only key is pressed,
+    /* no shortcut pressed, or a modifier-only key is pressed,
      * or the word typed is too short, or it is a complete word:
      * then unshow popup if needed and return */
-    if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 1
+    if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 2
                       || eow.contains(e->text().right(1)))) {
         c->popup()->hide();
         return;

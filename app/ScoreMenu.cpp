@@ -26,7 +26,7 @@ ScoreMenu::ScoreMenu(QWidget* parent)
     saveaction.setShortcut(QKeySequence(QKeySequence::Save));
     addAction(&saveaction);
 
-    saveaction.setText(tr("Save as"));
+    saveasaction.setText(tr("Save as"));
     addAction(&saveasaction);
 
     exportaction.setText(tr("Export to MIDI"));

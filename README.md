@@ -8,7 +8,9 @@ QAbc uses third-party software to generate MIDI, AUDIO, and SVG files. Without t
 - fluidsynth (library and headers)
 
 Note that this version of QAbc uses a *modified* version of the open source abcm2ps code, maintained in a specific submodule for QAbc.
-Original `abcm2ps` code is Copyright © 2014-2016 Jean-Francois Moine. 
+Original `abcm2ps` code is Copyright © 2014-2016 Jean-Francois Moine.
+
+Note that this veersion of QAbc provides an optionnal internal abc notation parser, generated with [packcc](https://en.wikipedia.org/wiki/PackCC) from a PEG file.
 
 ## Screenshot
 http://brouits.free.fr/images/qabc_v2alpha.png

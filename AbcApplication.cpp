@@ -1,5 +1,5 @@
 #include "AbcApplication.h"
-#include <QSettings>
+#include "settings.h"
 #include <QDebug>
 #include "config.h"
 
@@ -11,23 +11,9 @@ AbcApplication::AbcApplication(int& argc, char **argv)
     setApplicationName(SETTINGS_APP);
 	setApplicationVersion(VERSION " (" REVISION ")");
 
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
 
-	QVariant compiler = settings.value(COMPILER_KEY);
-	if (!compiler.isValid())
-		settings.setValue(COMPILER_KEY, ABCM2PS);
-
-	QVariant player = settings.value(PLAYER_KEY);
-	if (!player.isValid())
-		settings.setValue(PLAYER_KEY, ABC2MMIDI);
-
-	QVariant synth = settings.value(SYNTH_KEY);
-	if (!synth.isValid())
-		settings.setValue(SYNTH_KEY, FLUIDSYNTH);
-
-    QVariant viewer = settings.value(VIEWER_KEY);
-    if (!viewer.isValid())
-        settings.setValue(VIEWER_KEY, PSVIEWER);
+    settings.check();
 
     settings.sync();
 }

@@ -3,17 +3,7 @@
 
 #include <QAction>
 #include <QMenu>
-
-#define SETTINGS_DOMAIN "Herewe"
-#define SETTINGS_APP "QAbc"
-#define COMPILER_KEY "ABC/compiler"
-#define ABC2MMIDI "/usr/bin/abc2midi"
-#define PLAYER_KEY "ABC/player"
-#define ABCM2PS "/usr/bin/abcm2ps -i -O="
-#define SYNTH_KEY "ABC/synth"
-#define FLUIDSYNTH "/usr/bin/fluidsynth --no-shell --audio-driver=alsa /usr/share/sounds/sf2/FluidR3_GM.sf2"
-#define VIEWER_KEY "ABC/viewer"
-#define PSVIEWER "/usr/bin/evince"
+#include <config.h>
 
 class PreferencesMenu: public QMenu
 {
@@ -29,6 +19,7 @@ protected slots:
     void onSynthActionTriggered();
     void onResetActionTriggered();
     void onViewerActionTriggered();
+    void onEditorActionTriggered();
 
 private:
     QAction compileraction;
@@ -36,5 +27,6 @@ private:
     QAction synthaction;
     QAction resetaction;
     QAction vieweraction;
+    QAction editoraction;
 };
 #endif

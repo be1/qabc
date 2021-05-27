@@ -7,4 +7,28 @@
 #define DATADIR \"$$DATADIR\"
 #define REVISION \"$$REVISION\"
 
+#define SETTINGS_DOMAIN \"Herewe\"
+#define SETTINGS_APP \"QAbc\"
+
+#define COMPILER_KEY \"ABC/compiler\"
+#define ABCM2PS \"/usr/bin/abcm2ps -i -O=\"
+
+#define PLAYER_KEY \"ABC/player\"
+#define ABC2MIDI \"/usr/bin/abc2midi\"
+
+#define SYNTH_KEY \"ABC/synth\"
+#define FLUIDSYNTH \"/usr/bin/fluidsynth --no-shell --audio-driver=alsa /usr/share/sounds/sf2/FluidR3_GM.sf2\"
+
+#define VIEWER_KEY \"ABC/viewer\"
+#define PSVIEWER \"/usr/bin/evince\"
+
+#define EDITOR_HIGHLIGHT \"ABC/editor/highlight\"
+#define EDITOR_BAR_COLOR \"ABC/editor/bar_color\"
+#define EDITOR_COMMENT_COLOR \"ABC/editor/comment_color\"
+#define EDITOR_DECORATION_COLOR \"ABC/editor/decoration_color\"
+#define EDITOR_EXTRAINSTR_COLOR \"ABC/editor/extrainstr_color\"
+#define EDITOR_GCHORD_COLOR \"ABC/editor/gchord_color\"
+#define EDITOR_HEADER_COLOR \"ABC/editor/header_color\"
+#define EDITOR_LYRIC_COLOR \"ABC/editor/lyric_color\"
+
 #endif

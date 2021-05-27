@@ -29,13 +29,14 @@ private:
     QRegularExpression headerStartExpression;
     QRegularExpression headerEndExpression;
 #endif
-    QTextCharFormat keywordFormat;
+    QTextCharFormat headerFormat;
     QTextCharFormat extraInstructionFormat;
     QTextCharFormat singleLineCommentFormat;
     QTextCharFormat noteFormat;
-    QTextCharFormat indicFormat;
-    QTextCharFormat chordFormat;
+    QTextCharFormat decorFormat;
+    QTextCharFormat gchordFormat;
     QTextCharFormat barFormat;
+    QTextCharFormat lyricFormat;
 #if 0
     QTextCharFormat multiLineHeaderFormat;
 #endif
@@ -55,25 +56,35 @@ public:
     void setCompleter(QCompleter *c);
     QCompleter *completer() const;
 
+    bool isSaved();
+    void setSaved();
+
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void keyPressEvent(QKeyEvent *e) override;
     void focusInEvent(QFocusEvent *e) override;
+    void flagModified(bool enable);
 
 private slots:
     void updateLineNumberAreaWidth(int newBlockCount);
     void highlightCurrentLine();
+    void checkDictionnary();
     void updateLineNumberArea(const QRect &rect, int dy);
     void insertCompletion(const QString &completion);
 
 private:
     QAbstractItemModel *modelFromFile(const QString &fileName);
+    QAbstractItemModel *dictModel; /* normal dictionnary */
+    QAbstractItemModel *gmModel;   /* General MIDI dictionary */
 
     QWidget *lineNumberArea;
     AbcHighlighter *highlighter;
     QString textUnderCursor() const;
+    QString lineUnderCursor() const;
 
     QCompleter *c = nullptr;
+    bool saved;
 };
 
 class LineNumberArea : public QWidget

@@ -1,6 +1,8 @@
 #include "PreferencesMenu.h"
+#include "AbcApplication.h"
+#include "editorprefdialog.h"
+#include "settings.h"
 #include <QDebug>
-#include <QSettings>
 #include <QInputDialog>
 
 PreferencesMenu::PreferencesMenu(QWidget* parent)
@@ -21,15 +23,18 @@ PreferencesMenu::PreferencesMenu(QWidget* parent)
     vieweraction.setText(tr("Score viewer"));
     addAction(&vieweraction);
 
-    resetaction.setText(tr("Reset"));
-    addAction(&resetaction);
+    editoraction.setText(tr("Editor settings"));
+    addAction(&editoraction);
 
+    resetaction.setText(tr("Reset to defaults"));
+    addAction(&resetaction);
 
     connect(&compileraction, &QAction::triggered, this, &PreferencesMenu::onCompilerActionTriggered);
     connect(&playeraction, &QAction::triggered, this, &PreferencesMenu::onPlayerActionTriggered);
     connect(&synthaction, &QAction::triggered, this, &PreferencesMenu::onSynthActionTriggered);
     connect(&resetaction, &QAction::triggered, this, &PreferencesMenu::onResetActionTriggered);
     connect(&vieweraction, &QAction::triggered, this, &PreferencesMenu::onViewerActionTriggered);
+    connect(&editoraction, &QAction::triggered, this, &PreferencesMenu::onEditorActionTriggered);
 }
 
 PreferencesMenu::~PreferencesMenu()
@@ -38,15 +43,16 @@ PreferencesMenu::~PreferencesMenu()
 
 void PreferencesMenu::onCompilerActionTriggered()
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    Settings settings;
     QVariant compiler = settings.value(COMPILER_KEY);
 
     bool ok;
     QString command;
     if (!compiler.isNull())
-        command = QInputDialog::getText(this, tr("Compiler preference"), tr("Compiler:"), QLineEdit::Normal, compiler.toString(), &ok);
+        command = QInputDialog::getText(a->mainWindow(), tr("Compiler preference"), tr("Compiler:"), QLineEdit::Normal, compiler.toString(), &ok);
     else
-        command = QInputDialog::getText(this, tr("Compiler preference"), tr("Compiler:"), QLineEdit::Normal, ABCM2PS, &ok);
+        command = QInputDialog::getText(a->mainWindow(), tr("Compiler preference"), tr("Compiler:"), QLineEdit::Normal, ABCM2PS, &ok);
 
     if (!ok)
         return;
@@ -57,15 +63,16 @@ void PreferencesMenu::onCompilerActionTriggered()
 
 void PreferencesMenu::onPlayerActionTriggered()
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    Settings settings;
     QVariant player = settings.value(PLAYER_KEY);
 
     bool ok;
     QString command;
     if (!player.isNull())
-        command = QInputDialog::getText(this, tr("Player preference"), tr("Player:"), QLineEdit::Normal, player.toString(), &ok);
+        command = QInputDialog::getText(a->mainWindow(), tr("Player preference"), tr("Player:"), QLineEdit::Normal, player.toString(), &ok);
     else
-        command = QInputDialog::getText(this, tr("Player preference"), tr("Player:"), QLineEdit::Normal, ABC2MMIDI, &ok);
+        command = QInputDialog::getText(a->mainWindow(), tr("Player preference"), tr("Player:"), QLineEdit::Normal, ABC2MIDI, &ok);
 
     if (!ok)
         return;
@@ -76,15 +83,16 @@ void PreferencesMenu::onPlayerActionTriggered()
 
 void PreferencesMenu::onSynthActionTriggered()
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    Settings settings;
     QVariant synth = settings.value(SYNTH_KEY);
 
     bool ok;
     QString command;
     if (!synth.isNull())
-        command = QInputDialog::getText(this, tr("Synth preference"), tr("Synth:"), QLineEdit::Normal, synth.toString(), &ok);
+        command = QInputDialog::getText(a->mainWindow(), tr("Synth preference"), tr("Synth:"), QLineEdit::Normal, synth.toString(), &ok);
     else
-        command = QInputDialog::getText(this, tr("Synth preference"), tr("Synth:"), QLineEdit::Normal, FLUIDSYNTH, &ok);
+        command = QInputDialog::getText(a->mainWindow(), tr("Synth preference"), tr("Synth:"), QLineEdit::Normal, FLUIDSYNTH, &ok);
 
     if (!ok)
         return;
@@ -95,15 +103,16 @@ void PreferencesMenu::onSynthActionTriggered()
 
 void PreferencesMenu::onViewerActionTriggered()
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    Settings settings;
     QVariant viewer = settings.value(VIEWER_KEY);
 
     bool ok;
     QString command;
     if (!viewer.isNull())
-        command = QInputDialog::getText(this, tr("PS viewer preference"), tr("PS Viewer:"), QLineEdit::Normal, viewer.toString(), &ok);
+        command = QInputDialog::getText(a->mainWindow(), tr("PS viewer preference"), tr("PS Viewer:"), QLineEdit::Normal, viewer.toString(), &ok);
     else
-        command = QInputDialog::getText(this, tr("PS viewer preference"), tr("PS Viewer:"), QLineEdit::Normal, PSVIEWER, &ok);
+        command = QInputDialog::getText(a->mainWindow(), tr("PS viewer preference"), tr("PS Viewer:"), QLineEdit::Normal, PSVIEWER, &ok);
 
     if (!ok)
         return;
@@ -111,17 +120,34 @@ void PreferencesMenu::onViewerActionTriggered()
     settings.setValue(VIEWER_KEY, command);
     settings.sync();
 }
+
+void PreferencesMenu::onEditorActionTriggered()
+{
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    EditorPrefDialog* dialog = new EditorPrefDialog(a->mainWindow());
+
+    if (QDialog::Accepted == dialog->exec()) {
+        Settings settings;
+
+        settings.setValue(EDITOR_HIGHLIGHT, dialog->getHighlight());
+        settings.setValue(EDITOR_BAR_COLOR, dialog->getColor(EDITOR_BAR_COLOR));
+        settings.setValue(EDITOR_COMMENT_COLOR, dialog->getColor(EDITOR_COMMENT_COLOR));
+        settings.setValue(EDITOR_DECORATION_COLOR, dialog->getColor(EDITOR_DECORATION_COLOR));
+        settings.setValue(EDITOR_EXTRAINSTR_COLOR, dialog->getColor(EDITOR_EXTRAINSTR_COLOR));
+        settings.setValue(EDITOR_GCHORD_COLOR, dialog->getColor(EDITOR_GCHORD_COLOR));
+        settings.setValue(EDITOR_HEADER_COLOR, dialog->getColor(EDITOR_HEADER_COLOR));
+        settings.setValue(EDITOR_LYRIC_COLOR, dialog->getColor(EDITOR_LYRIC_COLOR));
+        settings.sync();
+    }
+
+    delete dialog;
+}
+
 void PreferencesMenu::onResetActionTriggered()
 {
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
 
-    settings.setValue(COMPILER_KEY, ABCM2PS);
-
-    settings.setValue(PLAYER_KEY, ABC2MMIDI);
-
-    settings.setValue(SYNTH_KEY, FLUIDSYNTH);
-
-    settings.setValue(VIEWER_KEY, PSVIEWER);
+    settings.reset();
 
     settings.sync();
 }

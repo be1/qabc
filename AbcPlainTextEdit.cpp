@@ -7,14 +7,20 @@
 #include <QScrollBar>
 #include <QStringListModel>
 #include <QGuiApplication>
+#include "config.h"
+#include "settings.h"
 
 AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
-	: QPlainTextEdit(parent)
+    : QPlainTextEdit(parent),
+      saved(false)
 {
     lineNumberArea = new LineNumberArea(this);
     highlighter = new AbcHighlighter(this->document());
+    dictModel = modelFromFile(":dict.txt");
+    gmModel = modelFromFile(":gm.txt");
+
     QCompleter *com = new QCompleter(this);
-    com->setModel(modelFromFile(":dict.txt"));
+    com->setModel(dictModel);
     com->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
     com->setCaseSensitivity(Qt::CaseInsensitive);
     com->setWrapAround(false);
@@ -22,14 +28,23 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
 
     connect(this, &AbcPlainTextEdit::blockCountChanged, this, &AbcPlainTextEdit::updateLineNumberAreaWidth);
     connect(this, &AbcPlainTextEdit::updateRequest, this, &AbcPlainTextEdit::updateLineNumberArea);
-    connect(this, &AbcPlainTextEdit::cursorPositionChanged, this, &AbcPlainTextEdit::highlightCurrentLine);
+    connect(this, &AbcPlainTextEdit::cursorPositionChanged, this, &AbcPlainTextEdit::checkDictionnary);
+    connect(this, &AbcPlainTextEdit::modificationChanged, this, &AbcPlainTextEdit::flagModified);
 
     updateLineNumberAreaWidth(0);
-    highlightCurrentLine();
+
+    Settings settings;
+    QVariant enableHighlightCurrentLine = settings.value(EDITOR_HIGHLIGHT);
+    if (enableHighlightCurrentLine.toBool()) {
+        connect(this, &AbcPlainTextEdit::cursorPositionChanged, this, &AbcPlainTextEdit::highlightCurrentLine);
+        highlightCurrentLine();
+    }
 }
 
 AbcPlainTextEdit::~AbcPlainTextEdit()
 {
+    delete dictModel;
+    delete gmModel;
 }
 
 void AbcPlainTextEdit::setCompleter(QCompleter *completer)
@@ -45,6 +60,7 @@ void AbcPlainTextEdit::setCompleter(QCompleter *completer)
     c->setWidget(this);
     c->setCompletionMode(QCompleter::PopupCompletion);
     c->setCaseSensitivity(Qt::CaseSensitive);
+    c->setFilterMode(Qt::MatchContains);
     QObject::connect(c, QOverload<const QString &>::of(&QCompleter::activated),
                      this, &AbcPlainTextEdit::insertCompletion);
 }
@@ -54,15 +70,39 @@ QCompleter *AbcPlainTextEdit::completer() const
     return c;
 }
 
+void AbcPlainTextEdit::flagModified(bool enable)
+{
+    this->saved = !enable;
+}
+
+bool AbcPlainTextEdit::isSaved()
+{
+    return this->saved;
+}
+
+void AbcPlainTextEdit::setSaved()
+{
+    this->saved = true;
+    this->document()->setModified(false);
+}
+
 void AbcPlainTextEdit::insertCompletion(const QString &completion)
 {
     if (c->widget() != this)
         return;
     QTextCursor tc = textCursor();
+#if 0
+    /* this for startWith mode */
     int extra = completion.length() - c->completionPrefix().length();
     tc.movePosition(QTextCursor::Left);
     tc.movePosition(QTextCursor::EndOfWord);
     tc.insertText(completion.right(extra));
+#else
+    /* this for contains mode */
+    tc.select(QTextCursor::WordUnderCursor);
+    tc.removeSelectedText();
+    tc.insertText(completion);
+#endif
     setTextCursor(tc);
 }
 
@@ -73,6 +113,25 @@ QString AbcPlainTextEdit::textUnderCursor() const
     return tc.selectedText();
 }
 
+QString AbcPlainTextEdit::lineUnderCursor() const
+{
+    QTextCursor tc = textCursor();
+    tc.select(QTextCursor::LineUnderCursor);
+    return tc.selectedText();
+}
+
+
+void AbcPlainTextEdit::checkDictionnary(void) {
+    QString line = lineUnderCursor();
+    if (c && (c->model() == dictModel) &&
+            (line.startsWith("%%MIDI program") || line.startsWith("%%MIDI bassprog") || line.startsWith("%%MIDI chordprog"))) {
+
+        c->setModel(gmModel);
+    } else if (c && (c->model() == gmModel)) {
+
+        c->setModel(dictModel);
+    }
+}
 
 void AbcPlainTextEdit::focusInEvent(QFocusEvent *e)
 {
@@ -179,7 +238,7 @@ void AbcPlainTextEdit::highlightCurrentLine()
     if (!isReadOnly()) {
         QTextEdit::ExtraSelection selection;
 
-        QColor lineColor = QColor(Qt::yellow).lighter(160);
+        QColor lineColor = qApp->palette().color(QPalette::Highlight);
 
         selection.format.setBackground(lineColor);
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
@@ -217,44 +276,60 @@ void AbcPlainTextEdit::lineNumberAreaPaintEvent(QPaintEvent *event)
 AbcHighlighter::AbcHighlighter(QTextDocument *parent)
     : QSyntaxHighlighter(parent)
 {
+    Settings settings;
     AbcHighlightingRule rule;
 
+    QColor color = settings.value(EDITOR_BAR_COLOR).toString();
     barFormat.setFontWeight(QFont::Bold);
-    barFormat.setForeground(Qt::darkRed);
+    barFormat.setForeground(color);
     rule.pattern = QRegularExpression(QStringLiteral("(::|[:\\|\\[]?\\|[:\\|\\]]?)"));
     rule.format = barFormat;
     highlightingRules.append(rule);
 
     noteFormat.setFontWeight(QFont::Bold);
-    noteFormat.setForeground(Qt::darkGray);
+    noteFormat.setForeground(qApp->palette().color(QPalette::Text));
     rule.pattern = QRegularExpression(QStringLiteral("[_=^]*[A-HZa-hz][,']*/*[1-9]*"));
     rule.format = noteFormat;
     highlightingRules.append(rule);
 
-    indicFormat.setFontWeight(QFont::Normal);
-    indicFormat.setForeground(Qt::black);
+    color = settings.value(EDITOR_DECORATION_COLOR).toString();
+    decorFormat.setFontWeight(QFont::Normal);
+    decorFormat.setForeground(color);
     rule.pattern = QRegularExpression(QStringLiteral("![^!]*!"));
-    rule.format = indicFormat;
+    rule.format = decorFormat;
     highlightingRules.append(rule);
 
-    chordFormat.setForeground(Qt::darkGreen);
+    color = settings.value(EDITOR_GCHORD_COLOR).toString();
+    gchordFormat.setFontWeight(QFont::Normal);
+    gchordFormat.setForeground(color);
     rule.pattern = QRegularExpression(QStringLiteral("\"[A-H][^\"]*\""));
-    rule.format = chordFormat;
+    rule.format = gchordFormat;
     highlightingRules.append(rule);
 
-    extraInstructionFormat.setFontItalic(true);
-    extraInstructionFormat.setForeground(Qt::blue);
-    rule.pattern = QRegularExpression(QStringLiteral("^%%[^\n]*"));
-    rule.format = extraInstructionFormat;
-    highlightingRules.append(rule);
-
-    singleLineCommentFormat.setForeground(Qt::blue);
-    rule.pattern = QRegularExpression(QStringLiteral("^%[^%\n]*"));
+    color = settings.value(EDITOR_COMMENT_COLOR).toString();
+    singleLineCommentFormat.setFontWeight(QFont::Normal);
+    singleLineCommentFormat.setForeground(color);
+    rule.pattern = QRegularExpression(QStringLiteral("%[^\n]*"));
     rule.format = singleLineCommentFormat;
     highlightingRules.append(rule);
 
-    keywordFormat.setForeground(Qt::darkMagenta);
-    keywordFormat.setFontWeight(QFont::Thin);
+    color = settings.value(EDITOR_EXTRAINSTR_COLOR).toString();
+    extraInstructionFormat.setFontWeight(QFont::Bold);
+    extraInstructionFormat.setForeground(color);
+    rule.pattern = QRegularExpression(QStringLiteral("^%%[^%\n]+"));
+    rule.format = extraInstructionFormat;
+    highlightingRules.append(rule);
+
+    color = settings.value(EDITOR_LYRIC_COLOR).toString();
+    lyricFormat.setFontWeight(QFont::Normal);
+    lyricFormat.setForeground(color);
+    rule.pattern = QRegularExpression(QStringLiteral("^w:[^\n]+"));
+    rule.format = lyricFormat;
+    highlightingRules.append(rule);
+
+    color = settings.value(EDITOR_HEADER_COLOR).toString();
+    headerFormat.setFontWeight(QFont::Bold);
+    headerFormat.setForeground(color);
     const QString keywordPatterns[] = {
         QStringLiteral("^A:[^\n]+"), QStringLiteral("^B:[^\n]+"), QStringLiteral("^C:[^\n]+"),
         QStringLiteral("^D:[^\n]+"), QStringLiteral("^E:[^\n]+"), QStringLiteral("^F:[^\n]+"),
@@ -263,12 +338,12 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
         QStringLiteral("^N:[^\n]+"), QStringLiteral("^O:[^\n]+"), QStringLiteral("^P:[^\n]+"),
         QStringLiteral("^Q:[^\n]+"), QStringLiteral("^R:[^\n]+"), QStringLiteral("^S:[^\n]+"),
         QStringLiteral("^T:[^\n]+"), QStringLiteral("^V:[^\n]+"), QStringLiteral("^W:|^\n]+"),
-        QStringLiteral("^w:[^\n]+"), QStringLiteral("^X:[^\n]+"), QStringLiteral("^Z:[^\n]+")
+        QStringLiteral("^X:[^\n]+"), QStringLiteral("^Z:[^\n]+")
     };
 
     for (const QString &pattern : keywordPatterns) {
         rule.pattern = QRegularExpression(pattern);
-        rule.format = keywordFormat;
+        rule.format = headerFormat;
         highlightingRules.append(rule);
     }
 

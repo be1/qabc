@@ -1,7 +1,7 @@
 #include "EditVBoxLayout.h"
 #include "AbcApplication.h"
 #include "PreferencesMenu.h"
-#include <QSettings>
+#include "settings.h"
 #include <QFileInfo>
 #include <QDebug>
 #include <QSpinBox>
@@ -221,7 +221,7 @@ void EditVBoxLayout::onPlayClicked()
         tempFile.open();
         tempFile.write(tosave.toUtf8());
         tempFile.close();
-        QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+        Settings settings;
         QVariant player = settings.value(PLAYER_KEY);
         QString program = player.toString();
         QStringList argv = program.split(" ");
@@ -252,7 +252,7 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
 	}
     a->mainWindow()->statusBar()->showMessage(tr("MIDI generation finished."));
 
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
 	QVariant synth = settings.value(SYNTH_KEY);
 	QString program = synth.toString();
 	QStringList argv = program.split(" ");
@@ -294,7 +294,7 @@ void EditVBoxLayout::onRunClicked()
     tempFile.open();
     tempFile.write(tosave.toUtf8());
     tempFile.close();
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
 	QVariant compiler = settings.value(COMPILER_KEY);
 	QString program = compiler.toString();
 	QStringList argv = program.split(" ");
@@ -327,7 +327,7 @@ void EditVBoxLayout::onCompileFinished(int exitCode)
     if (checkViewer())
         return;
 
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
     QVariant synth = settings.value(VIEWER_KEY);
     QString program = synth.toString();
     QStringList argv = program.split(" ");
@@ -350,7 +350,7 @@ void EditVBoxLayout::onViewFinished(int exitCode)
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     a->mainWindow()->statusBar()->showMessage(tr("Viewer closed."));
 
-    QSettings settings(SETTINGS_DOMAIN, SETTINGS_APP);
+    Settings settings;
     QString ps (tempFile.fileName());
     ps.replace(QRegularExpression("\\.abc$"), ".ps");
     QFile::remove(ps);

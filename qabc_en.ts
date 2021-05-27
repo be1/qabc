@@ -36,67 +36,67 @@ Close this score anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="217"/>
+        <location filename="EditVBoxLayout.cpp" line="315"/>
         <source>Generating MIDI for playing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="237"/>
+        <location filename="EditVBoxLayout.cpp" line="320"/>
         <source>Stopping synthesis.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="248"/>
+        <location filename="EditVBoxLayout.cpp" line="331"/>
         <source>Error during MIDI generation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="253"/>
+        <location filename="EditVBoxLayout.cpp" line="337"/>
         <source>MIDI generation finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="267"/>
+        <location filename="EditVBoxLayout.cpp" line="351"/>
         <source>Starting synthesis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="277"/>
+        <location filename="EditVBoxLayout.cpp" line="361"/>
         <source>Synthesis finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="292"/>
+        <location filename="EditVBoxLayout.cpp" line="376"/>
         <source>Generating score...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="315"/>
+        <location filename="EditVBoxLayout.cpp" line="399"/>
         <source>Refresh &amp;view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="320"/>
+        <location filename="EditVBoxLayout.cpp" line="404"/>
         <source>Error during score generation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="324"/>
+        <location filename="EditVBoxLayout.cpp" line="408"/>
         <source>Score generated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="342"/>
+        <location filename="EditVBoxLayout.cpp" line="426"/>
         <source>Starting viewer...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="351"/>
+        <location filename="EditVBoxLayout.cpp" line="435"/>
         <source>Viewer closed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="358"/>
+        <location filename="EditVBoxLayout.cpp" line="442"/>
         <source>&amp;View score</source>
         <translation type="unfinished"></translation>
     </message>

@@ -37,67 +37,67 @@ Fermer cette partition quand-même ?</translation>
         <translation>X:</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="217"/>
+        <location filename="EditVBoxLayout.cpp" line="315"/>
         <source>Generating MIDI for playing.</source>
         <translation>Génération du MIDI pour jouer.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="237"/>
+        <location filename="EditVBoxLayout.cpp" line="320"/>
         <source>Stopping synthesis.</source>
         <translation>Arrêt de la synthèse.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="248"/>
+        <location filename="EditVBoxLayout.cpp" line="331"/>
         <source>Error during MIDI generation.</source>
         <translation>Erreur pendant la génération du MIDI.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="253"/>
+        <location filename="EditVBoxLayout.cpp" line="337"/>
         <source>MIDI generation finished.</source>
         <translation>Génération du MIDI terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="267"/>
+        <location filename="EditVBoxLayout.cpp" line="351"/>
         <source>Starting synthesis...</source>
         <translation>Démarrage de la synthèse...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="277"/>
+        <location filename="EditVBoxLayout.cpp" line="361"/>
         <source>Synthesis finished.</source>
         <translation>Synthèse terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="292"/>
+        <location filename="EditVBoxLayout.cpp" line="376"/>
         <source>Generating score...</source>
         <translation>Génération de la partition...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="315"/>
+        <location filename="EditVBoxLayout.cpp" line="399"/>
         <source>Refresh &amp;view</source>
         <translation>Rafraîchir la &amp;vue</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="320"/>
+        <location filename="EditVBoxLayout.cpp" line="404"/>
         <source>Error during score generation.</source>
         <translation>Erreur pendant la génération de la partition.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="324"/>
+        <location filename="EditVBoxLayout.cpp" line="408"/>
         <source>Score generated.</source>
         <translation>Patition générée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="342"/>
+        <location filename="EditVBoxLayout.cpp" line="426"/>
         <source>Starting viewer...</source>
         <translation>Démarrage du visualiseur...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="351"/>
+        <location filename="EditVBoxLayout.cpp" line="435"/>
         <source>Viewer closed.</source>
         <translation>Visualiseur fermé.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="358"/>
+        <location filename="EditVBoxLayout.cpp" line="442"/>
         <source>&amp;View score</source>
         <translation>&amp;Voir la partition</translation>
     </message>
@@ -127,7 +127,7 @@ Fermer cette partition quand-même ?</translation>
     <message>
         <location filename="editorprefdialog.cpp" line="31"/>
         <source>Extra instruction color</source>
-        <translation>Couleur des instructions supplémentaires</translation>
+        <translation>Couleur des instructions</translation>
     </message>
     <message>
         <location filename="editorprefdialog.cpp" line="32"/>

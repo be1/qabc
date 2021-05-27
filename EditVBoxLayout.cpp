@@ -17,9 +17,9 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	xlabel(parent),
 	fileName(fileName)
 {
-	setObjectName("EditVBoxLayout:" + fileName);
-    tempFile.setFileTemplate("XXXXXX.abc");
-    xspinbox.setMinimum(1);
+        setObjectName("EditVBoxLayout:" + fileName);
+        tempFile.setFileTemplate(QDir::tempPath() + QDir::separator() + "qabc-XXXXXX.abc");
+        xspinbox.setMinimum(1);
 	xlabel.setText(tr("X:"));
 	xlabel.setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 	xlabel.setBuddy(&xspinbox);
@@ -31,14 +31,16 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	addWidget(&abcplaintextedit);
 	addLayout(&hboxlayout);
 
-	connect(&xspinbox, SIGNAL(valueChanged(int)), this, SLOT(onXChanged(int)));
-	connect(&playpushbutton, SIGNAL(clicked()), this, SLOT(onPlayClicked()));
-	connect(&runpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onRunClicked);
+        connect(&xspinbox, SIGNAL(valueChanged(int)), this, SLOT(onXChanged(int)));
+        connect(&abcplaintextedit, &QPlainTextEdit::selectionChanged, this, &EditVBoxLayout::onSelectionChanged);
+        connect(&playpushbutton, SIGNAL(clicked()), this, SLOT(onPlayClicked()));
+        connect(&runpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onRunClicked);
 
-	connect(this, &EditVBoxLayout::playerFinished, this, &EditVBoxLayout::onPlayFinished);
+        connect(this, &EditVBoxLayout::doExportMIDI, this, &EditVBoxLayout::exportMIDI);
+        connect(this, &EditVBoxLayout::playerFinished, this, &EditVBoxLayout::onPlayFinished);
 	connect(this, &EditVBoxLayout::synthFinished, this, &EditVBoxLayout::onSynthFinished);
 	connect(this, &EditVBoxLayout::compilerFinished, this, &EditVBoxLayout::onCompileFinished);
-    connect(this, &EditVBoxLayout::viewerFinished, this, &EditVBoxLayout::onViewFinished);
+        connect(this, &EditVBoxLayout::viewerFinished, this, &EditVBoxLayout::onViewFinished);
 }
 
 
@@ -56,6 +58,102 @@ EditVBoxLayout::~EditVBoxLayout()
     if (QFileInfo::exists(temp))
         QDir().remove(temp);
 #endif
+}
+
+int EditVBoxLayout::xOfCursor(const QTextCursor& c) {
+    int index = c.selectionStart();
+    QString all = abcPlainTextEdit()->toPlainText();
+    int x = 1;
+    int i = 0;
+    QStringList lines = all.split('\n');
+
+    /* find last X: before selectionIndex */
+    for (int l = 0; l < lines.count() && i < index; l++) {
+        i += lines.at(l).count() +1; /* count \n */
+        if (lines.at(l).startsWith("X:")) {
+            x = lines.at(l).rightRef(1).toInt();
+        }
+    }
+
+    return x;
+}
+
+void EditVBoxLayout::onSelectionChanged()
+{
+    QTextCursor c = abcPlainTextEdit()->textCursor();
+    if (c.hasSelection()) {
+        selection = c.selectedText();
+        selectionIndex = c.selectionStart();
+    } else {
+        selection.clear();
+        selectionIndex = c.selectionStart();
+        /* set X spinbox */
+        int x = xOfCursor(c);
+        xspinbox.setValue(x);
+    }
+}
+
+void EditVBoxLayout::exportMIDI() {
+    QString tosave;
+
+    if (selection.isEmpty()) {
+        tosave = abcPlainTextEdit()->toPlainText();
+    } else {
+        QString all = abcPlainTextEdit()->toPlainText();
+        int i = 0, xl = 0;
+        QStringList lines = all.split('\n');
+
+        /* find last X: before selectionIndex */
+        for (int l = 0; l < lines.count() && i < selectionIndex; l++) {
+            i += lines.at(l).count() +1; /* count \n */
+            if (lines.at(l).startsWith("X:")) {
+                xspinbox.setValue(lines.at(l).rightRef(1).toInt());
+                xl = l;
+                /* don't break on first X: continue until selectionIndex */
+            }
+        }
+
+        /* construct headers */
+        for (int j = xl;  j < lines.count(); j++) {
+            if (lines.at(j).contains(QRegularExpression("^((%[^\n]*)|([A-Z]:[^\n]+))$"))) {
+                if (lines.at(j).startsWith("%%")) /* ignore MIDI instruction, use basic Piano */
+                    continue;
+
+                tosave += lines.at(j) + "\n";
+            } else
+                break;
+        }
+
+        /* when coming from QTextCursor::selectedText(), LF is replaced by U+2029! */
+        tosave += selection.replace(QChar::ParagraphSeparator, "\n");
+    }
+
+    /* open tempfile to init a name */
+    tempFile.open();
+    tempFile.write(tosave.toUtf8());
+    tempFile.close();
+
+#if 0
+    int cont;
+    if (filename.isEmpty()) {
+        cont = 1; /* continue to playback */
+    } else {
+        cont = 0; /* will not play, it's just an export */
+    }
+#endif
+
+    Settings settings;
+    QVariant player = settings.value(PLAYER_KEY);
+    QString program = player.toString();
+    QStringList argv = program.split(" ");
+    program = argv.at(0);
+    argv.removeAt(0);
+    argv << tempFile.fileName();
+    argv << QString::number(xspinbox.value());
+    QFileInfo info(tempFile.fileName());
+    QDir dir = info.absoluteDir();
+
+    spawnPlayer(program, argv, dir);
 }
 
 AbcPlainTextEdit *EditVBoxLayout::abcPlainTextEdit()
@@ -217,22 +315,7 @@ void EditVBoxLayout::onPlayClicked()
         a->mainWindow()->statusBar()->showMessage(tr("Generating MIDI for playing."));
         playpushbutton.flip();
         xspinbox.setEnabled(false);
-        QString tosave = abcPlainTextEdit()->toPlainText();
-        tempFile.open();
-        tempFile.write(tosave.toUtf8());
-        tempFile.close();
-        Settings settings;
-        QVariant player = settings.value(PLAYER_KEY);
-        QString program = player.toString();
-        QStringList argv = program.split(" ");
-        program = argv.at(0);
-        argv.removeAt(0);
-        argv << tempFile.fileName();
-        argv << QString::number(xspinbox.value());
-        QFileInfo info(tempFile.fileName());
-        QDir dir = info.absoluteDir();
-
-        spawnPlayer(program, argv, dir);
+        emit doExportMIDI();
     } else {
         a->mainWindow()->statusBar()->showMessage(tr("Stopping synthesis."));
         killSynth();
@@ -249,7 +332,8 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
         playpushbutton.flip();
         xspinbox.setEnabled(true);
 		return;
-	}
+    }
+
     a->mainWindow()->statusBar()->showMessage(tr("MIDI generation finished."));
 
     Settings settings;

@@ -5,11 +5,12 @@
 #include "PlayPushButton.h"
 #include "AbcPlainTextEdit.h"
 #include "AbcProcess.h"
+#include "AbcTemporaryFile.h"
 #include <QVBoxLayout>
 #include <QSpinBox>
 #include <QLabel>
 #include <QDir>
-#include <QTemporaryFile>
+
 
 class EditVBoxLayout: public QVBoxLayout
 {
@@ -36,17 +37,21 @@ signals:
     void viewerFinished(int exitCode);
     void playerFinished(int exitCode);
     void synthFinished(int exitCode);
+    void doExportMIDI();
 
 protected:
     void spawnProgram(const QString& prog, const QStringList &args, AbcProcess::ProcessType which, const QDir &wrk);
     void killSynth();
     bool checkViewer();
+    int xOfCursor(const QTextCursor& c);
 
 protected slots:
     void onXChanged(int value);
     void onPlayClicked(); /* midi */
     void onRunClicked(); /* ps */
+    void onSelectionChanged();
 
+    void exportMIDI();
     void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType);
     void onProgramOutputText(const QByteArray& text);
     void onProgramErrorText(const QByteArray& text);
@@ -56,14 +61,16 @@ protected slots:
     void onViewFinished(int exitCode);
 
 private:
-	AbcPlainTextEdit abcplaintextedit;
+    AbcPlainTextEdit abcplaintextedit;
     PlayPushButton playpushbutton; /* midi */
     RunPushButton runpushbutton; /* ps */
     QHBoxLayout hboxlayout;
     QSpinBox xspinbox;
     QLabel xlabel;
     QString fileName;
-    QTemporaryFile tempFile;
+    AbcTemporaryFile tempFile;
     QList<AbcProcess*> processlist;
+    QString selection;
+    int selectionIndex;
 };
 #endif

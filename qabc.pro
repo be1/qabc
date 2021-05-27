@@ -5,11 +5,13 @@ RESOURCES += resources.qrc
 DISTFILES +=  dict.txt gm.txt
 SOURCES = ScoreMenu.cpp PreferencesMenu.cpp HelpMenu.cpp AbcPlainTextEdit.cpp PlayPushButton.cpp EditVBoxLayout.cpp EditWidget.cpp EditTabWidget.cpp RunPushButton.cpp ViewVBoxLayout.cpp ViewWidget.cpp MainHBoxLayout.cpp AbcMainWindow.cpp AbcApplication.cpp main.cpp \
 	AbcProcess.cpp \
+	AbcTemporaryFile.cpp \
 	LogView.cpp \
 	editorprefdialog.cpp \
 	settings.cpp
 HEADERS = ScoreMenu.h PreferencesMenu.h HelpMenu.h AbcPlainTextEdit.h PlayPushButton.h EditVBoxLayout.h EditWidget.h EditTabWidget.h RunPushButton.h ViewVBoxLayout.h ViewWidget.h MainHBoxLayout.h AbcMainWindow.h AbcApplication.h \
 	AbcProcess.h \
+	AbcTemporaryFile.h \
 	LogView.h \
 	editorprefdialog.h \
 	settings.h

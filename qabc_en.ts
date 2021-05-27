@@ -15,26 +15,16 @@
     </message>
 </context>
 <context>
-    <name>AboutAction</name>
+    <name>EditTabWidget</name>
     <message>
-        <location filename="AboutAction.cpp" line="6"/>
-        <source>About</source>
+        <location filename="EditTabWidget.cpp" line="67"/>
+        <source>Really close?</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>AboutqtAction</name>
     <message>
-        <location filename="AboutqtAction.cpp" line="6"/>
-        <source>About Qt</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CloseAction</name>
-    <message>
-        <location filename="CloseAction.cpp" line="7"/>
-        <source>Close</source>
+        <location filename="EditTabWidget.cpp" line="68"/>
+        <source>Current score not saved!
+Close this score anyway?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -112,60 +102,86 @@
     </message>
 </context>
 <context>
+    <name>EditorPrefDialog</name>
+    <message>
+        <location filename="editorprefdialog.cpp" line="12"/>
+        <source>Editor settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="18"/>
+        <source>Highlight current line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="29"/>
+        <source>Header color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="30"/>
+        <source>Comment color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="31"/>
+        <source>Extra instruction color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="32"/>
+        <source>Measure bar color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="33"/>
+        <source>Decoration color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="34"/>
+        <source>Guitar chord color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="35"/>
+        <source>Lyric color</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>HelpMenu</name>
     <message>
-        <location filename="HelpMenu.cpp" line="8"/>
+        <location filename="HelpMenu.cpp" line="9"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HelpMenu.cpp" line="21"/>
-        <location filename="HelpMenu.cpp" line="26"/>
+        <location filename="HelpMenu.cpp" line="11"/>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HelpMenu.cpp" line="14"/>
+        <source>About Qt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HelpMenu.cpp" line="28"/>
+        <location filename="HelpMenu.cpp" line="34"/>
         <source>ABC score editor</source>
         <oldsource>Abc score editor</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HelpMenu.cpp" line="21"/>
+        <location filename="HelpMenu.cpp" line="28"/>
         <source>Copyright © 2020 Benoît Rouits &lt;brouits@free.fr&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HelpMenu.cpp" line="21"/>
+        <location filename="HelpMenu.cpp" line="28"/>
         <source>
 QAbc version </source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>MIDIPrefAction</name>
-    <message>
-        <location filename="MIDIPrefAction.cpp" line="6"/>
-        <source>MIDI Generator</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>NewAction</name>
-    <message>
-        <location filename="NewAction.cpp" line="7"/>
-        <source>New</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>OpenAction</name>
-    <message>
-        <location filename="OpenAction.cpp" line="7"/>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PSPrefAction</name>
-    <message>
-        <location filename="PSPrefAction.cpp" line="6"/>
-        <source>Score generator</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -187,78 +203,87 @@ QAbc version </source>
 <context>
     <name>PreferencesMenu</name>
     <message>
-        <location filename="PreferencesMenu.cpp" line="9"/>
+        <location filename="PreferencesMenu.cpp" line="11"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="15"/>
+        <location filename="PreferencesMenu.cpp" line="14"/>
+        <source>MIDI Generator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="17"/>
+        <source>MIDI Synthesizer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="20"/>
+        <source>Score generator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="23"/>
         <source>Score viewer</source>
         <oldsource>Viewer</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="38"/>
-        <location filename="PreferencesMenu.cpp" line="40"/>
+        <location filename="PreferencesMenu.cpp" line="26"/>
+        <source>Editor settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="29"/>
+        <source>Reset to defaults</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PreferencesMenu.cpp" line="53"/>
+        <location filename="PreferencesMenu.cpp" line="55"/>
         <source>Compiler preference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="38"/>
-        <location filename="PreferencesMenu.cpp" line="40"/>
+        <location filename="PreferencesMenu.cpp" line="53"/>
+        <location filename="PreferencesMenu.cpp" line="55"/>
         <source>Compiler:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="95"/>
-        <location filename="PreferencesMenu.cpp" line="97"/>
+        <location filename="PreferencesMenu.cpp" line="113"/>
+        <location filename="PreferencesMenu.cpp" line="115"/>
         <source>PS viewer preference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="95"/>
-        <location filename="PreferencesMenu.cpp" line="97"/>
+        <location filename="PreferencesMenu.cpp" line="113"/>
+        <location filename="PreferencesMenu.cpp" line="115"/>
         <source>PS Viewer:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="57"/>
-        <location filename="PreferencesMenu.cpp" line="59"/>
+        <location filename="PreferencesMenu.cpp" line="73"/>
+        <location filename="PreferencesMenu.cpp" line="75"/>
         <source>Player preference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="57"/>
-        <location filename="PreferencesMenu.cpp" line="59"/>
+        <location filename="PreferencesMenu.cpp" line="73"/>
+        <location filename="PreferencesMenu.cpp" line="75"/>
         <source>Player:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="76"/>
-        <location filename="PreferencesMenu.cpp" line="78"/>
+        <location filename="PreferencesMenu.cpp" line="93"/>
+        <location filename="PreferencesMenu.cpp" line="95"/>
         <source>Synth preference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="76"/>
-        <location filename="PreferencesMenu.cpp" line="78"/>
+        <location filename="PreferencesMenu.cpp" line="93"/>
+        <location filename="PreferencesMenu.cpp" line="95"/>
         <source>Synth:</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QuitAction</name>
-    <message>
-        <location filename="QuitAction.cpp" line="7"/>
-        <source>Quit</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ResetAction</name>
-    <message>
-        <location filename="ResetAction.cpp" line="6"/>
-        <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -272,22 +297,6 @@ QAbc version </source>
     </message>
 </context>
 <context>
-    <name>SaveAction</name>
-    <message>
-        <location filename="SaveAction.cpp" line="7"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SaveasAction</name>
-    <message>
-        <location filename="SaveasAction.cpp" line="6"/>
-        <source>Save as</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ScoreMenu</name>
     <message>
         <location filename="ScoreMenu.cpp" line="15"/>
@@ -295,48 +304,81 @@ QAbc version </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="52"/>
+        <location filename="ScoreMenu.cpp" line="18"/>
+        <source>New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="22"/>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="26"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="29"/>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="33"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="37"/>
+        <source>Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="63"/>
+        <source>Really quit?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="65"/>
+        <source> score(s) not saved.
+Do you want to quit anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="85"/>
         <source>Open ABC Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="52"/>
-        <location filename="ScoreMenu.cpp" line="114"/>
+        <location filename="ScoreMenu.cpp" line="85"/>
+        <location filename="ScoreMenu.cpp" line="147"/>
         <source>ABC score (*.abc)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="85"/>
-        <location filename="ScoreMenu.cpp" line="100"/>
+        <location filename="ScoreMenu.cpp" line="118"/>
+        <location filename="ScoreMenu.cpp" line="133"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="85"/>
+        <location filename="ScoreMenu.cpp" line="118"/>
         <source>Could not save an untitled ABC score!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="98"/>
+        <location filename="ScoreMenu.cpp" line="131"/>
         <source>Score saved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="114"/>
+        <location filename="ScoreMenu.cpp" line="147"/>
         <source>Save ABC score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="100"/>
+        <location filename="ScoreMenu.cpp" line="133"/>
         <source>Could not save ABC score!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SynthPrefAction</name>
-    <message>
-        <location filename="SynthPrefAction.cpp" line="6"/>
-        <source>MIDI Synthesizer</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

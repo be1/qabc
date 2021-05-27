@@ -12,12 +12,29 @@
 ScoreMenu::ScoreMenu(QWidget* parent)
 	: QMenu(parent)
 {
-	setTitle(tr("Score"));
-	addAction(&newaction);
-	addAction(&openaction);
-	addAction(&saveaction);
-	addAction(&saveasaction);
-	addAction(&closeaction);
+    setTitle(tr("Score"));
+
+    newaction.setShortcut(QKeySequence(QKeySequence::New));
+    newaction.setText(tr("New"));
+    addAction(&newaction);
+
+    openaction.setShortcut(QKeySequence(QKeySequence::Open));
+    openaction.setText(tr("Open"));
+    addAction(&openaction);
+
+    saveaction.setShortcut(QKeySequence(QKeySequence::Save));
+    saveaction.setText(tr("Save"));
+    addAction(&saveaction);
+
+    saveasaction.setText(tr("Save as"));
+    addAction(&saveasaction);
+
+    closeaction.setShortcut(QKeySequence(QKeySequence::Close));
+    closeaction.setText(tr("Close"));
+    addAction(&closeaction);
+
+    quitaction.setShortcut(QKeySequence(QKeySequence::Quit));
+    quitaction.setText(tr("Quit"));
 	addAction(&quitaction);
 
 	connect(&quitaction, SIGNAL(triggered()), this, SLOT(onQuitActionTriggered()));

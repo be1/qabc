@@ -1,10 +1,7 @@
 #ifndef PREFERENCESMENU_H
 #define PREFERENCESMENU_H
 
-#include "MIDIPrefAction.h"
-#include "PSPrefAction.h"
-#include "SynthPrefAction.h"
-#include "ResetAction.h"
+#include <QAction>
 #include <QMenu>
 
 #define SETTINGS_DOMAIN "Herewe"
@@ -34,10 +31,10 @@ protected slots:
     void onViewerActionTriggered();
 
 private:
-	PSPrefAction compileraction;
-    MIDIPrefAction playeraction;
-    SynthPrefAction synthaction;
-    ResetAction resetaction;
+    QAction compileraction;
+    QAction playeraction;
+    QAction synthaction;
+    QAction resetaction;
     QAction vieweraction;
 };
 #endif

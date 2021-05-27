@@ -5,10 +5,15 @@
 HelpMenu::HelpMenu(QWidget* parent)
 	: QMenu(parent)
 {
-	setTitle(tr("Help"));
-	addAction(&aboutaction);
-	connect(&aboutaction, SIGNAL(triggered()), this, SLOT(onAboutActionTriggered()));
-	addAction(&aboutqtaction);
+    setTitle(tr("Help"));
+
+    aboutaction.setText(tr("About"));
+    addAction(&aboutaction);
+
+    aboutqtaction.setText(tr("About Qt"));
+    addAction(&aboutqtaction);
+
+    connect(&aboutaction, SIGNAL(triggered()), this, SLOT(onAboutActionTriggered()));
 	connect(&aboutqtaction, SIGNAL(triggered()), this, SLOT(onAboutQtActionTriggered()));
 }
 

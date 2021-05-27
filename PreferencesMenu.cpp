@@ -9,12 +9,21 @@ PreferencesMenu::PreferencesMenu(QWidget* parent)
     setTitle(tr("Preferences"));
 
 
+    playeraction.setText(tr("MIDI Generator"));
     addAction(&playeraction);
+
+    synthaction.setText(tr("MIDI Synthesizer"));
     addAction(&synthaction);
+
+    compileraction.setText(tr("Score generator"));
     addAction(&compileraction);
+
     vieweraction.setText(tr("Score viewer"));
     addAction(&vieweraction);
+
+    resetaction.setText(tr("Reset"));
     addAction(&resetaction);
+
 
     connect(&compileraction, &QAction::triggered, this, &PreferencesMenu::onCompilerActionTriggered);
     connect(&playeraction, &QAction::triggered, this, &PreferencesMenu::onPlayerActionTriggered);

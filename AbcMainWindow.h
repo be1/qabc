@@ -22,6 +22,9 @@ public:
 
     MainHBoxLayout *mainHBoxLayout();
 
+protected:
+    void closeEvent(QCloseEvent *event);
+
 private:
 	ScoreMenu scoremenu;
 	PreferencesMenu preferencesmenu;

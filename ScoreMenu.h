@@ -1,6 +1,7 @@
 #ifndef SCOREMENU_H
 #define SCOREMENU_H
 
+#include <QMessageBox>
 #include <QAction>
 #include <QMenu>
 
@@ -11,6 +12,7 @@ class ScoreMenu: public QMenu
 public:
 	ScoreMenu(QWidget* parent = nullptr);
 	~ScoreMenu();
+	QMessageBox::StandardButton gracefulQuit();	
 
 protected slots:
     void onQuitActionTriggered();

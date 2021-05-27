@@ -49,18 +49,34 @@ ScoreMenu::~ScoreMenu()
 {
 }
 
+QMessageBox::StandardButton ScoreMenu::gracefulQuit()
+{
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    EditTabWidget* tabs = a->mainWindow()->mainHBoxLayout()->editTabWidget();
+
+    int unsaved= 0;
+    for (int i = 0; i < tabs->editWidgetList()->length(); i++) {
+        if (!tabs->editWidgetList()->at(i)->editVBoxLayout()->abcPlainTextEdit()->isSaved())
+            unsaved++;
+    }
+
+    if (unsaved && QMessageBox::StandardButton::No == QMessageBox::question(a->mainWindow(), tr("Really quit?"),
+                                                                            QString::number(unsaved) +
+                                                                            tr(" score(s) not saved.\nDo you want to quit anyway?")))
+        return QMessageBox::StandardButton::No;
+
+    return QMessageBox::StandardButton::Yes;
+
+}
+
 void ScoreMenu::onQuitActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
-#if 1
     EditTabWidget* tabs = a->mainWindow()->mainHBoxLayout()->editTabWidget();
-    int len = tabs->editWidgetList()->length();
-    for (int i = 0; i < len; i++ ) {
-        EditWidget *w = tabs->editWidgetList()->at(i);
-        w->editVBoxLayout()->cleanup();
+    if (QMessageBox::StandardButton::Yes == gracefulQuit()) {
+            tabs->removeTabs();
+            a->quit();
     }
-#endif
-    a->quit();
 }
 
 void ScoreMenu::onOpenActionTriggered()

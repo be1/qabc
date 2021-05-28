@@ -159,7 +159,8 @@ void EditVBoxLayout::cleanupThreads()
 
 void EditVBoxLayout::onXChanged(int value)
 {
-    //qDebug() << value;
+    qDebug() << value;
+    onRunClicked();
 }
 
 void EditVBoxLayout::onPlayClicked()
@@ -371,11 +372,7 @@ void EditVBoxLayout::onSelectionChanged()
         selectionIndex = c.selectionStart();
         /* set X spinbox */
         int x = xOfCursor(c);
-        if (xspinbox.value() != x) {
-            xspinbox.setValue(xOfCursor(c));
-            /* refresh print */
-            onRunClicked();
-        }
+        xspinbox.setValue(x);
     }
 }
 

@@ -117,37 +117,37 @@ Fermer cette partition quand-même ?</translation>
     <message>
         <location filename="editorprefdialog.cpp" line="29"/>
         <source>Header color</source>
-        <translation>Couleur des en-têtes</translation>
+        <translation>Couleur d&apos;en-tête</translation>
     </message>
     <message>
         <location filename="editorprefdialog.cpp" line="30"/>
         <source>Comment color</source>
-        <translation>Couleur des commentaires</translation>
+        <translation>Couleur de commentaire</translation>
     </message>
     <message>
         <location filename="editorprefdialog.cpp" line="31"/>
         <source>Extra instruction color</source>
-        <translation>Couleur des instructions</translation>
+        <translation>Couleur d&apos; instruction</translation>
     </message>
     <message>
         <location filename="editorprefdialog.cpp" line="32"/>
         <source>Measure bar color</source>
-        <translation>Couleur des barres de mesure</translation>
+        <translation>Couleur de barre de mesure</translation>
     </message>
     <message>
         <location filename="editorprefdialog.cpp" line="33"/>
         <source>Decoration color</source>
-        <translation>Couleur des décorations</translation>
+        <translation>Couleur de décoration</translation>
     </message>
     <message>
         <location filename="editorprefdialog.cpp" line="34"/>
         <source>Guitar chord color</source>
-        <translation>Couleur des accords de guitare</translation>
+        <translation>Couleur d&apos; accord de guitare</translation>
     </message>
     <message>
         <location filename="editorprefdialog.cpp" line="35"/>
         <source>Lyric color</source>
-        <translation>Couleur des paroles</translation>
+        <translation>Couleur de parole</translation>
     </message>
 </context>
 <context>

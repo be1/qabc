@@ -169,6 +169,23 @@ void EditVBoxLayout::onErrorOccurred(QProcess::ProcessError error, const QString
     default:
         break;
     }
+
+    switch (which) {
+    case AbcProcess::ProcessPlayer:
+    case AbcProcess::ProcessSynth:
+        playpushbutton.flip();
+        xspinbox.setEnabled(true);
+        break;
+    case AbcProcess::ProcessCompiler:
+        runpushbutton.setEnabled(true);
+        break;
+    case AbcProcess::ProcessViewer:
+        runpushbutton.setText(tr("&View score"));
+        runpushbutton.setEnabled(true);
+        break;
+    default:
+        break;
+    }
 }
 
 AbcPlainTextEdit *EditVBoxLayout::abcPlainTextEdit()

@@ -17,9 +17,9 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	xlabel(parent),
 	fileName(fileName)
 {
-        setObjectName("EditVBoxLayout:" + fileName);
-        tempFile.setFileTemplate(QDir::tempPath() + QDir::separator() + "qabc-XXXXXX.abc");
-        xspinbox.setMinimum(1);
+    setObjectName("EditVBoxLayout:" + fileName);
+    tempFile.setFileTemplate(QDir::tempPath() + QDir::separator() + "qabc-XXXXXX.abc");
+    xspinbox.setMinimum(1);
 	xlabel.setText(tr("X:"));
 	xlabel.setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 	xlabel.setBuddy(&xspinbox);
@@ -31,16 +31,16 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 	addWidget(&abcplaintextedit);
 	addLayout(&hboxlayout);
 
-        connect(&xspinbox, SIGNAL(valueChanged(int)), this, SLOT(onXChanged(int)));
-        connect(&abcplaintextedit, &QPlainTextEdit::selectionChanged, this, &EditVBoxLayout::onSelectionChanged);
-        connect(&playpushbutton, SIGNAL(clicked()), this, SLOT(onPlayClicked()));
-        connect(&runpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onRunClicked);
+    connect(&xspinbox, SIGNAL(valueChanged(int)), this, SLOT(onXChanged(int)));
+    connect(&abcplaintextedit, &QPlainTextEdit::selectionChanged, this, &EditVBoxLayout::onSelectionChanged);
+    connect(&playpushbutton, SIGNAL(clicked()), this, SLOT(onPlayClicked()));
+    connect(&runpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onRunClicked);
 
-        connect(this, &EditVBoxLayout::doExportMIDI, this, &EditVBoxLayout::exportMIDI);
-        connect(this, &EditVBoxLayout::playerFinished, this, &EditVBoxLayout::onPlayFinished);
-	connect(this, &EditVBoxLayout::synthFinished, this, &EditVBoxLayout::onSynthFinished);
-	connect(this, &EditVBoxLayout::compilerFinished, this, &EditVBoxLayout::onCompileFinished);
-        connect(this, &EditVBoxLayout::viewerFinished, this, &EditVBoxLayout::onViewFinished);
+    connect(this, &EditVBoxLayout::doExportMIDI, this, &EditVBoxLayout::exportMIDI);
+    connect(this, &EditVBoxLayout::playerFinished, this, &EditVBoxLayout::onPlayFinished);
+    connect(this, &EditVBoxLayout::synthFinished, this, &EditVBoxLayout::onSynthFinished);
+    connect(this, &EditVBoxLayout::compilerFinished, this, &EditVBoxLayout::onCompileFinished);
+    connect(this, &EditVBoxLayout::viewerFinished, this, &EditVBoxLayout::onViewFinished);
 }
 
 
@@ -156,6 +156,21 @@ void EditVBoxLayout::exportMIDI() {
     spawnPlayer(program, argv, dir);
 }
 
+void EditVBoxLayout::onErrorOccurred(QProcess::ProcessError error, const QString& program, AbcProcess::ProcessType which)
+{
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcMainWindow* w =  a->mainWindow();
+    LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
+    switch (error) {
+    case QProcess::FailedToStart:
+        lv->appendHtml("<b style=\"color: red\">" + tr("Failed to start program: ") + program +
+                       "<br />" + tr("Please check settings.") + "</b>");
+        break;
+    default:
+        break;
+    }
+}
+
 AbcPlainTextEdit *EditVBoxLayout::abcPlainTextEdit()
 {
 	return &abcplaintextedit;
@@ -218,7 +233,8 @@ void EditVBoxLayout::spawnProgram(const QString& prog, const QStringList& args, 
 {
 	AbcProcess *process = new AbcProcess(which, this);
     process->setWorkingDirectory(wrk.absolutePath());
-	connect(process, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
+    connect(process, QOverload<QProcess::ProcessError, const QString&, AbcProcess::ProcessType>::of(&AbcProcess::errorOccurred), this, &EditVBoxLayout::onErrorOccurred);
+    connect(process, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
     connect(process, &AbcProcess::outputText, this, &EditVBoxLayout::onProgramOutputText);
 #if 1
     connect(process, &AbcProcess::errorText, this, &EditVBoxLayout::onProgramErrorText);
@@ -230,7 +246,7 @@ void EditVBoxLayout::spawnProgram(const QString& prog, const QStringList& args, 
 
 void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType which)
 {
-	//qDebug() << exitStatus;
+    qDebug() << exitCode << exitStatus;
     switch (which) {
     case AbcProcess::ProcessPlayer:
         emit playerFinished(exitCode); break;
@@ -274,7 +290,7 @@ void EditVBoxLayout::onProgramErrorText(const QByteArray &text)
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w =  a->mainWindow();
     LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
-    lv->appendHtml("<b style=\"color: red\">" + QString::fromUtf8(text).replace("\n", "<br />") + "</b>");
+    lv->appendHtml("<b style=\"color: gray\">" + QString::fromUtf8(text).replace("\n", "<br />") + "</b>");
 }
 
 void EditVBoxLayout::killSynth()

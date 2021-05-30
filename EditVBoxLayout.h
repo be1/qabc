@@ -52,6 +52,7 @@ protected slots:
     void onSelectionChanged();
 
     void exportMIDI();
+    void onErrorOccurred(QProcess::ProcessError error, const QString& program, AbcProcess::ProcessType);
     void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType);
     void onProgramOutputText(const QByteArray& text);
     void onProgramErrorText(const QByteArray& text);

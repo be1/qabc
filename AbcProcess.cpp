@@ -7,6 +7,7 @@ AbcProcess::AbcProcess(ProcessType which, QObject *parent)
     type = which;
     setProcessChannelMode(SeparateChannels);
     connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &AbcProcess::onFinished);
+    connect(this, &QProcess::errorOccurred, this, &AbcProcess::onErrorOccured);
 #if 0
     connect(this, &QProcess::readyRead, this, &AbcProcess::onOutput);
 #else
@@ -50,4 +51,9 @@ void AbcProcess::onStderr()
 void AbcProcess::onFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     emit finished(exitCode, exitStatus, type);
+}
+
+void AbcProcess::onErrorOccured(QProcess::ProcessError error)
+{
+    emit errorOccurred(error, program(), which());
 }

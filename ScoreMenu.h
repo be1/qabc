@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #ifndef SCOREMENU_H
 #define SCOREMENU_H
 

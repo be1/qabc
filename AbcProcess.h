@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #ifndef ABCPROCESS_H
 #define ABCPROCESS_H
 

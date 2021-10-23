@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #ifndef EDITORPREFDIALOG_H
 #define EDITORPREFDIALOG_H
 

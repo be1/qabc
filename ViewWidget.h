@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #ifndef VIEWWIDGET_H
 #define VIEWWIDGET_H
 

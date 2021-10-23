@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #ifndef PDFWIDGET_H
 #define PDFWIDGET_H
 

@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
-
 #ifndef MAINHBOXLAYOUT_H
 #define MAINHBOXLAYOUT_H
 

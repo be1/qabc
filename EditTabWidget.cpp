@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
-
 #include "AbcApplication.h"
 #include "EditTabWidget.h"
 #include <QFileInfo>

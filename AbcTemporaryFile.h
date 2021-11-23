@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
-
 #ifndef ABCTEMPORARYFILE_H
 #define ABCTEMPORARYFILE_H
 

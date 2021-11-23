@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
-
 #include "AbcApplication.h"
 #include "HelpMenu.h"
 #include "config.h"

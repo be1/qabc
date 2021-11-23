@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
-
 #ifndef ABCAPPLICATION_H
 #define ABCAPPLICATION_H
 

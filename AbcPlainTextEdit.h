@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
-
 #ifndef ABCPLAINTEXTEDIT_H
 #define ABCPLAINTEXTEDIT_H
 

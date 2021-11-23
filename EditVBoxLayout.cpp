@@ -408,8 +408,10 @@ void EditVBoxLayout::onSynthFinished(int exitCode)
     mid.replace(QRegularExpression("\\.abc$"), QString::number(x) + ".mid");
     QFile::remove(mid);
 
-    playpushbutton.flip();
-    xspinbox.setEnabled(true);
+    if (!playPushButton()->isPlay()) {
+        playpushbutton.flip();
+        xspinbox.setEnabled(true);
+    }
 }
 
 void EditVBoxLayout::onRunClicked()

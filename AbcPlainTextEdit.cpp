@@ -10,6 +10,7 @@
 
 #include "AbcPlainTextEdit.h"
 #include <QDebug>
+#include <QFile>
 #include <QPainter>
 #include <QTextBlock>
 #include <QAbstractItemView>

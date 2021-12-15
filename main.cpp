@@ -23,17 +23,23 @@ int main(int argc, char** argv)
 	AbcApplication abcapplication(argc, argv);
 
 	QString locale = QLocale::system().name();
-	QTranslator qtTranslator;
-	qtTranslator.load("qt_" + locale,
-			QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-	abcapplication.installTranslator(&qtTranslator);
+    QTranslator qtTranslator;
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+    if (qtTranslator.load(QLocale::system(), u"qtbase"_qs, u"_"_qs,
+                          QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+#else
+    if (qtTranslator.load("qt_" + locale,
+                          QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+#endif
+        abcapplication.installTranslator(&qtTranslator);
 
-	QTranslator qabcTranslator;
-	if (!qabcTranslator.load(TARGET "_" + locale, "locale"))
-		qabcTranslator.load(TARGET "_" + locale, DATADIR "/" TARGET "/locale");
-	abcapplication.installTranslator(&qabcTranslator);
+    QTranslator qabcTranslator;
+    if (qabcTranslator.load(TARGET "_" + locale, "locale"))
+        abcapplication.installTranslator(&qabcTranslator);
+    else if (qabcTranslator.load(TARGET "_" + locale, DATADIR "/" TARGET "/locale"))
+        abcapplication.installTranslator(&qabcTranslator);
 
-	QCommandLineParser parser;
+    QCommandLineParser parser;
 	parser.setApplicationDescription("ABC music notation minimal GUI.");
 	parser.addHelpOption();
 	parser.addVersionOption();

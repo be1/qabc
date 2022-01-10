@@ -34,6 +34,11 @@ MainHBoxLayout *AbcMainWindow::mainHBoxLayout()
    return &mainhboxlayout;
 }
 
+ScoreMenu *AbcMainWindow::scoreMenu()
+{
+    return &scoremenu;
+}
+
 void AbcMainWindow::closeEvent(QCloseEvent *event)
 {
     if (QMessageBox::StandardButton::Yes == scoremenu.gracefulQuit()) {

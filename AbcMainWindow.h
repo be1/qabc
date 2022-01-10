@@ -31,6 +31,7 @@ public:
     ~AbcMainWindow();
 
     MainHBoxLayout *mainHBoxLayout();
+    ScoreMenu *scoreMenu();
 
 protected:
     void closeEvent(QCloseEvent *event);

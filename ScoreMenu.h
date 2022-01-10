@@ -23,10 +23,17 @@ public:
 	ScoreMenu(QWidget* parent = nullptr);
 	~ScoreMenu();
 	QMessageBox::StandardButton gracefulQuit();	
+    bool loadFile(const QString& fileName);
+
+protected:
+    void setRecentFile(const QString& fileName);
+    void updateRecentFileActions();
+    QString strippedName(const QString &fullFileName);
 
 protected slots:
     void onQuitActionTriggered();
     void onOpenActionTriggered();
+    void onOpenRecentActionTriggered();
     void onSaveActionTriggered();
     void onSaveAsActionTriggered();
     void onCloseActionTriggered();
@@ -35,6 +42,10 @@ protected slots:
 private:
     QAction newaction;
     QAction openaction;
+
+    enum { MaxRecentFiles = 5 };
+    QAction *recentFileActs[MaxRecentFiles];
+
     QAction saveaction;
     QAction saveasaction;
     QAction closeaction;

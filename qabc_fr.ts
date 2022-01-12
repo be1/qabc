@@ -312,86 +312,96 @@ QAbc version </translation>
 <context>
     <name>ScoreMenu</name>
     <message>
-        <location filename="ScoreMenu.cpp" line="25"/>
+        <location filename="ScoreMenu.cpp" line="26"/>
         <source>Score</source>
         <translation>Partition</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="28"/>
+        <location filename="ScoreMenu.cpp" line="29"/>
         <source>New</source>
         <translation>Nouvelle</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="32"/>
+        <location filename="ScoreMenu.cpp" line="33"/>
         <source>Open</source>
         <translation>Ouvrir</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="36"/>
+        <location filename="ScoreMenu.cpp" line="42"/>
+        <source>Recently opened</source>
+        <translation type="unfinished">Ouvert récemment</translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="49"/>
         <source>Save</source>
         <translation>Enregistrer</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="39"/>
+        <location filename="ScoreMenu.cpp" line="52"/>
         <source>Save as</source>
         <translation>Enregistrer sous</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="43"/>
+        <location filename="ScoreMenu.cpp" line="56"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="47"/>
+        <location filename="ScoreMenu.cpp" line="60"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="73"/>
+        <location filename="ScoreMenu.cpp" line="86"/>
         <source>Really quit?</source>
         <translation>Quitter vraiment ?</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="75"/>
+        <location filename="ScoreMenu.cpp" line="88"/>
         <source> score(s) not saved.
 Do you want to quit anyway?</source>
         <translation> partition(s) non enregistrée(s).
 Voulez-vous quitter quand-même ?</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="95"/>
+        <location filename="ScoreMenu.cpp" line="108"/>
         <source>Open ABC Score</source>
         <translation>Ouvrir une partition ABC</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="95"/>
-        <location filename="ScoreMenu.cpp" line="157"/>
+        <location filename="ScoreMenu.cpp" line="108"/>
+        <location filename="ScoreMenu.cpp" line="226"/>
         <source>ABC score (*.abc)</source>
         <translation>Partition ABC (*.abc)</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="128"/>
-        <location filename="ScoreMenu.cpp" line="143"/>
+        <location filename="ScoreMenu.cpp" line="130"/>
+        <source>&amp;%1 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="197"/>
+        <location filename="ScoreMenu.cpp" line="212"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="128"/>
+        <location filename="ScoreMenu.cpp" line="197"/>
         <source>Could not save an untitled ABC score!</source>
         <translation>Impossible d&apos;enregistrer une partition ABC sans titre !</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="141"/>
+        <location filename="ScoreMenu.cpp" line="210"/>
         <source>Score saved.</source>
         <translation>Partition enregistrée.</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="157"/>
+        <location filename="ScoreMenu.cpp" line="226"/>
         <source>Save ABC score</source>
         <translation>Enregistrer la partition ABC</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="143"/>
+        <location filename="ScoreMenu.cpp" line="212"/>
         <source>Could not save ABC score!</source>
         <translation>Impossible d&apos;enregistrer la partition ABC !</translation>
     </message>
@@ -407,7 +417,7 @@ Voulez-vous quitter quand-même ?</translation>
 <context>
     <name>main</name>
     <message>
-        <location filename="main.cpp" line="40"/>
+        <location filename="main.cpp" line="46"/>
         <source>ABC score file to work on.</source>
         <translation>Partition ABC sur laquelle travailler.</translation>
     </message>

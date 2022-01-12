@@ -310,85 +310,95 @@ QAbc version </source>
 <context>
     <name>ScoreMenu</name>
     <message>
-        <location filename="ScoreMenu.cpp" line="25"/>
+        <location filename="ScoreMenu.cpp" line="26"/>
         <source>Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="28"/>
+        <location filename="ScoreMenu.cpp" line="29"/>
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="32"/>
+        <location filename="ScoreMenu.cpp" line="33"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="36"/>
+        <location filename="ScoreMenu.cpp" line="42"/>
+        <source>Recently opened</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="49"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="39"/>
+        <location filename="ScoreMenu.cpp" line="52"/>
         <source>Save as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="43"/>
+        <location filename="ScoreMenu.cpp" line="56"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="47"/>
+        <location filename="ScoreMenu.cpp" line="60"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="73"/>
+        <location filename="ScoreMenu.cpp" line="86"/>
         <source>Really quit?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="75"/>
+        <location filename="ScoreMenu.cpp" line="88"/>
         <source> score(s) not saved.
 Do you want to quit anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="95"/>
+        <location filename="ScoreMenu.cpp" line="108"/>
         <source>Open ABC Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="95"/>
-        <location filename="ScoreMenu.cpp" line="157"/>
+        <location filename="ScoreMenu.cpp" line="108"/>
+        <location filename="ScoreMenu.cpp" line="226"/>
         <source>ABC score (*.abc)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="128"/>
-        <location filename="ScoreMenu.cpp" line="143"/>
+        <location filename="ScoreMenu.cpp" line="130"/>
+        <source>&amp;%1 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="197"/>
+        <location filename="ScoreMenu.cpp" line="212"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="128"/>
+        <location filename="ScoreMenu.cpp" line="197"/>
         <source>Could not save an untitled ABC score!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="141"/>
+        <location filename="ScoreMenu.cpp" line="210"/>
         <source>Score saved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="157"/>
+        <location filename="ScoreMenu.cpp" line="226"/>
         <source>Save ABC score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="143"/>
+        <location filename="ScoreMenu.cpp" line="212"/>
         <source>Could not save ABC score!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -404,7 +414,7 @@ Do you want to quit anyway?</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="main.cpp" line="40"/>
+        <location filename="main.cpp" line="46"/>
         <source>ABC score file to work on.</source>
         <translation type="unfinished"></translation>
     </message>

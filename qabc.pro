@@ -32,6 +32,17 @@ updateqm.output = $$LOCALE_DIR/${QMAKE_FILE_BASE}.qm
 updateqm.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm $$LOCALE_DIR/${QMAKE_FILE_BASE}.qm
 updateqm.CONFIG += no_link target_predeps
 QMAKE_EXTRA_COMPILERS += updateqm
+
+MANPAGE = "qabc.1"
+manpage.input = MANPAGE
+manpage.output = $${MANPAGE}.gz
+manpage.commands = gzip --to-stdout ${QMAKE_FILE_IN} > ${QMAKE_FILE_OUT}
+manpage.CONFIG += no_link target_predeps
+QMAKE_EXTRA_COMPILERS += manpage
+
+manual.path = $$DATADIR/man/man1
+manual.files = $${MANPAGE}.gz
+manual.CONFIG = no_check_exist
 target.path = $$BINDIR
 translations.path = $$DATADIR/$$TARGET
 translations.files = $$LOCALE_DIR
@@ -41,4 +52,4 @@ icon.path = $$DATADIR/pixmaps
 icon.files = $${TARGET}.png
 mime.path = $$DATADIR/mime/packages
 mime.files = application-vnd-abc.xml
-INSTALLS += target translations desktop icon mime
+INSTALLS += target translations desktop icon mime manual

@@ -2,8 +2,10 @@
 Encoding=UTF-8
 Name=QAbc
 Name[fr]=QAbc
-GenericName=ABC music notation minimal graphical interface
-GenericName[fr]=Interface graphique minimale de notation musicale ABC
+GenericName=ABC editor
+GenericName[fr]=Éditeur ABC
+Comment=ABC music notation minimal graphical interface
+Comment[fr]=Interface graphique minimale de notation musicale ABC
 Keywords=music;score;notation;tune;gig;jam
 Keywords[fr]=musique;partition;notation;morceau;concert;jam
 Exec=qabc %f

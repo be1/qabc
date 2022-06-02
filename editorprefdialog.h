@@ -11,6 +11,7 @@
 #ifndef EDITORPREFDIALOG_H
 #define EDITORPREFDIALOG_H
 
+#include <QSpinBox>
 #include <QDialog>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
@@ -26,6 +27,7 @@ public:
 
     QColor getColor(QString key);
     bool getHighlight();
+    int getFontRange();
 
 signals:
 
@@ -34,6 +36,9 @@ private slots:
 
 private:
     QVBoxLayout* mainLayout;
+
+    QLabel* fontRangeLabel;
+    QSpinBox* fontRangeSpinBox;
 
     QLabel* highlightLabel;
     QCheckBox* highlightCheck;

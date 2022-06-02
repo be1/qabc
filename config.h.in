@@ -22,6 +22,7 @@
 #define VIEWER_KEY \"ABC/viewer\"
 #define PSVIEWER \"/usr/bin/evince\"
 
+#define EDITOR_FONT_RANGE \"ABC/editor/font_range\"
 #define EDITOR_HIGHLIGHT \"ABC/editor/highlight\"
 #define EDITOR_BAR_COLOR \"ABC/editor/bar_color\"
 #define EDITOR_COMMENT_COLOR \"ABC/editor/comment_color\"

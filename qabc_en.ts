@@ -121,41 +121,46 @@ Close this score anyway?</source>
     </message>
     <message>
         <location filename="editorprefdialog.cpp" line="28"/>
-        <source>Highlight current line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="editorprefdialog.cpp" line="39"/>
-        <source>Header color</source>
+        <source>Font enlargement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="editorprefdialog.cpp" line="40"/>
+        <source>Highlight current line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="51"/>
+        <source>Header color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="52"/>
         <source>Comment color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="editorprefdialog.cpp" line="41"/>
+        <location filename="editorprefdialog.cpp" line="53"/>
         <source>Extra instruction color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="editorprefdialog.cpp" line="42"/>
+        <location filename="editorprefdialog.cpp" line="54"/>
         <source>Measure bar color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="editorprefdialog.cpp" line="43"/>
+        <location filename="editorprefdialog.cpp" line="55"/>
         <source>Decoration color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="editorprefdialog.cpp" line="44"/>
+        <location filename="editorprefdialog.cpp" line="56"/>
         <source>Guitar chord color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="editorprefdialog.cpp" line="45"/>
+        <location filename="editorprefdialog.cpp" line="57"/>
         <source>Lyric color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -367,38 +372,39 @@ Do you want to quit anyway?</source>
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="108"/>
-        <location filename="ScoreMenu.cpp" line="226"/>
+        <location filename="ScoreMenu.cpp" line="236"/>
         <source>ABC score (*.abc)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="130"/>
-        <source>&amp;%1 %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ScoreMenu.cpp" line="197"/>
-        <location filename="ScoreMenu.cpp" line="212"/>
+        <location filename="ScoreMenu.cpp" line="190"/>
+        <location filename="ScoreMenu.cpp" line="207"/>
+        <location filename="ScoreMenu.cpp" line="222"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="197"/>
+        <location filename="ScoreMenu.cpp" line="190"/>
+        <source>Could not open score!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="207"/>
         <source>Could not save an untitled ABC score!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="210"/>
+        <location filename="ScoreMenu.cpp" line="220"/>
         <source>Score saved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="226"/>
+        <location filename="ScoreMenu.cpp" line="236"/>
         <source>Save ABC score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="212"/>
+        <location filename="ScoreMenu.cpp" line="222"/>
         <source>Could not save ABC score!</source>
         <translation type="unfinished"></translation>
     </message>

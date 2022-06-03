@@ -122,41 +122,46 @@ Fermer cette partition quand-même ?</translation>
     </message>
     <message>
         <location filename="editorprefdialog.cpp" line="28"/>
+        <source>Font enlargement</source>
+        <translation>Élargissement de la police</translation>
+    </message>
+    <message>
+        <location filename="editorprefdialog.cpp" line="40"/>
         <source>Highlight current line</source>
         <translation>Ligne courante en surbrillance</translation>
     </message>
     <message>
-        <location filename="editorprefdialog.cpp" line="39"/>
+        <location filename="editorprefdialog.cpp" line="51"/>
         <source>Header color</source>
         <translation>Couleur d&apos;en-tête</translation>
     </message>
     <message>
-        <location filename="editorprefdialog.cpp" line="40"/>
+        <location filename="editorprefdialog.cpp" line="52"/>
         <source>Comment color</source>
         <translation>Couleur de commentaire</translation>
     </message>
     <message>
-        <location filename="editorprefdialog.cpp" line="41"/>
+        <location filename="editorprefdialog.cpp" line="53"/>
         <source>Extra instruction color</source>
         <translation>Couleur d&apos; instruction</translation>
     </message>
     <message>
-        <location filename="editorprefdialog.cpp" line="42"/>
+        <location filename="editorprefdialog.cpp" line="54"/>
         <source>Measure bar color</source>
         <translation>Couleur de barre de mesure</translation>
     </message>
     <message>
-        <location filename="editorprefdialog.cpp" line="43"/>
+        <location filename="editorprefdialog.cpp" line="55"/>
         <source>Decoration color</source>
         <translation>Couleur de décoration</translation>
     </message>
     <message>
-        <location filename="editorprefdialog.cpp" line="44"/>
+        <location filename="editorprefdialog.cpp" line="56"/>
         <source>Guitar chord color</source>
         <translation>Couleur d&apos; accord de guitare</translation>
     </message>
     <message>
-        <location filename="editorprefdialog.cpp" line="45"/>
+        <location filename="editorprefdialog.cpp" line="57"/>
         <source>Lyric color</source>
         <translation>Couleur de parole</translation>
     </message>
@@ -329,7 +334,7 @@ QAbc version </translation>
     <message>
         <location filename="ScoreMenu.cpp" line="42"/>
         <source>Recently opened</source>
-        <translation type="unfinished">Ouvert récemment</translation>
+        <translation>Ouvert récemment</translation>
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="49"/>
@@ -370,38 +375,39 @@ Voulez-vous quitter quand-même ?</translation>
     </message>
     <message>
         <location filename="ScoreMenu.cpp" line="108"/>
-        <location filename="ScoreMenu.cpp" line="226"/>
+        <location filename="ScoreMenu.cpp" line="236"/>
         <source>ABC score (*.abc)</source>
         <translation>Partition ABC (*.abc)</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="130"/>
-        <source>&amp;%1 %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ScoreMenu.cpp" line="197"/>
-        <location filename="ScoreMenu.cpp" line="212"/>
+        <location filename="ScoreMenu.cpp" line="190"/>
+        <location filename="ScoreMenu.cpp" line="207"/>
+        <location filename="ScoreMenu.cpp" line="222"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="197"/>
+        <location filename="ScoreMenu.cpp" line="190"/>
+        <source>Could not open score!</source>
+        <translation>Impossible d&apos;ouvrir la partition !</translation>
+    </message>
+    <message>
+        <location filename="ScoreMenu.cpp" line="207"/>
         <source>Could not save an untitled ABC score!</source>
         <translation>Impossible d&apos;enregistrer une partition ABC sans titre !</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="210"/>
+        <location filename="ScoreMenu.cpp" line="220"/>
         <source>Score saved.</source>
         <translation>Partition enregistrée.</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="226"/>
+        <location filename="ScoreMenu.cpp" line="236"/>
         <source>Save ABC score</source>
         <translation>Enregistrer la partition ABC</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="212"/>
+        <location filename="ScoreMenu.cpp" line="222"/>
         <source>Could not save ABC score!</source>
         <translation>Impossible d&apos;enregistrer la partition ABC !</translation>
     </message>

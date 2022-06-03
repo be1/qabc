@@ -25,7 +25,7 @@ EditorPrefDialog::EditorPrefDialog(QWidget *parent) : QDialog(parent)
     mainLayout = new QVBoxLayout;
 
     int fontRange = settings.value(EDITOR_FONT_RANGE).toInt();
-    fontRangeLabel = new QLabel(tr("Font range"));
+    fontRangeLabel = new QLabel(tr("Font enlargement"));
     fontRangeSpinBox = new QSpinBox;
     fontRangeSpinBox->setRange(-5,+5);
     fontRangeSpinBox->setValue(fontRange);

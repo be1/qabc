@@ -36,9 +36,13 @@ void Settings::check()
     if (viewer.isValid())
         setValue(VIEWER_KEY, PSVIEWER);
 
+    QVariant font_range = value(EDITOR_FONT_RANGE);
+    if (!font_range.isValid())
+        setValue(EDITOR_FONT_RANGE, 0);
+
     QVariant highlight = value(EDITOR_HIGHLIGHT);
     if (!highlight.isValid())
-        setValue(EDITOR_HIGHLIGHT, true);
+        setValue(EDITOR_HIGHLIGHT, false);
 
     QVariant color = value(EDITOR_BAR_COLOR);
     if (!color.isValid())
@@ -81,7 +85,9 @@ void Settings::reset()
 
     setValue(VIEWER_KEY, PSVIEWER);
 
-    setValue(EDITOR_HIGHLIGHT, true);
+    setValue(EDITOR_FONT_RANGE, 0);
+
+    setValue(EDITOR_HIGHLIGHT, false);
 
     setValue(EDITOR_BAR_COLOR, "red");
 

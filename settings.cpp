@@ -33,7 +33,7 @@ void Settings::check()
         setValue(COMPILER_KEY, ABCM2PS);
 
     QVariant viewer = value(VIEWER_KEY);
-    if (viewer.isValid())
+    if (!viewer.isValid())
         setValue(VIEWER_KEY, PSVIEWER);
 
     QVariant font_range = value(EDITOR_FONT_RANGE);

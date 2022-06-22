@@ -155,6 +155,9 @@ void EditVBoxLayout::exportMIDI() {
     Settings settings;
     QVariant player = settings.value(PLAYER_KEY);
     QString program = player.toString();
+    if (program.isEmpty())
+        program = ABC2MIDI;
+
     QStringList argv = program.split(" ");
     program = argv.at(0);
     argv.removeAt(0);
@@ -382,6 +385,9 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
     Settings settings;
 	QVariant synth = settings.value(SYNTH_KEY);
 	QString program = synth.toString();
+    if (program.isEmpty())
+        program = FLUIDSYNTH;
+
 	QStringList argv = program.split(" ");
 	program = argv.at(0);
 	argv.removeAt(0);
@@ -424,8 +430,11 @@ void EditVBoxLayout::onRunClicked()
     tempFile.write(tosave.toUtf8());
     tempFile.close();
     Settings settings;
-	QVariant compiler = settings.value(COMPILER_KEY);
-	QString program = compiler.toString();
+    QVariant compiler = settings.value(COMPILER_KEY);
+    QString program = compiler.toString();
+    if (program.isEmpty())
+        program = ABCM2PS;
+
 	QStringList argv = program.split(" ");
 	program = argv.at(0);
 	argv.removeAt(0);
@@ -457,8 +466,11 @@ void EditVBoxLayout::onCompileFinished(int exitCode)
         return;
 
     Settings settings;
-    QVariant synth = settings.value(VIEWER_KEY);
-    QString program = synth.toString();
+    QVariant viewer = settings.value(VIEWER_KEY);
+    QString program = viewer.toString();
+    if (program.isEmpty())
+        program = PSVIEWER;
+
     QStringList argv = program.split(" ");
     program = argv.at(0);
     argv.removeAt(0);

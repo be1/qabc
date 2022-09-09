@@ -1,0 +1,24 @@
+qabc (1.9.1-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Bump to standards version 4.6.1.
+
+ -- Benoît Rouits <brouits@free.fr>  Thu, 16 Jun 2022 15:20:49 +0200
+
+qabc (1.8-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Benoît Rouits <brouits@free.fr>  Wed, 12 Jan 2022 07:04:20 +0100
+
+qabc (1.7-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Benoît Rouits <brouits@free.fr>  Tue, 23 Nov 2021 04:51:05 +0100
+
+qabc (1.6-1) unstable; urgency=medium
+
+  * Initial release. (Closes: #975688)
+
+ -- Benoît Rouits <brouits@free.fr>  Sun, 04 Apr 2021 19:34:29 +0200

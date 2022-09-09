@@ -1,0 +1,24 @@
+Source: qabc
+Section: sound
+Priority: optional
+Maintainer: Benoît Rouits <brouits@free.fr>
+Build-Depends: debhelper-compat (= 13), qt5-qmake (>= 5.9), qtbase5-dev (>= 5.9), qttools5-dev-tools (>= 5.9)
+Standards-Version: 4.6.1
+Homepage: http://brouits.free.fr/qabc/
+Vcs-Git: https://github.com/be1/qabc.git
+Vcs-Browser: https://github.com/be1/qabc
+Rules-Requires-Root: no
+
+Package: qabc
+Architecture: any
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Recommends: abcm2ps, abcmidi, fluidsynth
+Suggests: evince
+Description: minimal GUI for ABC music notation
+ QAbc is a simple graphical program that allow
+ to write musical scores in the ABC notation.
+ .
+ This program allow to play the written music,
+ preview the output score and print it, using
+ third party software.

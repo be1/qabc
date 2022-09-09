@@ -1,0 +1,2 @@
+version=4
+opts=pgpsigurlmangle=s/$/.asc/ http://brouits.free.fr/qabc/qabc-(.+)\.tar\.gz

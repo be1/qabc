@@ -52,4 +52,6 @@ icon.path = $$DATADIR/pixmaps
 icon.files = $${TARGET}.png
 mime.path = $$DATADIR/mime/packages
 mime.files = qabc.xml
-INSTALLS += target translations desktop icon mime manual
+metainfo.path = $$DATADIR/metainfo
+metainfo.files = fr.free.brouits.qabc.metainfo.xml
+INSTALLS += target translations desktop icon mime manual metainfo

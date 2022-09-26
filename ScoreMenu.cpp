@@ -217,6 +217,7 @@ void ScoreMenu::onSaveActionTriggered()
         QString tosave = edit->toPlainText();
         file.write(tosave.toUtf8());
         file.close();
+        edit->setSaved();
         w->statusBar()->showMessage(tr("Score saved."));
     } else {
         QMessageBox::warning(w, tr("Warning"), tr("Could not save ABC score!"));
@@ -248,10 +249,9 @@ void ScoreMenu::onCloseActionTriggered()
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w = a->mainWindow();
     EditTabWidget *edittabs = w->mainHBoxLayout()->editTabWidget();
-    //qDebug() << edittabs->currentIndex();
     int cur = edittabs->currentIndex();
     if (cur >= 0)
-        edittabs->removeTab(cur);
+        edittabs->askRemoveTab(cur);
 }
 
 void ScoreMenu::onNewActionTriggered()

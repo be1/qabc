@@ -219,6 +219,7 @@ void ScoreMenu::onSaveActionTriggered()
         file.close();
         edit->setSaved();
         w->statusBar()->showMessage(tr("Score saved."));
+        setRecentFile(fileName, true);
     } else {
         QMessageBox::warning(w, tr("Warning"), tr("Could not save ABC score!"));
     }
@@ -238,9 +239,13 @@ void ScoreMenu::onSaveAsActionTriggered()
     if (fileName.isEmpty())
         return; /* cancelled */
 
+    if (!fileName.endsWith(".abc"))
+        fileName.append(".abc");
+
     QFileInfo info(fileName);
     edittabs->setTabText(edittabs->currentIndex(), info.baseName());
     edittabs->currentEditWidget()->setFileName(fileName);
+
     return onSaveActionTriggered();
 }
 

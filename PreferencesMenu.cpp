@@ -21,30 +21,12 @@ PreferencesMenu::PreferencesMenu(QWidget* parent)
     setTitle(tr("Preferences"));
 
 
-    playeraction.setText(tr("MIDI Generator"));
-    addAction(&playeraction);
-
-    synthaction.setText(tr("MIDI Synthesizer"));
-    addAction(&synthaction);
-
-    compileraction.setText(tr("Score generator"));
-    addAction(&compileraction);
-
-    vieweraction.setText(tr("Score viewer"));
-    addAction(&vieweraction);
-
-    editoraction.setText(tr("Editor settings"));
-    addAction(&editoraction);
-
-    resetaction.setText(tr("Reset to defaults"));
-    addAction(&resetaction);
-
-    connect(&compileraction, &QAction::triggered, this, &PreferencesMenu::onCompilerActionTriggered);
-    connect(&playeraction, &QAction::triggered, this, &PreferencesMenu::onPlayerActionTriggered);
-    connect(&synthaction, &QAction::triggered, this, &PreferencesMenu::onSynthActionTriggered);
-    connect(&resetaction, &QAction::triggered, this, &PreferencesMenu::onResetActionTriggered);
-    connect(&vieweraction, &QAction::triggered, this, &PreferencesMenu::onViewerActionTriggered);
-    connect(&editoraction, &QAction::triggered, this, &PreferencesMenu::onEditorActionTriggered);
+    addAction(tr("MIDI Generator"), this, &PreferencesMenu::onPlayerActionTriggered);
+    addAction(tr("MIDI Synthesizer"), this, &PreferencesMenu::onSynthActionTriggered);
+    addAction(tr("Score generator"), this, &PreferencesMenu::onCompilerActionTriggered);
+    addAction(tr("Score viewer"), this, &PreferencesMenu::onViewerActionTriggered);
+    addAction(tr("Editor settings"), this, &PreferencesMenu::onEditorActionTriggered);
+    addAction(tr("Reset to defaults"), this, &PreferencesMenu::onResetActionTriggered);
 }
 
 PreferencesMenu::~PreferencesMenu()

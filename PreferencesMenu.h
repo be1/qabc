@@ -30,13 +30,5 @@ protected slots:
     void onResetActionTriggered();
     void onViewerActionTriggered();
     void onEditorActionTriggered();
-
-private:
-    QAction compileraction;
-    QAction playeraction;
-    QAction synthaction;
-    QAction resetaction;
-    QAction vieweraction;
-    QAction editoraction;
 };
 #endif

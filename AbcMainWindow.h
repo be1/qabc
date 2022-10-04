@@ -14,6 +14,7 @@
 #include "HelpMenu.h"
 #include "PreferencesMenu.h"
 #include "ScoreMenu.h"
+#include "editmenu.h"
 #include "MainHBoxLayout.h"
 #include <QStatusBar>
 #include <QDockWidget>
@@ -37,7 +38,8 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private:
-	ScoreMenu scoremenu;
+    ScoreMenu scoremenu;
+    EditMenu editmenu;
 	PreferencesMenu preferencesmenu;
     HelpMenu helpmenu;
     MainHBoxLayout mainhboxlayout;

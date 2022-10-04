@@ -7,12 +7,14 @@ SOURCES = ScoreMenu.cpp PreferencesMenu.cpp HelpMenu.cpp AbcPlainTextEdit.cpp Pl
 	AbcProcess.cpp \
 	AbcTemporaryFile.cpp \
 	LogView.cpp \
+    editmenu.cpp \
 	editorprefdialog.cpp \
 	settings.cpp
 HEADERS = ScoreMenu.h PreferencesMenu.h HelpMenu.h AbcPlainTextEdit.h PlayPushButton.h EditVBoxLayout.h EditWidget.h EditTabWidget.h RunPushButton.h ViewVBoxLayout.h ViewWidget.h MainHBoxLayout.h AbcMainWindow.h AbcApplication.h \
 	AbcProcess.h \
 	AbcTemporaryFile.h \
 	LogView.h \
+    editmenu.h \
 	editorprefdialog.h \
 	settings.h
 VERSION = 1.9.2

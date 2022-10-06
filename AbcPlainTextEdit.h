@@ -75,6 +75,7 @@ protected:
     void keyPressEvent(QKeyEvent *e) override;
     void focusInEvent(QFocusEvent *e) override;
     void flagModified(bool enable);
+    virtual void contextMenuEvent(QContextMenuEvent *e) override;
 
 private slots:
     void updateLineNumberAreaWidth(int newBlockCount);
@@ -82,6 +83,9 @@ private slots:
     void checkDictionnary();
     void updateLineNumberArea(const QRect &rect, int dy);
     void insertCompletion(const QString &completion);
+    void onFindActivated();
+    void onFindForwardActivated();
+    void onFindBackwardActivated();
 
 private:
     QAbstractItemModel *modelFromFile(const QString &fileName);
@@ -92,6 +96,11 @@ private:
     AbcHighlighter *highlighter;
     QString textUnderCursor() const;
     QString lineUnderCursor() const;
+
+    QString m_find;
+    QAction* findaction;
+    QAction* findnextaction;
+    QAction* findprevaction;
 
     QCompleter *c = nullptr;
     bool saved;

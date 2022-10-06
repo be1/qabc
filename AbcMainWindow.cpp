@@ -15,7 +15,6 @@ AbcMainWindow::AbcMainWindow(QWidget* parent)
 {
 	setWindowTitle(tr("QAbc"));
     menuBar()->addMenu(&scoremenu);
-    menuBar()->addMenu(&editmenu);
 	menuBar()->addMenu(&preferencesmenu);
     menuBar()->addMenu(&helpmenu);
     setCentralWidget(new QWidget(this));

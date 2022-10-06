@@ -15,6 +15,34 @@
     </message>
 </context>
 <context>
+    <name>AbcPlainTextEdit</name>
+    <message>
+        <location filename="AbcPlainTextEdit.cpp" line="61"/>
+        <location filename="AbcPlainTextEdit.cpp" line="161"/>
+        <source>Find...</source>
+        <translation>Rechercher...</translation>
+    </message>
+    <message>
+        <location filename="AbcPlainTextEdit.cpp" line="67"/>
+        <location filename="AbcPlainTextEdit.cpp" line="175"/>
+        <source>Find forward</source>
+        <translation>Rechercher en avant</translation>
+    </message>
+    <message>
+        <location filename="AbcPlainTextEdit.cpp" line="73"/>
+        <location filename="AbcPlainTextEdit.cpp" line="189"/>
+        <source>Find backward</source>
+        <translation>Rechercher en arrière</translation>
+    </message>
+    <message>
+        <location filename="AbcPlainTextEdit.cpp" line="161"/>
+        <location filename="AbcPlainTextEdit.cpp" line="175"/>
+        <location filename="AbcPlainTextEdit.cpp" line="189"/>
+        <source>Text:</source>
+        <translation>Texte :</translation>
+    </message>
+</context>
+<context>
     <name>EditTabWidget</name>
     <message>
         <location filename="EditTabWidget.cpp" line="77"/>
@@ -37,78 +65,78 @@ Fermer cette partition quand-même ?</translation>
         <translation>X:</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="176"/>
+        <location filename="EditVBoxLayout.cpp" line="179"/>
         <source>Failed to start program: </source>
         <translation>Impossible de démarrer le programme : </translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="177"/>
+        <location filename="EditVBoxLayout.cpp" line="180"/>
         <source>Please check settings.</source>
         <translation>Veuillez vérifier les paramètres.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="358"/>
+        <location filename="EditVBoxLayout.cpp" line="361"/>
         <source>Generating MIDI for playing.</source>
         <translation>Génération du MIDI pour jouer.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="363"/>
+        <location filename="EditVBoxLayout.cpp" line="366"/>
         <source>Stopping synthesis.</source>
         <translation>Arrêt de la synthèse.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="374"/>
+        <location filename="EditVBoxLayout.cpp" line="377"/>
         <source>Error during MIDI generation.</source>
         <translation>Erreur pendant la génération du MIDI.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="380"/>
+        <location filename="EditVBoxLayout.cpp" line="383"/>
         <source>MIDI generation finished.</source>
         <translation>Génération du MIDI terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="394"/>
+        <location filename="EditVBoxLayout.cpp" line="399"/>
         <source>Starting synthesis...</source>
         <translation>Démarrage de la synthèse...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="404"/>
+        <location filename="EditVBoxLayout.cpp" line="409"/>
         <source>Synthesis finished.</source>
         <translation>Synthèse terminée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="421"/>
+        <location filename="EditVBoxLayout.cpp" line="426"/>
         <source>Generating score...</source>
         <translation>Génération de la partition...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="444"/>
+        <location filename="EditVBoxLayout.cpp" line="452"/>
         <source>Refresh &amp;view</source>
         <translation>Rafraîchir la &amp;vue</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="449"/>
+        <location filename="EditVBoxLayout.cpp" line="457"/>
         <source>Error during score generation.</source>
         <translation>Erreur pendant la génération de la partition.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="453"/>
+        <location filename="EditVBoxLayout.cpp" line="461"/>
         <source>Score generated.</source>
         <translation>Patition générée.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="471"/>
+        <location filename="EditVBoxLayout.cpp" line="482"/>
         <source>Starting viewer...</source>
         <translation>Démarrage du visualiseur...</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="480"/>
+        <location filename="EditVBoxLayout.cpp" line="491"/>
         <source>Viewer closed.</source>
         <translation>Visualiseur fermé.</translation>
     </message>
     <message>
-        <location filename="EditVBoxLayout.cpp" line="193"/>
-        <location filename="EditVBoxLayout.cpp" line="487"/>
+        <location filename="EditVBoxLayout.cpp" line="196"/>
+        <location filename="EditVBoxLayout.cpp" line="498"/>
         <source>&amp;View score</source>
         <translation>&amp;Voir la partition</translation>
     </message>
@@ -179,24 +207,24 @@ Fermer cette partition quand-même ?</translation>
         <translation>À propos</translation>
     </message>
     <message>
-        <location filename="HelpMenu.cpp" line="24"/>
+        <location filename="HelpMenu.cpp" line="22"/>
         <source>About Qt</source>
         <translation>À propos de Qt</translation>
     </message>
     <message>
+        <location filename="HelpMenu.cpp" line="32"/>
         <location filename="HelpMenu.cpp" line="38"/>
-        <location filename="HelpMenu.cpp" line="44"/>
         <source>ABC score editor</source>
         <oldsource>Abc score editor</oldsource>
         <translation>Éditeur de partition ABC</translation>
     </message>
     <message>
-        <location filename="HelpMenu.cpp" line="38"/>
+        <location filename="HelpMenu.cpp" line="32"/>
         <source>Copyright © 2020 Benoît Rouits &lt;brouits@free.fr&gt;</source>
         <translation>Copyright © 2020 Benoît Rouits &lt;brouit@free.fr&gt;</translation>
     </message>
     <message>
-        <location filename="HelpMenu.cpp" line="38"/>
+        <location filename="HelpMenu.cpp" line="32"/>
         <source>
 QAbc version </source>
         <translation>
@@ -231,76 +259,76 @@ QAbc version </translation>
         <translation>Générateur MIDI</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="27"/>
+        <location filename="PreferencesMenu.cpp" line="25"/>
         <source>MIDI Synthesizer</source>
         <translation>Synthétiseur MIDI</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="30"/>
+        <location filename="PreferencesMenu.cpp" line="26"/>
         <source>Score generator</source>
         <translation>Générateur de partition</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="33"/>
+        <location filename="PreferencesMenu.cpp" line="27"/>
         <source>Score viewer</source>
         <oldsource>Viewer</oldsource>
         <translation>Visualiseur de partition</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="36"/>
+        <location filename="PreferencesMenu.cpp" line="28"/>
         <source>Editor settings</source>
         <translation>Paramètres de l&apos;éditeur</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="39"/>
+        <location filename="PreferencesMenu.cpp" line="29"/>
         <source>Reset to defaults</source>
         <translation>Remettre à zéro</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="63"/>
-        <location filename="PreferencesMenu.cpp" line="65"/>
+        <location filename="PreferencesMenu.cpp" line="45"/>
+        <location filename="PreferencesMenu.cpp" line="47"/>
         <source>Compiler preference</source>
         <translation>Préférence du compilateur</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="63"/>
-        <location filename="PreferencesMenu.cpp" line="65"/>
+        <location filename="PreferencesMenu.cpp" line="45"/>
+        <location filename="PreferencesMenu.cpp" line="47"/>
         <source>Compiler:</source>
         <translation>Compilateur :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="123"/>
-        <location filename="PreferencesMenu.cpp" line="125"/>
+        <location filename="PreferencesMenu.cpp" line="105"/>
+        <location filename="PreferencesMenu.cpp" line="107"/>
         <source>PS viewer preference</source>
         <translation>Préférence du visualiseur PS</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="123"/>
-        <location filename="PreferencesMenu.cpp" line="125"/>
+        <location filename="PreferencesMenu.cpp" line="105"/>
+        <location filename="PreferencesMenu.cpp" line="107"/>
         <source>PS Viewer:</source>
         <translation>Visualiseur PS :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="83"/>
-        <location filename="PreferencesMenu.cpp" line="85"/>
+        <location filename="PreferencesMenu.cpp" line="65"/>
+        <location filename="PreferencesMenu.cpp" line="67"/>
         <source>Player preference</source>
         <translation>Préférence du joueur</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="83"/>
-        <location filename="PreferencesMenu.cpp" line="85"/>
+        <location filename="PreferencesMenu.cpp" line="65"/>
+        <location filename="PreferencesMenu.cpp" line="67"/>
         <source>Player:</source>
         <translation>Joueur :</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="103"/>
-        <location filename="PreferencesMenu.cpp" line="105"/>
+        <location filename="PreferencesMenu.cpp" line="85"/>
+        <location filename="PreferencesMenu.cpp" line="87"/>
         <source>Synth preference</source>
         <translation>Préférence du synthétiseur</translation>
     </message>
     <message>
-        <location filename="PreferencesMenu.cpp" line="103"/>
-        <location filename="PreferencesMenu.cpp" line="105"/>
+        <location filename="PreferencesMenu.cpp" line="85"/>
+        <location filename="PreferencesMenu.cpp" line="87"/>
         <source>Synth:</source>
         <translation>Synthétiseur :</translation>
     </message>
@@ -322,92 +350,92 @@ QAbc version </translation>
         <translation>Partition</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="29"/>
+        <location filename="ScoreMenu.cpp" line="28"/>
         <source>New</source>
         <translation>Nouvelle</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="33"/>
+        <location filename="ScoreMenu.cpp" line="29"/>
         <source>Open</source>
         <translation>Ouvrir</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="42"/>
+        <location filename="ScoreMenu.cpp" line="37"/>
         <source>Recently opened</source>
         <translation>Ouvert récemment</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="49"/>
+        <location filename="ScoreMenu.cpp" line="43"/>
         <source>Save</source>
         <translation>Enregistrer</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="52"/>
+        <location filename="ScoreMenu.cpp" line="44"/>
         <source>Save as</source>
         <translation>Enregistrer sous</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="56"/>
+        <location filename="ScoreMenu.cpp" line="45"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="60"/>
+        <location filename="ScoreMenu.cpp" line="46"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="86"/>
+        <location filename="ScoreMenu.cpp" line="64"/>
         <source>Really quit?</source>
         <translation>Quitter vraiment ?</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="88"/>
+        <location filename="ScoreMenu.cpp" line="66"/>
         <source> score(s) not saved.
 Do you want to quit anyway?</source>
         <translation> partition(s) non enregistrée(s).
 Voulez-vous quitter quand-même ?</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="108"/>
+        <location filename="ScoreMenu.cpp" line="86"/>
         <source>Open ABC Score</source>
         <translation>Ouvrir une partition ABC</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="108"/>
-        <location filename="ScoreMenu.cpp" line="236"/>
+        <location filename="ScoreMenu.cpp" line="86"/>
+        <location filename="ScoreMenu.cpp" line="216"/>
         <source>ABC score (*.abc)</source>
         <translation>Partition ABC (*.abc)</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="190"/>
-        <location filename="ScoreMenu.cpp" line="207"/>
-        <location filename="ScoreMenu.cpp" line="222"/>
+        <location filename="ScoreMenu.cpp" line="168"/>
+        <location filename="ScoreMenu.cpp" line="185"/>
+        <location filename="ScoreMenu.cpp" line="202"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="190"/>
+        <location filename="ScoreMenu.cpp" line="168"/>
         <source>Could not open score!</source>
         <translation>Impossible d&apos;ouvrir la partition !</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="207"/>
+        <location filename="ScoreMenu.cpp" line="185"/>
         <source>Could not save an untitled ABC score!</source>
         <translation>Impossible d&apos;enregistrer une partition ABC sans titre !</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="220"/>
+        <location filename="ScoreMenu.cpp" line="199"/>
         <source>Score saved.</source>
         <translation>Partition enregistrée.</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="236"/>
+        <location filename="ScoreMenu.cpp" line="216"/>
         <source>Save ABC score</source>
         <translation>Enregistrer la partition ABC</translation>
     </message>
     <message>
-        <location filename="ScoreMenu.cpp" line="222"/>
+        <location filename="ScoreMenu.cpp" line="202"/>
         <source>Could not save ABC score!</source>
         <translation>Impossible d&apos;enregistrer la partition ABC !</translation>
     </message>

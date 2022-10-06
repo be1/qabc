@@ -37,7 +37,7 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private:
-	ScoreMenu scoremenu;
+    ScoreMenu scoremenu;
 	PreferencesMenu preferencesmenu;
     HelpMenu helpmenu;
     MainHBoxLayout mainhboxlayout;

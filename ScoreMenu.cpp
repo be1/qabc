@@ -25,13 +25,8 @@ ScoreMenu::ScoreMenu(QWidget* parent)
 {
     setTitle(tr("Score"));
 
-    newaction.setShortcut(QKeySequence(QKeySequence::New));
-    newaction.setText(tr("New"));
-    addAction(&newaction);
-
-    openaction.setShortcut(QKeySequence(QKeySequence::Open));
-    openaction.setText(tr("Open"));
-    addAction(&openaction);
+    addAction(tr("New"), this, SLOT(onNewActionTriggered()), QKeySequence::New);
+    addAction(tr("Open"), this, SLOT(onOpenActionTriggered()), QKeySequence::Open);
 
     for (int i = 0; i < MaxRecentFiles; ++i) {
         recentFileActs[i] = new QAction(this);
@@ -45,27 +40,10 @@ ScoreMenu::ScoreMenu(QWidget* parent)
 
     updateRecentFileActions();
 
-    saveaction.setShortcut(QKeySequence(QKeySequence::Save));
-    saveaction.setText(tr("Save"));
-    addAction(&saveaction);
-
-    saveasaction.setText(tr("Save as"));
-    addAction(&saveasaction);
-
-    closeaction.setShortcut(QKeySequence(QKeySequence::Close));
-    closeaction.setText(tr("Close"));
-    addAction(&closeaction);
-
-    quitaction.setShortcut(QKeySequence(QKeySequence::Quit));
-    quitaction.setText(tr("Quit"));
-	addAction(&quitaction);
-
-	connect(&quitaction, SIGNAL(triggered()), this, SLOT(onQuitActionTriggered()));
-    connect(&openaction, SIGNAL(triggered()), this, SLOT(onOpenActionTriggered()));
-    connect(&saveaction, SIGNAL(triggered()), this, SLOT(onSaveActionTriggered()));
-    connect(&saveasaction, SIGNAL(triggered()), this, SLOT(onSaveAsActionTriggered()));
-    connect(&closeaction, SIGNAL(triggered()), this, SLOT(onCloseActionTriggered()));
-    connect(&newaction, SIGNAL(triggered()), this, SLOT(onNewActionTriggered()));
+    addAction(tr("Save"), this, SLOT(onSaveActionTriggered()), QKeySequence::Save);
+    addAction(tr("Save as"), this, SLOT(onSaveAsActionTriggered()), QKeySequence::SaveAs);
+    addAction(tr("Close"), this, SLOT(onCloseActionTriggered()), QKeySequence::Close);
+    addAction(tr("Quit"), this, SLOT(onQuitActionTriggered()), QKeySequence::Quit);
 }
 
 ScoreMenu::~ScoreMenu()
@@ -219,6 +197,7 @@ void ScoreMenu::onSaveActionTriggered()
         file.close();
         edit->setSaved();
         w->statusBar()->showMessage(tr("Score saved."));
+        setRecentFile(fileName, true);
     } else {
         QMessageBox::warning(w, tr("Warning"), tr("Could not save ABC score!"));
     }
@@ -238,9 +217,13 @@ void ScoreMenu::onSaveAsActionTriggered()
     if (fileName.isEmpty())
         return; /* cancelled */
 
+    if (!fileName.endsWith(".abc"))
+        fileName.append(".abc");
+
     QFileInfo info(fileName);
     edittabs->setTabText(edittabs->currentIndex(), info.baseName());
     edittabs->currentEditWidget()->setFileName(fileName);
+
     return onSaveActionTriggered();
 }
 

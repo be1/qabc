@@ -40,16 +40,8 @@ protected slots:
     void onNewActionTriggered();
 
 private:
-    QAction newaction;
-    QAction openaction;
-
     enum { MaxRecentFiles = 5 };
     QAction *recentFileActs[MaxRecentFiles];
-
-    QAction saveaction;
-    QAction saveasaction;
-    QAction closeaction;
-    QAction quitaction;
 };
 
 #define NEW_TEMPLATE "X:1\nT:Melody...\nC:Piotr Ilitch Tchaïkovski\nM:4/4\nL:1/4\nK:Amin\n!mf!ABcd|e3c|e3A|cAFc|A4|]"

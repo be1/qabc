@@ -18,14 +18,8 @@ HelpMenu::HelpMenu(QWidget* parent)
 {
     setTitle(tr("Help"));
 
-    aboutaction.setText(tr("About"));
-    addAction(&aboutaction);
-
-    aboutqtaction.setText(tr("About Qt"));
-    addAction(&aboutqtaction);
-
-    connect(&aboutaction, SIGNAL(triggered()), this, SLOT(onAboutActionTriggered()));
-	connect(&aboutqtaction, SIGNAL(triggered()), this, SLOT(onAboutQtActionTriggered()));
+    addAction(tr("About"), this, SLOT(onAboutActionTriggered()));
+    addAction(tr("About Qt"), this, SLOT(onAboutQtActionTriggered()));
 }
 
 HelpMenu::~HelpMenu()

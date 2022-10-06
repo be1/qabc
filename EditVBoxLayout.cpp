@@ -18,28 +18,28 @@
 #include <QDir>
 
 EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
-	: QVBoxLayout(parent),
-	abcplaintextedit(parent),
-	playpushbutton(parent),
-	runpushbutton(parent),
-	hboxlayout(parent),
-	xspinbox(parent),
-	xlabel(parent),
-	fileName(fileName)
+    : QVBoxLayout(parent),
+    abcplaintextedit(parent),
+    playpushbutton(parent),
+    runpushbutton(parent),
+    hboxlayout(parent),
+    xspinbox(parent),
+    xlabel(parent),
+    fileName(fileName)
 {
     setObjectName("EditVBoxLayout:" + fileName);
     tempFile.setFileTemplate(QDir::tempPath() + QDir::separator() + "qabc-XXXXXX.abc");
     xspinbox.setMinimum(1);
-	xlabel.setText(tr("X:"));
-	xlabel.setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-	xlabel.setBuddy(&xspinbox);
-	hboxlayout.addWidget(&xlabel);
-	hboxlayout.addWidget(&xspinbox);
-	hboxlayout.addWidget(&playpushbutton);
-	hboxlayout.addWidget(&runpushbutton);
+    xlabel.setText(tr("X:"));
+    xlabel.setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+    xlabel.setBuddy(&xspinbox);
+    hboxlayout.addWidget(&xlabel);
+    hboxlayout.addWidget(&xspinbox);
+    hboxlayout.addWidget(&playpushbutton);
+    hboxlayout.addWidget(&runpushbutton);
 
-	addWidget(&abcplaintextedit);
-	addLayout(&hboxlayout);
+    addWidget(&abcplaintextedit);
+    addLayout(&hboxlayout);
 
     connect(&xspinbox, SIGNAL(valueChanged(int)), this, SLOT(onXChanged(int)));
     connect(&abcplaintextedit, &QPlainTextEdit::selectionChanged, this, &EditVBoxLayout::onSelectionChanged);
@@ -175,45 +175,45 @@ void EditVBoxLayout::onErrorOccurred(QProcess::ProcessError error, const QString
     AbcMainWindow* w =  a->mainWindow();
     LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
     switch (error) {
-    case QProcess::FailedToStart:
-        lv->appendHtml("<b style=\"color: red\">" + tr("Failed to start program: ") + program +
-                       "<br />" + tr("Please check settings.") + "</b>");
-        break;
-    default:
-        break;
+        case QProcess::FailedToStart:
+            lv->appendHtml("<b style=\"color: red\">" + tr("Failed to start program: ") + program +
+                    "<br />" + tr("Please check settings.") + "</b>");
+            break;
+        default:
+            break;
     }
 
     switch (which) {
-    case AbcProcess::ProcessPlayer:
-    case AbcProcess::ProcessSynth:
-        playpushbutton.flip();
-        xspinbox.setEnabled(true);
-        break;
-    case AbcProcess::ProcessCompiler:
-        runpushbutton.setEnabled(true);
-        break;
-    case AbcProcess::ProcessViewer:
-        runpushbutton.setText(tr("&View score"));
-        runpushbutton.setEnabled(true);
-        break;
-    default:
-        break;
+        case AbcProcess::ProcessPlayer:
+        case AbcProcess::ProcessSynth:
+            playpushbutton.flip();
+            xspinbox.setEnabled(true);
+            break;
+        case AbcProcess::ProcessCompiler:
+            runpushbutton.setEnabled(true);
+            break;
+        case AbcProcess::ProcessViewer:
+            runpushbutton.setText(tr("&View score"));
+            runpushbutton.setEnabled(true);
+            break;
+        default:
+            break;
     }
 }
 
 AbcPlainTextEdit *EditVBoxLayout::abcPlainTextEdit()
 {
-	return &abcplaintextedit;
+    return &abcplaintextedit;
 }
 
 PlayPushButton *EditVBoxLayout::playPushButton()
 {
-	return &playpushbutton;
+    return &playpushbutton;
 }
 
 RunPushButton *EditVBoxLayout::runPushButton()
 {
-	return &runpushbutton;
+    return &runpushbutton;
 }
 
 void EditVBoxLayout::setFileName(const QString &fn)
@@ -230,15 +230,15 @@ void EditVBoxLayout::cleanup()
 
 void EditVBoxLayout::onXChanged(int value)
 {
-	qDebug() << value;
+    qDebug() << value;
 }
 
 void EditVBoxLayout::spawnCompiler(const QString &prog, const QStringList& args, const QDir &wrk)
 {
-	AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w =  a->mainWindow();
     w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView()->clear();
-	return spawnProgram(prog, args, AbcProcess::ProcessCompiler, wrk);
+    return spawnProgram(prog, args, AbcProcess::ProcessCompiler, wrk);
 }
 
 void EditVBoxLayout::spawnViewer(const QString &prog, const QStringList &args, const QDir &wrk)
@@ -248,20 +248,20 @@ void EditVBoxLayout::spawnViewer(const QString &prog, const QStringList &args, c
 
 void EditVBoxLayout::spawnPlayer(const QString& prog, const QStringList &args, const QDir &wrk)
 {
-	AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow *w = a->mainWindow();
     w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView()->clear();
-	return spawnProgram(prog, args, AbcProcess::ProcessPlayer, wrk);
+    return spawnProgram(prog, args, AbcProcess::ProcessPlayer, wrk);
 }
 
 void EditVBoxLayout::spawnSynth(const QString &prog, const QStringList& args, const QDir& wrk)
 {
-	return spawnProgram(prog, args, AbcProcess::ProcessSynth, wrk);
+    return spawnProgram(prog, args, AbcProcess::ProcessSynth, wrk);
 }
 
 void EditVBoxLayout::spawnProgram(const QString& prog, const QStringList& args, AbcProcess::ProcessType which, const QDir& wrk)
 {
-	AbcProcess *process = new AbcProcess(which, this);
+    AbcProcess *process = new AbcProcess(which, this);
     process->setWorkingDirectory(wrk.absolutePath());
     connect(process, QOverload<QProcess::ProcessError, const QString&, AbcProcess::ProcessType>::of(&AbcProcess::errorOccurred), this, &EditVBoxLayout::onErrorOccurred);
     connect(process, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
@@ -270,39 +270,39 @@ void EditVBoxLayout::spawnProgram(const QString& prog, const QStringList& args, 
     connect(process, &AbcProcess::errorText, this, &EditVBoxLayout::onProgramErrorText);
 #endif
     processlist.append(process);
-	qDebug() << prog << args;
-	process->start(prog, args);
+    qDebug() << prog << args;
+    process->start(prog, args);
 }
 
 void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType which)
 {
     qDebug() << exitCode << exitStatus;
     switch (which) {
-    case AbcProcess::ProcessPlayer:
-        emit playerFinished(exitCode); break;
-    case AbcProcess::ProcessCompiler:
-        emit compilerFinished(exitCode); break;
-    case AbcProcess::ProcessSynth:
-        emit synthFinished(exitCode); break;
-    case AbcProcess::ProcessViewer:
-        emit viewerFinished(exitCode); break;
-    case AbcProcess::ProcessUnknown:
-    default:
-        break;
+        case AbcProcess::ProcessPlayer:
+            emit playerFinished(exitCode); break;
+        case AbcProcess::ProcessCompiler:
+            emit compilerFinished(exitCode); break;
+        case AbcProcess::ProcessSynth:
+            emit synthFinished(exitCode); break;
+        case AbcProcess::ProcessViewer:
+            emit viewerFinished(exitCode); break;
+        case AbcProcess::ProcessUnknown:
+        default:
+            break;
     }
 
-	/* delete garbage */
-	for (int i = 0; i < processlist.length(); i++) {
-		AbcProcess* proc = processlist.at(i);
-		//qDebug() << proc->state();
-		if (proc->state() == QProcess::NotRunning
-				&& proc->exitCode() == exitCode
-				&& proc->exitStatus() == exitStatus
-				&& proc->which() == which) {
-			disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
-			delete proc;
-			processlist.removeAt(i);
-		}
+    /* delete garbage */
+    for (int i = 0; i < processlist.length(); i++) {
+        AbcProcess* proc = processlist.at(i);
+        //qDebug() << proc->state();
+        if (proc->state() == QProcess::NotRunning
+                && proc->exitCode() == exitCode
+                && proc->exitStatus() == exitStatus
+                && proc->which() == which) {
+            disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
+            delete proc;
+            processlist.removeAt(i);
+        }
     }
 }
 
@@ -345,13 +345,13 @@ void EditVBoxLayout::killSynth()
 
 bool EditVBoxLayout::checkViewer()
 {
-   for (int i = 0; i < processlist.length(); i++) {
-       AbcProcess* proc = processlist.at(i);
-       if (proc->which() == AbcProcess::ProcessViewer)
-           return true;
-   }
+    for (int i = 0; i < processlist.length(); i++) {
+        AbcProcess* proc = processlist.at(i);
+        if (proc->which() == AbcProcess::ProcessViewer)
+            return true;
+    }
 
-   return false;
+    return false;
 }
 
 void EditVBoxLayout::onPlayClicked()
@@ -365,7 +365,7 @@ void EditVBoxLayout::onPlayClicked()
     } else {
         a->mainWindow()->statusBar()->showMessage(tr("Stopping synthesis."));
         killSynth();
-		onSynthFinished(0);
+        onSynthFinished(0);
     }
 }
 
@@ -377,25 +377,24 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
         a->mainWindow()->statusBar()->showMessage(tr("Error during MIDI generation."));
         playpushbutton.flip();
         xspinbox.setEnabled(true);
-		return;
+        return;
     }
 
     a->mainWindow()->statusBar()->showMessage(tr("MIDI generation finished."));
 
     Settings settings;
-	QVariant synth = settings.value(SYNTH_KEY);
-	QString program = synth.toString();
-    if (program.isEmpty())
-        program = FLUIDSYNTH;
+    QVariant synth = settings.value(SYNTH_KEY);
+    QString program = synth.toString();
+    if (program.isEmpty()) program = FLUIDSYNTH;
 
-	QStringList argv = program.split(" ");
-	program = argv.at(0);
-	argv.removeAt(0);
+    QStringList argv = program.split(" ");
+    program = argv.at(0);
+    argv.removeAt(0);
     QString temp(tempFile.fileName());
     argv << (temp.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid"));
 
-	QFileInfo info(temp);
-	QDir dir = info.absoluteDir();
+    QFileInfo info(temp);
+    QDir dir = info.absoluteDir();
 
     a->mainWindow()->statusBar()->showMessage(tr("Starting synthesis..."));
     spawnSynth(program, argv, dir);
@@ -435,15 +434,15 @@ void EditVBoxLayout::onRunClicked()
     if (program.isEmpty())
         program = ABCM2PS;
 
-	QStringList argv = program.split(" ");
-	program = argv.at(0);
-	argv.removeAt(0);
+    QStringList argv = program.split(" ");
+    program = argv.at(0);
+    argv.removeAt(0);
     argv << tempFile.fileName();
 
     QFileInfo info(tempFile.fileName());
-	QDir dir = info.absoluteDir();
+    QDir dir = info.absoluteDir();
 
-	spawnCompiler(program, argv, dir);
+    spawnCompiler(program, argv, dir);
 }
 
 void EditVBoxLayout::onCompileFinished(int exitCode)

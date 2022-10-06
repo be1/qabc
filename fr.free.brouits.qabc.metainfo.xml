@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>fr.free.brouits.qabc</id>
+  
+  <name>QAbc</name>
+  <summary>Minimal GUI for ABC music notation</summary>
+  
+  <metadata_license>FSFAP</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  
+  <description>
+    <p>
+      QAbc is a simple graphical program that allow
+      to write musical scores in the ABC notation.
+    </p>
+    <p>
+      This program allow to play the written music,
+      preview the output score and print it, using
+      third party software.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">qabc.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>http://brouits.free.fr/qabc/qabc.png</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">http://brouits.free.fr/qabc/</url>
+  <developer_name>Benoît Rouits</developer_name>
+  <update_contact>brouits_AT_free.fr</update_contact>
+  <provides>
+    <binary>qabc</binary>
+  </provides>
+</component>

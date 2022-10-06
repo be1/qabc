@@ -15,7 +15,7 @@ HEADERS = ScoreMenu.h PreferencesMenu.h HelpMenu.h AbcPlainTextEdit.h PlayPushBu
 	LogView.h \
 	editorprefdialog.h \
 	settings.h
-VERSION = 1.9.2
+VERSION = 1.9.3
 REVISION = $$system(git describe --long --tags 2>/dev/null || echo "stable")
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 isEmpty(PREFIX): PREFIX = /usr/local
@@ -52,4 +52,6 @@ icon.path = $$DATADIR/pixmaps
 icon.files = $${TARGET}.png
 mime.path = $$DATADIR/mime/packages
 mime.files = qabc.xml
-INSTALLS += target translations desktop icon mime manual
+metainfo.path = $$DATADIR/metainfo
+metainfo.files = fr.free.brouits.qabc.metainfo.xml
+INSTALLS += target translations desktop icon mime manual metainfo

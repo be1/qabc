@@ -11,6 +11,8 @@
 #include "AbcPlainTextEdit.h"
 #include <QDebug>
 #include <QFile>
+#include <QMenu>
+#include <QInputDialog>
 #include <QPainter>
 #include <QTextBlock>
 #include <QAbstractItemView>
@@ -54,6 +56,25 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
         connect(this, &AbcPlainTextEdit::cursorPositionChanged, this, &AbcPlainTextEdit::highlightCurrentLine);
         highlightCurrentLine();
     }
+
+    /* custom actions */
+    findaction = new QAction(tr("Find..."), this);
+    findaction->setShortcut(QKeySequence::Find);
+    findaction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+    connect(findaction, &QAction::triggered, this, &AbcPlainTextEdit::onFindActivated);
+    addAction(findaction);
+
+    findnextaction = new QAction(tr("Find forward"), this);
+    findnextaction->setShortcut(QKeySequence::FindNext);
+    findnextaction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+    connect(findnextaction, &QAction::triggered, this, &AbcPlainTextEdit::onFindForwardActivated);
+    addAction(findnextaction);
+
+    findprevaction = new QAction(tr("Find backward"), this);
+    findprevaction->setShortcut(QKeySequence::FindPrevious);
+    findprevaction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+    connect(findprevaction, &QAction::triggered, this, &AbcPlainTextEdit::onFindBackwardActivated);
+    addAction(findprevaction);
 }
 
 AbcPlainTextEdit::~AbcPlainTextEdit()
@@ -90,6 +111,17 @@ void AbcPlainTextEdit::flagModified(bool enable)
     this->saved = !enable;
 }
 
+void AbcPlainTextEdit::contextMenuEvent(QContextMenuEvent *e)
+{
+    QMenu* menu = createStandardContextMenu(e->globalPos());
+    menu->setParent(this);
+    menu->addAction(findaction);
+    menu->addAction(findnextaction);
+    menu->addAction(findprevaction);
+    menu->exec(e->globalPos());
+    delete menu;
+}
+
 bool AbcPlainTextEdit::isSaved()
 {
     return this->saved;
@@ -119,6 +151,47 @@ void AbcPlainTextEdit::insertCompletion(const QString &completion)
     tc.insertText(completion);
 #endif
     setTextCursor(tc);
+}
+
+void AbcPlainTextEdit::onFindActivated()
+{
+    if (!textCursor().selectedText().isEmpty())
+        m_find = textCursor().selectedText();
+
+    m_find = QInputDialog::getText(this, tr("Find..."), tr("Text:"), QLineEdit::Normal, m_find);
+    if (m_find.isEmpty())
+        return;
+
+    if(!find(m_find, QTextDocument::FindCaseSensitively))
+        find(m_find, QTextDocument::FindBackward|QTextDocument::FindCaseSensitively);
+}
+
+void AbcPlainTextEdit::onFindForwardActivated()
+{
+    if (m_find.isEmpty())
+        m_find = textCursor().selectedText();
+
+    if (m_find.isEmpty())
+            m_find = QInputDialog::getText(this, tr("Find forward"), tr("Text:"));
+
+    if (m_find.isEmpty())
+        return;
+
+    find(m_find, QTextDocument::FindCaseSensitively);
+}
+
+void AbcPlainTextEdit::onFindBackwardActivated()
+{
+    if (m_find.isEmpty())
+        m_find = textCursor().selectedText();
+
+    if (m_find.isEmpty())
+            m_find = QInputDialog::getText(this, tr("Find backward"), tr("Text:"));
+
+    if (m_find.isEmpty())
+        return;
+
+    find(m_find, QTextDocument::FindBackward|QTextDocument::FindCaseSensitively);
 }
 
 QString AbcPlainTextEdit::textUnderCursor() const

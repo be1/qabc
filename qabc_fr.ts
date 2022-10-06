@@ -9,40 +9,35 @@
         <translation>QAbc</translation>
     </message>
     <message>
-        <location filename="AbcMainWindow.cpp" line="23"/>
+        <location filename="AbcMainWindow.cpp" line="22"/>
         <source>Idle</source>
         <translation>Rien à faire</translation>
     </message>
 </context>
 <context>
-    <name>EditMenu</name>
+    <name>AbcPlainTextEdit</name>
     <message>
-        <location filename="editmenu.cpp" line="9"/>
-        <source>Edit</source>
-        <translation>Édition</translation>
+        <location filename="AbcPlainTextEdit.cpp" line="61"/>
+        <location filename="AbcPlainTextEdit.cpp" line="161"/>
+        <source>Find...</source>
+        <translation>Rechercher...</translation>
     </message>
     <message>
-        <location filename="editmenu.cpp" line="11"/>
-        <location filename="editmenu.cpp" line="37"/>
-        <source>Find ...</source>
-        <translation>Rechercher ...</translation>
-    </message>
-    <message>
-        <location filename="editmenu.cpp" line="12"/>
-        <location filename="editmenu.cpp" line="52"/>
+        <location filename="AbcPlainTextEdit.cpp" line="67"/>
+        <location filename="AbcPlainTextEdit.cpp" line="175"/>
         <source>Find forward</source>
         <translation>Rechercher en avant</translation>
     </message>
     <message>
-        <location filename="editmenu.cpp" line="13"/>
-        <location filename="editmenu.cpp" line="67"/>
+        <location filename="AbcPlainTextEdit.cpp" line="73"/>
+        <location filename="AbcPlainTextEdit.cpp" line="189"/>
         <source>Find backward</source>
         <translation>Rechercher en arrière</translation>
     </message>
     <message>
-        <location filename="editmenu.cpp" line="37"/>
-        <location filename="editmenu.cpp" line="52"/>
-        <location filename="editmenu.cpp" line="67"/>
+        <location filename="AbcPlainTextEdit.cpp" line="161"/>
+        <location filename="AbcPlainTextEdit.cpp" line="175"/>
+        <location filename="AbcPlainTextEdit.cpp" line="189"/>
         <source>Text:</source>
         <translation>Texte :</translation>
     </message>

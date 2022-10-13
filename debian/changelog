@@ -1,3 +1,11 @@
+qabc (1.9.3-2) UNRELEASED; urgency=medium
+
+  * Remove constraints unnecessary since buster (oldstable):
+    + Build-Depends: Drop versioned constraint on qt5-qmake, qtbase5-dev and
+      qttools5-dev-tools.
+
+ -- Debian Janitor <janitor@jelmer.uk>  Thu, 06 Oct 2022 23:58:31 -0000
+
 qabc (1.9.3-1) unstable; urgency=medium
 
   * New upstream release 1.9.3.

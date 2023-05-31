@@ -9,7 +9,7 @@ QAbc uses third-party softwares to generate MIDI, AUDIO, and PostScript files. W
 - Qt 5.x (LIB)
 
 ## Screenshot
-![http://brouits.free.fr/qabc/qabc.png]
+![screensshot](http://brouits.free.fr/qabc/qabc.png)
 
 ## Building
 Just a matter of:

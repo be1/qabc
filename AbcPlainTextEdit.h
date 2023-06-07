@@ -76,6 +76,7 @@ protected:
     void focusInEvent(QFocusEvent *e) override;
     void flagModified(bool enable);
     virtual void contextMenuEvent(QContextMenuEvent *e) override;
+    virtual void mouseDoubleClickEvent(QMouseEvent *e) override;
 
 private slots:
     void updateLineNumberAreaWidth(int newBlockCount);
@@ -90,12 +91,24 @@ private slots:
 private:
     QAbstractItemModel *modelFromFile(const QString &fileName);
     QAbstractItemModel *dictModel; /* normal dictionnary */
+    QAbstractItemModel *psModel;   /* Rendering dictionnary */
     QAbstractItemModel *gmModel;   /* General MIDI dictionary */
+    static const QString delimiter;
 
     QWidget *lineNumberArea;
     AbcHighlighter *highlighter;
+    QString playableNoteUnderCursor(QTextCursor tc);
     QString textUnderCursor() const;
     QString lineUnderCursor() const;
+    QString noteUnderCursor(QTextCursor tc) const;
+    QString charBeforeCursor(QTextCursor tc) const;
+    QString wordBeforeCursor(QTextCursor tc) const;
+    bool isRest(QChar car) const;
+    bool isPitch(QChar car) const;
+    bool isAccid(QChar car) const;
+    QString getCurrentKeySignature() const;
+    QString getCurrentVoiceOrChannel() const;
+    QString getCurrentMIDIComment(const QString& com) const;
 
     QString m_find;
     QAction* findaction;

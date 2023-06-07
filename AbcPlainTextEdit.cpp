@@ -23,6 +23,8 @@
 #include "config.h"
 #include "settings.h"
 
+const QString AbcPlainTextEdit::delimiter = " !%~@#$^&*()_+{}|:\"<>?,./;'[]\\-=";
+
 AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
     : QPlainTextEdit(parent),
       saved(false)
@@ -30,6 +32,7 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
     lineNumberArea = new LineNumberArea(this);
     highlighter = new AbcHighlighter(this->document());
     dictModel = modelFromFile(":dict.txt");
+    psModel = modelFromFile(":ps.txt");
     gmModel = modelFromFile(":gm.txt");
 
     QCompleter *com = new QCompleter(this);
@@ -39,6 +42,8 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
     com->setWrapAround(false);
     setCompleter(com);
 
+    Settings settings;
+
     connect(this, &AbcPlainTextEdit::blockCountChanged, this, &AbcPlainTextEdit::updateLineNumberAreaWidth);
     connect(this, &AbcPlainTextEdit::updateRequest, this, &AbcPlainTextEdit::updateLineNumberArea);
     connect(this, &AbcPlainTextEdit::cursorPositionChanged, this, &AbcPlainTextEdit::checkDictionnary);
@@ -46,7 +51,6 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
 
     updateLineNumberAreaWidth(0);
 
-    Settings settings;
     QVariant fontRange = settings.value(EDITOR_FONT_RANGE);
     int range = fontRange.toInt();
     zoomIn(range);
@@ -80,6 +84,7 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
 AbcPlainTextEdit::~AbcPlainTextEdit()
 {
     delete dictModel;
+    delete psModel;
     delete gmModel;
 }
 
@@ -122,6 +127,39 @@ void AbcPlainTextEdit::contextMenuEvent(QContextMenuEvent *e)
     delete menu;
 }
 
+void AbcPlainTextEdit::mouseDoubleClickEvent(QMouseEvent *e)
+{
+    /* note appears if cursor is just after the pitch */
+    QString note = playableNoteUnderCursor(textCursor());
+    if (note.isEmpty())
+        return QPlainTextEdit::mouseDoubleClickEvent(e);
+
+    /* select left part */
+    QTextCursor tc = textCursor();
+    tc.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, 2);
+    tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, 1);
+    /* check accidental */
+    if (!isAccid(tc.selectedText().at(0))) {
+        tc.clearSelection();
+    }
+
+    /* select pitch */
+    tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
+
+    /* select right part */
+    while (tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, 1)) {
+        QString oct = tc.selectedText();
+        QChar last = oct.at(oct.size() -1);
+        if (last != ',' && last != '\'') {
+            tc.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
+            break;
+        }
+    }
+
+    setTextCursor(tc);
+    e->accept();
+}
+
 bool AbcPlainTextEdit::isSaved()
 {
     return this->saved;
@@ -146,7 +184,12 @@ void AbcPlainTextEdit::insertCompletion(const QString &completion)
     tc.insertText(completion.right(extra));
 #else
     /* this for contains mode */
-    tc.select(QTextCursor::WordUnderCursor);
+    while (tc.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor)) {
+        if (delimiter.contains(tc.selectedText().left(1))) {
+            tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
+            break;
+        }
+    }
     tc.removeSelectedText();
     tc.insertText(completion);
 #endif
@@ -208,17 +251,217 @@ QString AbcPlainTextEdit::lineUnderCursor() const
     return tc.selectedText();
 }
 
+QString AbcPlainTextEdit::charBeforeCursor(QTextCursor tc) const
+{
+    if (!tc.movePosition(QTextCursor::Left))
+        return QString();
+
+    tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
+    return tc.selectedText();
+}
+
+QString AbcPlainTextEdit::wordBeforeCursor(QTextCursor tc) const
+{
+    /* start of word delimiter */
+    while (tc.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor)) {
+        if (delimiter.contains(tc.selectedText().left(1))) {
+            tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
+            break;
+        }
+    }
+
+    return tc.selectedText();
+}
+
+bool AbcPlainTextEdit::isRest(QChar car) const
+{
+    return car == 'z' || car == 'Z';
+}
+
+bool AbcPlainTextEdit::isPitch(QChar car) const
+{
+    return (car >= 'A' && car <= 'G') || (car >= 'a' && car <= 'g');
+}
+
+bool AbcPlainTextEdit::isAccid(QChar car) const
+{
+    return car == '^' || car == '=' || car == '_';
+}
 
 void AbcPlainTextEdit::checkDictionnary(void) {
     QString line = lineUnderCursor();
-    if (c && (c->model() == dictModel) &&
+    if (c && (c->model() != gmModel) &&
             (line.startsWith("%%MIDI program") || line.startsWith("%%MIDI bassprog") || line.startsWith("%%MIDI chordprog"))) {
-
         c->setModel(gmModel);
-    } else if (c && (c->model() == gmModel)) {
-
+    } else if (c && (c->model() != psModel) &&
+               (line.startsWith("%%"))) {
+        c->setModel(psModel);
+    } else if (c && (c->model() != dictModel)) {
         c->setModel(dictModel);
     }
+}
+
+QString AbcPlainTextEdit::noteUnderCursor(QTextCursor tc) const
+{
+    QString sym = charBeforeCursor(tc);
+
+    if (sym.isEmpty())
+        return QString();
+
+    if (!isPitch(sym.at(0)) && !isRest(sym.at(0)))
+        return QString();
+
+    if (isRest(sym.at(0)))
+        return sym;
+
+    /* now, it is a pitch */
+
+    /* find measure accidentals for this pitch */
+    QTextCursor bar = textCursor();
+
+    while (bar.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor, 1)) {
+        /* run until beginning of measure */
+        if (bar.selectedText().at(0) == '|' || bar.selectedText().at(0) == '\n' || bar.selectedText().at(0) == QChar::ParagraphSeparator)
+            break;
+
+        /* find same pitch in previous notes (+/- octavas) */
+        if (bar.selectedText().at(0).toUpper() == sym.at(0).toUpper()) {
+            bar.clearSelection();
+            bar.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor, 1);
+
+            bool found = false;
+            /* get accidentals */
+            while (isAccid(bar.selectedText().at(0))) {
+                found = true;
+                sym.prepend(bar.selectedText().at(0));
+                bar.clearSelection();
+                bar.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor, 1);
+            }
+
+            if (found)
+                /* parsing finished */
+                break;
+            else {
+                bar.clearSelection();
+                bar.movePosition(QTextCursor::Right);
+            }
+        }
+    }
+
+    /* octavas */
+    while (tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, 1)) {
+        QString oct = tc.selectedText();
+        QChar last = oct.at(oct.size() -1);
+        if (last != ',' && last != '\'')
+            break;
+
+        sym.append(last);
+    }
+
+    return sym;
+}
+
+QString AbcPlainTextEdit::getCurrentKeySignature() const
+{
+    QTextDocument* doc = document();
+    QTextCursor tc, vtc;
+
+    vtc =  doc->find("V:", textCursor(), QTextDocument::FindBackward);
+    tc = doc->find("K:", textCursor(), QTextDocument::FindBackward);
+
+    /* give KS only if it changed after "V:" */
+    if (tc.position() > vtc.position()) {
+        tc.select(QTextCursor::LineUnderCursor);
+        return tc.selectedText();
+    }
+
+    return QString();
+}
+
+QString AbcPlainTextEdit::getCurrentVoiceOrChannel() const
+{
+    QTextCursor tc;
+    QTextDocument* doc = document();
+    QTextCursor vtc =  doc->find("V:", textCursor(), QTextDocument::FindBackward);
+    QTextCursor ctc = doc->find("%%MIDI channel ", textCursor(), QTextDocument::FindBackward);
+    if (ctc.position() > vtc.position())
+        tc = ctc;
+    else
+        tc = vtc;
+
+    tc.select(QTextCursor::LineUnderCursor);
+    return tc.selectedText();
+}
+
+QString AbcPlainTextEdit::getCurrentMIDIComment(const QString& com) const
+{
+    QTextCursor tc;
+    QTextDocument* doc = document();
+    QTextCursor vtc =  doc->find("V:", textCursor(), QTextDocument::FindBackward);
+    tc =  doc->find(QString("%%MIDI %1 ").arg(com), textCursor(), QTextDocument::FindBackward);
+
+    tc.select(QTextCursor::LineUnderCursor);
+    if (tc.position() > vtc.position())
+        return tc.selectedText();
+
+    return ""; /* default */
+}
+
+QString AbcPlainTextEdit::playableNoteUnderCursor(QTextCursor tc)
+{
+    /* check manual selection */
+    if (!tc.selectedText().isEmpty())
+        return QString();
+
+    QString line = lineUnderCursor();
+
+    /* check if nothing under cursor */
+    if (line.isEmpty())
+         return QString();
+
+    /* check if we are in a comment */
+    if (line.startsWith("%"))
+        return QString();
+
+    /* check if we are in a header line */
+    if (line.at(0).isLetter()) {
+        if (line.size() > 1)
+            if (line.at(1) == ':')
+                return QString();
+    }
+
+    /* check if we are in !something! or in "GChord" */
+    QTextCursor check = textCursor();
+    while (check.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor, 1)) {
+        /* go until start of line */
+        if (check.selectedText().at(0) == '\n' || check.selectedText().at(0) == QChar::ParagraphSeparator)
+            break;
+    }
+    if (check.selectedText().count('!') % 2)
+        return QString();
+
+    if (check.selectedText().count('"') % 2)
+        return QString();
+
+    /* check if this is a note */
+    QString note = noteUnderCursor(tc);
+    if (note.isEmpty())
+        return QString();
+
+    QString voice = getCurrentVoiceOrChannel();
+    QString keysig = getCurrentKeySignature();
+    QString pgm = getCurrentMIDIComment("program");
+    QString trp = getCurrentMIDIComment("transpose");
+    if (!trp.isEmpty())
+        note.prepend("\n").prepend(trp);
+    if (!pgm.isEmpty())
+        note.prepend("\n").prepend(pgm);
+    if (!keysig.isEmpty())
+        note.prepend("\n").prepend(keysig);
+    if (!voice.isEmpty())
+        note.prepend("\n").prepend(voice);
+
+    return note;
 }
 
 void AbcPlainTextEdit::focusInEvent(QFocusEvent *e)
@@ -230,6 +473,7 @@ void AbcPlainTextEdit::focusInEvent(QFocusEvent *e)
 
 void AbcPlainTextEdit::keyPressEvent(QKeyEvent *e)
 {
+    /* completion stuff */
     if (c && c->popup()->isVisible()) {
         // The following keys are forwarded by the completer to the widget
        switch (e->key()) {
@@ -257,15 +501,14 @@ void AbcPlainTextEdit::keyPressEvent(QKeyEvent *e)
     if (!c || (ctrlOrShift && e->text().isEmpty()))
         return;
 
-    static QString eow("!%~@#$^&*()_+{}|:\"<>?,./;'[]\\-="); // end of word
     const bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
-    QString completionPrefix = textUnderCursor();
+    QString completionPrefix = wordBeforeCursor(textCursor());
 
     /* no shortcut pressed, or a modifier-only key is pressed,
      * or the word typed is too short, or it is a complete word:
      * then unshow popup if needed and return */
-    if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 2
-                      || eow.contains(e->text().right(1)))) {
+    if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2
+                      || delimiter.contains(e->text().right(1)))) {
         c->popup()->hide();
         return;
     }
@@ -278,7 +521,7 @@ void AbcPlainTextEdit::keyPressEvent(QKeyEvent *e)
     QRect cr = cursorRect();
     cr.setWidth(c->popup()->sizeHintForColumn(0)
                 + c->popup()->verticalScrollBar()->sizeHint().width());
-    c->complete(cr); // popup it up!
+    c->complete(cr); // pop it up!
 }
 
 int AbcPlainTextEdit::lineNumberAreaWidth()
@@ -376,7 +619,7 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
 
     noteFormat.setFontWeight(QFont::Bold);
     noteFormat.setForeground(qApp->palette().color(QPalette::Text));
-    rule.pattern = QRegularExpression(QStringLiteral("[_=^]*[A-HZa-hz][,']*/*[1-9]*"));
+    rule.pattern = QRegularExpression(QStringLiteral("[_=^]*[A-HZa-hz][,']*[0-9]*/*[1-9]*"));
     rule.format = noteFormat;
     highlightingRules.append(rule);
 
@@ -425,7 +668,7 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
         QStringLiteral("^K:[^\n]+"), QStringLiteral("^L:[^\n]+"), QStringLiteral("^M:[^\n]+"),
         QStringLiteral("^N:[^\n]+"), QStringLiteral("^O:[^\n]+"), QStringLiteral("^P:[^\n]+"),
         QStringLiteral("^Q:[^\n]+"), QStringLiteral("^R:[^\n]+"), QStringLiteral("^S:[^\n]+"),
-        QStringLiteral("^T:[^\n]+"), QStringLiteral("^V:[^\n]+"), QStringLiteral("^W:|^\n]+"),
+        QStringLiteral("^T:[^\n]+"), QStringLiteral("^V:[^\n]+"), QStringLiteral("^W:[^\n]+"),
         QStringLiteral("^X:[^\n]+"), QStringLiteral("^Z:[^\n]+")
     };
 

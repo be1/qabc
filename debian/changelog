@@ -1,4 +1,4 @@
-qabc (1.9.3-2ubuntu1) unstable; urgency=medium
+qabc (1.10-1) unstable; urgency=medium
 
   [ Debian Janitor ]
   * Remove constraints unnecessary since buster (oldstable):

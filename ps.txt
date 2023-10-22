@@ -1,3 +1,7 @@
+bassprog
+chordprog
+program
+nobeataccents
 annotationfont
 composerfont
 footerfont

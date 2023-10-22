@@ -2,7 +2,7 @@ QT += core widgets gui
 TEMPLATE = app
 TARGET = qabc
 RESOURCES += resources.qrc
-DISTFILES +=  dict.txt gm.txt
+DISTFILES +=  dict.txt gm.txt ps.txt
 SOURCES = ScoreMenu.cpp PreferencesMenu.cpp HelpMenu.cpp AbcPlainTextEdit.cpp PlayPushButton.cpp EditVBoxLayout.cpp EditWidget.cpp EditTabWidget.cpp RunPushButton.cpp ViewVBoxLayout.cpp ViewWidget.cpp MainHBoxLayout.cpp AbcMainWindow.cpp AbcApplication.cpp main.cpp \
 	AbcProcess.cpp \
 	AbcTemporaryFile.cpp \

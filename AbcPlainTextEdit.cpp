@@ -128,32 +128,19 @@ void AbcPlainTextEdit::contextMenuEvent(QContextMenuEvent *e)
 
 void AbcPlainTextEdit::mouseDoubleClickEvent(QMouseEvent *e)
 {
-    /* note appears if cursor is just after the pitch */
-    QString note = playableNoteUnderCursor(textCursor());
-    if (note.isEmpty())
-        return QPlainTextEdit::mouseDoubleClickEvent(e);
-
-    /* select left part */
+    QTextDocument* doc = document();
     QTextCursor tc = textCursor();
-    tc.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, 2);
-    tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, 1);
-    /* check accidental */
-    if (!isAccid(tc.selectedText().at(0))) {
-        tc.clearSelection();
-    }
 
-    /* select pitch */
-    tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
+    /* postion at start of measure */
+    QTextCursor lbar = doc->find(QRegularExpression(QStringLiteral("(\\||^)")), tc, QTextDocument::FindBackward);
+    tc.setPosition(lbar.position());
 
-    /* select right part */
-    while (tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, 1)) {
-        QString oct = tc.selectedText();
-        QChar last = oct.at(oct.size() -1);
-        if (last != ',' && last != '\'') {
-            tc.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
-            break;
-        }
-    }
+    /* select right part: until end of measure */
+    QTextCursor rbar = doc->find(QRegularExpression(QStringLiteral("(\\||$)")), tc);
+    tc.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, rbar.position() - tc.position());
+
+    if (tc.selectedText().isEmpty())
+        return QPlainTextEdit::mouseDoubleClickEvent(e);
 
     setTextCursor(tc);
     e->accept();
@@ -326,7 +313,9 @@ QString AbcPlainTextEdit::noteUnderCursor(QTextCursor tc) const
         /* find same pitch in previous notes (+/- octavas) */
         if (bar.selectedText().at(0).toUpper() == sym.at(0).toUpper()) {
             bar.clearSelection();
-            bar.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor, 1);
+            if(!bar.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor, 1)) {
+                break; /* start of buffer */
+            }
 
             bool found = false;
             /* get accidentals */
@@ -334,7 +323,9 @@ QString AbcPlainTextEdit::noteUnderCursor(QTextCursor tc) const
                 found = true;
                 sym.prepend(bar.selectedText().at(0));
                 bar.clearSelection();
-                bar.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor, 1);
+                if (!bar.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor, 1)) {
+                    break; /* start of buffer */
+                }
             }
 
             if (found)
@@ -669,7 +660,7 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
         QStringLiteral("^N:[^\n]+"), QStringLiteral("^O:[^\n]+"), QStringLiteral("^P:[^\n]+"),
         QStringLiteral("^Q:[^\n]+"), QStringLiteral("^R:[^\n]+"), QStringLiteral("^S:[^\n]+"),
         QStringLiteral("^T:[^\n]+"), QStringLiteral("^V:[^\n]+"), QStringLiteral("^W:[^\n]+"),
-        QStringLiteral("^X:[^\n]+"), QStringLiteral("^Z:[^\n]+")
+        QStringLiteral("^X:[^\n]+"), QStringLiteral("^Z:[^\n]+"), QStringLiteral("\\[[KMQ]:[^\\]]+\\]")
     };
 
     for (const QString &pattern : keywordPatterns) {

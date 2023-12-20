@@ -16,7 +16,7 @@ HEADERS = ScoreMenu.h PreferencesMenu.h HelpMenu.h AbcPlainTextEdit.h PlayPushBu
 	editorprefdialog.h \
         settings.h \
         config.h
-VERSION = 1.10
+VERSION = 1.11
 REVISION = $$system(git describe --long --tags 2>/dev/null || echo "stable")
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 isEmpty(PREFIX): PREFIX = /usr/local

@@ -2,7 +2,7 @@ QT += core widgets gui
 TEMPLATE = app
 TARGET = qabc
 RESOURCES += resources.qrc
-DISTFILES +=  dict.txt gm.txt
+DISTFILES +=  dict.txt gm.txt ps.txt config.h.in
 SOURCES = ScoreMenu.cpp PreferencesMenu.cpp HelpMenu.cpp AbcPlainTextEdit.cpp PlayPushButton.cpp EditVBoxLayout.cpp EditWidget.cpp EditTabWidget.cpp RunPushButton.cpp ViewVBoxLayout.cpp ViewWidget.cpp MainHBoxLayout.cpp AbcMainWindow.cpp AbcApplication.cpp main.cpp \
 	AbcProcess.cpp \
 	AbcTemporaryFile.cpp \
@@ -14,8 +14,9 @@ HEADERS = ScoreMenu.h PreferencesMenu.h HelpMenu.h AbcPlainTextEdit.h PlayPushBu
 	AbcTemporaryFile.h \
 	LogView.h \
 	editorprefdialog.h \
-	settings.h
-VERSION = 1.10
+        settings.h \
+        config.h
+VERSION = 1.11
 REVISION = $$system(git describe --long --tags 2>/dev/null || echo "stable")
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 isEmpty(PREFIX): PREFIX = /usr/local

@@ -1,3 +1,9 @@
+qabc (1.11-1) unstable; urgency=medium
+
+  * New upstream release 1.11
+
+ -- Benoît Rouits <brouits@free.fr>  Mon, 26 Feb 2024 20:33:29 +0100
+
 qabc (1.10-1) unstable; urgency=medium
 
   [ Debian Janitor ]

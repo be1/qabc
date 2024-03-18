@@ -2,7 +2,7 @@ qabc (1.11-1) unstable; urgency=medium
 
   * New upstream release 1.11
   * Bump standards version to 4.6.2
-  * Update year in debian/copyright
+  * Fix licences in debian/copyright
 
  -- Benoît Rouits <brouits@free.fr>  Mon, 18 Mar 2024 12:12:29 +0100
 

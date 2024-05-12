@@ -5,7 +5,7 @@ Maintainer: Benoît Rouits <brouits@free.fr>
 Build-Depends: debhelper-compat (= 13), qt5-qmake, qtbase5-dev, qttools5-dev-tools
 Standards-Version: 4.6.2
 Homepage: http://brouits.free.fr/qabc/
-Vcs-Git: https://github.com/be1/qabc.git
+Vcs-Git: https://github.com/be1/qabc.git -b debian
 Vcs-Browser: https://github.com/be1/qabc
 Rules-Requires-Root: no
 

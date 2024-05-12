@@ -96,6 +96,9 @@ void AbcPlainTextEdit::findX(int x)
         return;
 
     tc.clearSelection();
+    /* go to end of area */
+    verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+    /* go up */
     setTextCursor(tc);
 }
 

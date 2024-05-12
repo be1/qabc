@@ -43,6 +43,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
 
     connect(&xspinbox, SIGNAL(valueChanged(int)), this, SLOT(onXChanged(int)));
     connect(&abcplaintextedit, &QPlainTextEdit::selectionChanged, this, &EditVBoxLayout::onSelectionChanged);
+    connect(&abcplaintextedit, &QPlainTextEdit::cursorPositionChanged, this, &EditVBoxLayout::onCursorPositionChanged);
     connect(&playpushbutton, SIGNAL(clicked()), this, SLOT(onPlayClicked()));
     connect(&runpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onRunClicked);
 
@@ -77,15 +78,37 @@ int EditVBoxLayout::xOfCursor(const QTextCursor& c) {
     int i = 0;
     QStringList lines = all.split('\n');
 
+    /* look if line under cursor is an X: */
+    QTextCursor tc(c);
+    tc.select(QTextCursor::LineUnderCursor);
+    if (tc.selectedText().startsWith("X:")) {
+        bool ok = false;
+        x = tc.selectedText().midRef(2).toInt(&ok);
+        if (ok) {
+            return x;
+        } else {
+            x = 1;
+        }
+    }
+
     /* find last X: before selectionIndex */
     for (int l = 0; l < lines.count() && i < index; l++) {
         i += lines.at(l).count() +1; /* count \n */
         if (lines.at(l).startsWith("X:")) {
-            x = lines.at(l).right(1).toInt();
+            x = lines.at(l).midRef(2).toInt();
         }
     }
 
     return x;
+}
+
+void EditVBoxLayout::onCursorPositionChanged()
+{
+    in_cursor_position_changed = true;
+    AbcPlainTextEdit* te = qobject_cast<AbcPlainTextEdit*>(sender());
+    QTextCursor tc = te->textCursor();
+    int x = xOfCursor(tc);
+    xspinbox.setValue(x);
 }
 
 void EditVBoxLayout::onSelectionChanged()
@@ -97,9 +120,6 @@ void EditVBoxLayout::onSelectionChanged()
     } else {
         selection.clear();
         selectionIndex = c.selectionStart();
-        /* set X spinbox */
-        int x = xOfCursor(c);
-        xspinbox.setValue(x);
     }
 }
 
@@ -117,7 +137,7 @@ void EditVBoxLayout::exportMIDI() {
         for (int l = 0; l < lines.count() && i < selectionIndex; l++) {
             i += lines.at(l).count() +1; /* count \n */
             if (lines.at(l).startsWith("X:")) {
-                xspinbox.setValue(lines.at(l).right(1).toInt());
+                xspinbox.setValue(lines.at(l).midRef(2).toInt());
                 xl = l;
                 /* don't break on first X: continue until selectionIndex */
             }
@@ -230,7 +250,11 @@ void EditVBoxLayout::cleanup()
 
 void EditVBoxLayout::onXChanged(int value)
 {
-    qDebug() << value;
+    if (!in_cursor_position_changed) {
+        abcPlainTextEdit()->findX(value);
+    }
+
+    in_cursor_position_changed = false;
 }
 
 void EditVBoxLayout::spawnCompiler(const QString &prog, const QStringList& args, const QDir &wrk)

@@ -56,6 +56,7 @@ protected:
     int xOfCursor(const QTextCursor& c);
 
 protected slots:
+    void onCursorPositionChanged();
     void onXChanged(int value);
     void onPlayClicked(); /* midi */
     void onRunClicked(); /* ps */
@@ -72,6 +73,7 @@ protected slots:
     void onViewFinished(int exitCode);
 
 private:
+    bool in_cursor_position_changed = false;
     AbcPlainTextEdit abcplaintextedit;
     PlayPushButton playpushbutton; /* midi */
     RunPushButton runpushbutton; /* ps */

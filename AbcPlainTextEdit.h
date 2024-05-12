@@ -68,6 +68,7 @@ public:
 
     bool isSaved();
     void setSaved();
+    void findX(int x);
 
 
 protected:

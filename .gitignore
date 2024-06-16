@@ -54,3 +54,6 @@ compile_commands.json
 # Backups
 *.backup
 config.h
+
+# Quilt
+.pc

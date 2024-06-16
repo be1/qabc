@@ -88,6 +88,20 @@ AbcPlainTextEdit::~AbcPlainTextEdit()
     delete gmModel;
 }
 
+void AbcPlainTextEdit::findX(int x)
+{
+    QRegularExpression re("^X:[ \t]*" + QString::number(x) + "[ \t]*$");
+    QTextCursor tc = document()->find(re);
+    if (tc.isNull())
+        return;
+
+    tc.clearSelection();
+    /* go to end of area */
+    verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+    /* go up */
+    setTextCursor(tc);
+}
+
 void AbcPlainTextEdit::setCompleter(QCompleter *completer)
 {
     if (c)

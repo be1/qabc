@@ -1,0 +1,12 @@
+Enable hardening.
+--- a/qabc.pro
++++ b/qabc.pro
+@@ -56,3 +56,8 @@
+ metainfo.path = $$DATADIR/metainfo
+ metainfo.files = fr.free.brouits.qabc.metainfo.xml
+ INSTALLS += target translations desktop icon mime manual metainfo
++
++QMAKE_CPPFLAGS *= $(shell dpkg-buildflags --get CPPFLAGS)
++QMAKE_CFLAGS   *= $(shell dpkg-buildflags --get CFLAGS)
++QMAKE_CXXFLAGS *= $(shell dpkg-buildflags --get CXXFLAGS)
++QMAKE_LFLAGS   *= $(shell dpkg-buildflags --get LDFLAGS)

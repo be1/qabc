@@ -25,7 +25,7 @@ ScoreMenu::ScoreMenu(QWidget* parent)
 {
     setTitle(tr("Score"));
 
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+#if (QT_VERSION < QT_VERSION_CHECK(6, 3, 0))
     addAction(tr("New"), this, SLOT(onNewActionTriggered()), QKeySequence::New);
     addAction(tr("Open"), this, SLOT(onOpenActionTriggered()), QKeySequence::Open);
 #else
@@ -45,7 +45,7 @@ ScoreMenu::ScoreMenu(QWidget* parent)
 
     updateRecentFileActions();
 
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+#if (QT_VERSION < QT_VERSION_CHECK(6, 3, 0))
     addAction(tr("Save"), this, SLOT(onSaveActionTriggered()), QKeySequence::Save);
     addAction(tr("Save as"), this, SLOT(onSaveAsActionTriggered()), QKeySequence::SaveAs);
     addAction(tr("Close"), this, SLOT(onCloseActionTriggered()), QKeySequence::Close);

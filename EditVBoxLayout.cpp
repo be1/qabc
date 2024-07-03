@@ -341,6 +341,7 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
             disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
             delete proc;
             processlist.removeAt(i);
+            break;
         }
     }
 }
@@ -378,6 +379,7 @@ void EditVBoxLayout::killSynth()
             disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
             delete proc;
             processlist.removeAt(i);
+            break;
         }
     }
 }

@@ -10,7 +10,6 @@
 
 #include "EditVBoxLayout.h"
 #include "AbcApplication.h"
-#include "PreferencesMenu.h"
 #include "settings.h"
 #include <QFileInfo>
 #include <QDebug>
@@ -83,7 +82,11 @@ int EditVBoxLayout::xOfCursor(const QTextCursor& c) {
     tc.select(QTextCursor::LineUnderCursor);
     if (tc.selectedText().startsWith("X:")) {
         bool ok = false;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
         x = tc.selectedText().midRef(2).toInt(&ok);
+#else
+        x = tc.selectedText().mid(2).toInt(&ok);
+#endif
         if (ok) {
             return x;
         } else {
@@ -93,9 +96,13 @@ int EditVBoxLayout::xOfCursor(const QTextCursor& c) {
 
     /* find last X: before selectionIndex */
     for (int l = 0; l < lines.count() && i < index; l++) {
-        i += lines.at(l).count() +1; /* count \n */
+        i += lines.at(l).size() +1; /* count \n */
         if (lines.at(l).startsWith("X:")) {
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
             x = lines.at(l).midRef(2).toInt();
+#else
+            x = lines.at(l).mid(2).toInt();
+#endif
         }
     }
 
@@ -139,9 +146,13 @@ void EditVBoxLayout::exportMIDI() {
 
         /* find last X: before selectionIndex */
         for (int l = 0; l < lines.count() && i < selectionIndex; l++) {
-            i += lines.at(l).count() +1; /* count \n */
+            i += lines.at(l).size() +1; /* count \n */
             if (lines.at(l).startsWith("X:")) {
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
                 xspinbox.setValue(lines.at(l).midRef(2).toInt());
+#else
+                xspinbox.setValue(lines.at(l).mid(2).toInt());
+#endif
                 xl = l;
                 /* don't break on first X: continue until selectionIndex */
             }
@@ -330,6 +341,7 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
             disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
             delete proc;
             processlist.removeAt(i);
+            break;
         }
     }
 }
@@ -367,6 +379,7 @@ void EditVBoxLayout::killSynth()
             disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
             delete proc;
             processlist.removeAt(i);
+            break;
         }
     }
 }

@@ -25,8 +25,13 @@ ScoreMenu::ScoreMenu(QWidget* parent)
 {
     setTitle(tr("Score"));
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 3, 0))
     addAction(tr("New"), this, SLOT(onNewActionTriggered()), QKeySequence::New);
     addAction(tr("Open"), this, SLOT(onOpenActionTriggered()), QKeySequence::Open);
+#else
+    addAction(tr("New"), QKeySequence::New, this, SLOT(onNewActionTriggered()));
+    addAction(tr("Open"), QKeySequence::Open, this, SLOT(onOpenActionTriggered()));
+#endif
 
     for (int i = 0; i < MaxRecentFiles; ++i) {
         recentFileActs[i] = new QAction(this);
@@ -40,10 +45,17 @@ ScoreMenu::ScoreMenu(QWidget* parent)
 
     updateRecentFileActions();
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 3, 0))
     addAction(tr("Save"), this, SLOT(onSaveActionTriggered()), QKeySequence::Save);
     addAction(tr("Save as"), this, SLOT(onSaveAsActionTriggered()), QKeySequence::SaveAs);
     addAction(tr("Close"), this, SLOT(onCloseActionTriggered()), QKeySequence::Close);
     addAction(tr("Quit"), this, SLOT(onQuitActionTriggered()), QKeySequence::Quit);
+#else
+    addAction(tr("Save"), QKeySequence::Save, this, SLOT(onSaveActionTriggered()));
+    addAction(tr("Save as"), QKeySequence::SaveAs, this, SLOT(onSaveAsActionTriggered()));
+    addAction(tr("Close"), QKeySequence::Close, this, SLOT(onCloseActionTriggered()));
+    addAction(tr("Quit"), QKeySequence::Quit, this, SLOT(onQuitActionTriggered()));
+#endif
 }
 
 ScoreMenu::~ScoreMenu()

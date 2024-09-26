@@ -1,3 +1,10 @@
+qabc (1.12-1) unstable; urgency=medium
+
+  * New upstream release 1.12
+  * Debian patch to enable hardening on compilation
+
+ -- Benoît Rouits <brouits@free.fr>  Thu, 26 Sep 2024 12:46:33 +0200
+
 qabc (1.11-1) unstable; urgency=medium
 
   * New upstream release 1.11

@@ -11,10 +11,10 @@
   <description>
     <p>
       QAbc is a simple graphical program that allow
-      to write musical scores in the ABC notation.
+      one to write musical scores in the ABC notation.
     </p>
     <p>
-      This program allow to play the written music,
+      This program allow one to play the written music,
       preview the output score and print it, using
       third party software.
     </p>

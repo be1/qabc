@@ -121,6 +121,7 @@ void PreferencesMenu::onEditorActionTriggered()
     if (QDialog::Accepted == dialog->exec()) {
         Settings settings;
 
+        settings.setValue(EDITOR_FONT_BASE, dialog->getBaseFont().family());
         settings.setValue(EDITOR_FONT_RANGE, dialog->getFontRange());
         settings.setValue(EDITOR_HIGHLIGHT, dialog->getHighlight());
         settings.setValue(EDITOR_BAR_COLOR, dialog->getColor(EDITOR_BAR_COLOR));

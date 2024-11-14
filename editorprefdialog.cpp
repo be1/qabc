@@ -24,6 +24,24 @@ EditorPrefDialog::EditorPrefDialog(QWidget *parent) : QDialog(parent)
 
     mainLayout = new QVBoxLayout;
 
+    /* info */
+    QLabel* info = new QLabel(tr("These settings will be applied on newly opened tabs only."));
+    mainLayout->addWidget(info);
+
+    /* font */
+    fontLabel = new QLabel(tr("Base font"));
+    fontBaseCombo = new QFontComboBox;
+    fontLabel->setBuddy(fontBaseCombo);
+    QFont base;
+    base.fromString(settings.value(EDITOR_FONT_BASE).toString());
+    fontBaseCombo->setCurrentFont(base);
+    QHBoxLayout* fbhbox = new QHBoxLayout;
+    fbhbox->addWidget(fontLabel);
+    fbhbox->addWidget(fontBaseCombo);
+
+    mainLayout->addLayout(fbhbox);
+
+    /* font magnifier */
     int fontRange = settings.value(EDITOR_FONT_RANGE).toInt();
     fontRangeLabel = new QLabel(tr("Font enlargement"));
     fontRangeSpinBox = new QSpinBox;
@@ -36,6 +54,7 @@ EditorPrefDialog::EditorPrefDialog(QWidget *parent) : QDialog(parent)
 
     mainLayout->addLayout(fshbox);
 
+    /* highlight current line */
     bool highlight = settings.value(EDITOR_HIGHLIGHT).toBool();
     highlightLabel = new QLabel(tr("Highlight current line"));
     highlightCheck = new QCheckBox;
@@ -47,6 +66,7 @@ EditorPrefDialog::EditorPrefDialog(QWidget *parent) : QDialog(parent)
 
     mainLayout->addLayout(hlhbox);
 
+    /* syntax highlighting */
     /* WARNING: labels, keys, buttons in the same order */
     colorLabels << tr("Header color") \
                 << tr("Comment color") \
@@ -88,6 +108,7 @@ EditorPrefDialog::EditorPrefDialog(QWidget *parent) : QDialog(parent)
         mainLayout->addLayout(hbox);
     }
 
+    /* OK / Cancel buttons */
     buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     connect(buttons, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttons, &QDialogButtonBox::rejected, this, &QDialog::reject);
@@ -117,6 +138,11 @@ bool EditorPrefDialog::getHighlight()
 int EditorPrefDialog::getFontRange()
 {
     return fontRangeSpinBox->value();
+}
+
+QFont EditorPrefDialog::getBaseFont()
+{
+    return fontBaseCombo->currentFont();
 }
 
 void EditorPrefDialog::onColorButtonClicked()

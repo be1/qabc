@@ -51,6 +51,11 @@ AbcPlainTextEdit::AbcPlainTextEdit(QWidget* parent)
 
     updateLineNumberAreaWidth(0);
 
+    QVariant fontBase = settings.value(EDITOR_FONT_BASE);
+    QFont base;
+    base.setFamily(fontBase.toString());
+    setFont(base);
+
     QVariant fontRange = settings.value(EDITOR_FONT_RANGE);
     int range = fontRange.toInt();
     zoomIn(range);
@@ -456,7 +461,7 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
     color = settings.value(EDITOR_GCHORD_COLOR).toString();
     gchordFormat.setFontWeight(QFont::Normal);
     gchordFormat.setForeground(color);
-    rule.pattern = QRegularExpression(QStringLiteral("\"[A-H][^\"]*\""));
+    rule.pattern = QRegularExpression(QStringLiteral("\"[^\"]*\""));
     rule.format = gchordFormat;
     highlightingRules.append(rule);
 
@@ -511,7 +516,7 @@ AbcHighlighter::AbcHighlighter(QTextDocument *parent)
 
 void AbcHighlighter::highlightBlock(const QString &text)
 {
-    for (const AbcHighlightingRule &rule : qAsConst(highlightingRules)) {
+    for (const AbcHighlightingRule &rule : std::as_const(highlightingRules)) {
         QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
         while (matchIterator.hasNext()) {
             QRegularExpressionMatch match = matchIterator.next();

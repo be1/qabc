@@ -8,6 +8,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include <QFont>
 #include "settings.h"
 #include "config.h"
 
@@ -35,6 +36,11 @@ void Settings::check()
     QVariant viewer = value(VIEWER_KEY);
     if (!viewer.isValid())
         setValue(VIEWER_KEY, PSVIEWER);
+
+    QFont font;
+    QVariant font_base = value(EDITOR_FONT_BASE);
+    if (!font_base.isValid())
+        setValue(EDITOR_FONT_BASE, font.defaultFamily());
 
     QVariant font_range = value(EDITOR_FONT_RANGE);
     if (!font_range.isValid())
@@ -84,6 +90,9 @@ void Settings::reset()
     setValue(COMPILER_KEY, ABCM2PS);
 
     setValue(VIEWER_KEY, PSVIEWER);
+
+    QFont font;
+    setValue(EDITOR_FONT_BASE, font.defaultFamily());
 
     setValue(EDITOR_FONT_RANGE, 0);
 

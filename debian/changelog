@@ -1,3 +1,11 @@
+qabc (1.13-1) unstable; urgency=medium
+
+  * New upsteam release 1.13
+  * Build against Qt6
+  * Bump Standards-version to 4.7.0
+
+ -- Benoît Rouits <brouits@free.fr>  Thu, 14 Nov 2024 10:50:30 +0100
+
 qabc (1.12-1) unstable; urgency=medium
 
   * New upstream release 1.12

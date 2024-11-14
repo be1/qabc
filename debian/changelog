@@ -1,6 +1,6 @@
 qabc (1.13-1) unstable; urgency=medium
 
-  * New upsteam release 1.13
+  * New upstream release 1.13
   * Build against Qt6
   * Bump Standards-version to 4.7.0
 

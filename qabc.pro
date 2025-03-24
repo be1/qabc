@@ -2,6 +2,7 @@ QT += core widgets gui
 TEMPLATE = app
 TARGET = qabc
 CONFIG += c++17
+QMAKE_CXXFLAGS += -Wall -Wextra -pedantic
 RESOURCES += resources.qrc
 DISTFILES +=  dict.txt gm.txt ps.txt config.h.in
 SOURCES = ScoreMenu.cpp PreferencesMenu.cpp HelpMenu.cpp AbcPlainTextEdit.cpp PlayPushButton.cpp EditVBoxLayout.cpp EditWidget.cpp EditTabWidget.cpp RunPushButton.cpp ViewVBoxLayout.cpp ViewWidget.cpp MainHBoxLayout.cpp AbcMainWindow.cpp AbcApplication.cpp main.cpp \

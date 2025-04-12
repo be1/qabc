@@ -44,11 +44,11 @@ manpage.CONFIG += no_link target_predeps
 QMAKE_EXTRA_COMPILERS += manpage
 
 manual.path = $$DATADIR/man/man1
-manual.files = $${MANPAGE}.gz
+manual.files = $$OUT_PWD/$${MANPAGE}.gz
 manual.CONFIG = no_check_exist
 target.path = $$BINDIR
 translations.path = $$DATADIR/$$TARGET
-translations.files = $$LOCALE_DIR
+translations.files = $$OUT_PWD/$$LOCALE_DIR
 desktop.path = $$DATADIR/applications
 desktop.files = $${TARGET}.desktop
 icon.path = $$DATADIR/pixmaps

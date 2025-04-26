@@ -30,6 +30,5 @@ Lots of!
 This project is (was), as of version 0.1, a one-night project because I wanted to be more comfortable with ABC notation and I could not find a GUI software that could run on my laptop.
 
 ## Icon
-Icon is derived from johnny_automatic (from the Lulu Alphabet, 1867).
-https://openclipart.org/detail/6264/harp-and-branch 
+Icon is derived from [Cris Gradina's harp.svg](https://openclipart.org/detail/182170/harp)
 

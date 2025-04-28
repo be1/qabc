@@ -3,13 +3,14 @@ ABC music notation minimal GUI.
 
 ## Dependencies
 QAbc uses third-party softwares to generate MIDI, AUDIO, and PostScript files. Without them, QAbc would be very poor (only a little fancy text editor). So, please install them:
+
 - abc2midi (CLI)
 - fluidsynth (CLI)
 - abcm2ps (CLI)
-- Qt 5.x (LIB)
+- Qt 5.x or 6.x (LIB)
 
 ## Screenshot
-![screensshot](http://brouits.free.fr/qabc/qabc.png)
+![screenshot](http://brouits.free.fr/qabc/qabc.png "The main window")
 
 ## Building
 Just a matter of:

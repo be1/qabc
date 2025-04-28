@@ -2,7 +2,7 @@ Source: qabc
 Section: sound
 Priority: optional
 Maintainer: Benoît Rouits <brouits@free.fr>
-Build-Depends: debhelper-compat (= 13), qmake6 (>= 6.4), qt6-base-dev (>= 6.4), qt6-tools-dev-tools (>= 6.4)
+Build-Depends: debhelper-compat (= 13), qmake6 (>= 6.4), qt6-base-dev (>= 6.4), qt6-l10n-tools (>= 6.4)
 Standards-Version: 4.7.0
 Homepage: http://brouits.free.fr/qabc/
 Vcs-Git: https://github.com/be1/qabc.git -b debian

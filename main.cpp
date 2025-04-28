@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 	QString locale = QLocale::system().name();
     QTranslator qtTranslator;
 #if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
-    if (qtTranslator.load(QLocale::system(), u"qtbase"_qs, u"_"_qs,
+    if (qtTranslator.load(QLocale::system(), "qtbase", "_",
                           QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
 #else
     if (qtTranslator.load("qt_" + locale,
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
 	AbcMainWindow w;
 	abcapplication.setMainWindow(&w);
 
-	QString iconpath = QString(DATADIR "/pixmaps/" TARGET ".png");
+	QString iconpath = QString(DATADIR "/icons/hicolor/scalable/apps/" TARGET ".svg");
 	if (QFileInfo::exists(iconpath))
 		abcapplication.setWindowIcon(QIcon(iconpath));
 

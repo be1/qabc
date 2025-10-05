@@ -1,3 +1,13 @@
+qabc (1.14-1) UNRELEASED; urgency=medium
+
+  * New upstream relase 1.14
+  * Bump Standards-version to 4.7.2
+  * Add icon license in d/copyright
+  * Recommend postscript-viewer in d/control
+  * Improve d/watch with filemangle
+
+ -- Benoît Rouits <brouits@free.fr>  Sun, 05 Oct 2025 22:11:18 +0200
+
 qabc (1.13-1) unstable; urgency=medium
 
   * New upstream release 1.13

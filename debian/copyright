@@ -12,6 +12,14 @@ Files: fr.free.brouits.qabc.metainfo.xml
 Copyright: 2020, Benoît Rouits <brouits@free.fr>
 License: FSFAP
 
+Files: qabc.svg
+Copyright: 2013, Cris Gradina <https://openclipart.org/artist/crisg>
+License: CC0-1.0
+Comment:
+ Sourced from https://openclipart.org/detail/182170/harp
+ License is as per https://openclipart.org/share
+
+
 Files: debian/*
 Copyright: 2022-2024, Benoît Rouits <brouits@free.fr>
 License: GPL-3+
@@ -38,3 +46,7 @@ License: GPL-3+
  .
  On Debian systems the full text of the GNU General Public License can
  be found in the `/usr/share/common-licenses/GPL-3' file.
+
+License: CC0-1.0
+ On Debian systems, a copy of the Creative Commons Zero license, version 1.0
+ can be found in /usr/share/common-licenses/CC0-1.0.

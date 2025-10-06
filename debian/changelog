@@ -1,6 +1,6 @@
 qabc (1.14-1) UNRELEASED; urgency=medium
 
-  * New upstream relase 1.14
+  * New upstream release 1.14
   * Bump Standards-version to 4.7.2
   * Add icon license in d/copyright
   * Recommend postscript-viewer in d/control

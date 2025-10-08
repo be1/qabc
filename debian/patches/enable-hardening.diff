@@ -1,11 +1,14 @@
-Enable hardening.
+Description: Enable hardening
+Author: Benoît Rouits <brouits@free.fr>
+Last-Update: 2025-10-08
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 --- a/qabc.pro
 +++ b/qabc.pro
-@@ -56,3 +56,8 @@
+@@ -58,3 +58,7 @@
  metainfo.path = $$DATADIR/metainfo
  metainfo.files = fr.free.brouits.qabc.metainfo.xml
  INSTALLS += target translations desktop icon mime manual metainfo
-+
 +QMAKE_CPPFLAGS *= $(shell dpkg-buildflags --get CPPFLAGS)
 +QMAKE_CFLAGS   *= $(shell dpkg-buildflags --get CFLAGS)
 +QMAKE_CXXFLAGS *= $(shell dpkg-buildflags --get CXXFLAGS)

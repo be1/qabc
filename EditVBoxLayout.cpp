@@ -134,7 +134,7 @@ void EditVBoxLayout::onSelectionChanged()
     }
 }
 
-void EditVBoxLayout::exportMIDI() {
+void EditVBoxLayout::exportMIDI(const QString &outFilename) {
     QString tosave;
 
     if (selection.isEmpty()) {
@@ -178,15 +178,6 @@ void EditVBoxLayout::exportMIDI() {
     tempFile.write(tosave.toUtf8());
     tempFile.close();
 
-#if 0
-    int cont;
-    if (filename.isEmpty()) {
-        cont = 1; /* continue to playback */
-    } else {
-        cont = 0; /* will not play, it's just an export */
-    }
-#endif
-
     Settings settings;
     QVariant player = settings.value(PLAYER_KEY);
     QString program = player.toString();
@@ -198,10 +189,17 @@ void EditVBoxLayout::exportMIDI() {
     argv.removeAt(0);
     argv << tempFile.fileName();
     argv << QString::number(xspinbox.value());
+
+    if (!outFilename.isEmpty())
+        argv << "-o" << outFilename;
+
     QFileInfo info(tempFile.fileName());
     QDir dir = info.absoluteDir();
 
-    spawnPlayer(program, argv, dir);
+    if (!outFilename.isEmpty())
+        spawnExport(program, argv, dir);
+    else
+        spawnPlayer(program, argv, dir);
 }
 
 void EditVBoxLayout::onErrorOccurred(QProcess::ProcessError error, const QString& program, AbcProcess::ProcessType which)
@@ -283,6 +281,14 @@ void EditVBoxLayout::spawnCompiler(const QString &prog, const QStringList& args,
 void EditVBoxLayout::spawnViewer(const QString &prog, const QStringList &args, const QDir &wrk)
 {
     return spawnProgram(prog, args, AbcProcess::ProcessViewer, wrk);
+}
+
+void EditVBoxLayout::spawnExport(const QString& prog, const QStringList &args, const QDir &wrk)
+{
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcMainWindow *w = a->mainWindow();
+    w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView()->clear();
+    return spawnProgram(prog, args, AbcProcess::ProcessUnknown, wrk);
 }
 
 void EditVBoxLayout::spawnPlayer(const QString& prog, const QStringList &args, const QDir &wrk)

@@ -36,6 +36,7 @@ protected slots:
     void onOpenRecentActionTriggered();
     void onSaveActionTriggered();
     void onSaveAsActionTriggered();
+    void onExportMIDIActionTriggered();
     void onCloseActionTriggered();
     void onNewActionTriggered();
 

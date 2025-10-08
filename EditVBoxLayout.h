@@ -39,6 +39,8 @@ public:
     void spawnCompiler(const QString &prog, const QStringList &args, const QDir& wrk);
     void spawnViewer(const QString &prog, const QStringList &args, const QDir& wrk);
 
+    void spawnExport(const QString &prog, const QStringList& args, const QDir& wrk);
+
     void spawnPlayer(const QString &prog, const QStringList& args, const QDir& wrk);
     void spawnSynth(const QString &prog, const QStringList &args, const QDir& wrk);
 
@@ -47,7 +49,7 @@ signals:
     void viewerFinished(int exitCode);
     void playerFinished(int exitCode);
     void synthFinished(int exitCode);
-    void doExportMIDI();
+    void doExportMIDI(const QString& = "");
 
 protected:
     void spawnProgram(const QString& prog, const QStringList &args, AbcProcess::ProcessType which, const QDir &wrk);
@@ -62,7 +64,7 @@ protected slots:
     void onRunClicked(); /* ps */
     void onSelectionChanged();
 
-    void exportMIDI();
+    void exportMIDI(const QString& outFilename = "");
     void onErrorOccurred(QProcess::ProcessError error, const QString& program, AbcProcess::ProcessType);
     void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType);
     void onProgramOutputText(const QByteArray& text);

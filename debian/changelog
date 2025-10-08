@@ -1,4 +1,4 @@
-qabc (1.14-1) UNRELEASED; urgency=medium
+qabc (1.14-1) unstable; urgency=medium
 
   * New upstream release 1.14
   * Bump Standards-version to 4.7.2

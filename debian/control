@@ -18,6 +18,8 @@ Description: minimal GUI for ABC music notation
  QAbc is a simple graphical program that allow
  to write musical scores in the ABC notation.
  .
- This program allow to play the written music,
- preview the output score and print it, using
- third party software.
+ This program is mainly an ABC syntax highlighted editor
+ with buttons that allows one to use third party software
+ to play, preview, and print the generated score. It also
+ has a log view to inform the user on errors encourtened
+ by the software used to generate or play the score.

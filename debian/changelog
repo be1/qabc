@@ -4,6 +4,8 @@ qabc (1.14-1) unstable; urgency=medium
   * Bump Standards-version to 4.7.2
   * Add icon license in d/copyright
   * Recommend postscript-viewer in d/control
+  * Improve description in d/control
+  * Remove unused and outdated upstream gpg key
   * Improve d/watch with filemangle
 
  -- Benoît Rouits <brouits@free.fr>  Sun, 05 Oct 2025 22:11:18 +0200

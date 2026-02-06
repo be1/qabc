@@ -20,7 +20,7 @@
 #define FLUIDSYNTH \"/usr/bin/fluidsynth --no-shell --audio-driver=alsa /usr/share/sounds/sf2/FluidR3_GM.sf2\"
 
 #define VIEWER_KEY \"ABC/viewer\"
-#define PSVIEWER \"/usr/bin/evince\"
+#define PSVIEWER \"/usr/bin/evince-previewer\"
 
 #define EDITOR_FONT_BASE \"ABC/editor/font_base\"
 #define EDITOR_FONT_RANGE \"ABC/editor/font_range\"

@@ -291,6 +291,52 @@ void AbcPlainTextEdit::checkDictionnary(void) {
     }
 }
 
+static QString matchUnderCursor(QTextCursor tc, QRegularExpression re) {
+    tc.select(tc.LineUnderCursor);
+    QString line = tc.selectedText();
+    QRegularExpressionMatch match = re.match(line);
+    QStringList m = match.capturedTexts();
+    /* do not report whole match (0) if there is a specific one */
+    if (m.length())
+        return m.at(m.length()-1);
+
+    return QString();
+}
+
+
+int AbcPlainTextEdit::currentXV(char xv)
+{
+    QTextCursor xtc = document()->find(QRegularExpression("^X:"), textCursor(), QTextDocument::FindBackward|QTextDocument::FindCaseSensitively);
+    if (xtc.isNull())
+        return 1; /* X or V are 1 */
+
+    if (xv == 'X') {
+        QRegularExpression re("^X:[ \\t]*(\\d*)");
+        QString x = matchUnderCursor(xtc, re);
+        bool ok;
+        int ret = x.toInt(&ok);
+        if (ok)
+            return ret;
+        qDebug() << "could not find current X";
+        return 1;
+    }
+
+    /* V header lookup */
+    QTextCursor vtc = document()->find(QRegularExpression("^V:"), textCursor(), QTextDocument::FindBackward|QTextDocument::FindCaseSensitively);
+    if (vtc.position() > xtc.position()) {
+        QRegularExpression re("^V:[ \\t]*(\\d*)");
+        QString v = matchUnderCursor(vtc, re);
+        bool ok;
+        int ret = v.toInt(&ok);
+        if (ok)
+            return ret;
+        qDebug () << "could not find current V";
+        return 1;
+    }
+
+    return 1;
+}
+
 void AbcPlainTextEdit::focusInEvent(QFocusEvent *e)
 {
     if (c)

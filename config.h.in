@@ -11,7 +11,7 @@
 #define SETTINGS_APP \"QAbc\"
 
 #define COMPILER_KEY \"ABC/compiler\"
-#define ABCM2PS \"/usr/bin/abcm2ps -i -O=\"
+#define ABCM2PS \"/usr/bin/abcm2ps -N1 -O=\"
 
 #define PLAYER_KEY \"ABC/player\"
 #define ABC2MIDI \"/usr/bin/abc2midi\"

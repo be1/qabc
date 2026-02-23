@@ -70,51 +70,12 @@ EditVBoxLayout::~EditVBoxLayout()
 #endif
 }
 
-int EditVBoxLayout::xOfCursor(const QTextCursor& c) {
-    int index = c.selectionStart();
-    QString all = abcPlainTextEdit()->toPlainText();
-    int x = 1;
-    int i = 0;
-    QStringList lines = all.split('\n');
-
-    /* look if line under cursor is an X: */
-    QTextCursor tc(c);
-    tc.select(QTextCursor::LineUnderCursor);
-    if (tc.selectedText().startsWith("X:")) {
-        bool ok = false;
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-        x = tc.selectedText().midRef(2).toInt(&ok);
-#else
-        x = tc.selectedText().mid(2).toInt(&ok);
-#endif
-        if (ok) {
-            return x;
-        } else {
-            x = 1;
-        }
-    }
-
-    /* find last X: before selectionIndex */
-    for (int l = 0; l < lines.count() && i < index; l++) {
-        i += lines.at(l).size() +1; /* count \n */
-        if (lines.at(l).startsWith("X:")) {
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-            x = lines.at(l).midRef(2).toInt();
-#else
-            x = lines.at(l).mid(2).toInt();
-#endif
-        }
-    }
-
-    return x;
-}
-
 void EditVBoxLayout::onCursorPositionChanged()
 {
     in_cursor_position_changed = true;
     AbcPlainTextEdit* te = qobject_cast<AbcPlainTextEdit*>(sender());
     QTextCursor tc = te->textCursor();
-    int x = xOfCursor(tc);
+    int x = abcplaintextedit.currentXV('X');
 
     if (xspinbox.value() == x)
         in_cursor_position_changed = false;

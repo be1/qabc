@@ -35,82 +35,122 @@ PreferencesMenu::~PreferencesMenu()
 
 void PreferencesMenu::onCompilerActionTriggered()
 {
-    AbcApplication* a = static_cast<AbcApplication*>(qApp);
     Settings settings;
     QVariant compiler = settings.value(COMPILER_KEY);
 
-    bool ok;
+    QInputDialog dlg(this);
+
+    dlg.setWindowTitle(tr("Compiler preference"));
+    dlg.setLabelText(tr("Compiler:"));
+    dlg.setInputMode(QInputDialog::TextInput);
+
+    QLineEdit *edit = dlg.findChild<QLineEdit *>();
+    if (edit) edit->setMinimumWidth(400);
+
     QString command;
+
     if (!compiler.isNull())
-        command = QInputDialog::getText(a->mainWindow(), tr("Compiler preference"), tr("Compiler:"), QLineEdit::Normal, compiler.toString(), &ok);
+        dlg.setTextValue(compiler.toString());
     else
-        command = QInputDialog::getText(a->mainWindow(), tr("Compiler preference"), tr("Compiler:"), QLineEdit::Normal, ABCM2PS, &ok);
+        dlg.setTextValue(ABCM2PS);
 
-    if (!ok)
-        return;
 
-    settings.setValue(COMPILER_KEY, command);
-    settings.sync();
+    if (dlg.exec() == QDialog::Accepted) {
+	    command = dlg.textValue();
+
+	    settings.setValue(COMPILER_KEY, command);
+	    settings.sync();
+    }
 }
 
 void PreferencesMenu::onPlayerActionTriggered()
 {
-    AbcApplication* a = static_cast<AbcApplication*>(qApp);
     Settings settings;
     QVariant player = settings.value(PLAYER_KEY);
 
-    bool ok;
+    QInputDialog dlg(this);
+
+    dlg.setWindowTitle(tr("Player preference"));
+    dlg.setLabelText(tr("Player:"));
+    dlg.setInputMode(QInputDialog::TextInput);
+
+    QLineEdit *edit = dlg.findChild<QLineEdit *>();
+    if (edit) edit->setMinimumWidth(400);
+
     QString command;
+
     if (!player.isNull())
-        command = QInputDialog::getText(a->mainWindow(), tr("Player preference"), tr("Player:"), QLineEdit::Normal, player.toString(), &ok);
+        dlg.setTextValue(player.toString());
     else
-        command = QInputDialog::getText(a->mainWindow(), tr("Player preference"), tr("Player:"), QLineEdit::Normal, ABC2MIDI, &ok);
+        dlg.setTextValue(ABC2MIDI);
 
-    if (!ok)
-        return;
 
-    settings.setValue(PLAYER_KEY, command);
-    settings.sync();
+    if (dlg.exec() == QDialog::Accepted) {
+	    command = dlg.textValue();
+
+	    settings.setValue(PLAYER_KEY, command);
+	    settings.sync();
+    }
 }
 
 void PreferencesMenu::onSynthActionTriggered()
 {
-    AbcApplication* a = static_cast<AbcApplication*>(qApp);
     Settings settings;
     QVariant synth = settings.value(SYNTH_KEY);
 
-    bool ok;
+    QInputDialog dlg(this);
+
+    dlg.setWindowTitle(tr("Synth preference"));
+    dlg.setLabelText(tr("Synth:"));
+    dlg.setInputMode(QInputDialog::TextInput);
+
+    QLineEdit *edit = dlg.findChild<QLineEdit *>();
+    if (edit) edit->setMinimumWidth(400);
+
     QString command;
+
     if (!synth.isNull())
-        command = QInputDialog::getText(a->mainWindow(), tr("Synth preference"), tr("Synth:"), QLineEdit::Normal, synth.toString(), &ok);
+        dlg.setTextValue(synth.toString());
     else
-        command = QInputDialog::getText(a->mainWindow(), tr("Synth preference"), tr("Synth:"), QLineEdit::Normal, FLUIDSYNTH, &ok);
+        dlg.setTextValue(FLUIDSYNTH);
 
-    if (!ok)
-        return;
 
-    settings.setValue(SYNTH_KEY, command);
-    settings.sync();
+    if (dlg.exec() == QDialog::Accepted) {
+	    command = dlg.textValue();
+
+	    settings.setValue(SYNTH_KEY, command);
+	    settings.sync();
+    }
 }
 
 void PreferencesMenu::onViewerActionTriggered()
 {
-    AbcApplication* a = static_cast<AbcApplication*>(qApp);
     Settings settings;
     QVariant viewer = settings.value(VIEWER_KEY);
 
-    bool ok;
+    QInputDialog dlg(this);
+
+    dlg.setWindowTitle(tr("PS viewer preference"));
+    dlg.setLabelText(tr("PS viewer:"));
+    dlg.setInputMode(QInputDialog::TextInput);
+
+    QLineEdit *edit = dlg.findChild<QLineEdit *>();
+    if (edit) edit->setMinimumWidth(400);
+
     QString command;
+
     if (!viewer.isNull())
-        command = QInputDialog::getText(a->mainWindow(), tr("PS viewer preference"), tr("PS Viewer:"), QLineEdit::Normal, viewer.toString(), &ok);
+        dlg.setTextValue(viewer.toString());
     else
-        command = QInputDialog::getText(a->mainWindow(), tr("PS viewer preference"), tr("PS Viewer:"), QLineEdit::Normal, PSVIEWER, &ok);
+        dlg.setTextValue(PSVIEWER);
 
-    if (!ok)
-        return;
 
-    settings.setValue(VIEWER_KEY, command);
-    settings.sync();
+    if (dlg.exec() == QDialog::Accepted) {
+	    command = dlg.textValue();
+
+	    settings.setValue(VIEWER_KEY, command);
+	    settings.sync();
+    }
 }
 
 void PreferencesMenu::onEditorActionTriggered()

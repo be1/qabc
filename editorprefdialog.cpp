@@ -20,7 +20,7 @@ EditorPrefDialog::EditorPrefDialog(QWidget *parent) : QDialog(parent)
     Settings settings;
 
     setWindowTitle(tr("Editor settings"));
-    setMinimumSize(400, 320);
+    setMinimumWidth(600);
 
     mainLayout = new QVBoxLayout;
 

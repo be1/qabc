@@ -69,6 +69,7 @@ public:
     bool isSaved();
     void setSaved();
     void findX(int x);
+    int currentXV(char xv);
 
 
 protected:

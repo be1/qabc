@@ -1,6 +1,7 @@
 qabc (1.15-1) unstable; urgency=medium
 
   * New upstream release 1.15
+  * Conform to Standards-version 4.7.3
 
  -- Benoît Rouits <brouits@free.fr>  Tue, 24 Feb 2026 00:53:17 +0100
 

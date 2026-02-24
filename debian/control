@@ -16,7 +16,7 @@ Recommends: abcm2ps, abcmidi, fluidsynth, postscript-viewer
 Suggests: evince
 Description: minimal GUI for ABC music notation
  QAbc is a simple graphical program that allow
- to write musical scores in the ABC notation.
+ one to write musical scores in the ABC notation.
  .
  This program is mainly an ABC syntax highlighted editor
  with buttons that allows one to use third party software

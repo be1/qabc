@@ -225,12 +225,12 @@ void EditVBoxLayout::onErrorOccurred(QProcess::ProcessError error, const QString
     }
 
     switch (which) {
-        case AbcProcess::ProcessPlayer:
+        case AbcProcess::ProcessCompilerMIDI:
         case AbcProcess::ProcessSynth:
             playpushbutton.flip();
             xspinbox.setEnabled(true);
             break;
-        case AbcProcess::ProcessCompiler:
+        case AbcProcess::ProcessCompilerPs:
             compilepushbutton.setEnabled(true);
             break;
         case AbcProcess::ProcessViewer:
@@ -283,7 +283,7 @@ void EditVBoxLayout::spawnCompilerPs(const QString &prog, const QStringList& arg
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w =  a->mainWindow();
     w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView()->clear();
-    return spawnProgram(prog, args, AbcProcess::ProcessCompiler, wrk);
+    return spawnProgram(prog, args, AbcProcess::ProcessCompilerPs, wrk);
 }
 
 void EditVBoxLayout::spawnViewerPs(const QString &prog, const QStringList &args, const QDir &wrk)
@@ -311,7 +311,7 @@ void EditVBoxLayout::spawnCompilerMIDI(const QString& prog, const QStringList &a
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow *w = a->mainWindow();
     w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView()->clear();
-    return spawnProgram(prog, args, AbcProcess::ProcessPlayer, wrk);
+    return spawnProgram(prog, args, AbcProcess::ProcessCompilerMIDI, wrk);
 }
 
 void EditVBoxLayout::spawnSynthMIDI(const QString &prog, const QStringList& args, const QDir& wrk)
@@ -338,9 +338,9 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
 {
     qDebug() << exitCode << exitStatus;
     switch (which) {
-        case AbcProcess::ProcessPlayer:
+        case AbcProcess::ProcessCompilerMIDI:
             emit compilerMIDIFinished(exitCode); break;
-        case AbcProcess::ProcessCompiler:
+        case AbcProcess::ProcessCompilerPs:
             emit compilerPsFinished(exitCode); break;
         case AbcProcess::ProcessSynth:
             emit synthMIDIFinished(exitCode); break;

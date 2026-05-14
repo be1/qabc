@@ -158,11 +158,12 @@ void EditVBoxLayout::exportPs(const QString &outFilename) {
     argv << tempFile.fileName();
     argv << "-e" << QString::number(xspinbox.value());
 
-    if (!outFilename.isEmpty()) {
-        int idx = argv.indexOf("-O=");
-        if (idx >= 0)
-            argv.removeAt(idx);
+    /* remove potential -O= */
+    int idx = argv.indexOf("-O=");
+    if (idx >= 0)
+        argv.removeAt(idx);
 
+    if (!outFilename.isEmpty()) {
         argv << "-O" << outFilename;
     } else {
         argv << "-O=";

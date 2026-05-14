@@ -40,7 +40,7 @@ public:
     void spawnViewerPs(const QString &prog, const QStringList &args, const QDir& wrk);
 
     void spawnExportMIDI(const QString &prog, const QStringList& args, const QDir& wrk);
-    //void spawnExportPs(const QString &prog, const QStringList& args, const QDir& wrk);
+    void spawnExportPs(const QString &prog, const QStringList& args, const QDir& wrk);
 
     void spawnCompilerMIDI(const QString &prog, const QStringList& args, const QDir& wrk);
     void spawnSynthMIDI(const QString &prog, const QStringList &args, const QDir& wrk);
@@ -51,20 +51,23 @@ signals:
     void compilerMIDIFinished(int exitCode);
     void synthMIDIFinished(int exitCode);
     void doExportMIDI(const QString& = "");
+    void doExportPs(const QString& = "");
 
 protected:
     void spawnProgram(const QString& prog, const QStringList &args, AbcProcess::ProcessType which, const QDir &wrk);
     void killSynth();
     bool checkViewer();
+    QString getAbcText();
 
 protected slots:
     void onCursorPositionChanged();
     void onXChanged(int value);
     void onPlayClicked(); /* midi */
-    void onRunClicked(); /* ps */
+    void onCompileClicked(); /* ps */
     void onSelectionChanged();
 
     void exportMIDI(const QString& outFilename = "");
+    void exportPs(const QString& outFilename = "");
     void onErrorOccurred(QProcess::ProcessError error, const QString& program, AbcProcess::ProcessType);
     void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType);
     void onProgramOutputText(const QByteArray& text);
@@ -78,7 +81,7 @@ private:
     bool in_cursor_position_changed = false;
     AbcPlainTextEdit abcplaintextedit;
     PlayPushButton playpushbutton; /* midi */
-    RunPushButton runpushbutton; /* ps */
+    RunPushButton compilepushbutton; /* ps */
     QHBoxLayout hboxlayout;
     QSpinBox xspinbox;
     QLabel xlabel;

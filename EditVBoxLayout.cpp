@@ -20,7 +20,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     : QVBoxLayout(parent),
     abcplaintextedit(parent),
     playpushbutton(parent),
-    runpushbutton(parent),
+    compilepushbutton(parent),
     hboxlayout(parent),
     xspinbox(parent),
     xlabel(parent),
@@ -35,7 +35,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     hboxlayout.addWidget(&xlabel);
     hboxlayout.addWidget(&xspinbox);
     hboxlayout.addWidget(&playpushbutton);
-    hboxlayout.addWidget(&runpushbutton);
+    hboxlayout.addWidget(&compilepushbutton);
 
     addWidget(&abcplaintextedit);
     addLayout(&hboxlayout);
@@ -43,10 +43,11 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     connect(&xspinbox, SIGNAL(valueChanged(int)), this, SLOT(onXChanged(int)));
     connect(&abcplaintextedit, &QPlainTextEdit::selectionChanged, this, &EditVBoxLayout::onSelectionChanged);
     connect(&abcplaintextedit, &QPlainTextEdit::cursorPositionChanged, this, &EditVBoxLayout::onCursorPositionChanged);
-    connect(&playpushbutton, SIGNAL(clicked()), this, SLOT(onPlayClicked()));
-    connect(&runpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onRunClicked);
+    connect(&playpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onPlayClicked);
+    connect(&compilepushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onCompileClicked);
 
     connect(this, &EditVBoxLayout::doExportMIDI, this, &EditVBoxLayout::exportMIDI);
+    connect(this, &EditVBoxLayout::doExportPs, this, &EditVBoxLayout::exportPs);
     connect(this, &EditVBoxLayout::compilerMIDIFinished, this, &EditVBoxLayout::onCompilerMIDIFinished);
     connect(this, &EditVBoxLayout::synthMIDIFinished, this, &EditVBoxLayout::onSynthMIDIFinished);
     connect(this, &EditVBoxLayout::compilerPsFinished, this, &EditVBoxLayout::onCompilerPsFinished);
@@ -95,7 +96,7 @@ void EditVBoxLayout::onSelectionChanged()
     }
 }
 
-void EditVBoxLayout::exportMIDI(const QString &outFilename) {
+QString EditVBoxLayout::getAbcText () {
     QString tosave;
 
     if (selection.isEmpty()) {
@@ -133,6 +134,51 @@ void EditVBoxLayout::exportMIDI(const QString &outFilename) {
         /* when coming from QTextCursor::selectedText(), LF is replaced by U+2029! */
         tosave += selection.replace(QChar::ParagraphSeparator, "\n");
     }
+
+    return tosave;
+}
+
+void EditVBoxLayout::exportPs(const QString &outFilename) {
+    QString tosave = getAbcText();
+
+    /* open tempfile to init a name */
+    tempFile.open();
+    tempFile.write(tosave.toUtf8());
+    tempFile.close();
+
+    Settings settings;
+    QVariant compiler = settings.value(COMPILER_KEY);
+    QString program = compiler.toString();
+    if (program.isEmpty())
+        program = ABCM2PS;
+
+    QStringList argv = program.split(" ");
+    program = argv.at(0);
+    argv.removeAt(0);
+    argv << tempFile.fileName();
+    argv << "-e" << QString::number(xspinbox.value());
+
+    if (!outFilename.isEmpty()) {
+        int idx = argv.indexOf("-O=");
+        if (idx >= 0)
+            argv.removeAt(idx);
+
+        argv << "-O" << outFilename;
+    } else {
+        argv << "-O=";
+    }
+
+    QFileInfo info(tempFile.fileName());
+    QDir dir = info.absoluteDir();
+
+    if (!outFilename.isEmpty())
+        spawnExportPs(program, argv, dir);
+    else
+        spawnCompilerPs(program, argv, dir);
+}
+
+void EditVBoxLayout::exportMIDI(const QString &outFilename) {
+    QString tosave = getAbcText();
 
     /* open tempfile to init a name */
     tempFile.open();
@@ -184,11 +230,11 @@ void EditVBoxLayout::onErrorOccurred(QProcess::ProcessError error, const QString
             xspinbox.setEnabled(true);
             break;
         case AbcProcess::ProcessCompiler:
-            runpushbutton.setEnabled(true);
+            compilepushbutton.setEnabled(true);
             break;
         case AbcProcess::ProcessViewer:
-            runpushbutton.setText(tr("&View score"));
-            runpushbutton.setEnabled(true);
+            compilepushbutton.setText(tr("&View score"));
+            compilepushbutton.setEnabled(true);
             break;
         default:
             break;
@@ -207,7 +253,7 @@ PlayPushButton *EditVBoxLayout::playPushButton()
 
 RunPushButton *EditVBoxLayout::runPushButton()
 {
-    return &runpushbutton;
+    return &compilepushbutton;
 }
 
 void EditVBoxLayout::setFileName(const QString &fn)
@@ -242,6 +288,13 @@ void EditVBoxLayout::spawnCompilerPs(const QString &prog, const QStringList& arg
 void EditVBoxLayout::spawnViewerPs(const QString &prog, const QStringList &args, const QDir &wrk)
 {
     return spawnProgram(prog, args, AbcProcess::ProcessViewer, wrk);
+}
+
+void EditVBoxLayout::spawnExportPs(const QString &prog, const QStringList& args, const QDir& wrk) {
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcMainWindow *w = a->mainWindow();
+    w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView()->clear();
+    return spawnProgram(prog, args, AbcProcess::ProcessUnknown, wrk);
 }
 
 void EditVBoxLayout::spawnExportMIDI(const QString& prog, const QStringList &args, const QDir &wrk)
@@ -427,38 +480,20 @@ void EditVBoxLayout::onSynthMIDIFinished(int exitCode)
     }
 }
 
-void EditVBoxLayout::onRunClicked()
+void EditVBoxLayout::onCompileClicked()
 {
-    runpushbutton.setEnabled(false);
+    compilepushbutton.setEnabled(false);
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     a->mainWindow()->statusBar()->showMessage(tr("Generating score..."));
-    QString tosave = abcPlainTextEdit()->toPlainText();
-    tempFile.open();
-    tempFile.write(tosave.toUtf8());
-    tempFile.close();
-    Settings settings;
-    QVariant compiler = settings.value(COMPILER_KEY);
-    QString program = compiler.toString();
-    if (program.isEmpty())
-        program = ABCM2PS;
-
-    QStringList argv = program.split(" ");
-    program = argv.at(0);
-    argv.removeAt(0);
-    argv << tempFile.fileName();
-
-    QFileInfo info(tempFile.fileName());
-    QDir dir = info.absoluteDir();
-
-    spawnCompilerPs(program, argv, dir);
+    emit doExportPs();
 }
 
 void EditVBoxLayout::onCompilerPsFinished(int exitCode)
 {
     qDebug() << "compile" << exitCode;
 
-    runpushbutton.setText(tr("Refresh &view"));
-    runpushbutton.setEnabled(true);
+    compilepushbutton.setText(tr("Refresh &view"));
+    compilepushbutton.setEnabled(true);
 
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     if (exitCode < 0 || exitCode > 1) { /* sometimes, abcm2ps returns 1 even on 'success' */
@@ -503,5 +538,7 @@ void EditVBoxLayout::onViewerPsFinished(int exitCode)
     ps.replace(QRegularExpression("\\.abc$"), ".ps");
     QFile::remove(ps);
 
-    runpushbutton.setText(tr("&View score"));
+    compilepushbutton.setText(tr("&View score"));
 }
+
+// vim:ts=4:sw=4:et

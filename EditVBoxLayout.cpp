@@ -47,10 +47,10 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     connect(&runpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onRunClicked);
 
     connect(this, &EditVBoxLayout::doExportMIDI, this, &EditVBoxLayout::exportMIDI);
-    connect(this, &EditVBoxLayout::playerFinished, this, &EditVBoxLayout::onPlayFinished);
-    connect(this, &EditVBoxLayout::synthFinished, this, &EditVBoxLayout::onSynthFinished);
-    connect(this, &EditVBoxLayout::compilerFinished, this, &EditVBoxLayout::onCompileFinished);
-    connect(this, &EditVBoxLayout::viewerFinished, this, &EditVBoxLayout::onViewFinished);
+    connect(this, &EditVBoxLayout::compilerMIDIFinished, this, &EditVBoxLayout::onCompilerMIDIFinished);
+    connect(this, &EditVBoxLayout::synthMIDIFinished, this, &EditVBoxLayout::onSynthMIDIFinished);
+    connect(this, &EditVBoxLayout::compilerPsFinished, this, &EditVBoxLayout::onCompilerPsFinished);
+    connect(this, &EditVBoxLayout::viewerPsFinished, this, &EditVBoxLayout::onViewerPsFinished);
 }
 
 
@@ -158,9 +158,9 @@ void EditVBoxLayout::exportMIDI(const QString &outFilename) {
     QDir dir = info.absoluteDir();
 
     if (!outFilename.isEmpty())
-        spawnExport(program, argv, dir);
+        spawnExportMIDI(program, argv, dir);
     else
-        spawnPlayer(program, argv, dir);
+        spawnCompilerMIDI(program, argv, dir);
 }
 
 void EditVBoxLayout::onErrorOccurred(QProcess::ProcessError error, const QString& program, AbcProcess::ProcessType which)
@@ -231,7 +231,7 @@ void EditVBoxLayout::onXChanged(int value)
     in_cursor_position_changed = false;
 }
 
-void EditVBoxLayout::spawnCompiler(const QString &prog, const QStringList& args, const QDir &wrk)
+void EditVBoxLayout::spawnCompilerPs(const QString &prog, const QStringList& args, const QDir &wrk)
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w =  a->mainWindow();
@@ -239,12 +239,12 @@ void EditVBoxLayout::spawnCompiler(const QString &prog, const QStringList& args,
     return spawnProgram(prog, args, AbcProcess::ProcessCompiler, wrk);
 }
 
-void EditVBoxLayout::spawnViewer(const QString &prog, const QStringList &args, const QDir &wrk)
+void EditVBoxLayout::spawnViewerPs(const QString &prog, const QStringList &args, const QDir &wrk)
 {
     return spawnProgram(prog, args, AbcProcess::ProcessViewer, wrk);
 }
 
-void EditVBoxLayout::spawnExport(const QString& prog, const QStringList &args, const QDir &wrk)
+void EditVBoxLayout::spawnExportMIDI(const QString& prog, const QStringList &args, const QDir &wrk)
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow *w = a->mainWindow();
@@ -252,7 +252,7 @@ void EditVBoxLayout::spawnExport(const QString& prog, const QStringList &args, c
     return spawnProgram(prog, args, AbcProcess::ProcessUnknown, wrk);
 }
 
-void EditVBoxLayout::spawnPlayer(const QString& prog, const QStringList &args, const QDir &wrk)
+void EditVBoxLayout::spawnCompilerMIDI(const QString& prog, const QStringList &args, const QDir &wrk)
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow *w = a->mainWindow();
@@ -260,7 +260,7 @@ void EditVBoxLayout::spawnPlayer(const QString& prog, const QStringList &args, c
     return spawnProgram(prog, args, AbcProcess::ProcessPlayer, wrk);
 }
 
-void EditVBoxLayout::spawnSynth(const QString &prog, const QStringList& args, const QDir& wrk)
+void EditVBoxLayout::spawnSynthMIDI(const QString &prog, const QStringList& args, const QDir& wrk)
 {
     return spawnProgram(prog, args, AbcProcess::ProcessSynth, wrk);
 }
@@ -285,13 +285,13 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
     qDebug() << exitCode << exitStatus;
     switch (which) {
         case AbcProcess::ProcessPlayer:
-            emit playerFinished(exitCode); break;
+            emit compilerMIDIFinished(exitCode); break;
         case AbcProcess::ProcessCompiler:
-            emit compilerFinished(exitCode); break;
+            emit compilerPsFinished(exitCode); break;
         case AbcProcess::ProcessSynth:
-            emit synthFinished(exitCode); break;
+            emit synthMIDIFinished(exitCode); break;
         case AbcProcess::ProcessViewer:
-            emit viewerFinished(exitCode); break;
+            emit viewerPsFinished(exitCode); break;
         case AbcProcess::ProcessUnknown:
         default:
             break;
@@ -373,11 +373,11 @@ void EditVBoxLayout::onPlayClicked()
     } else {
         a->mainWindow()->statusBar()->showMessage(tr("Stopping synthesis."));
         killSynth();
-        onSynthFinished(0);
+        onSynthMIDIFinished(0);
     }
 }
 
-void EditVBoxLayout::onPlayFinished(int exitCode)
+void EditVBoxLayout::onCompilerMIDIFinished(int exitCode)
 {
     qDebug() << "play" << exitCode;
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
@@ -405,11 +405,11 @@ void EditVBoxLayout::onPlayFinished(int exitCode)
     QDir dir = info.absoluteDir();
 
     a->mainWindow()->statusBar()->showMessage(tr("Starting synthesis..."));
-    spawnSynth(program, argv, dir);
+    spawnSynthMIDI(program, argv, dir);
 
 }
 
-void EditVBoxLayout::onSynthFinished(int exitCode)
+void EditVBoxLayout::onSynthMIDIFinished(int exitCode)
 {
     qDebug() << "synth" << exitCode;
 
@@ -450,10 +450,10 @@ void EditVBoxLayout::onRunClicked()
     QFileInfo info(tempFile.fileName());
     QDir dir = info.absoluteDir();
 
-    spawnCompiler(program, argv, dir);
+    spawnCompilerPs(program, argv, dir);
 }
 
-void EditVBoxLayout::onCompileFinished(int exitCode)
+void EditVBoxLayout::onCompilerPsFinished(int exitCode)
 {
     qDebug() << "compile" << exitCode;
 
@@ -488,10 +488,10 @@ void EditVBoxLayout::onCompileFinished(int exitCode)
     QDir dir = info.absoluteDir();
 
     a->mainWindow()->statusBar()->showMessage(tr("Starting viewer..."));
-    spawnViewer(program, argv, dir);
+    spawnViewerPs(program, argv, dir);
 }
 
-void EditVBoxLayout::onViewFinished(int exitCode)
+void EditVBoxLayout::onViewerPsFinished(int exitCode)
 {
     qDebug() << "viewer" << exitCode;
 

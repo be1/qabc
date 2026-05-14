@@ -36,19 +36,20 @@ public:
     void setFileName(const QString& fn);
     void cleanup();
 
-    void spawnCompiler(const QString &prog, const QStringList &args, const QDir& wrk);
-    void spawnViewer(const QString &prog, const QStringList &args, const QDir& wrk);
+    void spawnCompilerPs(const QString &prog, const QStringList &args, const QDir& wrk);
+    void spawnViewerPs(const QString &prog, const QStringList &args, const QDir& wrk);
 
-    void spawnExport(const QString &prog, const QStringList& args, const QDir& wrk);
+    void spawnExportMIDI(const QString &prog, const QStringList& args, const QDir& wrk);
+    //void spawnExportPs(const QString &prog, const QStringList& args, const QDir& wrk);
 
-    void spawnPlayer(const QString &prog, const QStringList& args, const QDir& wrk);
-    void spawnSynth(const QString &prog, const QStringList &args, const QDir& wrk);
+    void spawnCompilerMIDI(const QString &prog, const QStringList& args, const QDir& wrk);
+    void spawnSynthMIDI(const QString &prog, const QStringList &args, const QDir& wrk);
 
 signals:
-    void compilerFinished(int exitCode);
-    void viewerFinished(int exitCode);
-    void playerFinished(int exitCode);
-    void synthFinished(int exitCode);
+    void compilerPsFinished(int exitCode);
+    void viewerPsFinished(int exitCode);
+    void compilerMIDIFinished(int exitCode);
+    void synthMIDIFinished(int exitCode);
     void doExportMIDI(const QString& = "");
 
 protected:
@@ -68,10 +69,10 @@ protected slots:
     void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType);
     void onProgramOutputText(const QByteArray& text);
     void onProgramErrorText(const QByteArray& text);
-    void onPlayFinished(int exitCode);
-    void onSynthFinished(int exitCode);
-    void onCompileFinished(int exitCode);
-    void onViewFinished(int exitCode);
+    void onCompilerMIDIFinished(int exitCode);
+    void onSynthMIDIFinished(int exitCode);
+    void onCompilerPsFinished(int exitCode);
+    void onViewerPsFinished(int exitCode);
 
 private:
     bool in_cursor_position_changed = false;

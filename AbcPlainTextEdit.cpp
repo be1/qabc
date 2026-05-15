@@ -21,7 +21,7 @@
 #include <QStringListModel>
 #include <QGuiApplication>
 #include "config.h"
-#include "settings.h"
+#include "Settings.h"
 
 const QString AbcPlainTextEdit::delimiter = " !%~@#$^&*()_+{}|:\"<>?,./;'[]\\-=";
 

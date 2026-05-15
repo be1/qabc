@@ -10,7 +10,7 @@
 
 #include "EditVBoxLayout.h"
 #include "AbcApplication.h"
-#include "settings.h"
+#include "Settings.h"
 #include <QFileInfo>
 #include <QDebug>
 #include <QSpinBox>

@@ -13,7 +13,7 @@
 #include "AbcPlainTextEdit.h"
 #include "EditTabWidget.h"
 #include "EditWidget.h"
-#include "settings.h"
+#include "Settings.h"
 #include <QMessageBox>
 #include <QApplication>
 #include <QFileDialog>

@@ -8,12 +8,12 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "editorprefdialog.h"
+#include "EditorPrefDialog.h"
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QColorDialog>
 #include "config.h"
-#include "settings.h"
+#include "Settings.h"
 
 EditorPrefDialog::EditorPrefDialog(QWidget *parent) : QDialog(parent)
 {

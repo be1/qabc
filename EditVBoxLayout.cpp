@@ -163,6 +163,7 @@ void EditVBoxLayout::exportPs(const QString &outFilename) {
     if (idx >= 0)
         argv.removeAt(idx);
 
+    /* for export or visualize */
     if (!outFilename.isEmpty()) {
         argv << "-O" << outFilename;
     } else {
@@ -172,6 +173,7 @@ void EditVBoxLayout::exportPs(const QString &outFilename) {
     QFileInfo info(tempFile.fileName());
     QDir dir = info.absoluteDir();
 
+    /* export of visualize */
     if (!outFilename.isEmpty())
         spawnExportPs(program, argv, dir);
     else

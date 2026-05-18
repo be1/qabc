@@ -29,8 +29,8 @@ ScoreMenu::ScoreMenu(QWidget* parent)
     addAction(tr("New"), this, SLOT(onNewActionTriggered()), QKeySequence::New);
     addAction(tr("Open"), this, SLOT(onOpenActionTriggered()), QKeySequence::Open);
 #else
-    addAction(tr("New"), QKeySequence::New, this, SLOT(onNewActionTriggered()));
-    addAction(tr("Open"), QKeySequence::Open, this, SLOT(onOpenActionTriggered()));
+    addAction(tr("New"), QKeySequence::New, this, &ScoreMenu::onNewActionTriggered);
+    addAction(tr("Open"), QKeySequence::Open, this, &ScoreMenu::onOpenActionTriggered);
 #endif
 
     for (int i = 0; i < MaxRecentFiles; ++i) {
@@ -51,8 +51,8 @@ ScoreMenu::ScoreMenu(QWidget* parent)
     addAction(tr("Close"), this, SLOT(onCloseActionTriggered()), QKeySequence::Close);
     addAction(tr("Quit"), this, SLOT(onQuitActionTriggered()), QKeySequence::Quit);
 #else
-    addAction(tr("Save"), QKeySequence::Save, this, SLOT(onSaveActionTriggered()));
-    addAction(tr("Save as"), QKeySequence::SaveAs, this, SLOT(onSaveAsActionTriggered()));
+    addAction(tr("Save"), QKeySequence::Save, this, &ScoreMenu::onSaveActionTriggered);
+    addAction(tr("Save as"), QKeySequence::SaveAs, this, &ScoreMenu::onSaveAsActionTriggered);
     addAction(tr("Export to MIDI"), this, SLOT(onExportMIDIActionTriggered()));
     addAction(tr("Export to Postscript"), this, SLOT(onExportPsActionTriggered()));
     addAction(tr("Close"), QKeySequence::Close, this, SLOT(onCloseActionTriggered()));
@@ -96,8 +96,8 @@ void ScoreMenu::onQuitActionTriggered()
 
 void ScoreMenu::onOpenActionTriggered()
 {
-    QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open ABC Score"), home, tr("ABC score (*.abc)"));
+    //QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open ABC Score"), QString(), tr("ABC score (*.abc)"));
 
     /* user cancelled */
     if (fileName.isEmpty())
@@ -226,8 +226,8 @@ void ScoreMenu::onSaveAsActionTriggered()
     if (cur < 0)
         return;
 
-    QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save ABC score"), home, tr("ABC score (*.abc)"));
+    //QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save ABC score"), QString(), tr("ABC score (*.abc)"));
     if (fileName.isEmpty())
         return; /* cancelled */
 

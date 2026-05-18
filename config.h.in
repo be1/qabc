@@ -33,4 +33,6 @@
 #define EDITOR_HEADER_COLOR \"ABC/editor/header_color\"
 #define EDITOR_LYRIC_COLOR \"ABC/editor/lyric_color\"
 
+#define WORKDIR_KEY \"ABC/workdir\"
+
 #endif

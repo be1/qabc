@@ -14,6 +14,7 @@
 #include <QMessageBox>
 #include <QAction>
 #include <QMenu>
+#include "Settings.h"
 
 class ScoreMenu: public QMenu
 {
@@ -29,6 +30,7 @@ protected:
     void setRecentFile(const QString& fileName, bool ok);
     void updateRecentFileActions();
     QString strippedName(const QString &fullFileName);
+    QString dirPath (const QString& path);
 
 protected slots:
     void onQuitActionTriggered();
@@ -42,6 +44,7 @@ protected slots:
     void onNewActionTriggered();
 
 private:
+    Settings settings;
     enum { MaxRecentFiles = 5 };
     QAction *recentFileActs[MaxRecentFiles];
 };

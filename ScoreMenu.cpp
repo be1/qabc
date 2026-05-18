@@ -111,6 +111,20 @@ QString ScoreMenu::strippedName(const QString& fullFileName)
     return QFileInfo(fullFileName).fileName();
 }
 
+QString ScoreMenu::dirPath(const QString &path)
+{
+    QString dirpath;
+
+    QStringList parts = path.split(QDir::separator());
+    if (!parts.isEmpty()) {
+        parts.removeLast();
+        dirpath = parts.join(QDir::separator());
+    }
+
+    qDebug() << dirpath;
+    return dirpath;
+}
+
 void ScoreMenu::updateRecentFileActions()
 {
     Settings settings;
@@ -163,6 +177,10 @@ bool ScoreMenu::loadFile(const QString& fileName)
         edittabs->addTab(widget);
 
         setRecentFile(fileName, true);
+
+        /* save current working directory */
+        QString workdir = dirPath(fileName);
+        settings.setValue(WORKDIR_KEY, workdir);
 
         return true;
     }
@@ -227,7 +245,9 @@ void ScoreMenu::onSaveAsActionTriggered()
         return;
 
     //QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save ABC score"), QString(), tr("ABC score (*.abc)"));
+    QString workdir = settings.value(WORKDIR_KEY).toString();
+
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save ABC score"), workdir, tr("ABC score (*.abc)"));
     if (fileName.isEmpty())
         return; /* cancelled */
 

@@ -11,7 +11,7 @@
 #ifndef EDITVBOXLAYOUT_H
 #define EDITVBOXLAYOUT_H
 
-#include "RunPushButton.h"
+#include "ViewPushButton.h"
 #include "PlayPushButton.h"
 #include "AbcPlainTextEdit.h"
 #include "AbcProcess.h"
@@ -32,7 +32,7 @@ public:
 
     AbcPlainTextEdit *abcPlainTextEdit();
     PlayPushButton *playPushButton();
-    RunPushButton *runPushButton();
+    ViewPushButton *runPushButton();
     void setFileName(const QString& fn);
     void cleanup();
 
@@ -81,7 +81,7 @@ private:
     bool in_cursor_position_changed = false;
     AbcPlainTextEdit abcplaintextedit;
     PlayPushButton playpushbutton; /* midi */
-    RunPushButton compilepushbutton; /* ps */
+    ViewPushButton compilepushbutton; /* ps */
     QHBoxLayout hboxlayout;
     QSpinBox xspinbox;
     QLabel xlabel;

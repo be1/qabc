@@ -254,7 +254,7 @@ PlayPushButton *EditVBoxLayout::playPushButton()
     return &playpushbutton;
 }
 
-RunPushButton *EditVBoxLayout::runPushButton()
+ViewPushButton *EditVBoxLayout::runPushButton()
 {
     return &compilepushbutton;
 }
@@ -462,7 +462,6 @@ void EditVBoxLayout::onCompilerMIDIFinished(int exitCode)
 
     a->mainWindow()->statusBar()->showMessage(tr("Starting synthesis..."));
     spawnSynthMIDI(program, argv, dir);
-
 }
 
 void EditVBoxLayout::onSynthMIDIFinished(int exitCode)

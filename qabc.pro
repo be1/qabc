@@ -5,18 +5,20 @@ CONFIG += c++17
 QMAKE_CXXFLAGS += -Wall -Wextra -pedantic
 RESOURCES += resources.qrc
 DISTFILES +=  dict.txt gm.txt ps.txt config.h.in
-SOURCES = ScoreMenu.cpp PreferencesMenu.cpp HelpMenu.cpp AbcPlainTextEdit.cpp PlayPushButton.cpp EditVBoxLayout.cpp EditWidget.cpp EditTabWidget.cpp RunPushButton.cpp ViewVBoxLayout.cpp ViewWidget.cpp MainHBoxLayout.cpp AbcMainWindow.cpp AbcApplication.cpp main.cpp \
+SOURCES = ScoreMenu.cpp PreferencesMenu.cpp HelpMenu.cpp AbcPlainTextEdit.cpp PlayPushButton.cpp EditVBoxLayout.cpp EditWidget.cpp EditTabWidget.cpp ViewVBoxLayout.cpp ViewWidget.cpp MainHBoxLayout.cpp AbcMainWindow.cpp AbcApplication.cpp main.cpp \
 	AbcProcess.cpp \
 	AbcTemporaryFile.cpp \
 	LogView.cpp \
 	EditorPrefDialog.cpp \
-	Settings.cpp
-HEADERS = ScoreMenu.h PreferencesMenu.h HelpMenu.h AbcPlainTextEdit.h PlayPushButton.h EditVBoxLayout.h EditWidget.h EditTabWidget.h RunPushButton.h ViewVBoxLayout.h ViewWidget.h MainHBoxLayout.h AbcMainWindow.h AbcApplication.h \
+	Settings.cpp \
+	ViewPushButton.cpp
+HEADERS = ScoreMenu.h PreferencesMenu.h HelpMenu.h AbcPlainTextEdit.h PlayPushButton.h EditVBoxLayout.h EditWidget.h EditTabWidget.h ViewVBoxLayout.h ViewWidget.h MainHBoxLayout.h AbcMainWindow.h AbcApplication.h \
 	AbcProcess.h \
 	AbcTemporaryFile.h \
 	LogView.h \
 	EditorPrefDialog.h \
         Settings.h \
+    ViewPushButton.h \
         config.h
 VERSION = 1.16
 REVISION = $$system(git describe --long --tags 2>/dev/null || echo "stable")

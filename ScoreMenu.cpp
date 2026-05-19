@@ -97,7 +97,8 @@ void ScoreMenu::onQuitActionTriggered()
 void ScoreMenu::onOpenActionTriggered()
 {
     //QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open ABC Score"), QString(), tr("ABC score (*.abc)"));
+    QString workdir = settings.value(WORKDIR_KEY).toString();
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open ABC Score"), workdir, tr("ABC score (*.abc)"));
 
     /* user cancelled */
     if (fileName.isEmpty())

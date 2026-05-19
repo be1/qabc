@@ -337,6 +337,39 @@ int AbcPlainTextEdit::currentXV(char xv)
     return 1;
 }
 
+QString AbcPlainTextEdit::makeTitleFileName()
+{
+    QString wholetext = toPlainText();
+    QString first = "untitled";
+
+    QRegularExpression tre("^T:([^\n]*)", QRegularExpression::MultilineOption);
+    QRegularExpressionMatchIterator tmatch = tre.globalMatch(wholetext);
+
+    if (tmatch.hasNext()) {
+        QRegularExpressionMatch match = tmatch.next();
+        first = match.captured(1).toLower();
+    }
+
+    QRegularExpression xre("^X:", QRegularExpression::MultilineOption);
+    QRegularExpressionMatchIterator xmatch = xre.globalMatch(wholetext);
+    int others = -1;
+    while (xmatch.hasNext()) {
+        others++;
+        xmatch.next();
+    }
+
+    qDebug() << others;
+
+    QString ret = first.replace(" ", "_");
+    if (others > 0) {
+        ret += "_plus_" + QString::number(others) + "_tunes.abc";
+    } else {
+        ret += ".abc";
+    }
+
+    return ret;
+}
+
 void AbcPlainTextEdit::focusInEvent(QFocusEvent *e)
 {
     if (c)

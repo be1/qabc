@@ -70,6 +70,7 @@ public:
     void setSaved();
     void findX(int x);
     int currentXV(char xv);
+    QString makeTitleFileName();
 
 
 protected:

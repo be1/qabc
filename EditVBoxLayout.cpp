@@ -62,7 +62,7 @@ EditVBoxLayout::~EditVBoxLayout()
 #if 1
     /* kill slots could not to be called, so cleanup manually */
     QString temp(tempFile.fileName());
-    temp.replace(QRegularExpression("\\.abc$"), QString::number(xspinbox.value())  + ".mid");
+    temp.replace(QRegularExpression("\\.abc$"), QString::number(currentmidi)  + ".mid");
     if (QFileInfo::exists(temp))
         QDir().remove(temp);
 
@@ -196,11 +196,13 @@ void EditVBoxLayout::exportMIDI(const QString &outFilename) {
     if (program.isEmpty())
         program = ABC2MIDI;
 
+    currentmidi = xspinbox.value();
+
     QStringList argv = program.split(" ");
     program = argv.at(0);
     argv.removeAt(0);
     argv << tempFile.fileName();
-    argv << QString::number(xspinbox.value());
+    argv << QString::number(currentmidi);
 
     if (!outFilename.isEmpty())
         argv << "-o" << outFilename;
@@ -208,10 +210,11 @@ void EditVBoxLayout::exportMIDI(const QString &outFilename) {
     QFileInfo info(tempFile.fileName());
     QDir dir = info.absoluteDir();
 
-    if (!outFilename.isEmpty())
+    if (!outFilename.isEmpty()) {
         spawnExportMIDI(program, argv, dir);
-    else
+    } else {
         spawnCompilerMIDI(program, argv, dir);
+    }
 }
 
 void EditVBoxLayout::onErrorOccurred(QProcess::ProcessError error, const QString& program, AbcProcess::ProcessType which)
@@ -486,9 +489,8 @@ void EditVBoxLayout::onSynthMIDIFinished(int exitCode)
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     a->mainWindow()->statusBar()->showMessage(tr("Synthesis finished."));
 
-    int x = xspinbox.value();
     QString mid (tempFile.fileName());
-    mid.replace(QRegularExpression("\\.abc$"), QString::number(x) + ".mid");
+    mid.replace(QRegularExpression("\\.abc$"), QString::number(currentmidi) + ".mid");
     QFile::remove(mid);
 
     /* natural end */

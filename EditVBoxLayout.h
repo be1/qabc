@@ -92,5 +92,6 @@ private:
     QList<AbcProcess*> processlist;
     QString selection;
     int selectionIndex;
+    int currentmidi;
 };
 #endif

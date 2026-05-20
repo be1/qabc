@@ -18,6 +18,7 @@
 #include "AbcTemporaryFile.h"
 #include <QVBoxLayout>
 #include <QSpinBox>
+#include <QCheckBox>
 #include <QLabel>
 #include <QDir>
 
@@ -81,6 +82,7 @@ private:
     bool in_cursor_position_changed = false;
     AbcPlainTextEdit abcplaintextedit;
     PlayPushButton playpushbutton; /* midi */
+    QCheckBox* loopcheckbox;
     ViewPushButton compilepushbutton; /* ps */
     QHBoxLayout hboxlayout;
     QSpinBox xspinbox;

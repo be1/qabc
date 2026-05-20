@@ -35,6 +35,8 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     hboxlayout.addWidget(&xlabel);
     hboxlayout.addWidget(&xspinbox);
     hboxlayout.addWidget(&playpushbutton);
+    loopcheckbox = new QCheckBox(tr("loop"), parent);
+    hboxlayout.addWidget(loopcheckbox);
     hboxlayout.addWidget(&compilepushbutton);
 
     addWidget(&abcplaintextedit);
@@ -229,8 +231,11 @@ void EditVBoxLayout::onErrorOccurred(QProcess::ProcessError error, const QString
     switch (which) {
         case AbcProcess::ProcessCompilerMIDI:
         case AbcProcess::ProcessSynth:
-            playpushbutton.flip();
-            xspinbox.setEnabled(true);
+            if (error == QProcess::FailedToStart) {
+                /* reset state only on start fail, not on kill */
+                playpushbutton.flip();
+                xspinbox.setEnabled(true);
+            }
             break;
         case AbcProcess::ProcessCompilerPs:
             compilepushbutton.setEnabled(true);
@@ -362,6 +367,7 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
                 && proc->exitStatus() == exitStatus
                 && proc->which() == which) {
             disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
+            disconnect(proc, QOverload<QProcess::ProcessError, const QString&, AbcProcess::ProcessType>::of(&AbcProcess::errorOccurred), this, &EditVBoxLayout::onErrorOccurred);
             delete proc;
             processlist.removeAt(i);
             break;
@@ -400,6 +406,7 @@ void EditVBoxLayout::killSynth()
             lv->appendPlainText(str);
 #endif
             disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
+            disconnect(proc, QOverload<QProcess::ProcessError, const QString&, AbcProcess::ProcessType>::of(&AbcProcess::errorOccurred), this, &EditVBoxLayout::onErrorOccurred);
             delete proc;
             processlist.removeAt(i);
             break;
@@ -421,15 +428,18 @@ bool EditVBoxLayout::checkViewer()
 void EditVBoxLayout::onPlayClicked()
 {
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
-    if (playpushbutton.isPlay()) {
+    if (!playpushbutton.isPlay()) {
+        qDebug() << "PLAY PRESSED";
+        /* has filpped to STOP => start playing */
         a->mainWindow()->statusBar()->showMessage(tr("Generating MIDI for playing."));
-        playpushbutton.flip();
         xspinbox.setEnabled(false);
         emit doExportMIDI();
     } else {
+        qDebug() << "STOP PRESSED";
+        /* has flipped to PLAY => stop playing */
         a->mainWindow()->statusBar()->showMessage(tr("Stopping synthesis."));
         killSynth();
-        onSynthMIDIFinished(0);
+        emit onSynthMIDIFinished(0);
     }
 }
 
@@ -439,8 +449,6 @@ void EditVBoxLayout::onCompilerMIDIFinished(int exitCode)
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     if (exitCode) {
         a->mainWindow()->statusBar()->showMessage(tr("Error during MIDI generation."));
-        playpushbutton.flip();
-        xspinbox.setEnabled(true);
         return;
     }
 
@@ -468,6 +476,13 @@ void EditVBoxLayout::onSynthMIDIFinished(int exitCode)
 {
     qDebug() << "synth" << exitCode;
 
+    /* loop if no button pressed for stopping */
+    if (!playPushButton()->isPlay() && loopcheckbox->isChecked()) {
+        /* icon is STOP, no manual press */
+        onCompilerMIDIFinished(0);
+        return;
+    }
+
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     a->mainWindow()->statusBar()->showMessage(tr("Synthesis finished."));
 
@@ -476,10 +491,11 @@ void EditVBoxLayout::onSynthMIDIFinished(int exitCode)
     mid.replace(QRegularExpression("\\.abc$"), QString::number(x) + ".mid");
     QFile::remove(mid);
 
-    if (!playPushButton()->isPlay()) {
+    /* natural end */
+    if (!playpushbutton.isPlay())
         playpushbutton.flip();
-        xspinbox.setEnabled(true);
-    }
+
+    xspinbox.setEnabled(true);
 }
 
 void EditVBoxLayout::onCompileClicked()

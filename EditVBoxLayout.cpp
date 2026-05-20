@@ -442,7 +442,7 @@ void EditVBoxLayout::onPlayClicked()
         /* has flipped to PLAY => stop playing */
         a->mainWindow()->statusBar()->showMessage(tr("Stopping synthesis."));
         killSynth();
-        emit onSynthMIDIFinished(0);
+        emit synthMIDIFinished(0);
     }
 }
 

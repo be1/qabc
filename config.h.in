@@ -34,5 +34,6 @@
 #define EDITOR_LYRIC_COLOR \"ABC/editor/lyric_color\"
 
 #define WORKDIR_KEY \"ABC/workdir\"
+#define LOOP_KEY \"ABC/loop\"
 
 #endif

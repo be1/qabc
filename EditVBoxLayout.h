@@ -31,11 +31,12 @@ public:
     explicit EditVBoxLayout(const QString& fileName, QWidget* parent = nullptr);
 	~EditVBoxLayout();
 
-    AbcPlainTextEdit *abcPlainTextEdit();
-    PlayPushButton *playPushButton();
-    ViewPushButton *runPushButton();
     void setFileName(const QString& fn);
     void cleanup();
+
+    AbcPlainTextEdit* abcPlainTextEdit();
+    PlayPushButton* playPushButton();
+    ViewPushButton* viewPushButton();
 
     void spawnCompilerPs(const QString &prog, const QStringList &args, const QDir& wrk);
     void spawnViewerPs(const QString &prog, const QStringList &args, const QDir& wrk);
@@ -66,6 +67,7 @@ protected slots:
     void onPlayClicked(); /* midi */
     void onCompileClicked(); /* ps */
     void onSelectionChanged();
+    void onLoopStateChanged(Qt::CheckState state);
 
     void exportMIDI(const QString& outFilename = "");
     void exportPs(const QString& outFilename = "");

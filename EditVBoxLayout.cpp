@@ -26,6 +26,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     xlabel(parent),
     fileName(fileName)
 {
+    Settings settings;
     setObjectName("EditVBoxLayout:" + fileName);
     tempFile.setFileTemplate(QDir::tempPath() + QDir::separator() + "qabc-XXXXXX.abc");
     xspinbox.setMinimum(1);
@@ -36,13 +37,16 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     hboxlayout.addWidget(&xspinbox);
     hboxlayout.addWidget(&playpushbutton);
     loopcheckbox = new QCheckBox(tr("loop"), parent);
+    if (settings.value(LOOP_KEY).toBool())
+        loopcheckbox->setCheckState(Qt::Checked);
     hboxlayout.addWidget(loopcheckbox);
     hboxlayout.addWidget(&compilepushbutton);
 
     addWidget(&abcplaintextedit);
     addLayout(&hboxlayout);
 
-    connect(&xspinbox, SIGNAL(valueChanged(int)), this, SLOT(onXChanged(int)));
+    connect(&xspinbox, &QSpinBox::valueChanged, this, &EditVBoxLayout::onXChanged);
+    connect(loopcheckbox, &QCheckBox::checkStateChanged, this, &EditVBoxLayout::onLoopStateChanged);
     connect(&abcplaintextedit, &QPlainTextEdit::selectionChanged, this, &EditVBoxLayout::onSelectionChanged);
     connect(&abcplaintextedit, &QPlainTextEdit::cursorPositionChanged, this, &EditVBoxLayout::onCursorPositionChanged);
     connect(&playpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onPlayClicked);
@@ -98,13 +102,22 @@ void EditVBoxLayout::onSelectionChanged()
     }
 }
 
+void EditVBoxLayout::onLoopStateChanged(Qt::CheckState state)
+{
+    Settings settings;
+    if (state == Qt::Checked)
+        settings.setValue(LOOP_KEY, true);
+    else
+        settings.setValue(LOOP_KEY, false);
+}
+
 QString EditVBoxLayout::getAbcText () {
     QString tosave;
 
     if (selection.isEmpty()) {
-        tosave = abcPlainTextEdit()->toPlainText();
+        tosave = abcplaintextedit.toPlainText();
     } else {
-        QString all = abcPlainTextEdit()->toPlainText();
+        QString all = abcplaintextedit.toPlainText();
         int i = 0, xl = 0;
         QStringList lines = all.split('\n');
 
@@ -262,7 +275,7 @@ PlayPushButton *EditVBoxLayout::playPushButton()
     return &playpushbutton;
 }
 
-ViewPushButton *EditVBoxLayout::runPushButton()
+ViewPushButton *EditVBoxLayout::viewPushButton()
 {
     return &compilepushbutton;
 }

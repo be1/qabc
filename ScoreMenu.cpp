@@ -271,8 +271,9 @@ void ScoreMenu::onExportPsActionTriggered()
     if (cur < 0)
         return;
 
-    QString suggestion = edittabs->tabText(cur).append(".ps");
-    //QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    EditVBoxLayout* scoreEdit =  a->mainWindow()->mainHBoxLayout()->editTabWidget()->currentEditWidget()->editVBoxLayout();
+    QString x = QString::number(scoreEdit->xSpinBox()->value());
+    QString suggestion = edittabs->tabText(cur).append(x).append(".ps");
     QString fileName = QFileDialog::getSaveFileName(this, tr("Export to Postscript"), suggestion, tr("Postscript file (*.ps)"));
     if (fileName.isEmpty())
         return; /* cancelled */
@@ -280,7 +281,6 @@ void ScoreMenu::onExportPsActionTriggered()
     if (!fileName.endsWith(".ps"))
         fileName.append(".ps");
 
-    EditVBoxLayout* scoreEdit =  a->mainWindow()->mainHBoxLayout()->editTabWidget()->currentEditWidget()->editVBoxLayout();
     emit scoreEdit->doExportPs(fileName);
 }
 
@@ -293,8 +293,9 @@ void ScoreMenu::onExportMIDIActionTriggered()
     if (cur < 0)
         return;
 
-    QString suggestion = edittabs->tabText(cur).append(".mid");
-    //QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    EditVBoxLayout* scoreEdit =  a->mainWindow()->mainHBoxLayout()->editTabWidget()->currentEditWidget()->editVBoxLayout();
+    QString x = QString::number(scoreEdit->xSpinBox()->value());
+    QString suggestion = edittabs->tabText(cur).append(x).append(".mid");
     QString fileName = QFileDialog::getSaveFileName(this, tr("Export to MIDI"), suggestion, tr("MIDI file (*.mid)"));
     if (fileName.isEmpty())
         return; /* cancelled */
@@ -302,7 +303,6 @@ void ScoreMenu::onExportMIDIActionTriggered()
     if (!fileName.endsWith(".mid"))
         fileName.append(".mid");
 
-    EditVBoxLayout* scoreEdit =  a->mainWindow()->mainHBoxLayout()->editTabWidget()->currentEditWidget()->editVBoxLayout();
     emit scoreEdit->doExportMIDI(fileName);
 }
 

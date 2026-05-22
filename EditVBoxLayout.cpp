@@ -575,3 +575,10 @@ void EditVBoxLayout::onViewerPsFinished(int exitCode)
 }
 
 // vim:ts=4:sw=4:et
+
+
+QSpinBox* EditVBoxLayout::xSpinBox()
+{
+    return &xspinbox;
+}
+

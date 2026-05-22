@@ -37,6 +37,7 @@ public:
     AbcPlainTextEdit* abcPlainTextEdit();
     PlayPushButton* playPushButton();
     ViewPushButton* viewPushButton();
+    QSpinBox* xSpinBox();
 
     void spawnCompilerPs(const QString &prog, const QStringList &args, const QDir& wrk);
     void spawnViewerPs(const QString &prog, const QStringList &args, const QDir& wrk);

@@ -20,7 +20,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     : QVBoxLayout(parent),
     abcplaintextedit(parent),
     playpushbutton(parent),
-    compilepushbutton(parent),
+    viewpushbutton(parent),
     hboxlayout(parent),
     xspinbox(parent),
     xlabel(parent),
@@ -40,7 +40,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     if (settings.value(LOOP_KEY).toBool())
         loopcheckbox->setCheckState(Qt::Checked);
     hboxlayout.addWidget(loopcheckbox);
-    hboxlayout.addWidget(&compilepushbutton);
+    hboxlayout.addWidget(&viewpushbutton);
 
     addWidget(&abcplaintextedit);
     addLayout(&hboxlayout);
@@ -50,7 +50,7 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     connect(&abcplaintextedit, &QPlainTextEdit::selectionChanged, this, &EditVBoxLayout::onSelectionChanged);
     connect(&abcplaintextedit, &QPlainTextEdit::cursorPositionChanged, this, &EditVBoxLayout::onCursorPositionChanged);
     connect(&playpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onPlayClicked);
-    connect(&compilepushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onCompileClicked);
+    connect(&viewpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onCompileClicked);
 
     connect(this, &EditVBoxLayout::doExportMIDI, this, &EditVBoxLayout::exportMIDI);
     connect(this, &EditVBoxLayout::doExportPs, this, &EditVBoxLayout::exportPs);
@@ -232,6 +232,7 @@ void EditVBoxLayout::exportMIDI(const QString &outFilename) {
 
 void EditVBoxLayout::onErrorOccurred(QProcess::ProcessError error, const QString& program, AbcProcess::ProcessType which)
 {
+    qDebug() << __func__ << program << error;
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
     AbcMainWindow* w =  a->mainWindow();
     LogView* lv = w->mainHBoxLayout()->viewWidget()->viewVBoxLayout()->logView();
@@ -254,15 +255,17 @@ void EditVBoxLayout::onErrorOccurred(QProcess::ProcessError error, const QString
             }
             break;
         case AbcProcess::ProcessCompilerPs:
-            compilepushbutton.setEnabled(true);
+            viewpushbutton.setEnabled(true);
             break;
         case AbcProcess::ProcessViewer:
-            compilepushbutton.setText(tr("&View score"));
-            compilepushbutton.setEnabled(true);
+            viewpushbutton.setText(tr("&View score"));
+            viewpushbutton.setEnabled(true);
             break;
         default:
             break;
     }
+
+    deleteProcess(which);
 }
 
 AbcPlainTextEdit *EditVBoxLayout::abcPlainTextEdit()
@@ -277,7 +280,7 @@ PlayPushButton *EditVBoxLayout::playPushButton()
 
 ViewPushButton *EditVBoxLayout::viewPushButton()
 {
-    return &compilepushbutton;
+    return &viewpushbutton;
 }
 
 void EditVBoxLayout::setFileName(const QString &fn)
@@ -357,9 +360,23 @@ void EditVBoxLayout::spawnProgram(const QString& prog, const QStringList& args, 
     process->start(prog, args);
 }
 
+void EditVBoxLayout::deleteProcess (AbcProcess::ProcessType which) {
+    qDebug() << __func__;
+    for (int i = 0; i < processlist.length(); i++) {
+        AbcProcess* proc = processlist.at(i);
+        if (proc->state() == QProcess::NotRunning && proc->which() == which) {
+            processlist.removeAt(i);
+
+            disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
+            disconnect(proc, QOverload<QProcess::ProcessError, const QString&, AbcProcess::ProcessType>::of(&AbcProcess::errorOccurred), this, &EditVBoxLayout::onErrorOccurred);
+            proc->deleteLater();
+            break;
+        }
+    }
+}
+
 void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType which)
 {
-    qDebug() << exitCode << exitStatus;
     switch (which) {
         case AbcProcess::ProcessCompilerMIDI:
             emit compilerMIDIFinished(exitCode); break;
@@ -374,21 +391,7 @@ void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitSt
             break;
     }
 
-    /* delete garbage */
-    for (int i = 0; i < processlist.length(); i++) {
-        AbcProcess* proc = processlist.at(i);
-        //qDebug() << proc->state();
-        if (proc->state() == QProcess::NotRunning
-                && proc->exitCode() == exitCode
-                && proc->exitStatus() == exitStatus
-                && proc->which() == which) {
-            disconnect(proc, QOverload<int, QProcess::ExitStatus, AbcProcess::ProcessType>::of(&AbcProcess::finished), this, &EditVBoxLayout::onProgramFinished);
-            disconnect(proc, QOverload<QProcess::ProcessError, const QString&, AbcProcess::ProcessType>::of(&AbcProcess::errorOccurred), this, &EditVBoxLayout::onErrorOccurred);
-            delete proc;
-            processlist.removeAt(i);
-            break;
-        }
-    }
+    deleteProcess(which);
 }
 
 void EditVBoxLayout::onProgramOutputText(const QByteArray &text)
@@ -515,7 +518,7 @@ void EditVBoxLayout::onSynthMIDIFinished(int exitCode)
 
 void EditVBoxLayout::onCompileClicked()
 {
-    compilepushbutton.setEnabled(false);
+    viewpushbutton.setEnabled(false);
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     a->mainWindow()->statusBar()->showMessage(tr("Generating score..."));
     emit doExportPs();
@@ -525,8 +528,8 @@ void EditVBoxLayout::onCompilerPsFinished(int exitCode)
 {
     qDebug() << "compile" << exitCode;
 
-    compilepushbutton.setText(tr("Refresh &view"));
-    compilepushbutton.setEnabled(true);
+    viewpushbutton.setText(tr("Refresh &view"));
+    viewpushbutton.setEnabled(true);
 
     AbcApplication *a = static_cast<AbcApplication*>(qApp);
     if (exitCode < 0 || exitCode > 1) { /* sometimes, abcm2ps returns 1 even on 'success' */
@@ -571,7 +574,7 @@ void EditVBoxLayout::onViewerPsFinished(int exitCode)
     ps.replace(QRegularExpression("\\.abc$"), ".ps");
     QFile::remove(ps);
 
-    compilepushbutton.setText(tr("&View score"));
+    viewpushbutton.setText(tr("&View score"));
 }
 
 // vim:ts=4:sw=4:et

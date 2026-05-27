@@ -60,6 +60,7 @@ protected:
     void spawnProgram(const QString& prog, const QStringList &args, AbcProcess::ProcessType which, const QDir &wrk);
     void killSynth();
     bool checkViewer();
+    void deleteProcess (AbcProcess::ProcessType which);
     QString getAbcText();
 
 protected slots:
@@ -86,7 +87,7 @@ private:
     AbcPlainTextEdit abcplaintextedit;
     PlayPushButton playpushbutton; /* midi */
     QCheckBox* loopcheckbox;
-    ViewPushButton compilepushbutton; /* ps */
+    ViewPushButton viewpushbutton; /* ps */
     QHBoxLayout hboxlayout;
     QSpinBox xspinbox;
     QLabel xlabel;

@@ -4,14 +4,15 @@ ABC music notation minimal GUI.
 ## Dependencies
 QAbc uses third-party softwares to generate MIDI, AUDIO, and PostScript files. Without them, QAbc would be very poor (only a little fancy text editor). So, please install them:
 
-- abc2midi (CLI)
-- fluidsynth (CLI)
-- abcm2ps (CLI)
+- abc2midi (BIN)
+- fluidsynth (BIN)
+- abcm2ps (BIN)
+- zathura (BIN) or any other PostScript viewer
 - Qt 5.x or 6.x (LIB)
 
 On Debian-based systems, this should do the trick:
 ```
-sudo apt install qt6-base-dev qt6-tools-dev qt6-tools-dev-tools fluidsynth abcm2ps abcmidi
+sudo apt install qt6-base-dev qt6-tools-dev qt6-tools-dev-tools fluidsynth abcm2ps abcmidi zathura-ps
 ```
 
 ## Screenshot

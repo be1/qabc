@@ -9,6 +9,11 @@ QAbc uses third-party softwares to generate MIDI, AUDIO, and PostScript files. W
 - abcm2ps (CLI)
 - Qt 5.x or 6.x (LIB)
 
+On Debian-based systems, this should do the trick:
+```
+sudo apt install qt6-base-dev qt6-tools-dev qt6-tools-dev-tools fluidsynth abcm2ps abcmidi
+```
+
 ## Screenshot
 ![screenshot](http://brouits.free.fr/qabc/qabc.png "The main window")
 
@@ -16,7 +21,7 @@ QAbc uses third-party softwares to generate MIDI, AUDIO, and PostScript files. W
 Just a matter of:
 ```
 $ cd qabc
-$ qmake -config release
+$ qmake6 -config release
 $ make
 # make install (as root)
 ```

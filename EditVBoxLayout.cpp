@@ -377,6 +377,8 @@ void EditVBoxLayout::deleteProcess (AbcProcess::ProcessType which) {
 
 void EditVBoxLayout::onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType which)
 {
+    qDebug () << __func__ << exitStatus;
+
     switch (which) {
         case AbcProcess::ProcessCompilerMIDI:
             emit compilerMIDIFinished(exitCode); break;

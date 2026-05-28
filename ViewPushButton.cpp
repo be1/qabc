@@ -14,7 +14,6 @@ ViewPushButton::ViewPushButton(QWidget* parent)
 	: QPushButton(parent)
 {
     setText(tr("&View score"));
-    QIcon::setFallbackThemeName("HighContrast");
     setIcon(QIcon::fromTheme(QIcon::ThemeIcon::DocumentPrintPreview));
 }
 

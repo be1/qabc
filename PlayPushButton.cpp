@@ -15,7 +15,6 @@ PlayPushButton::PlayPushButton(QWidget* parent)
 {
     setText(tr("&Play"));
     is_play_icon = true;
-    QIcon::setFallbackThemeName("HighContrast");
     setIcon(QIcon::fromTheme(QIcon::ThemeIcon::MediaPlaybackStart));
     connect(this, &QPushButton::clicked, this, &PlayPushButton::onClicked, Qt::DirectConnection);
 }

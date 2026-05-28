@@ -26,6 +26,8 @@ AbcApplication::AbcApplication(int& argc, char **argv)
     settings.check();
 
     settings.sync();
+
+    QIcon::setFallbackThemeName("HighContrast");
 }
 
 AbcApplication::~AbcApplication()

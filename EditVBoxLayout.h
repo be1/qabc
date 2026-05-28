@@ -69,7 +69,7 @@ protected slots:
     void onPlayClicked(); /* midi */
     void onCompileClicked(); /* ps */
     void onSelectionChanged();
-    void onLoopStateChanged(Qt::CheckState state);
+    void onLoopStateChanged(bool checked);
 
     void exportMIDI(const QString& outFilename = "");
     void exportPs(const QString& outFilename = "");
@@ -86,7 +86,7 @@ private:
     bool in_cursor_position_changed = false;
     AbcPlainTextEdit abcplaintextedit;
     PlayPushButton playpushbutton; /* midi */
-    QCheckBox* loopcheckbox;
+    QPushButton loopcheckbox;
     ViewPushButton viewpushbutton; /* ps */
     QHBoxLayout hboxlayout;
     QSpinBox xspinbox;

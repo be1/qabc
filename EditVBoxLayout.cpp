@@ -36,17 +36,18 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     hboxlayout.addWidget(&xlabel);
     hboxlayout.addWidget(&xspinbox);
     hboxlayout.addWidget(&playpushbutton);
-    loopcheckbox = new QCheckBox(tr("loop"), parent);
+    loopcheckbox.setIcon(QIcon::fromTheme(QIcon::ThemeIcon::MediaPlaylistRepeat));
+    loopcheckbox.setCheckable(true);
     if (settings.value(LOOP_KEY).toBool())
-        loopcheckbox->setCheckState(Qt::Checked);
-    hboxlayout.addWidget(loopcheckbox);
+        loopcheckbox.setChecked(true);
+    hboxlayout.addWidget(&loopcheckbox);
     hboxlayout.addWidget(&viewpushbutton);
 
     addWidget(&abcplaintextedit);
     addLayout(&hboxlayout);
 
     connect(&xspinbox, &QSpinBox::valueChanged, this, &EditVBoxLayout::onXChanged);
-    connect(loopcheckbox, &QCheckBox::checkStateChanged, this, &EditVBoxLayout::onLoopStateChanged);
+    connect(&loopcheckbox, &QPushButton::clicked, this, &EditVBoxLayout::onLoopStateChanged);
     connect(&abcplaintextedit, &QPlainTextEdit::selectionChanged, this, &EditVBoxLayout::onSelectionChanged);
     connect(&abcplaintextedit, &QPlainTextEdit::cursorPositionChanged, this, &EditVBoxLayout::onCursorPositionChanged);
     connect(&playpushbutton, &QPushButton::clicked, this, &EditVBoxLayout::onPlayClicked);
@@ -102,13 +103,10 @@ void EditVBoxLayout::onSelectionChanged()
     }
 }
 
-void EditVBoxLayout::onLoopStateChanged(Qt::CheckState state)
+void EditVBoxLayout::onLoopStateChanged(bool checked)
 {
     Settings settings;
-    if (state == Qt::Checked)
-        settings.setValue(LOOP_KEY, true);
-    else
-        settings.setValue(LOOP_KEY, false);
+    settings.setValue(LOOP_KEY, checked);
 }
 
 QString EditVBoxLayout::getAbcText () {
@@ -498,7 +496,7 @@ void EditVBoxLayout::onSynthMIDIFinished(int exitCode)
     qDebug() << "synth" << exitCode;
 
     /* loop if no button pressed for stopping */
-    if (!playPushButton()->isPlay() && loopcheckbox->isChecked()) {
+    if (!playPushButton()->isPlay() && loopcheckbox.isChecked()) {
         /* icon is STOP, no manual press */
         onCompilerMIDIFinished(0);
         return;

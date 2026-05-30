@@ -9,7 +9,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "AbcApplication.h"
-#include "settings.h"
+#include "Settings.h"
 #include <QDebug>
 #include "config.h"
 
@@ -26,6 +26,8 @@ AbcApplication::AbcApplication(int& argc, char **argv)
     settings.check();
 
     settings.sync();
+
+    QIcon::setFallbackThemeName("HighContrast");
 }
 
 AbcApplication::~AbcApplication()

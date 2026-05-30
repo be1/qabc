@@ -13,7 +13,7 @@
 #include "AbcPlainTextEdit.h"
 #include "EditTabWidget.h"
 #include "EditWidget.h"
-#include "settings.h"
+#include "Settings.h"
 #include <QMessageBox>
 #include <QApplication>
 #include <QFileDialog>
@@ -29,8 +29,8 @@ ScoreMenu::ScoreMenu(QWidget* parent)
     addAction(tr("New"), this, SLOT(onNewActionTriggered()), QKeySequence::New);
     addAction(tr("Open"), this, SLOT(onOpenActionTriggered()), QKeySequence::Open);
 #else
-    addAction(tr("New"), QKeySequence::New, this, SLOT(onNewActionTriggered()));
-    addAction(tr("Open"), QKeySequence::Open, this, SLOT(onOpenActionTriggered()));
+    addAction(tr("New"), QKeySequence::New, this, &ScoreMenu::onNewActionTriggered);
+    addAction(tr("Open"), QKeySequence::Open, this, &ScoreMenu::onOpenActionTriggered);
 #endif
 
     for (int i = 0; i < MaxRecentFiles; ++i) {
@@ -51,9 +51,10 @@ ScoreMenu::ScoreMenu(QWidget* parent)
     addAction(tr("Close"), this, SLOT(onCloseActionTriggered()), QKeySequence::Close);
     addAction(tr("Quit"), this, SLOT(onQuitActionTriggered()), QKeySequence::Quit);
 #else
-    addAction(tr("Save"), QKeySequence::Save, this, SLOT(onSaveActionTriggered()));
-    addAction(tr("Save as"), QKeySequence::SaveAs, this, SLOT(onSaveAsActionTriggered()));
+    addAction(tr("Save"), QKeySequence::Save, this, &ScoreMenu::onSaveActionTriggered);
+    addAction(tr("Save as"), QKeySequence::SaveAs, this, &ScoreMenu::onSaveAsActionTriggered);
     addAction(tr("Export to MIDI"), this, SLOT(onExportMIDIActionTriggered()));
+    addAction(tr("Export to Postscript"), this, SLOT(onExportPsActionTriggered()));
     addAction(tr("Close"), QKeySequence::Close, this, SLOT(onCloseActionTriggered()));
     addAction(tr("Quit"), QKeySequence::Quit, this, SLOT(onQuitActionTriggered()));
 #endif
@@ -95,8 +96,9 @@ void ScoreMenu::onQuitActionTriggered()
 
 void ScoreMenu::onOpenActionTriggered()
 {
-    QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open ABC Score"), home, tr("ABC score (*.abc)"));
+    //QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    QString workdir = settings.value(WORKDIR_KEY).toString();
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open ABC Score"), workdir, tr("ABC score (*.abc)"));
 
     /* user cancelled */
     if (fileName.isEmpty())
@@ -108,6 +110,20 @@ void ScoreMenu::onOpenActionTriggered()
 QString ScoreMenu::strippedName(const QString& fullFileName)
 {
     return QFileInfo(fullFileName).fileName();
+}
+
+QString ScoreMenu::dirPath(const QString &path)
+{
+    QString dirpath;
+
+    QStringList parts = path.split(QDir::separator());
+    if (!parts.isEmpty()) {
+        parts.removeLast();
+        dirpath = parts.join(QDir::separator());
+    }
+
+    qDebug() << dirpath;
+    return dirpath;
 }
 
 void ScoreMenu::updateRecentFileActions()
@@ -162,6 +178,10 @@ bool ScoreMenu::loadFile(const QString& fileName)
         edittabs->addTab(widget);
 
         setRecentFile(fileName, true);
+
+        /* save current working directory */
+        QString workdir = dirPath(fileName);
+        settings.setValue(WORKDIR_KEY, workdir);
 
         return true;
     }
@@ -225,8 +245,10 @@ void ScoreMenu::onSaveAsActionTriggered()
     if (cur < 0)
         return;
 
-    QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save ABC score"), home, tr("ABC score (*.abc)"));
+    QString title = a->mainWindow()->mainHBoxLayout()->editTabWidget()->currentEditWidget()->editVBoxLayout()->abcPlainTextEdit()->makeTitleFileName();
+    QString workdir = settings.value(WORKDIR_KEY).toString();
+    QString path = workdir + QDir::separator() + title;
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save ABC score"), path, tr("ABC score (*.abc)"));
     if (fileName.isEmpty())
         return; /* cancelled */
 
@@ -240,6 +262,28 @@ void ScoreMenu::onSaveAsActionTriggered()
     return onSaveActionTriggered();
 }
 
+void ScoreMenu::onExportPsActionTriggered()
+{
+    AbcApplication* a = static_cast<AbcApplication*>(qApp);
+    AbcMainWindow* w = a->mainWindow();
+    EditTabWidget *edittabs = w->mainHBoxLayout()->editTabWidget();
+    int cur = edittabs->currentIndex();
+    if (cur < 0)
+        return;
+
+    EditVBoxLayout* scoreEdit =  a->mainWindow()->mainHBoxLayout()->editTabWidget()->currentEditWidget()->editVBoxLayout();
+    QString x = QString::number(scoreEdit->xSpinBox()->value());
+    QString suggestion = edittabs->tabText(cur).append(x).append(".ps");
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Export to Postscript"), suggestion, tr("Postscript file (*.ps)"));
+    if (fileName.isEmpty())
+        return; /* cancelled */
+
+    if (!fileName.endsWith(".ps"))
+        fileName.append(".ps");
+
+    emit scoreEdit->doExportPs(fileName);
+}
+
 void ScoreMenu::onExportMIDIActionTriggered()
 {
     AbcApplication* a = static_cast<AbcApplication*>(qApp);
@@ -249,8 +293,9 @@ void ScoreMenu::onExportMIDIActionTriggered()
     if (cur < 0)
         return;
 
-    QString suggestion = edittabs->tabText(cur).append(".mid");
-    //QString  home = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    EditVBoxLayout* scoreEdit =  a->mainWindow()->mainHBoxLayout()->editTabWidget()->currentEditWidget()->editVBoxLayout();
+    QString x = QString::number(scoreEdit->xSpinBox()->value());
+    QString suggestion = edittabs->tabText(cur).append(x).append(".mid");
     QString fileName = QFileDialog::getSaveFileName(this, tr("Export to MIDI"), suggestion, tr("MIDI file (*.mid)"));
     if (fileName.isEmpty())
         return; /* cancelled */
@@ -258,9 +303,7 @@ void ScoreMenu::onExportMIDIActionTriggered()
     if (!fileName.endsWith(".mid"))
         fileName.append(".mid");
 
-    EditVBoxLayout* scoreEdit =  a->mainWindow()->mainHBoxLayout()->editTabWidget()->currentEditWidget()->editVBoxLayout();
     emit scoreEdit->doExportMIDI(fileName);
-
 }
 
 void ScoreMenu::onCloseActionTriggered()

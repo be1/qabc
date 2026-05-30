@@ -11,7 +11,7 @@
 #ifndef VIEWVBOXLAYOUT_H
 #define VIEWVBOXLAYOUT_H
 
-#include "RunPushButton.h"
+#include "ViewPushButton.h"
 #include "LogView.h"
 #include <QVBoxLayout>
 

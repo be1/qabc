@@ -8,19 +8,15 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#ifndef RUNPUSHBUTTON_H
-#define RUNPUSHBUTTON_H
+#include "ViewPushButton.h"
 
-#include <QPushButton>
-
-class RunPushButton: public QPushButton
+ViewPushButton::ViewPushButton(QWidget* parent)
+	: QPushButton(parent)
 {
-	Q_OBJECT
+    setText(tr("&View score"));
+    setIcon(QIcon::fromTheme(QIcon::ThemeIcon::DocumentPrintPreview));
+}
 
-public:
-	RunPushButton(QWidget* parent = nullptr);
-	~RunPushButton();
-
-private:
-};
-#endif
+ViewPushButton::~ViewPushButton()
+{
+}

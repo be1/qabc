@@ -11,13 +11,14 @@
 #ifndef EDITVBOXLAYOUT_H
 #define EDITVBOXLAYOUT_H
 
-#include "RunPushButton.h"
+#include "ViewPushButton.h"
 #include "PlayPushButton.h"
 #include "AbcPlainTextEdit.h"
 #include "AbcProcess.h"
 #include "AbcTemporaryFile.h"
 #include <QVBoxLayout>
 #include <QSpinBox>
+#include <QCheckBox>
 #include <QLabel>
 #include <QDir>
 
@@ -30,54 +31,63 @@ public:
     explicit EditVBoxLayout(const QString& fileName, QWidget* parent = nullptr);
 	~EditVBoxLayout();
 
-    AbcPlainTextEdit *abcPlainTextEdit();
-    PlayPushButton *playPushButton();
-    RunPushButton *runPushButton();
     void setFileName(const QString& fn);
     void cleanup();
 
-    void spawnCompiler(const QString &prog, const QStringList &args, const QDir& wrk);
-    void spawnViewer(const QString &prog, const QStringList &args, const QDir& wrk);
+    AbcPlainTextEdit* abcPlainTextEdit();
+    PlayPushButton* playPushButton();
+    ViewPushButton* viewPushButton();
+    QSpinBox* xSpinBox();
 
-    void spawnExport(const QString &prog, const QStringList& args, const QDir& wrk);
+    void spawnCompilerPs(const QString &prog, const QStringList &args, const QDir& wrk);
+    void spawnViewerPs(const QString &prog, const QStringList &args, const QDir& wrk);
 
-    void spawnPlayer(const QString &prog, const QStringList& args, const QDir& wrk);
-    void spawnSynth(const QString &prog, const QStringList &args, const QDir& wrk);
+    void spawnExportMIDI(const QString &prog, const QStringList& args, const QDir& wrk);
+    void spawnExportPs(const QString &prog, const QStringList& args, const QDir& wrk);
+
+    void spawnCompilerMIDI(const QString &prog, const QStringList& args, const QDir& wrk);
+    void spawnSynthMIDI(const QString &prog, const QStringList &args, const QDir& wrk);
 
 signals:
-    void compilerFinished(int exitCode);
-    void viewerFinished(int exitCode);
-    void playerFinished(int exitCode);
-    void synthFinished(int exitCode);
+    void compilerPsFinished(int exitCode);
+    void viewerPsFinished(int exitCode);
+    void compilerMIDIFinished(int exitCode);
+    void synthMIDIFinished(int exitCode);
     void doExportMIDI(const QString& = "");
+    void doExportPs(const QString& = "");
 
 protected:
     void spawnProgram(const QString& prog, const QStringList &args, AbcProcess::ProcessType which, const QDir &wrk);
     void killSynth();
     bool checkViewer();
+    void deleteProcess (AbcProcess::ProcessType which);
+    QString getAbcText();
 
 protected slots:
     void onCursorPositionChanged();
     void onXChanged(int value);
     void onPlayClicked(); /* midi */
-    void onRunClicked(); /* ps */
+    void onCompileClicked(); /* ps */
     void onSelectionChanged();
+    void onLoopStateChanged(bool checked);
 
     void exportMIDI(const QString& outFilename = "");
+    void exportPs(const QString& outFilename = "");
     void onErrorOccurred(QProcess::ProcessError error, const QString& program, AbcProcess::ProcessType);
     void onProgramFinished(int exitCode, QProcess::ExitStatus exitStatus, AbcProcess::ProcessType);
     void onProgramOutputText(const QByteArray& text);
     void onProgramErrorText(const QByteArray& text);
-    void onPlayFinished(int exitCode);
-    void onSynthFinished(int exitCode);
-    void onCompileFinished(int exitCode);
-    void onViewFinished(int exitCode);
+    void onCompilerMIDIFinished(int exitCode);
+    void onSynthMIDIFinished(int exitCode);
+    void onCompilerPsFinished(int exitCode);
+    void onViewerPsFinished(int exitCode);
 
 private:
     bool in_cursor_position_changed = false;
     AbcPlainTextEdit abcplaintextedit;
     PlayPushButton playpushbutton; /* midi */
-    RunPushButton runpushbutton; /* ps */
+    QPushButton loopcheckbox;
+    ViewPushButton viewpushbutton; /* ps */
     QHBoxLayout hboxlayout;
     QSpinBox xspinbox;
     QLabel xlabel;
@@ -86,5 +96,6 @@ private:
     QList<AbcProcess*> processlist;
     QString selection;
     int selectionIndex;
+    int currentmidi;
 };
 #endif

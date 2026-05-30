@@ -23,7 +23,10 @@ public:
     void flip();
     bool isPlay();
 
+protected slots:
+    void onClicked();
+
 private:
-    bool play;
+    bool is_play_icon = false;
 };
 #endif

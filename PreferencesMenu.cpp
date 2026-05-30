@@ -10,8 +10,8 @@
 
 #include "PreferencesMenu.h"
 #include "AbcApplication.h"
-#include "editorprefdialog.h"
-#include "settings.h"
+#include "EditorPrefDialog.h"
+#include "Settings.h"
 #include <QDebug>
 #include <QInputDialog>
 

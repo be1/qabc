@@ -21,7 +21,7 @@
 #include <QStringListModel>
 #include <QGuiApplication>
 #include "config.h"
-#include "settings.h"
+#include "Settings.h"
 
 const QString AbcPlainTextEdit::delimiter = " !%~@#$^&*()_+{}|:\"<>?,./;'[]\\-=";
 
@@ -335,6 +335,38 @@ int AbcPlainTextEdit::currentXV(char xv)
     }
 
     return 1;
+}
+
+QString AbcPlainTextEdit::makeTitleFileName()
+{
+    QString wholetext = toPlainText();
+    QString first = "untitled";
+
+    QRegularExpression tre("^T:([^\n]*)", QRegularExpression::MultilineOption);
+    QRegularExpressionMatchIterator tmatch = tre.globalMatch(wholetext);
+
+    if (tmatch.hasNext()) {
+        QRegularExpressionMatch match = tmatch.next();
+        first = match.captured(1).toLower();
+    }
+
+    QRegularExpression xre("^X:", QRegularExpression::MultilineOption);
+    QRegularExpressionMatchIterator xmatch = xre.globalMatch(wholetext);
+    int others = -1;
+    while (xmatch.hasNext()) {
+        others++;
+        xmatch.next();
+    }
+
+    first = first.replace(QRegularExpression("[ \t]"), "_");
+    first = first.replace(QRegularExpression("[[:punct:]]"), "_");
+    if (others > 0) {
+        first += tr("_plus_") + QString::number(others) + (others > 1 ? tr("_tunes.abc") : tr("_tune.abc"));
+    } else {
+        first += ".abc";
+    }
+
+    return first;
 }
 
 void AbcPlainTextEdit::focusInEvent(QFocusEvent *e)

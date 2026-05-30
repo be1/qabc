@@ -17,7 +17,7 @@ class AbcProcess : public QProcess
 {
     Q_OBJECT
 public:
-    enum ProcessType {ProcessUnknown, ProcessCompiler, ProcessViewer, ProcessPlayer, ProcessSynth};
+    enum ProcessType {ProcessUnknown, ProcessCompilerPs, ProcessViewer, ProcessCompilerMIDI, ProcessSynth};
     AbcProcess(ProcessType which, QObject *parent);
     virtual ~AbcProcess() {
         close();

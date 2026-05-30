@@ -9,7 +9,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <QFont>
-#include "settings.h"
+#include "Settings.h"
 #include "config.h"
 
 Settings::Settings(QObject* parent)

@@ -1,6 +1,8 @@
 qabc (1.16-1) unstable; urgency=medium
 
   * New upstream release 1.16
+  * Bump Standards-version to 4.7.4
+  * suggest zathura-ps in d/control
 
  -- Benoît Rouits <brouits@free.fr>  Sat, 30 May 2026 11:33:21 +0200
 

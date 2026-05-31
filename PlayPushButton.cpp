@@ -15,7 +15,11 @@ PlayPushButton::PlayPushButton(QWidget* parent)
 {
     setText(tr("&Play"));
     is_play_icon = true;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 7, 0))
+    setIcon(QIcon::fromTheme("media-playback-start"));
+#else
     setIcon(QIcon::fromTheme(QIcon::ThemeIcon::MediaPlaybackStart));
+#endif
     connect(this, &QPushButton::clicked, this, &PlayPushButton::onClicked, Qt::DirectConnection);
 }
 
@@ -28,11 +32,19 @@ void PlayPushButton::flip()
     if (is_play_icon) {
         qDebug() << "setting STOP icon";
         setText(tr("Sto&p"));
+#if (QT_VERSION < QT_VERSION_CHECK(6, 7, 0))
+    setIcon(QIcon::fromTheme("media-playback-stop"));
+#else
         setIcon(QIcon::fromTheme(QIcon::ThemeIcon::MediaPlaybackStop));
+#endif
     } else {
         qDebug() << "setting PLAY icon";
         setText(tr("&Play"));
+#if (QT_VERSION < QT_VERSION_CHECK(6, 7, 0))
+    setIcon(QIcon::fromTheme("media-playback-start"));
+#else
         setIcon(QIcon::fromTheme(QIcon::ThemeIcon::MediaPlaybackStart));
+#endif
     }
 
     is_play_icon = !is_play_icon;

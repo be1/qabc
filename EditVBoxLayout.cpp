@@ -36,7 +36,11 @@ EditVBoxLayout::EditVBoxLayout(const QString& fileName, QWidget* parent)
     hboxlayout.addWidget(&xlabel);
     hboxlayout.addWidget(&xspinbox);
     hboxlayout.addWidget(&playpushbutton);
+#if (QT_VERSION < QT_VERSION_CHECK(6,7,0))
+    loopcheckbox.setIcon(QIcon::fromTheme("media-playlist-repeat"));
+#else
     loopcheckbox.setIcon(QIcon::fromTheme(QIcon::ThemeIcon::MediaPlaylistRepeat));
+#endif
     loopcheckbox.setCheckable(true);
     if (settings.value(LOOP_KEY).toBool())
         loopcheckbox.setChecked(true);

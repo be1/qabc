@@ -1,7 +1,7 @@
 QT += core widgets gui
 TEMPLATE = app
 TARGET = qabc
-CONFIG += c++17
+CONFIG += c++17 lrelease
 QMAKE_CXXFLAGS += -Wall -Wextra -pedantic
 RESOURCES += resources.qrc
 DISTFILES +=  dict.txt gm.txt ps.txt config.h.in
@@ -29,14 +29,17 @@ isEmpty(DATADIR): DATADIR = $$PREFIX/share
 config.input = config.h.in
 config.output = config.h
 QMAKE_SUBSTITUTES += config
-isEmpty(QMAKE_LRELEASE):QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+
 TRANSLATIONS += $${TARGET}_en.ts $${TARGET}_fr.ts
-LOCALE_DIR = locale
-updateqm.input = TRANSLATIONS
-updateqm.output = $$LOCALE_DIR/${QMAKE_FILE_BASE}.qm
-updateqm.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm $$LOCALE_DIR/${QMAKE_FILE_BASE}.qm
-updateqm.CONFIG += no_link target_predeps
-QMAKE_EXTRA_COMPILERS += updateqm
+LRELEASE_DIR = locale
+
+# isEmpty(QMAKE_LRELEASE):QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+# LRELEASE_DIR = locale
+# updateqm.input = TRANSLATIONS
+# updateqm.output = $$LRELEASE_DIR/${QMAKE_FILE_BASE}.qm
+# updateqm.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm $$LRELEASE_DIR/${QMAKE_FILE_BASE}.qm
+# updateqm.CONFIG += no_link target_predeps
+# QMAKE_EXTRA_COMPILERS += updateqm
 
 MANPAGE = "qabc.1"
 manpage.input = MANPAGE
@@ -50,7 +53,7 @@ manual.files = $$OUT_PWD/$${MANPAGE}.gz
 manual.CONFIG = no_check_exist
 target.path = $$BINDIR
 translations.path = $$DATADIR/$$TARGET
-translations.files = $$OUT_PWD/$$LOCALE_DIR
+translations.files = $$OUT_PWD/$${LRELEASE_DIR}
 desktop.path = $$DATADIR/applications
 desktop.files = $${TARGET}.desktop
 icon.path = $$DATADIR/icons/hicolor/scalable/apps

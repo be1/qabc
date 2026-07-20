@@ -11,7 +11,7 @@ Package: qabc
 Architecture: any
 Multi-Arch: foreign
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Recommends: abcm2ps, abcmidi, fluidsynth, postscript-viewer
+Recommends: abcm2ps, abcmidi, fluidsynth, postscript-viewer, gnome-accessibility-themes|adwaita-icon-theme-legacy
 Suggests: zathura-ps
 Description: minimal GUI for ABC music notation
  QAbc is a simple graphical program that allow

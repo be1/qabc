@@ -35,10 +35,9 @@ private:
 
     QVector<AbcHighlightingRule> highlightingRules;
 
-#if 0
-    QRegularExpression headerStartExpression;
-    QRegularExpression headerEndExpression;
-#endif
+    QRegularExpression extraMultilineStartExpression;
+    QRegularExpression extraMultilineEndExpression;
+
     QTextCharFormat headerFormat;
     QTextCharFormat extraInstructionFormat;
     QTextCharFormat singleLineCommentFormat;
@@ -47,9 +46,7 @@ private:
     QTextCharFormat gchordFormat;
     QTextCharFormat barFormat;
     QTextCharFormat lyricFormat;
-#if 0
-    QTextCharFormat multiLineHeaderFormat;
-#endif
+    QTextCharFormat extraMultiLineFormat;
 };
 
 class AbcPlainTextEdit: public QPlainTextEdit

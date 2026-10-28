@@ -9,6 +9,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "AbcMainWindow.h"
+#include "AbcApplication.h"
 
 AbcMainWindow::AbcMainWindow(QWidget* parent)
 	: QMainWindow(parent)
@@ -42,6 +43,9 @@ ScoreMenu *AbcMainWindow::scoreMenu()
 void AbcMainWindow::closeEvent(QCloseEvent *event)
 {
     if (QMessageBox::StandardButton::Yes == scoremenu.gracefulQuit()) {
+        AbcApplication* a = static_cast<AbcApplication*>(qApp);
+        EditTabWidget* tabs = a->mainWindow()->mainHBoxLayout()->editTabWidget();
+        tabs->removeTabs();
         event->accept();
     } else {
         event->ignore();

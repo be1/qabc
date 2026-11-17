@@ -13,6 +13,7 @@ Multi-Arch: foreign
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Recommends: abcm2ps, abcmidi, fluidsynth, postscript-viewer, gnome-accessibility-themes|adwaita-icon-theme-legacy
 Suggests: zathura-ps
+Tag: implemented-in::c++, role::program, interface::graphical, uitoolkit::qt, use::editing, works-with::music-notation, field::arts
 Description: minimal GUI for ABC music notation
  QAbc is a simple graphical program that allow
  one to write musical scores in the ABC notation.
